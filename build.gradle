@@ -57,6 +57,7 @@ bundle {
 	instruction 'Bundle-Vendor', 'DiffPlug'
 	instruction 'Bundle-Description', "${description}"
 	instruction 'Bundle-DocURL', 'https://github.com/diffplug/durian'
+	instruction 'Bundle-License', 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 	instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
 	instruction 'Export-Package', 'com.diffplug.common.*'
 }
