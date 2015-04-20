@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-Description: Durian - Guava's spikier (unofficial) cousin
+Bundle-DocURL: https://github.com/diffplug/durian
+Bundle-ManifestVersion: 2
+Bundle-Name: com.diffplug.durian
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-SymbolicName: com.diffplug.durian
+Bundle-Vendor: DiffPlug
+Bundle-Version: 0.1.0
+Created-By: 1.8.0_40 (Oracle Corporation)
+Export-Package: com.diffplug.common.base;version="0.1.0"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-2.4.0.201411031534
+VER_BINTRAY: 1.1
+VER_BUNDLE: 0.6.2
+VER_FINDBUGS: 3.0.0
+VER_FORMAT: 1.2
+VER_GRADLE: 2.3
+VER_GUAVA: 18.0
+VER_JAVA: 1.8
+VER_JUNIT: 4.12
+VER_RXJAVA: 1.0.8
