@@ -36,7 +36,7 @@ public abstract class ErrorHandler {
 	 * 
 	 * If that function happens to throw a RuntimeException itself, that'll work just fine, but it's ugly.
 	 */
-	public static Rethrowing createRethrowAs(Function<Throwable, RuntimeException> transform) {
+	public static Rethrowing createRethrowing(Function<Throwable, RuntimeException> transform) {
 		return new Rethrowing(transform);
 	}
 
@@ -48,7 +48,7 @@ public abstract class ErrorHandler {
 	 * throws a RuntimeException, then you should instead create an ErrorHandler.Rethrowing
 	 * using creeateRethrowAs().
 	 */
-	public static Handling createHandleWith(Consumer<Throwable> handler) {
+	public static Handling createHandling(Consumer<Throwable> handler) {
 		return new Handling(handler);
 	}
 
@@ -61,14 +61,14 @@ public abstract class ErrorHandler {
 		return suppress;
 	}
 
-	private static final Handling suppress = createHandleWith(obj -> {});
+	private static final Handling suppress = createHandling(obj -> {});
 
 	/** Rethrows any exceptions as runtime exceptions. */
 	public static Rethrowing rethrow() {
 		return rethrow;
 	}
 
-	private static final Rethrowing rethrow = createRethrowAs(ErrorHandler::asRuntime);
+	private static final Rethrowing rethrow = createRethrowing(ErrorHandler::asRuntime);
 
 	/**
 	 * Logs any exceptions.
@@ -89,7 +89,7 @@ public abstract class ErrorHandler {
 			// It is important for this method to be fast, so it's better to accept
 			// that log() might return different ErrorHandler instances which are wrapping
 			// the same actual Consumer<Throwable>.
-			log = createHandleWith(DurianPlugins.getInstance().getErrorHandlerLog());
+			log = createHandling(DurianPlugins.getInstance().getErrorHandlerLog());
 		}
 		return log;
 	}
@@ -105,7 +105,7 @@ public abstract class ErrorHandler {
 	public static Handling dialog() {
 		if (dialog == null) {
 			// There is an acceptable race condition here.  See ErrorHandler.log() for details.
-			dialog = createHandleWith(DurianPlugins.getInstance().getErrorHandlerDialog());
+			dialog = createHandling(DurianPlugins.getInstance().getErrorHandlerDialog());
 		}
 		return dialog;
 	}
