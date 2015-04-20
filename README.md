@@ -20,9 +20,10 @@ Durian complements Guava with some features which are too spiky for Guava, such 
 
 Durian requires Java 8, and is published to JCenter at the maven coordinates `com.diffplug.durian:durian`.
 
-## Known bugs
+## Known problems
 
-`gradlew format` is supposed to format the source code. For now, it doesn't work. [Github issue](https://github.com/youribonnaffe/gradle-format-plugin/issues/8)
+* The `MANIFEST.MF` has a bunch of unneeded `VER_suchandsuch` properties.  They don't do any harm, but it would be nice to fix. [Github issue](https://github.com/TomDmitriev/gradle-bundle-plugin/issues/33)
+* `gradlew format` is supposed to format the source code. For now, it doesn't work. [Github issue](https://github.com/youribonnaffe/gradle-format-plugin/issues/8)
 
 ## Acknowledgements
 
