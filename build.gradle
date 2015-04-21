@@ -57,10 +57,11 @@ bundle {
 	instruction 'Bundle-License', 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 	instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
 	instruction 'Export-Package', 'com.diffplug.common.*'
+	instruction '-removeheaders', 'VER_*'
 }
 
 // make sure we know what's going on with our OSGI manifest
-task copyManifest(dependsOn: jar, type: Copy) {
+task copyManifest(type: Sync, dependsOn: jar) {
 	from 'build/tmp/jar'
 	into 'META-INF'
 	include 'MANIFEST.MF'
