@@ -15,13 +15,12 @@
  */
 package com.diffplug.common.base;
 
+import java.io.PrintWriter;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-
-import com.google.common.base.Throwables;
 
 /**
  * Registry for plugin implementations which allows global override and handles the retrieval of correct
@@ -113,7 +112,11 @@ public class DurianPlugins {
 	static void defaultErrorHandlerDialog(Throwable error) {
 		SwingUtilities.invokeLater(() -> {
 			JOptionPane.showMessageDialog(null,
-					error.getMessage() + "\n\n" + Throwables.getStackTraceAsString(error),
+					error.getMessage() + "\n\n" + StringPrinter.buildString(printer -> {
+						PrintWriter writer = printer.toPrintWriter();
+						error.printStackTrace(writer);
+						writer.close();
+					}),
 					error.getClass().getSimpleName(),
 					JOptionPane.ERROR_MESSAGE);
 		});
