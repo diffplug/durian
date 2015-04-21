@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /** 
  * ErrorHandler makes it easy to create implementations of the standard
  * functional interfaces (which don't allow checked exceptions).
@@ -76,6 +78,8 @@ public abstract class ErrorHandler {
 	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
 	 * in your application, call DurianPlugins.registerErrorHandlerLog() on startup.
 	 */
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification =
+			"This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
 		if (log == null) {
 			// There is an acceptable race condition here - log might get set multiple times.
@@ -102,6 +106,8 @@ public abstract class ErrorHandler {
 	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
 	 * in your application, call DurianPlugins.registerErrorHandlerDialog() on startup.
 	 */
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification =
+			"This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
 		if (dialog == null) {
 			// There is an acceptable race condition here.  See ErrorHandler.log() for details.
