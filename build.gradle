@@ -42,9 +42,6 @@ sourceCompatibility = VER_JAVA
 targetCompatibility = VER_JAVA
 
 dependencies {
-	compile "com.google.guava:guava:${VER_GUAVA}"
-	compile "io.reactivex:rxjava:${VER_RXJAVA}"
-
 	testCompile "junit:junit:${VER_JUNIT}"
 }
 

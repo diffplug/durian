@@ -12,13 +12,13 @@
 Guava has become indispensable for many Java developers.  Because of its wide adoption, it must be conservative regarding its minimum requirements.
 
 Durian complements Guava with some features which are too spiky for Guava, such as:
-* TODO: Unify RxJava's [Observable](http://reactivex.io/documentation/observable.html) with Guava's [ListenableFuture](https://code.google.com/p/guava-libraries/wiki/ListenableFutureExplained)
-* TODO: Given a node in a tree, and a `Function<Node, List<Node>>`, create a `Stream` for traversing this tree (breadth-first, depth-first, etc.)
-* TODO: One-liner exception handling for Java 8 functional interfaces
-* Pattern-match style enums
-* TODO: A simple replacement for the mess of `PrintStream`, `OutputStream`, and `CharStream` when all you want is to pipe some strings around
+* One-liner exception handling for Java 8 functional interfaces.
+* A simple replacement for the mess of `PrintStream`, `OutputStream`, `Writer`, etc. when all you want is to pipe some strings around.
+* TODO: Given a node in a tree, and a `Function<Node, List<Node>>`, create a `Stream` for traversing this tree (breadth-first, depth-first, etc.).
+* An enum for handling comparisons in a pattern-matchey way.
+* TODO: Guava's functional interface utilities (`Suppliers`, `Predicates`, etc.) converted to Java 8.
 
-Durian requires Java 8, and is published to JCenter at the maven coordinates `com.diffplug.durian:durian`.
+Durian's only requirement is Java 8 or greater, no other libraries needed (not even Guava).  It is published to JCenter at the maven coordinates `com.diffplug.durian:durian`.
 
 ## Known problems
 
@@ -27,7 +27,6 @@ Durian requires Java 8, and is published to JCenter at the maven coordinates `co
 
 ## Acknowledgements
 
-* Obviously, [Guava](https://github.com/google/guava) and [RxJava](https://github.com/ReactiveX/RxJava) are pretty darn great.
 * Built by [gradle](http://gradle.org/).
 * Tested by [junit](http://junit.org/).
 * Bugs found by [findbugs](http://findbugs.sourceforge.net/).
@@ -35,3 +34,5 @@ Durian requires Java 8, and is published to JCenter at the maven coordinates `co
 * Formatted by [gradle-format-plugin](https://github.com/youribonnaffe/gradle-format-plugin).
 * License headered by [license-gradle-plugin](https://github.com/hierynomus/license-gradle-plugin).
 * Artifacts hosted by [jcenter](https://bintray.com/bintray/jcenter) and uploaded by [gradle-bintray-plugin](https://github.com/bintray/gradle-bintray-plugin).
+* `StringPrinter.toOutputStream()` borrows heavily from `WriterOutputStream`, inside Apache commons-io.
+* `DurianPlugins` is inspired by RxJava's plugin mechanism.
