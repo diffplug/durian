@@ -1,17 +1,18 @@
 buildscript {
 	repositories {
 		jcenter()
-		maven { url "https://plugins.gradle.org/m2/" } // only needed for java formatter
+		mavenLocal()
 	}
 	dependencies {
 		// builds canonical OSGI bundles
 		classpath "org.dm.gradle:gradle-bundle-plugin:${VER_BUNDLE}"
 		// applies the Eclipse java formatter
-		classpath "gradle.plugin.com.github.youribonnaffe.gradle.format:gradle-format-plugin:${VER_FORMAT}"
-		// enforces and applies the license header
-		classpath "nl.javadude.gradle.plugins:license-gradle-plugin:${VER_LICENSE}"
+		classpath "com.diffplug.gradle.spotless:spotless:${VER_SPOTLESS}"
 		// uploads artifacts to jcenter
 		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${VER_BINTRAY}"
+		configurations.all {
+			resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+		}
 	}
 }
 
@@ -110,16 +111,7 @@ tasks.eclipse.dependsOn(cleanEclipse)
 ////////////
 // FORMAT //
 ////////////
-apply plugin: 'com.github.youribonnaffe.gradle.format'
-format {
-	configurationFile file('format_java.properties')
-}
-
-apply plugin: 'license'
-license {
-	include '**/*.java'
-	header file('format_license.txt')
-}
+apply plugin: 'com.diffplug.gradle.spotless'
 
 //////////////
 // FINDBUGS //
