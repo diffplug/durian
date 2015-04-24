@@ -112,6 +112,11 @@ tasks.eclipse.dependsOn(cleanEclipse)
 // FORMAT //
 ////////////
 apply plugin: 'com.diffplug.gradle.spotless'
+spotless {
+	licenseHeaderFile = file('spotless.license.java')			// License header file
+	importsOrderFile = file('spotless.importorder.properties')	// An import ordering file, exported from Eclipse
+	eclipseFormatFile = file('spotless.eclipseformat.xml')		// XML file dumped out by the Eclipse formatter
+}
 
 //////////////
 // FINDBUGS //
