@@ -44,7 +44,7 @@ public class StringPrinterTest {
 	public void testStringCreator() {
 		Assert.assertEquals(TEST_STR, StringPrinter.buildString(printer -> {
 			printTestStr(printer);
-		}));
+		} ));
 	}
 
 	@Test
@@ -52,8 +52,8 @@ public class StringPrinterTest {
 		Assert.assertEquals(TEST_STR, StringPrinter.buildString(printer -> {
 			ErrorHandler.rethrow().run(() -> {
 				printer.toOutputStream(StandardCharsets.UTF_8).write(TEST_STR.getBytes(StandardCharsets.UTF_8));
-			});
-		}));
+			} );
+		} ));
 	}
 
 	@Test
@@ -61,8 +61,8 @@ public class StringPrinterTest {
 		Assert.assertEquals(TEST_STR, StringPrinter.buildString(printer -> {
 			ErrorHandler.rethrow().run(() -> {
 				printer.toPrintStream().print(TEST_STR);
-			});
-		}));
+			} );
+		} ));
 	}
 
 	/** Tests each method in turn. */
@@ -86,12 +86,12 @@ public class StringPrinterTest {
 		Assert.assertEquals(expected, StringPrinter.buildString(printer -> {
 			ErrorHandler.rethrow().run(() -> {
 				underTest.accept(printer.toWriter());
-			});
-		}));
+			} );
+		} ));
 	}
 
 	/** "I can eat glass" in Japanese, according to http://www.columbia.edu/~kermit/utf8.html */
-	private static final String TEST_UTF = "ç§?ã?¯ã‚¬ãƒ©ã‚¹ã‚’é£Ÿã?¹ã‚‰ã‚Œã?¾ã?™ã€‚ã??ã‚Œã?¯ç§?ã‚’å‚·ã?¤ã?‘ã?¾ã?›ã‚“ã€‚";
+	private static final String TEST_UTF = "ï¿½?ï¿½?ï¿½ã‚¬ãƒ©ã‚¹ã‚’é£Ÿï¿½?ï¿½ã‚‰ã‚Œï¿½?ï¿½ï¿½?ï¿½ã€‚ï¿½??ã‚Œï¿½?ï¿½ï¿½?ã‚’å‚·ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ã‚“ã€‚";
 
 	@Test
 	public void testEncodings() {
@@ -112,8 +112,8 @@ public class StringPrinterTest {
 				for (byte b : bytes) {
 					output.write(b);
 				}
-			});
-		});
+			} );
+		} );
 		Assert.assertEquals(TEST_UTF, byteByByteOutputStream);
 
 		// write the complicated UTF string one byte at a time to a PrintStream
@@ -123,8 +123,8 @@ public class StringPrinterTest {
 				for (byte b : bytes) {
 					output.write(b);
 				}
-			});
-		});
+			} );
+		} );
 		Assert.assertEquals(TEST_UTF, byteByBytePrintStream);
 	}
 }

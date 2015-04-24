@@ -17,9 +17,7 @@ package com.diffplug.common.base;
 
 /** Utility class to make reading the result of "compareTo" results a little easier. */
 public enum Comparison {
-	LESSER,
-	EQUAL,
-	GREATER;
+	LESSER, EQUAL, GREATER;
 
 	/** Returns the appropriate T based on the Comparison value. */
 	public <T> T lesserEqualGreater(T lesser, T equal, T greater) {

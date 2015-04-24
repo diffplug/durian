@@ -63,7 +63,7 @@ public abstract class ErrorHandler {
 		return suppress;
 	}
 
-	private static final Handling suppress = createHandling(obj -> {});
+	private static final Handling suppress = createHandling(obj -> {} );
 
 	/** Rethrows any exceptions as runtime exceptions. */
 	public static Rethrowing rethrow() {
@@ -78,8 +78,7 @@ public abstract class ErrorHandler {
 	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
 	 * in your application, call DurianPlugins.registerErrorHandlerLog() on startup.
 	 */
-	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification =
-			"This race condition is fine, as explained in the comment below.")
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
 		if (log == null) {
 			// There is an acceptable race condition here - log might get set multiple times.
@@ -106,8 +105,7 @@ public abstract class ErrorHandler {
 	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
 	 * in your application, call DurianPlugins.registerErrorHandlerDialog() on startup.
 	 */
-	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification =
-			"This race condition is fine, as explained in the comment below.")
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
 		if (dialog == null) {
 			// There is an acceptable race condition here.  See ErrorHandler.log() for details.
@@ -202,7 +200,9 @@ public abstract class ErrorHandler {
 		private final Function<Throwable, RuntimeException> transform;
 
 		protected Rethrowing(Function<Throwable, RuntimeException> transform) {
-			super(error -> { throw transform.apply(error); });
+			super(error -> {
+				throw transform.apply(error);
+			} );
 			this.transform = transform;
 		}
 

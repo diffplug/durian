@@ -77,7 +77,7 @@ public class StringPrinter {
 		return new OutputStream() {
 			@Override
 			public void write(final int b) throws IOException {
-				write(new byte[] { (byte) b });
+				write(new byte[]{(byte) b});
 			}
 
 			@Override
@@ -138,7 +138,7 @@ public class StringPrinter {
 	public PrintStream toPrintStream(Charset charset) {
 		return ErrorHandler.rethrow().get(() -> {
 			return new PrintStream(toOutputStream(charset), true, charset.name());
-		});
+		} );
 	}
 
 	/** Creates a Writer which passes its content to this StringPrinter. */

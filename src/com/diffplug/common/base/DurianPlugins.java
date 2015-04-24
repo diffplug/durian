@@ -113,13 +113,13 @@ public class DurianPlugins {
 		SwingUtilities.invokeLater(() -> {
 			JOptionPane.showMessageDialog(null,
 					error.getMessage() + "\n\n" + StringPrinter.buildString(printer -> {
-						PrintWriter writer = printer.toPrintWriter();
-						error.printStackTrace(writer);
-						writer.close();
-					}),
+				PrintWriter writer = printer.toPrintWriter();
+				error.printStackTrace(writer);
+				writer.close();
+			} ),
 					error.getClass().getSimpleName(),
 					JOptionPane.ERROR_MESSAGE);
-		});
+		} );
 	}
 
 	/** Full implementation of the caching / lookup strategy, applied to the given AtomicReference, etc. */

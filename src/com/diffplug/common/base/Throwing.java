@@ -45,18 +45,14 @@ public interface Throwing {
 	}
 
 	@FunctionalInterface
-	public interface Runnable extends Specific.Runnable<Throwable> {
-	}
+	public interface Runnable extends Specific.Runnable<Throwable> {}
 
 	@FunctionalInterface
-	public interface Supplier<T> extends Specific.Supplier<T, Throwable> {
-	}
+	public interface Supplier<T> extends Specific.Supplier<T, Throwable> {}
 
 	@FunctionalInterface
-	public interface Consumer<T> extends Specific.Consumer<T, Throwable> {
-	}
+	public interface Consumer<T> extends Specific.Consumer<T, Throwable> {}
 
 	@FunctionalInterface
-	public interface Function<T, R> extends Specific.Function<T, R, Throwable> {
-	}
+	public interface Function<T, R> extends Specific.Function<T, R, Throwable> {}
 }
