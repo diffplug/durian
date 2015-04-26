@@ -50,11 +50,10 @@ dependencies {
 // OSGI //
 //////////
 apply plugin: 'org.dm.bundle'
-
 bundle {
 	instruction 'Bundle-Vendor', 'DiffPlug'
 	instruction 'Bundle-Description', "${description}"
-	instruction 'Bundle-DocURL', 'https://github.com/diffplug/durian'
+	instruction 'Bundle-DocURL', "https://github.com/${org}/${name}"
 	instruction 'Bundle-License', 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 	instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
 	instruction 'Export-Package', 'com.diffplug.common.*'
@@ -148,7 +147,6 @@ dependencies {
 // MAVEN //
 ///////////
 apply plugin: 'maven-publish'
-group = 'com.diffplug.durian'
 
 task sourcesJar(type: Jar) {
 	classifier = 'sources'
@@ -207,14 +205,13 @@ if (project.hasProperty('dp_bintray_user')) {
 		publications = ['mavenJava']
 		pkg {
 			repo = 'opensource'
-			name = 'durian'
-			userOrg = 'diffplug'
-			desc = description
-			websiteUrl = 'https://github.com/diffplug/durian'
-			issueTrackerUrl = 'https://github.com/diffplug/durian/issues'
-			vcsUrl = 'https://github.com/diffplug/durian.git'
+			name = project.name
+			userOrg = project.org
+			desc = project.description
+			websiteUrl = "https://github.com/${org}/${name}"
+			issueTrackerUrl = "https://github.com/${org}/${name}/issues"
+			vcsUrl = "https://github.com/${org}/${name}"
 			licenses = ['Apache-2.0']
-			labels = ['guava', 'rxjava', 'reactive', 'rx', 'java8', 'diffplug', 'durian']
 			publicDownloadNumbers = true
 			// Optional version descriptor
 			version {
