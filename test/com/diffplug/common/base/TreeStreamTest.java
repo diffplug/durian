@@ -40,11 +40,6 @@ public class TreeStreamTest {
 				.collect(Collectors.toList());
 		Assert.assertEquals(root, actual.get(0));
 		Assert.assertEquals(Arrays.asList(values), actual.subList(1, actual.size()));
-
-		List<String> stream = TreeStream.toParent(TreeNode.treeDef(), getNode(root))
-				.map(TreeNode::getObj)
-				.collect(Collectors.toList());
-		Assert.assertEquals(actual, stream);
 	}
 
 	@Test
@@ -59,11 +54,6 @@ public class TreeStreamTest {
 
 		Assert.assertEquals(root, actual.get(0));
 		Assert.assertEquals(Arrays.asList(values), actual.subList(1, actual.size()));
-
-		List<String> stream = TreeStream.breadthFirst(TreeNode.treeDef(), getNode(root))
-				.map(TreeNode::getObj)
-				.collect(Collectors.toList());
-		Assert.assertEquals(actual, stream);
 	}
 
 	@Test
@@ -72,16 +62,12 @@ public class TreeStreamTest {
 	}
 
 	private void depthFirstTestCase(TreeDef<TreeNode<String>> treeDef, String root, String... values) {
-		List<String> actual = TreeStream.depthFirst(TreeNode.treeDef(), getNode(root))
+		List<String> actual = TreeStream.depthFirst(treeDef, getNode(root))
 				.map(TreeNode::getObj)
 				.collect(Collectors.toList());
 
 		Assert.assertEquals(root, actual.get(0));
 		Assert.assertEquals(Arrays.asList(values), actual.subList(1, actual.size()));
-
-		List<String> stream = TreeStream.depthFirst(TreeNode.treeDef(), getNode(root)).map(TreeNode::getObj)
-				.collect(Collectors.toList());
-		Assert.assertEquals(actual, stream);
 	}
 
 	@Test
