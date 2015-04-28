@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.diffplug.common.base.TreeNode;
 import com.diffplug.common.base.TreeStream;
 
-public class TreeIterableTest {
+public class TreeStreamTest {
 	@Test
 	public void toParentTest() {
 		toParentTestCase("root");
@@ -68,10 +68,10 @@ public class TreeIterableTest {
 
 	@Test
 	public void depthFirstTest() {
-		depthFirstTestCase("root", "A", "B", "C", "1", "2", "3", "a");
+		depthFirstTestCase(TreeNode.treeDef(), "root", "A", "B", "C", "1", "2", "3", "a");
 	}
 
-	private void depthFirstTestCase(String root, String... values) {
+	private void depthFirstTestCase(TreeDef<TreeNode<String>> treeDef, String root, String... values) {
 		List<String> actual = TreeStream.depthFirst(TreeNode.treeDef(), getNode(root))
 				.map(TreeNode::getObj)
 				.collect(Collectors.toList());
@@ -84,9 +84,26 @@ public class TreeIterableTest {
 		Assert.assertEquals(actual, stream);
 	}
 
+	@Test
+	public void filterTest() {
+		// filter out non-alphabetic nodes
+		depthFirstTestCase(TreeNode.<String> treeDef().filter(node -> node.obj.codePoints().allMatch(Character::isAlphabetic)),
+				"root", "A", "B", "C");
+	}
+
 	private TreeNode<String> getNode(String name) {
 		return TreeTestData.getByName(root, name);
 	}
 
-	private TreeNode<String> root = TreeTestData.create("root", " A", "  B", "   C", " 1", "  2", "   3", "   a");
+	// @formatter:off
+	private TreeNode<String> root = TreeTestData.create(
+			"root",
+			" A",
+			"  B",
+			"   C",
+			" 1",
+			"  2",
+			"   3",
+			"   a");
+	// @formatter:on
 }
