@@ -16,13 +16,8 @@
 
 package com.diffplug.common.guava;
 
-import com.google.common.annotations.Beta;
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -39,7 +34,6 @@ import javax.annotation.Nullable;
  * @author Harry Heymann
  * @since 2.0 (imported from Google Collections Library)
  */
-@GwtCompatible
 public final class Suppliers {
   private Suppliers() {}
 
@@ -80,7 +74,7 @@ public final class Suppliers {
     }
 
     @Override public int hashCode() {
-      return Objects.hashCode(function, supplier);
+      return Objects.hash(function, supplier);
     }
 
     @Override public String toString() {
@@ -109,7 +103,6 @@ public final class Suppliers {
         : new MemoizingSupplier<T>(Preconditions.checkNotNull(delegate));
   }
 
-  @VisibleForTesting
   static class MemoizingSupplier<T> implements Supplier<T>, Serializable {
     final Supplier<T> delegate;
     transient volatile boolean initialized;
@@ -166,7 +159,7 @@ public final class Suppliers {
     return new ExpiringMemoizingSupplier<T>(delegate, duration, unit);
   }
 
-  @VisibleForTesting static class ExpiringMemoizingSupplier<T>
+  static class ExpiringMemoizingSupplier<T>
       implements Supplier<T>, Serializable {
     final Supplier<T> delegate;
     final long durationNanos;
@@ -238,7 +231,7 @@ public final class Suppliers {
     @Override public boolean equals(@Nullable Object obj) {
       if (obj instanceof SupplierOfInstance) {
         SupplierOfInstance<?> that = (SupplierOfInstance<?>) obj;
-        return Objects.equal(instance, that.instance);
+        return Objects.equals(instance, that.instance);
       }
       return false;
     }
@@ -289,7 +282,6 @@ public final class Suppliers {
    *
    * @since 8.0
    */
-  @Beta
   public static <T> Function<Supplier<T>, T> supplierFunction() {
     @SuppressWarnings("unchecked") // implementation is "fully variant"
     SupplierFunction<T> sf = (SupplierFunction<T>) SupplierFunctionImpl.INSTANCE;
