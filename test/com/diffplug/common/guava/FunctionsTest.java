@@ -280,17 +280,6 @@ public class FunctionsTest extends TestCase {
         .testEquals();
   }
 
-  public void testCompositionWildcard() {
-    Map<String, Integer> mapJapaneseToInteger = Maps.newHashMap();
-    Function<String, Integer> japaneseToInteger =
-        Functions.forMap(mapJapaneseToInteger);
-
-    Function<Object, String> numberToSpanish = Functions.constant("Yo no se");
-
-    Function<String, String> japaneseToSpanish =
-        Functions.compose(numberToSpanish, japaneseToInteger);
-  }
-
   private static class HashCodeFunction implements Function<Object, Integer> {
     @Override
     public Integer apply(Object o) {

@@ -19,12 +19,9 @@ package com.diffplug.common.guava;
 import static com.diffplug.common.guava.Preconditions.checkArgument;
 import static com.diffplug.common.guava.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.base.Objects;
-
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -44,7 +41,6 @@ import javax.annotation.Nullable;
  * @author Jared Levy
  * @since 2.0 (imported from Google Collections Library)
  */
-@GwtCompatible
 public final class Functions {
   private Functions() {}
 
@@ -177,13 +173,13 @@ public final class Functions {
     @Override public boolean equals(@Nullable Object o) {
       if (o instanceof ForMapWithDefault) {
         ForMapWithDefault<?, ?> that = (ForMapWithDefault<?, ?>) o;
-        return map.equals(that.map) && Objects.equal(defaultValue, that.defaultValue);
+        return map.equals(that.map) && Objects.equals(defaultValue, that.defaultValue);
       }
       return false;
     }
 
     @Override public int hashCode() {
-      return Objects.hashCode(map, defaultValue);
+      return Objects.hash(map, defaultValue);
     }
 
     @Override public String toString() {
@@ -306,7 +302,7 @@ public final class Functions {
     @Override public boolean equals(@Nullable Object obj) {
       if (obj instanceof ConstantFunction) {
         ConstantFunction<?> that = (ConstantFunction<?>) obj;
-        return Objects.equal(value, that.value);
+        return Objects.equals(value, that.value);
       }
       return false;
     }
@@ -328,7 +324,6 @@ public final class Functions {
    * 
    * @since 10.0
    */
-  @Beta
   public static <T> Function<Object, T> forSupplier(Supplier<T> supplier) {
     return new SupplierFunction<T>(supplier);
   }
