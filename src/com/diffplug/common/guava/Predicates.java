@@ -21,16 +21,16 @@ import static com.diffplug.common.guava.Preconditions.checkNotNull;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -279,7 +279,7 @@ public final class Predicates {
   enum ObjectPredicate implements Predicate<Object> {
     /** @see Predicates#alwaysTrue() */
     ALWAYS_TRUE {
-      @Override public boolean apply(@Nullable Object o) {
+      @Override public boolean test(@Nullable Object o) {
         return true;
       }
       @Override public String toString() {
@@ -288,7 +288,7 @@ public final class Predicates {
     },
     /** @see Predicates#alwaysFalse() */
     ALWAYS_FALSE {
-      @Override public boolean apply(@Nullable Object o) {
+      @Override public boolean test(@Nullable Object o) {
         return false;
       }
       @Override public String toString() {
@@ -297,7 +297,7 @@ public final class Predicates {
     },
     /** @see Predicates#isNull() */
     IS_NULL {
-      @Override public boolean apply(@Nullable Object o) {
+      @Override public boolean test(@Nullable Object o) {
         return o == null;
       }
       @Override public String toString() {
@@ -306,7 +306,7 @@ public final class Predicates {
     },
     /** @see Predicates#notNull() */
     NOT_NULL {
-      @Override public boolean apply(@Nullable Object o) {
+      @Override public boolean test(@Nullable Object o) {
         return o != null;
       }
       @Override public String toString() {
@@ -328,8 +328,8 @@ public final class Predicates {
       this.predicate = checkNotNull(predicate);
     }
     @Override
-    public boolean apply(@Nullable T t) {
-      return !predicate.apply(t);
+    public boolean test(@Nullable T t) {
+      return !predicate.test(t);
     }
     @Override public int hashCode() {
       return ~predicate.hashCode();
@@ -357,10 +357,10 @@ public final class Predicates {
       this.components = components;
     }
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean test(@Nullable T t) {
       // Avoid using the Iterator to avoid generating garbage (issue 820).
       for (int i = 0; i < components.size(); i++) {
-        if (!components.get(i).apply(t)) {
+        if (!components.get(i).test(t)) {
           return false;
         }
       }
@@ -391,10 +391,10 @@ public final class Predicates {
       this.components = components;
     }
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean test(@Nullable T t) {
       // Avoid using the Iterator to avoid generating garbage (issue 820).
       for (int i = 0; i < components.size(); i++) {
-        if (components.get(i).apply(t)) {
+        if (components.get(i).test(t)) {
           return true;
         }
       }
@@ -426,7 +426,7 @@ public final class Predicates {
       this.target = target;
     }
     @Override
-    public boolean apply(T t) {
+    public boolean test(T t) {
       return target.equals(t);
     }
     @Override public int hashCode() {
@@ -455,7 +455,7 @@ public final class Predicates {
       this.clazz = checkNotNull(clazz);
     }
     @Override
-    public boolean apply(@Nullable Object o) {
+    public boolean test(@Nullable Object o) {
       return clazz.isInstance(o);
     }
     @Override public int hashCode() {
@@ -484,7 +484,7 @@ public final class Predicates {
       this.clazz = checkNotNull(clazz);
     }
     @Override
-    public boolean apply(Class<?> input) {
+    public boolean test(Class<?> input) {
       return clazz.isAssignableFrom(input);
     }
     @Override public int hashCode() {
@@ -512,7 +512,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable T t) {
+    public boolean test(@Nullable T t) {
       try {
         return target.contains(t);
       } catch (NullPointerException e) {
@@ -552,8 +552,8 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(@Nullable A a) {
-      return p.apply(f.apply(a));
+    public boolean test(@Nullable A a) {
+      return p.test(f.apply(a));
     }
 
     @Override public boolean equals(@Nullable Object obj) {
@@ -586,7 +586,7 @@ public final class Predicates {
     }
 
     @Override
-    public boolean apply(CharSequence t) {
+    public boolean test(CharSequence t) {
       return pattern.matcher(t).find();
     }
 

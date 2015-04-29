@@ -21,8 +21,6 @@ import static com.google.common.collect.Lists.newArrayList;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.testing.ClassSanityTester;
 import com.google.common.testing.EqualsTester;
@@ -43,6 +41,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
@@ -57,7 +57,7 @@ public class PredicatesTest extends TestCase {
   private static final Predicate<Integer> NEVER_REACHED =
       new Predicate<Integer>() {
     @Override
-    public boolean apply(Integer i) {
+    public boolean test(Integer i) {
       throw new AssertionFailedError(
           "This predicate should never have been evaluated");
     }
@@ -67,7 +67,7 @@ public class PredicatesTest extends TestCase {
   static class IsOdd implements Predicate<Integer>, Serializable {
     private static final long serialVersionUID = 0x150ddL;
     @Override
-    public boolean apply(Integer i) {
+    public boolean test(Integer i) {
       return (i.intValue() & 1) == 1;
     }
     @Override public int hashCode() {
@@ -310,17 +310,17 @@ public class PredicatesTest extends TestCase {
   public void testAnd_arrayDefensivelyCopied() {
     Predicate[] array = {Predicates.alwaysFalse()};
     Predicate<Object> predicate = Predicates.and(array);
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
     array[0] = Predicates.alwaysTrue();
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
   }
 
   public void testAnd_listDefensivelyCopied() {
     List<Predicate<Object>> list = newArrayList();
     Predicate<Object> predicate = Predicates.and(list);
-    assertTrue(predicate.apply(1));
+    assertTrue(predicate.test(1));
     list.add(Predicates.alwaysFalse());
-    assertTrue(predicate.apply(1));
+    assertTrue(predicate.test(1));
   }
 
   public void testAnd_iterableDefensivelyCopied() {
@@ -332,9 +332,9 @@ public class PredicatesTest extends TestCase {
       }
     };
     Predicate<Object> predicate = Predicates.and(iterable);
-    assertTrue(predicate.apply(1));
+    assertTrue(predicate.test(1));
     list.add(Predicates.alwaysFalse());
-    assertTrue(predicate.apply(1));
+    assertTrue(predicate.test(1));
   }
 
   /*
@@ -471,24 +471,24 @@ public class PredicatesTest extends TestCase {
   public void testOr_serializationIterable() {
     Predicate<Integer> pre = Predicates.or(Arrays.asList(TRUE, FALSE));
     Predicate<Integer> post = SerializableTester.reserializeAndAssert(pre);
-    assertEquals(pre.apply(0), post.apply(0));
+    assertEquals(pre.test(0), post.test(0));
   }
 
   @SuppressWarnings("unchecked") // varargs
   public void testOr_arrayDefensivelyCopied() {
     Predicate[] array = {Predicates.alwaysFalse()};
     Predicate<Object> predicate = Predicates.or(array);
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
     array[0] = Predicates.alwaysTrue();
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
   }
 
   public void testOr_listDefensivelyCopied() {
     List<Predicate<Object>> list = newArrayList();
     Predicate<Object> predicate = Predicates.or(list);
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
     list.add(Predicates.alwaysTrue());
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
   }
 
   public void testOr_iterableDefensivelyCopied() {
@@ -500,9 +500,9 @@ public class PredicatesTest extends TestCase {
       }
     };
     Predicate<Object> predicate = Predicates.or(iterable);
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
     list.add(Predicates.alwaysTrue());
-    assertFalse(predicate.apply(1));
+    assertFalse(predicate.test(1));
   }
 
   /*
@@ -512,9 +512,9 @@ public class PredicatesTest extends TestCase {
   public void testIsEqualTo_apply() {
     Predicate<Integer> isOne = Predicates.equalTo(1);
 
-    assertTrue(isOne.apply(1));
-    assertFalse(isOne.apply(2));
-    assertFalse(isOne.apply(null));
+    assertTrue(isOne.test(1));
+    assertFalse(isOne.test(2));
+    assertFalse(isOne.test(null));
   }
 
   public void testIsEqualTo_equality() {
@@ -532,8 +532,8 @@ public class PredicatesTest extends TestCase {
 
   public void testIsEqualToNull_apply() {
     Predicate<Integer> isNull = Predicates.equalTo(null);
-    assertTrue(isNull.apply(null));
-    assertFalse(isNull.apply(1));
+    assertTrue(isNull.test(null));
+    assertFalse(isNull.test(1));
   }
 
   public void testIsEqualToNull_equality() {
@@ -560,30 +560,30 @@ public class PredicatesTest extends TestCase {
   public void testIsInstanceOf_apply() {
     Predicate<Object> isInteger = Predicates.instanceOf(Integer.class);
 
-    assertTrue(isInteger.apply(1));
-    assertFalse(isInteger.apply(2.0f));
-    assertFalse(isInteger.apply(""));
-    assertFalse(isInteger.apply(null));
+    assertTrue(isInteger.test(1));
+    assertFalse(isInteger.test(2.0f));
+    assertFalse(isInteger.test(""));
+    assertFalse(isInteger.test(null));
   }
 
   @GwtIncompatible("Predicates.instanceOf")
   public void testIsInstanceOf_subclass() {
     Predicate<Object> isNumber = Predicates.instanceOf(Number.class);
 
-    assertTrue(isNumber.apply(1));
-    assertTrue(isNumber.apply(2.0f));
-    assertFalse(isNumber.apply(""));
-    assertFalse(isNumber.apply(null));
+    assertTrue(isNumber.test(1));
+    assertTrue(isNumber.test(2.0f));
+    assertFalse(isNumber.test(""));
+    assertFalse(isNumber.test(null));
   }
 
   @GwtIncompatible("Predicates.instanceOf")
   public void testIsInstanceOf_interface() {
     Predicate<Object> isComparable = Predicates.instanceOf(Comparable.class);
 
-    assertTrue(isComparable.apply(1));
-    assertTrue(isComparable.apply(2.0f));
-    assertTrue(isComparable.apply(""));
-    assertFalse(isComparable.apply(null));
+    assertTrue(isComparable.test(1));
+    assertTrue(isComparable.test(2.0f));
+    assertTrue(isComparable.test(""));
+    assertFalse(isComparable.test(null));
   }
 
   @GwtIncompatible("Predicates.instanceOf")
@@ -606,11 +606,11 @@ public class PredicatesTest extends TestCase {
   public void testIsAssignableFrom_apply() {
     Predicate<Class<?>> isInteger = Predicates.assignableFrom(Integer.class);
 
-    assertTrue(isInteger.apply(Integer.class));
-    assertFalse(isInteger.apply(Float.class));
+    assertTrue(isInteger.test(Integer.class));
+    assertFalse(isInteger.test(Float.class));
 
     try {
-      isInteger.apply(null);
+      isInteger.test(null);
       fail();
     } catch (NullPointerException expected) {}
   }
@@ -619,8 +619,8 @@ public class PredicatesTest extends TestCase {
   public void testIsAssignableFrom_subclass() {
     Predicate<Class<?>> isNumber = Predicates.assignableFrom(Number.class);
 
-    assertTrue(isNumber.apply(Integer.class));
-    assertTrue(isNumber.apply(Float.class));
+    assertTrue(isNumber.test(Integer.class));
+    assertTrue(isNumber.test(Float.class));
   }
 
   @GwtIncompatible("Predicates.assignableFrom")
@@ -628,8 +628,8 @@ public class PredicatesTest extends TestCase {
     Predicate<Class<?>> isComparable =
         Predicates.assignableFrom(Comparable.class);
 
-    assertTrue(isComparable.apply(Integer.class));
-    assertTrue(isComparable.apply(Float.class));
+    assertTrue(isComparable.test(Integer.class));
+    assertTrue(isComparable.test(Float.class));
   }
 
   @GwtIncompatible("Predicates.assignableFrom")
@@ -661,8 +661,8 @@ public class PredicatesTest extends TestCase {
 
   public void testIsNull_apply() {
     Predicate<Integer> isNull = Predicates.isNull();
-    assertTrue(isNull.apply(null));
-    assertFalse(isNull.apply(1));
+    assertTrue(isNull.test(null));
+    assertFalse(isNull.test(1));
   }
 
   public void testIsNull_equality() {
@@ -676,14 +676,14 @@ public class PredicatesTest extends TestCase {
   public void testIsNull_serialization() {
     Predicate<String> pre = Predicates.isNull();
     Predicate<String> post = SerializableTester.reserializeAndAssert(pre);
-    assertEquals(pre.apply("foo"), post.apply("foo"));
-    assertEquals(pre.apply(null), post.apply(null));
+    assertEquals(pre.test("foo"), post.test("foo"));
+    assertEquals(pre.test(null), post.test(null));
   }
 
   public void testNotNull_apply() {
     Predicate<Integer> notNull = Predicates.notNull();
-    assertFalse(notNull.apply(null));
-    assertTrue(notNull.apply(1));
+    assertFalse(notNull.test(null));
+    assertTrue(notNull.test(1));
   }
 
   public void testNotNull_equality() {
@@ -702,10 +702,10 @@ public class PredicatesTest extends TestCase {
     Collection<Integer> nums = Arrays.asList(1, 5);
     Predicate<Integer> isOneOrFive = Predicates.in(nums);
 
-    assertTrue(isOneOrFive.apply(1));
-    assertTrue(isOneOrFive.apply(5));
-    assertFalse(isOneOrFive.apply(3));
-    assertFalse(isOneOrFive.apply(null));
+    assertTrue(isOneOrFive.test(1));
+    assertTrue(isOneOrFive.test(5));
+    assertFalse(isOneOrFive.test(3));
+    assertFalse(isOneOrFive.test(null));
   }
 
   public void testIn_equality() {
@@ -737,7 +737,7 @@ public class PredicatesTest extends TestCase {
     }
     Collection<Integer> nums = new CollectionThatThrowsNPE<Integer>();
     Predicate<Integer> isFalse = Predicates.in(nums);
-    assertFalse(isFalse.apply(null));
+    assertFalse(isFalse.test(null));
   }
 
   public void testIn_handlesClassCastException() {
@@ -751,7 +751,7 @@ public class PredicatesTest extends TestCase {
     Collection<Integer> nums = new CollectionThatThrowsCCE<Integer>();
     nums.add(3);
     Predicate<Integer> isThree = Predicates.in(nums);
-    assertFalse(isThree.apply(3));
+    assertFalse(isThree.test(3));
   }
 
   /*
@@ -808,9 +808,9 @@ public class PredicatesTest extends TestCase {
     Predicate<String> trimEqualsFoo = Predicates.compose(equalsFoo, trim);
     Function<String, String> identity = Functions.identity();
 
-    assertTrue(trimEqualsFoo.apply("Foo"));
-    assertTrue(trimEqualsFoo.apply("   Foo   "));
-    assertFalse(trimEqualsFoo.apply("Foo-b-que"));
+    assertTrue(trimEqualsFoo.test("Foo"));
+    assertTrue(trimEqualsFoo.test("   Foo   "));
+    assertFalse(trimEqualsFoo.test("Foo-b-que"));
 
     new EqualsTester()
         .addEqualityGroup(trimEqualsFoo, Predicates.compose(equalsFoo, trim))
@@ -840,8 +840,8 @@ public class PredicatesTest extends TestCase {
   public void testContainsPattern_apply() {
     Predicate<CharSequence> isFoobar =
         Predicates.containsPattern("^Fo.*o.*bar$");
-    assertTrue(isFoobar.apply("Foxyzoabcbar"));
-    assertFalse(isFoobar.apply("Foobarx"));
+    assertTrue(isFoobar.test("Foxyzoabcbar"));
+    assertFalse(isFoobar.test("Foobarx"));
   }
 
   @GwtIncompatible("Predicates.containsPattern")
@@ -849,8 +849,8 @@ public class PredicatesTest extends TestCase {
     Predicate<CharSequence> isFoobar =
         Predicates.contains(Pattern.compile("^Fo.*o.*bar$"));
 
-    assertTrue(isFoobar.apply("Foxyzoabcbar"));
-    assertFalse(isFoobar.apply("Foobarx"));
+    assertTrue(isFoobar.test("Foxyzoabcbar"));
+    assertFalse(isFoobar.test("Foobarx"));
   }
 
   @GwtIncompatible("NullPointerTester")
@@ -874,7 +874,7 @@ public class PredicatesTest extends TestCase {
   public void testContainsPattern_serialization() {
     Predicate<CharSequence> pre = Predicates.containsPattern("foo");
     Predicate<CharSequence> post = SerializableTester.reserializeAndAssert(pre);
-    assertEquals(pre.apply("foo"), post.apply("foo"));
+    assertEquals(pre.test("foo"), post.test("foo"));
   }
 
   @GwtIncompatible("java.util.regex.Pattern")
@@ -929,15 +929,15 @@ public class PredicatesTest extends TestCase {
   }
 
   private static void assertEvalsToTrue(Predicate<? super Integer> predicate) {
-    assertTrue(predicate.apply(0));
-    assertTrue(predicate.apply(1));
-    assertTrue(predicate.apply(null));
+    assertTrue(predicate.test(0));
+    assertTrue(predicate.test(1));
+    assertTrue(predicate.test(null));
   }
 
   private static void assertEvalsToFalse(Predicate<? super Integer> predicate) {
-    assertFalse(predicate.apply(0));
-    assertFalse(predicate.apply(1));
-    assertFalse(predicate.apply(null));
+    assertFalse(predicate.test(0));
+    assertFalse(predicate.test(1));
+    assertFalse(predicate.test(null));
   }
 
   private static void assertEvalsLikeOdd(Predicate<? super Integer> predicate) {
@@ -959,7 +959,7 @@ public class PredicatesTest extends TestCase {
     Boolean expectedResult = null;
     RuntimeException expectedRuntimeException = null;
     try {
-      expectedResult = expected.apply(input);
+      expectedResult = expected.test(input);
     } catch (RuntimeException e) {
       expectedRuntimeException = e;
     }
@@ -967,7 +967,7 @@ public class PredicatesTest extends TestCase {
     Boolean actualResult = null;
     RuntimeException actualRuntimeException = null;
     try {
-      actualResult = actual.apply(input);
+      actualResult = actual.test(input);
     } catch (RuntimeException e) {
       actualRuntimeException = e;
     }

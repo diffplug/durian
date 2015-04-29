@@ -21,13 +21,13 @@ import static com.diffplug.common.guava.Preconditions.checkNotNull;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -259,7 +259,7 @@ public final class Functions {
 
     @Override
     public Boolean apply(@Nullable T t) {
-      return predicate.apply(t);
+      return predicate.test(t);
     }
 
     @Override public boolean equals(@Nullable Object obj) {

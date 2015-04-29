@@ -20,8 +20,6 @@ import static com.google.common.testing.SerializableTester.reserialize;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 import com.google.common.testing.ClassSanityTester;
 import com.google.common.testing.EqualsTester;
@@ -38,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Tests com.google.common.base.Suppliers.

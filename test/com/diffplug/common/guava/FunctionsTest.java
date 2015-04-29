@@ -18,9 +18,6 @@ package com.diffplug.common.guava;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.testing.ClassSanityTester;
@@ -36,6 +33,9 @@ import junit.framework.TestCase;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * Tests for {@link Functions}.
@@ -334,8 +334,8 @@ public class FunctionsTest extends TestCase {
     // But for now, settle for this:
     assertEquals(p1.hashCode(), p2.hashCode());
 
-    assertEquals(p1.apply(1.0f), p2.apply(1.0f));
-    assertEquals(p1.apply(5.0f), p2.apply(5.0f));
+    assertEquals(p1.test(1.0f), p2.test(1.0f));
+    assertEquals(p1.test(5.0f), p2.test(5.0f));
   }
 
   public void testForPredicate() {
