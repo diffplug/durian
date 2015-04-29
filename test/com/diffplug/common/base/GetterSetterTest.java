@@ -33,9 +33,9 @@ public class GetterSetterTest {
 	@Test
 	public void testStatic() {
 		GetterSetter<String> forValue = GetterSetter.from(GetterSetterTest::getStaticValue, GetterSetterTest::setStaticValue);
-		forValue.accept("A");
+		forValue.set("A");
 		Assert.assertEquals("A", forValue.get());
-		forValue.accept("B");
+		forValue.set("B");
 		Assert.assertEquals("B", forValue.get());
 	}
 
@@ -52,9 +52,9 @@ public class GetterSetterTest {
 	@Test
 	public void testInstance() {
 		GetterSetter<String> forValue = GetterSetter.from(this, GetterSetterTest::getValue, GetterSetterTest::setValue);
-		forValue.accept("A");
+		forValue.set("A");
 		Assert.assertEquals("A", forValue.get());
-		forValue.accept("B");
+		forValue.set("B");
 		Assert.assertEquals("B", forValue.get());
 	}
 }

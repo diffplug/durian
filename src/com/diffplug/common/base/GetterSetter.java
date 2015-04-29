@@ -20,8 +20,18 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/** Provides get/set access to some field. */
-public interface GetterSetter<T> extends Supplier<T>, Consumer<T> {
+/**
+ * Provides get/set access to some field.
+ * 
+ * It's tempting for this to implement Consumer<T>, but it turns
+ * out to be very strange to use with the accept() rather than get().
+ * 
+ * And in our whole codebase, it turns out there's no where that a GetterSetter
+ * is used directly as either a Consumer, 
+ */
+public interface GetterSetter<T> extends Supplier<T> {
+	void set(T value);
+
 	/** Creates a GetterSetter from a Supplier and a Consumer. */
 	public static <T> GetterSetter<T> from(Supplier<T> getter, Consumer<T> setter) {
 		return new GetterSetter<T>() {
@@ -31,7 +41,7 @@ public interface GetterSetter<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public void accept(T value) {
+			public void set(T value) {
 				setter.accept(value);
 			}
 		};
@@ -46,7 +56,7 @@ public interface GetterSetter<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public void accept(T value) {
+			public void set(T value) {
 				setter.accept(target, value);
 			}
 		};

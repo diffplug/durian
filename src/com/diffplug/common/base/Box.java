@@ -26,7 +26,7 @@ public class Box<T> implements GetterSetter<T> {
 	private volatile T obj;
 
 	protected Box(T init) {
-		this.accept(init);
+		this.set(init);
 	}
 
 	/** Creates a Holder of the given object. */
@@ -45,7 +45,7 @@ public class Box<T> implements GetterSetter<T> {
 	}
 
 	@Override
-	public void accept(T obj) {
+	public void set(T obj) {
 		this.obj = obj;
 	}
 
@@ -65,8 +65,8 @@ public class Box<T> implements GetterSetter<T> {
 		}
 
 		@Override
-		public void accept(T obj) {
-			super.accept(Objects.requireNonNull(obj));
+		public void set(T obj) {
+			super.set(Objects.requireNonNull(obj));
 		}
 	}
 }
