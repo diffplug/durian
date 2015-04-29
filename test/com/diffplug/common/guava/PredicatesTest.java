@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -428,7 +429,7 @@ public class PredicatesTest extends TestCase {
       private static final long serialVersionUID = 1L;
 
       @Override public boolean contains(Object element) {
-        Preconditions.checkNotNull(element);
+        Objects.requireNonNull(element);
         return super.contains(element);
       }
     }

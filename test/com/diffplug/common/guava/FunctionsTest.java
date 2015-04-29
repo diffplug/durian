@@ -23,9 +23,6 @@ import com.google.common.collect.Maps;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.SerializableTester;
 
-import com.diffplug.common.guava.Functions;
-import com.diffplug.common.guava.Predicates;
-
 import junit.framework.TestCase;
 
 import java.io.Serializable;

@@ -16,6 +16,7 @@
 
 package com.diffplug.common.guava;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -64,7 +65,7 @@ public final class Suppliers {
   public static <T> Supplier<T> memoize(Supplier<T> delegate) {
     return (delegate instanceof MemoizingSupplier)
         ? delegate
-        : new MemoizingSupplier<T>(Preconditions.checkNotNull(delegate));
+        : new MemoizingSupplier<T>(Objects.requireNonNull(delegate));
   }
 
   @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "It's a lightweight mechanism which ensures that delegate only gets called once.")
@@ -132,9 +133,11 @@ public final class Suppliers {
 
     ExpiringMemoizingSupplier(
         Supplier<T> delegate, long duration, TimeUnit unit) {
-      this.delegate = Preconditions.checkNotNull(delegate);
+      this.delegate = Objects.requireNonNull(delegate);
       this.durationNanos = unit.toNanos(duration);
-      Preconditions.checkArgument(duration > 0);
+      if (!(duration > 0)) {
+    	  throw new IllegalArgumentException();
+      }
     }
 
     @Override public T get() {
@@ -182,7 +185,7 @@ public final class Suppliers {
    * {@code delegate} before calling it, making it thread-safe.
    */
   public static <T> Supplier<T> synchronizedSupplier(Supplier<T> delegate) {
-    return new ThreadSafeSupplier<T>(Preconditions.checkNotNull(delegate));
+    return new ThreadSafeSupplier<T>(Objects.requireNonNull(delegate));
   }
 
   private static class ThreadSafeSupplier<T>

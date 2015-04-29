@@ -21,8 +21,6 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.Lists;
 import com.google.common.testing.ClassSanityTester;
 
-import com.diffplug.common.guava.Suppliers;
-
 import junit.framework.TestCase;
 
 import java.io.Serializable;

@@ -16,8 +16,6 @@
 
 package com.diffplug.common.guava;
 
-import static com.diffplug.common.guava.Preconditions.checkNotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -120,8 +118,7 @@ public final class Predicates {
    * predicate is found.
    */
   public static <T> Predicate<T> and(Predicate<? super T> first, Predicate<? super T> second) {
-    return new AndPredicate<T>(Predicates.<T>asList(
-        checkNotNull(first), checkNotNull(second)));
+    return new AndPredicate<T>(Predicates.<T>asList(Objects.requireNonNull(first), Objects.requireNonNull(second)));
   }
 
   /**
@@ -160,8 +157,7 @@ public final class Predicates {
    */
   public static <T> Predicate<T> or(
       Predicate<? super T> first, Predicate<? super T> second) {
-    return new OrPredicate<T>(Predicates.<T>asList(
-        checkNotNull(first), checkNotNull(second)));
+    return new OrPredicate<T>(Predicates.<T>asList(Objects.requireNonNull(first), Objects.requireNonNull(second)));
   }
 
   /**
@@ -312,7 +308,7 @@ public final class Predicates {
   static <T> List<T> defensiveCopy(Iterable<T> iterable) {
     ArrayList<T> list = new ArrayList<T>();
     for (T element : iterable) {
-      list.add(checkNotNull(element));
+      list.add(Objects.requireNonNull(element));
     }
     return list;
   }
