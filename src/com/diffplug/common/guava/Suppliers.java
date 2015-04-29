@@ -16,13 +16,13 @@
 
 package com.diffplug.common.guava;
 
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Useful suppliers.
@@ -44,44 +44,8 @@ public final class Suppliers {
    * {@code function} to that value. Note that the resulting supplier will not
    * call {@code supplier} or invoke {@code function} until it is called.
    */
-  public static <F, T> Supplier<T> compose(
-      Function<? super F, T> function, Supplier<F> supplier) {
-    Preconditions.checkNotNull(function);
-    Preconditions.checkNotNull(supplier);
-    return new SupplierComposition<F, T>(function, supplier);
-  }
-
-  private static class SupplierComposition<F, T>
-      implements Supplier<T>, Serializable {
-    final Function<? super F, T> function;
-    final Supplier<F> supplier;
-
-    SupplierComposition(Function<? super F, T> function, Supplier<F> supplier) {
-      this.function = function;
-      this.supplier = supplier;
-    }
-
-    @Override public T get() {
-      return function.apply(supplier.get());
-    }
-
-    @Override public boolean equals(@Nullable Object obj) {
-      if (obj instanceof SupplierComposition) {
-        SupplierComposition<?, ?> that = (SupplierComposition<?, ?>) obj;
-        return function.equals(that.function) && supplier.equals(that.supplier);
-      }
-      return false;
-    }
-
-    @Override public int hashCode() {
-      return Objects.hash(function, supplier);
-    }
-
-    @Override public String toString() {
-      return "Suppliers.compose(" + function + ", " + supplier + ")";
-    }
-
-    private static final long serialVersionUID = 0;
+  public static <F, T> Supplier<T> compose(Function<? super F, T> function, Supplier<F> supplier) {
+    return () -> function.apply(supplier.get());
   }
 
   /**
@@ -103,12 +67,13 @@ public final class Suppliers {
         : new MemoizingSupplier<T>(Preconditions.checkNotNull(delegate));
   }
 
-  static class MemoizingSupplier<T> implements Supplier<T>, Serializable {
+  @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "It's a lightweight mechanism which ensures that delegate only gets called once.")
+  static class MemoizingSupplier<T> implements Supplier<T> {
     final Supplier<T> delegate;
-    transient volatile boolean initialized;
+    volatile boolean initialized;
     // "value" does not need to be volatile; visibility piggy-backs
     // on volatile read of "initialized".
-    transient T value;
+    T value;
 
     MemoizingSupplier(Supplier<T> delegate) {
       this.delegate = delegate;
@@ -132,8 +97,6 @@ public final class Suppliers {
     @Override public String toString() {
       return "Suppliers.memoize(" + delegate + ")";
     }
-
-    private static final long serialVersionUID = 0;
   }
 
   /**
@@ -160,7 +123,7 @@ public final class Suppliers {
   }
 
   static class ExpiringMemoizingSupplier<T>
-      implements Supplier<T>, Serializable {
+      implements Supplier<T> {
     final Supplier<T> delegate;
     final long durationNanos;
     transient volatile T value;
@@ -205,46 +168,13 @@ public final class Suppliers {
       return "Suppliers.memoizeWithExpiration(" + delegate + ", " +
           durationNanos + ", NANOS)";
     }
-
-    private static final long serialVersionUID = 0;
   }
 
   /**
    * Returns a supplier that always supplies {@code instance}.
    */
   public static <T> Supplier<T> ofInstance(@Nullable T instance) {
-    return new SupplierOfInstance<T>(instance);
-  }
-
-  private static class SupplierOfInstance<T>
-      implements Supplier<T>, Serializable {
-    final T instance;
-
-    SupplierOfInstance(@Nullable T instance) {
-      this.instance = instance;
-    }
-
-    @Override public T get() {
-      return instance;
-    }
-
-    @Override public boolean equals(@Nullable Object obj) {
-      if (obj instanceof SupplierOfInstance) {
-        SupplierOfInstance<?> that = (SupplierOfInstance<?>) obj;
-        return Objects.equals(instance, that.instance);
-      }
-      return false;
-    }
-
-    @Override public int hashCode() {
-      return Objects.hashCode(instance);
-    }
-
-    @Override public String toString() {
-      return "Suppliers.ofInstance(" + instance + ")";
-    }
-
-    private static final long serialVersionUID = 0;
+    return () -> instance;
   }
 
   /**
@@ -256,7 +186,7 @@ public final class Suppliers {
   }
 
   private static class ThreadSafeSupplier<T>
-      implements Supplier<T>, Serializable {
+      implements Supplier<T> {
     final Supplier<T> delegate;
 
     ThreadSafeSupplier(Supplier<T> delegate) {
@@ -272,8 +202,6 @@ public final class Suppliers {
     @Override public String toString() {
       return "Suppliers.synchronizedSupplier(" + delegate + ")";
     }
-
-    private static final long serialVersionUID = 0;
   }
 
   /**
