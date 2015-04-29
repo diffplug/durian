@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.diffplug.common.guava;
+package com.diffplug.common.base;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -29,6 +29,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.SerializableTester;
+
+import com.diffplug.common.base.Functions;
+import com.diffplug.common.base.Predicates;
 
 /**
  * Tests for {@link Functions}.

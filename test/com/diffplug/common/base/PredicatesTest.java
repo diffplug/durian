@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.diffplug.common.guava;
+package com.diffplug.common.base;
 
 import static com.google.common.base.CharMatcher.WHITESPACE;
 import static com.google.common.collect.Lists.newArrayList;
@@ -38,6 +38,8 @@ import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
+
+import com.diffplug.common.base.Predicates;
 
 /**
  * Unit test for {@link Predicates}.
