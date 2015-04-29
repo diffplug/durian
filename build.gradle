@@ -43,6 +43,8 @@ sourceCompatibility = VER_JAVA
 targetCompatibility = VER_JAVA
 
 dependencies {
+	testCompile "com.google.guava:guava:${VER_GUAVA}"
+	testCompile "com.google.guava:guava-testlib:${VER_GUAVA}"
 	testCompile "junit:junit:${VER_JUNIT}"
 }
 
