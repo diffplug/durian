@@ -14,9 +14,6 @@
 
 package com.diffplug.common.guava;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.base.Verify;
-
 import javax.annotation.Nullable;
 
 /**
@@ -94,7 +91,6 @@ import javax.annotation.Nullable;
  * @author Kevin Bourrillion
  * @since 2.0 (imported from Google Collections Library)
  */
-@GwtCompatible
 public final class Preconditions {
   private Preconditions() {}
 

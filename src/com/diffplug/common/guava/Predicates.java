@@ -18,17 +18,12 @@ package com.diffplug.common.guava;
 
 import static com.diffplug.common.guava.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
-import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -48,7 +43,6 @@ import javax.annotation.Nullable;
  * @author Kevin Bourrillion
  * @since 2.0 (imported from Google Collections Library)
  */
-@GwtCompatible(emulated = true)
 public final class Predicates {
   private Predicates() {}
 
@@ -58,7 +52,6 @@ public final class Predicates {
   /**
    * Returns a predicate that always evaluates to {@code true}.
    */
-  @GwtCompatible(serializable = true)
   public static <T> Predicate<T> alwaysTrue() {
     return ObjectPredicate.ALWAYS_TRUE.withNarrowedType();
   }
@@ -66,7 +59,6 @@ public final class Predicates {
   /**
    * Returns a predicate that always evaluates to {@code false}.
    */
-  @GwtCompatible(serializable = true)
   public static <T> Predicate<T> alwaysFalse() {
     return ObjectPredicate.ALWAYS_FALSE.withNarrowedType();
   }
@@ -75,7 +67,6 @@ public final class Predicates {
    * Returns a predicate that evaluates to {@code true} if the object reference
    * being tested is null.
    */
-  @GwtCompatible(serializable = true)
   public static <T> Predicate<T> isNull() {
     return ObjectPredicate.IS_NULL.withNarrowedType();
   }
@@ -84,7 +75,6 @@ public final class Predicates {
    * Returns a predicate that evaluates to {@code true} if the object reference
    * being tested is not null.
    */
-  @GwtCompatible(serializable = true)
   public static <T> Predicate<T> notNull() {
     return ObjectPredicate.NOT_NULL.withNarrowedType();
   }
@@ -120,6 +110,7 @@ public final class Predicates {
    * components} is empty, the returned predicate will always evaluate to {@code
    * true}.
    */
+  @SafeVarargs
   public static <T> Predicate<T> and(Predicate<? super T>... components) {
     return new AndPredicate<T>(defensiveCopy(components));
   }
@@ -159,6 +150,7 @@ public final class Predicates {
    * components} is empty, the returned predicate will always evaluate to {@code
    * false}.
    */
+  @SafeVarargs
   public static <T> Predicate<T> or(Predicate<? super T>... components) {
     return new OrPredicate<T>(defensiveCopy(components));
   }
@@ -200,7 +192,6 @@ public final class Predicates {
    * instanceOf(ArrayList.class)} will yield different results for the two equal
    * instances {@code Lists.newArrayList(1)} and {@code Arrays.asList(1)}.
    */
-  @GwtIncompatible("Class.isInstance")
   public static Predicate<Object> instanceOf(Class<?> clazz) {
     return new InstanceOfPredicate(clazz);
   }
@@ -212,8 +203,6 @@ public final class Predicates {
    *
    * @since 10.0
    */
-  @GwtIncompatible("Class.isAssignableFrom")
-  @Beta
   public static Predicate<Class<?>> assignableFrom(Class<?> clazz) {
     return new AssignableFromPredicate(clazz);
   }
@@ -255,7 +244,6 @@ public final class Predicates {
    * @throws java.util.regex.PatternSyntaxException if the pattern is invalid
    * @since 3.0
    */
-  @GwtIncompatible(value = "java.util.regex.Pattern")
   public static Predicate<CharSequence> containsPattern(String pattern) {
     return new ContainsPatternFromStringPredicate(pattern);
   }
@@ -268,7 +256,6 @@ public final class Predicates {
    *
    * @since 3.0
    */
-  @GwtIncompatible(value = "java.util.regex.Pattern")
   public static Predicate<CharSequence> contains(Pattern pattern) {
     return new ContainsPatternPredicate(pattern);
   }
@@ -347,7 +334,15 @@ public final class Predicates {
     private static final long serialVersionUID = 0;
   }
 
-  private static final Joiner COMMA_JOINER = Joiner.on(',');
+  private static class Joiner {
+	public Joiner(char c) {
+	}
+	
+	public String join(Object ... objects) {
+		return null;
+	}
+  }
+  private static final Joiner COMMA_JOINER = new Joiner(',');
 
   /** @see Predicates#and(Iterable) */
   private static class AndPredicate<T> implements Predicate<T>, Serializable {
@@ -446,7 +441,6 @@ public final class Predicates {
   }
 
   /** @see Predicates#instanceOf(Class) */
-  @GwtIncompatible("Class.isInstance")
   private static class InstanceOfPredicate
       implements Predicate<Object>, Serializable {
     private final Class<?> clazz;
@@ -475,7 +469,6 @@ public final class Predicates {
   }
 
   /** @see Predicates#assignableFrom(Class) */
-  @GwtIncompatible("Class.isAssignableFrom")
   private static class AssignableFromPredicate
       implements Predicate<Class<?>>, Serializable {
     private final Class<?> clazz;
@@ -576,7 +569,6 @@ public final class Predicates {
   }
 
   /** @see Predicates#contains(Pattern) */
-  @GwtIncompatible("Only used by other GWT-incompatible code.")
   private static class ContainsPatternPredicate
       implements Predicate<CharSequence>, Serializable {
     final Pattern pattern;
@@ -594,7 +586,7 @@ public final class Predicates {
       // Pattern uses Object.hashCode, so we have to reach
       // inside to build a hashCode consistent with equals.
 
-      return Objects.hashCode(pattern.pattern(), pattern.flags());
+      return Objects.hash(pattern.pattern(), pattern.flags());
     }
 
     @Override public boolean equals(@Nullable Object obj) {
@@ -603,17 +595,16 @@ public final class Predicates {
 
         // Pattern uses Object (identity) equality, so we have to reach
         // inside to compare individual fields.
-        return Objects.equal(pattern.pattern(), that.pattern.pattern())
-            && Objects.equal(pattern.flags(), that.pattern.flags());
+        return Objects.equals(pattern.pattern(), that.pattern.pattern())
+            && Objects.equals(pattern.flags(), that.pattern.flags());
       }
       return false;
     }
 
     @Override public String toString() {
-      String patternString = Objects.toStringHelper(pattern)
-          .add("pattern", pattern.pattern())
-          .add("pattern.flags", pattern.flags())
-          .toString();
+      String patternString = pattern.getClass().getSimpleName() + "{"
+          + "pattern=" + pattern.pattern() + ", "
+          + "pattern.flags=" + pattern.flags() + "}";
       return "Predicates.contains(" + patternString + ")";
     }
 
@@ -621,7 +612,6 @@ public final class Predicates {
   }
 
   /** @see Predicates#containsPattern(String) */
-  @GwtIncompatible("Only used by other GWT-incompatible code.")
   private static class ContainsPatternFromStringPredicate
       extends ContainsPatternPredicate {
 
@@ -642,6 +632,7 @@ public final class Predicates {
     return Arrays.<Predicate<? super T>>asList(first, second);
   }
 
+  @SafeVarargs
   private static <T> List<T> defensiveCopy(T... array) {
     return defensiveCopy(Arrays.asList(array));
   }
