@@ -214,23 +214,6 @@ public final class Suppliers {
    * @since 8.0
    */
   public static <T> Function<Supplier<T>, T> supplierFunction() {
-    @SuppressWarnings("unchecked") // implementation is "fully variant"
-    SupplierFunction<T> sf = (SupplierFunction<T>) SupplierFunctionImpl.INSTANCE;
-    return sf;
-  }
-
-  private interface SupplierFunction<T> extends Function<Supplier<T>, T> {}
-
-  private enum SupplierFunctionImpl implements SupplierFunction<Object> {
-    INSTANCE;
-
-    // Note: This makes T a "pass-through type"
-    @Override public Object apply(Supplier<Object> input) {
-      return input.get();
-    }
-
-    @Override public String toString() {
-      return "Suppliers.supplierFunction()";
-    }
+    return Supplier::get;
   }
 }
