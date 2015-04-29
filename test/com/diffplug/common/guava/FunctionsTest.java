@@ -20,14 +20,11 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.testing.ClassSanityTester;
 import com.google.common.testing.EqualsTester;
-import com.google.common.testing.NullPointerTester;
 import com.google.common.testing.SerializableTester;
 
 import com.diffplug.common.guava.Functions;
 import com.diffplug.common.guava.Predicates;
-import com.diffplug.common.guava.Suppliers;
 
 import junit.framework.TestCase;
 
@@ -57,40 +54,6 @@ public class FunctionsTest extends TestCase {
     assertNotSame(new Long(135135L), identity.apply(new Long(135135L)));
   }
 
-  @GwtIncompatible("SerializableTester")
-  public void testIdentitySerializable() {
-    checkCanReserializeSingleton(Functions.identity());
-  }
-
-  public void testToStringFunction_apply() {
-    assertEquals("3", Functions.toStringFunction().apply(3));
-    assertEquals("hiya", Functions.toStringFunction().apply("hiya"));
-    assertEquals("I'm a string",
-        Functions.toStringFunction().apply(
-            new Object() {
-              @Override public String toString() {
-                return "I'm a string";
-              }
-            }));
-    try {
-      Functions.toStringFunction().apply(null);
-      fail("expected NullPointerException");
-    } catch (NullPointerException e) {
-      // expected
-    }
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testToStringFunctionSerializable() {
-    checkCanReserializeSingleton(Functions.toStringFunction());
-  }
-
-  @GwtIncompatible("NullPointerTester")
-  public void testNullPointerExceptions() {
-    NullPointerTester tester = new NullPointerTester();
-    tester.testAllPublicStaticMethods(Functions.class);
-  }
-
   public void testForMapWithoutDefault() {
     Map<String, Integer> map = Maps.newHashMap();
     map.put("One", 1);
@@ -107,16 +70,6 @@ public class FunctionsTest extends TestCase {
       fail();
     } catch (IllegalArgumentException expected) {
     }
-
-    new EqualsTester()
-        .addEqualityGroup(function, Functions.forMap(map))
-        .addEqualityGroup(Functions.forMap(map, 42))
-        .testEquals();
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testForMapWithoutDefaultSerializable() {
-    checkCanReserialize(Functions.forMap(ImmutableMap.of(1, 2)));
   }
 
   public void testForMapWithDefault() {
@@ -130,13 +83,6 @@ public class FunctionsTest extends TestCase {
     assertEquals(42, function.apply("Two").intValue());
     assertEquals(3, function.apply("Three").intValue());
     assertNull(function.apply("Null"));
-
-    new EqualsTester()
-        .addEqualityGroup(function, Functions.forMap(map, 42))
-        .addEqualityGroup(Functions.forMap(map))
-        .addEqualityGroup(Functions.forMap(map, null))
-        .addEqualityGroup(Functions.forMap(map, 43))
-        .testEquals();
   }
 
   @GwtIncompatible("SerializableTester")
@@ -149,21 +95,6 @@ public class FunctionsTest extends TestCase {
     assertEquals(1, function.apply("One").intValue());
     assertEquals(42, function.apply("Two").intValue());
     assertEquals(3, function.apply("Three").intValue());
-
-    new EqualsTester()
-        .addEqualityGroup(
-            function,
-            Functions.forMap(map, 42),
-            SerializableTester.reserialize(function))
-        .addEqualityGroup(Functions.forMap(map))
-        .addEqualityGroup(Functions.forMap(map, null))
-        .addEqualityGroup(Functions.forMap(map, 43))
-        .testEquals();
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testForMapWithDefaultSerializable() {
-    checkCanReserialize(Functions.forMap(ImmutableMap.of(1, 2), 3));
   }
 
   public void testForMapWithDefault_null() {
@@ -187,12 +118,6 @@ public class FunctionsTest extends TestCase {
 
     assertEquals((Integer) 1, function.apply("One"));
     assertNull(function.apply("Two"));
-
-    // check basic sanity of equals and hashCode
-    new EqualsTester()
-        .addEqualityGroup(function, SerializableTester.reserialize(function))
-        .addEqualityGroup(Functions.forMap(map, 1))
-        .testEquals();
   }
 
   public void testForMapWildCardWithDefault() {
@@ -237,47 +162,6 @@ public class FunctionsTest extends TestCase {
       fail();
     } catch (IllegalArgumentException e) {
     }
-
-    new EqualsTester()
-        .addEqualityGroup(
-            japaneseToSpanish,
-            Functions.compose(integerToSpanish, japaneseToInteger))
-        .addEqualityGroup(japaneseToInteger)
-        .addEqualityGroup(integerToSpanish)
-        .addEqualityGroup(
-            Functions.compose(japaneseToInteger, integerToSpanish))
-        .testEquals();
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testComposition_includeReserializabled() {
-    Map<String, Integer> mJapaneseToInteger = Maps.newHashMap();
-    mJapaneseToInteger.put("Ichi", 1);
-    mJapaneseToInteger.put("Ni", 2);
-    mJapaneseToInteger.put("San", 3);
-    Function<String, Integer> japaneseToInteger =
-        Functions.forMap(mJapaneseToInteger);
-
-    Map<Integer, String> mIntegerToSpanish = Maps.newHashMap();
-    mIntegerToSpanish.put(1, "Uno");
-    mIntegerToSpanish.put(3, "Tres");
-    mIntegerToSpanish.put(4, "Cuatro");
-    Function<Integer, String> integerToSpanish =
-        Functions.forMap(mIntegerToSpanish);
-
-    Function<String, String> japaneseToSpanish =
-        Functions.compose(integerToSpanish, japaneseToInteger);
-
-    new EqualsTester()
-        .addEqualityGroup(
-            japaneseToSpanish,
-            Functions.compose(integerToSpanish, japaneseToInteger),
-            SerializableTester.reserialize(japaneseToSpanish))
-        .addEqualityGroup(japaneseToInteger)
-        .addEqualityGroup(integerToSpanish)
-        .addEqualityGroup(
-            Functions.compose(japaneseToInteger, integerToSpanish))
-        .testEquals();
   }
 
   private static class HashCodeFunction implements Function<Object, Integer> {
@@ -297,12 +181,6 @@ public class FunctionsTest extends TestCase {
     Function<Float, Boolean> c1 = Functions.compose(Functions.compose(h, g), f);
     Function<Float, Boolean> c2 = Functions.compose(h, Functions.compose(g, f));
 
-    // Might be nice (eventually) to have:
-    //     assertEquals(c1, c2);
-
-    // But for now, settle for this:
-    assertEquals(c1.hashCode(), c2.hashCode());
-
     assertEquals(c1.apply(1.0f), c2.apply(1.0f));
     assertEquals(c1.apply(5.0f), c2.apply(5.0f));
   }
@@ -317,12 +195,6 @@ public class FunctionsTest extends TestCase {
     Predicate<Float> p1 = Predicates.compose(Predicates.compose(h, g), f);
     Predicate<Float> p2 = Predicates.compose(h, Functions.compose(g, f));
 
-    // Might be nice (eventually) to have:
-    //     assertEquals(p1, p2);
-
-    // But for now, settle for this:
-    assertEquals(p1.hashCode(), p2.hashCode());
-
     assertEquals(p1.test(1.0f), p2.test(1.0f));
     assertEquals(p1.test(5.0f), p2.test(5.0f));
   }
@@ -335,18 +207,6 @@ public class FunctionsTest extends TestCase {
 
     assertTrue(alwaysTrue.apply(0));
     assertFalse(alwaysFalse.apply(0));
-
-    new EqualsTester()
-        .addEqualityGroup(
-            alwaysTrue, Functions.forPredicate(Predicates.alwaysTrue()))
-        .addEqualityGroup(alwaysFalse)
-        .addEqualityGroup(Functions.identity())
-        .testEquals();
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testForPredicateSerializable() {
-    checkCanReserialize(Functions.forPredicate(Predicates.equalTo(5)));
   }
 
   public void testConstant() {
@@ -357,25 +217,6 @@ public class FunctionsTest extends TestCase {
     Function<Object, String> g = Functions.constant(null);
     assertEquals(null, g.apply(2));
     assertEquals(null, g.apply(null));
-
-    new EqualsTester()
-        .addEqualityGroup(f, Functions.constant("correct"))
-        .addEqualityGroup(Functions.constant("incorrect"))
-        .addEqualityGroup(Functions.toStringFunction())
-        .addEqualityGroup(g)
-        .testEquals();
-
-    new EqualsTester()
-        .addEqualityGroup(g, Functions.constant(null))
-        .addEqualityGroup(Functions.constant("incorrect"))
-        .addEqualityGroup(Functions.toStringFunction())
-        .addEqualityGroup(f)
-        .testEquals();
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testConstantSerializable() {
-    checkCanReserialize(Functions.constant(5));
   }
 
   private static class CountingSupplier
@@ -410,28 +251,6 @@ public class FunctionsTest extends TestCase {
 
     assertEquals(1, (int) function.apply(null));
     assertEquals(2, (int) function.apply("foo"));
-
-    new EqualsTester()
-        .addEqualityGroup(function, Functions.forSupplier(supplier))
-        .addEqualityGroup(Functions.forSupplier(new CountingSupplier()))
-        .addEqualityGroup(Functions.forSupplier(Suppliers.ofInstance(12)))
-        .addEqualityGroup(Functions.toStringFunction())
-        .testEquals();
-  }
-
-  @GwtIncompatible("SerializableTester")
-  public void testForSupplierSerializable() {
-    checkCanReserialize(Functions.forSupplier(new CountingSupplier()));
-  }
-
-  @GwtIncompatible("reflection")
-  public void testNulls() throws Exception {
-    new ClassSanityTester().forAllPublicStaticMethods(Functions.class).testNulls();
-  }
-
-  @GwtIncompatible("reflection")
-  public void testEqualsAndSerializable() throws Exception {
-    new ClassSanityTester().forAllPublicStaticMethods(Functions.class).testEqualsAndSerializable();
   }
 
   @GwtIncompatible("SerializableTester")
