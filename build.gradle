@@ -45,6 +45,10 @@ dependencies {
 	testCompile "junit:junit:${VER_JUNIT}"
 }
 
+jar.manifest {
+	from 'META-INF/MANIFEST.MF'
+}
+
 /////////////
 // ECLIPSE //
 /////////////
