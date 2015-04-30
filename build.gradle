@@ -1,7 +1,6 @@
 buildscript {
 	repositories {
 		jcenter()
-		maven { url 'https://dl.bintray.com/diffplug/opensource/' }
 	}
 	dependencies {
 		// builds canonical OSGI bundles
@@ -82,20 +81,6 @@ eclipse {
 		buildCommand 'org.eclipse.jdt.core.javabuilder'
 		buildCommand 'org.eclipse.pde.ManifestBuilder'
 		buildCommand 'org.eclipse.pde.SchemaBuilder'
-
-		// filter out the build folder
-		file {
-			withXml { xmlProvider ->
-				Node project = xmlProvider.asNode()
-				Node filter = project.appendNode('filteredResources').appendNode('filter')
-				filter.appendNode('id', project.name.hashCode()) 	// use the project name's hash as the filter ID
-				filter.appendNode('name', '')
-				filter.appendNode('type', 10)
-				Node matcher = filter.appendNode('matcher')
-				matcher.appendNode('id', 'org.eclipse.ui.ide.multiFilter')
-				matcher.appendNode('arguments', '1.0-name-matches-false-false-build')
-			}
-		}
 	}
 	classpath {
 		downloadSources true
