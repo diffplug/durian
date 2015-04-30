@@ -57,7 +57,7 @@ bundle {
 	instruction 'Bundle-DocURL', "https://github.com/${org}/${name}"
 	instruction 'Bundle-License', 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 	instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-	instruction 'Export-Package', 'com.diffplug.common.*'
+	instruction 'Export-Package', 'com.diffplug.common.base'
 	instruction '-removeheaders', 'VER_*'
 }
 
@@ -112,6 +112,7 @@ spotless {
 		target '**/*.gradle', '**/*.md', '**/.gitignore'
 		indentWithTabs()
 		trimTrailingWhitespace()
+		endWithNewline()
 	}
 }
 
