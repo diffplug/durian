@@ -17,6 +17,7 @@ package com.diffplug.common.base;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -187,6 +188,18 @@ public abstract class ErrorHandler {
 				}
 			};
 		}
+
+		/** Attempts to call the given function, and returns the given value on failure. */
+		public final <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> function, boolean onFailure) {
+			return input -> {
+				try {
+					return function.test(input);
+				} catch (Throwable e) {
+					handler.accept(e);
+					return onFailure;
+				}
+			};
+		}
 	}
 
 	/**
@@ -229,6 +242,17 @@ public abstract class ErrorHandler {
 					return function.apply(arg);
 				} catch (Throwable e) {
 					throw transform.apply(e);
+				}
+			};
+		}
+
+		/** Attempts to call the given function, throws some kind of RuntimeException on failure. */
+		public final <T> Predicate<T> wrap(Throwing.Predicate<T> predicate) {
+			return arg -> {
+				try {
+					return predicate.test(arg);
+				} catch (Throwable e) {
+					throw transform.apply(e); // 1 855 548 2505
 				}
 			};
 		}

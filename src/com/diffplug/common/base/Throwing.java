@@ -42,6 +42,11 @@ public interface Throwing {
 		public interface Function<T, R, E extends Throwable> {
 			R apply(T t) throws E;
 		}
+
+		@FunctionalInterface
+		public interface Predicate<T, E extends Throwable> {
+			boolean test(T t) throws E;
+		}
 	}
 
 	@FunctionalInterface
@@ -55,4 +60,7 @@ public interface Throwing {
 
 	@FunctionalInterface
 	public interface Function<T, R> extends Specific.Function<T, R, Throwable> {}
+
+	@FunctionalInterface
+	public interface Predicate<T> extends Specific.Predicate<T, Throwable> {}
 }
