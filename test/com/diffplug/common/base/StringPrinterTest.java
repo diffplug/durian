@@ -19,6 +19,8 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.function.Consumer;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -126,5 +128,35 @@ public class StringPrinterTest {
 			} );
 		} );
 		Assert.assertEquals(TEST_UTF, byteByBytePrintStream);
+	}
+
+	@Test
+	public void testStringsToLines() {
+		// requires assembly
+		testCaseStringsToLines("some\nsimple lines\n",
+				"some", "\n", "simple ", "lines", "\n");
+		// requires splitting
+		testCaseStringsToLines("some\nsimple lines\n",
+				"some\nsimple lines\n");
+		// ensure requires newline
+		testCaseStringsToLines("no newline\n",
+				"no newline\nno output");
+	}
+
+	private void testCaseStringsToLines(String expected, String ... inputs) {
+		// assemble the result
+		StringBuilder result = new StringBuilder();
+		// create a harness for converting strings to lines
+		Consumer<String> underTest = StringPrinter.stringsToLines(perLine -> {
+			// there should be no newline
+			Assert.assertEquals(-1, perLine.indexOf('\n'));
+			// we'll append the result to StringBuilder
+			result.append(perLine);
+			result.append('\n');
+		});
+		// feed the input to the test harness
+		Arrays.asList(inputs).forEach(underTest::accept);
+
+		Assert.assertEquals(expected, result.toString());
 	}
 }

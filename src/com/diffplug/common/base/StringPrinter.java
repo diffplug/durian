@@ -194,4 +194,32 @@ public class StringPrinter {
 		boolean autoflush = true;
 		return new PrintWriter(toWriter(), autoflush);
 	}
+
+	/**
+	 * Given a consumer of lines, creates a stateful consumer of strings
+	 * which will combine its input until it finds a newline, and
+	 * split its input when it contains multiple newlines.  Examples
+	 * make this more clear:
+	 * 
+	 * e.g. "some", "\n", "simple ", "lines", "\n" -> "some", "simple lines"
+	 *      "some\nsimple lines\n" -> "some", "simple lines"
+	 *      "no newline\nno output" -> "no newline"
+	 * 
+	 * @param perLine a Consumer<String> which will receive strings which were terminated by newlines (but aren't anymore).
+	 * @return a Consumer<String> which accepts any strings, and will feed them to perLine. 
+	 */
+	public static Consumer<String> stringsToLines(Consumer<String> perLine) {
+		Box.NonNull<String> leftover = Box.NonNull.of("");
+		return rawString -> {
+			rawString = leftover.get() + rawString.replace("\r", "");
+
+			int lastIdx = 0;
+			int idx = 0;
+			while ((idx = rawString.indexOf('\n', lastIdx)) > -1) {
+				perLine.accept(rawString.substring(lastIdx, idx));
+				lastIdx = idx + 1;
+			}
+			leftover.set(rawString.substring(lastIdx));
+		};
+	}
 }
