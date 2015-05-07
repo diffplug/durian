@@ -58,6 +58,20 @@ public class StringPrinter {
 		return builder.toString();
 	}
 
+	/** Easy way to create a String from a bunch of lines. */
+	public static String buildStringFromLines(String ... lines) {
+		int numChars = lines.length;
+		for (String line : lines) {
+			numChars += line.length();
+		}
+		StringBuilder builder = new StringBuilder(numChars);
+		for (String line : lines) {
+			builder.append(line);
+			builder.append('\n');
+		}
+		return builder.toString();
+	}
+
 	/**
 	 * Creates an OutputStream which will print its content to the given StringPrinter, encoding bytes according to the given Charset.
 	 * Doesn't matter if you close the stream or not, because StringPrinter doesn't have a close().
