@@ -30,6 +30,7 @@ import java.util.function.Supplier;
  * is used directly as either a Consumer, 
  */
 public interface GetterSetter<T> extends Supplier<T> {
+	/** Sets the value which will later be returned by get(). */
 	void set(T value);
 
 	/** Creates a GetterSetter from a Supplier and a Consumer. */

@@ -59,7 +59,7 @@ public class StringPrinter {
 	}
 
 	/** Easy way to create a String from a bunch of lines. */
-	public static String buildStringFromLines(String ... lines) {
+	public static String buildStringFromLines(String... lines) {
 		int numChars = lines.length;
 		for (String line : lines) {
 			numChars += line.length();

@@ -143,7 +143,7 @@ public class StringPrinterTest {
 				"no newline\nno output");
 	}
 
-	private void testCaseStringsToLines(String expected, String ... inputs) {
+	private void testCaseStringsToLines(String expected, String... inputs) {
 		// assemble the result
 		StringBuilder result = new StringBuilder();
 		// create a harness for converting strings to lines
