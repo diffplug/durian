@@ -35,6 +35,14 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * specify how errors will be handled. 
  */
 public abstract class ErrorHandler {
+	/** Package-private for testing - resets all of the static member variables. */
+	static void resetForTesting() {
+		suppress = null;
+		rethrow = null;
+		log = null;
+		dialog = null;
+	}
+
 	protected final Consumer<Throwable> handler;
 
 	/**
@@ -324,6 +332,22 @@ public abstract class ErrorHandler {
 					writer.close();
 				}), title, JOptionPane.ERROR_MESSAGE);
 			});
+		}
+
+		/**
+		 * An implementation of all of the ErrorHandler built-ins which throws an AssertionError
+		 * on any exception.  This can be helpful for JUnit tests.
+		 */
+		public static class OnErrorThrowAssertion implements Suppress, Rethrow, Log, Dialog {
+			@Override
+			public void accept(Throwable error) {
+				apply(error);
+			}
+
+			@Override
+			public RuntimeException apply(Throwable error) {
+				throw new AssertionError(error);
+			}
 		}
 	}
 }
