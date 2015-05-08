@@ -86,12 +86,25 @@ public abstract class ErrorHandler {
 	/**
 	 * Logs any exceptions.
 	 * 
-	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
-	 * in your application, call DurianPlugins.registerErrorHandlerLog() on startup.
+	 * By default, log() calls Throwable.printStackTrace(). To modify this behavior
+	 * in your application, call DurianPlugins.set(ErrorHandler.Plugins.Log.class, error -> doSomething(error));
 	 */
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
 		if (log == null) {
-			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
+			// There is an acceptable race condition here - suppress might get set multiple times.
+			// This would happen if multiple threads called suppress() at the same time
+			// during initialization, and this is likely to actually happen in practice.
+			// 
+			// Because DurianPlugins guarantees that its methods will have the exact same
+			// return value for the duration of the library's runtime existence, the only
+			// adverse symptom of this race condition is that there will temporarily be
+			// multiple instances of ErrorHandler which are wrapping the same Consumer<Throwable>.
+			//
+			// It is important for this method to be fast, so it's better to accept
+			// that suppress() might return different ErrorHandler instances which are wrapping
+			// the same actual Consumer<Throwable>, rather than to incur the cost of some
+			// type of synchronization.
 			log = createHandling(DurianPlugins.get(Plugins.Log.class, Plugins::defaultLog));
 		}
 		return log;
@@ -102,13 +115,13 @@ public abstract class ErrorHandler {
 	/**
 	 * Opens a dialog to notify the user of any exceptions.
 	 * 
-	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
-	 * in your application, call DurianPlugins.registerErrorHandlerDialog() on startup.
+	 * By default, dialog() opens a JOptionPane. To modify this behavior in your application,
+	 * call DurianPlugins.set(ErrorHandler.Plugins.Dialog.class, error -> openDialog(error));
 	 */
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
 		if (dialog == null) {
-			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
+			// There is an acceptable race condition here.  See ErrorHandler.log() for details.
 			dialog = createHandling(DurianPlugins.get(Plugins.Dialog.class, Plugins::defaultDialog));
 		}
 		return dialog;
