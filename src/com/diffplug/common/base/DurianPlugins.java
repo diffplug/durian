@@ -20,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * A registry for plugin implementations which obeys the following contract:
  * 
- * For any class, get(Class<T> pluginClass, T defaultImpl) will have an identical return value
- * for the entire runtime duration of this library.
+ * Once someone has requested a class from DurianPlugins, whatever instance was
+ * returned will continue to be returned for every future call.
  * 
- * The return value of get() is determined based on the following order:
+ * This eternal instance is determined by:
  * - the first call to register(Class<T> pluginClass, T pluginImpl)
  * - if a system property named "durian.plugins.{pluginClass.getCanonicalName()}" is set to
  *  the fully-qualified name of an implementation class with a no-argument constructor, then
