@@ -20,8 +20,6 @@ import org.junit.Test;
 
 import com.diffplug.common.base.ErrorHandler.Plugins.Dialog;
 import com.diffplug.common.base.ErrorHandler.Plugins.Log;
-import com.diffplug.common.base.ErrorHandler.Plugins.Rethrow;
-import com.diffplug.common.base.ErrorHandler.Plugins.Suppress;
 
 public class ErrorHandlerTest {
 	@Test(expected = AssertionError.class)
@@ -30,10 +28,10 @@ public class ErrorHandlerTest {
 		ErrorHandler.resetForTesting();
 		try {
 			// set the Suppress handler to the be the OnErrorThrowAssertion
-			System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Suppress",
+			System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log",
 					"com.diffplug.common.base.ErrorHandler$Plugins$OnErrorThrowAssertion");
 			// send something to the suppress handler, but we should get an AssertionError
-			ErrorHandler.suppress().run(() -> {
+			ErrorHandler.log().run(() -> {
 				throw new RuntimeException("Didn't see this coming.");
 			});
 		} finally {
@@ -67,21 +65,17 @@ public class ErrorHandlerTest {
 		DurianPlugins.resetForTesting();
 		ErrorHandler.resetForTesting();
 
-		DurianPlugins.register(ErrorHandler.Plugins.Suppress.class, new TestHandler("Suppress"));
-		DurianPlugins.register(ErrorHandler.Plugins.Rethrow.class, new TestHandler("Rethrow"));
 		DurianPlugins.register(ErrorHandler.Plugins.Log.class, new TestHandler("Log"));
 		DurianPlugins.register(ErrorHandler.Plugins.Dialog.class, new TestHandler("Dialog"));
 
 		try {
-			try {
-				ErrorHandler.suppress().run(ErrorHandlerTest::throwException);
-			} catch (RuntimeException e) {
-				Assert.assertEquals("Suppress", e.getMessage());
-			}
+			ErrorHandler.suppress().run(ErrorHandlerTest::throwException);
+
 			try {
 				ErrorHandler.rethrow().run(ErrorHandlerTest::throwException);
 			} catch (RuntimeException e) {
-				Assert.assertEquals("Rethrow", e.getMessage());
+				// it should pass the RuntimeException unphased
+				Assert.assertNull(e.getCause());
 			}
 			try {
 				ErrorHandler.log().run(ErrorHandlerTest::throwException);
@@ -104,7 +98,7 @@ public class ErrorHandlerTest {
 	}
 
 	/** Implementation of the various ErrorHandlers which throws a RuntimeException with the given message. */
-	public static class TestHandler implements Suppress, Rethrow, Log, Dialog {
+	public static class TestHandler implements Log, Dialog {
 		private String message;
 
 		public TestHandler(String message) {
@@ -113,12 +107,7 @@ public class ErrorHandlerTest {
 
 		@Override
 		public void accept(Throwable error) {
-			throw apply(error);
-		}
-
-		@Override
-		public RuntimeException apply(Throwable error) {
-			return new RuntimeException(message);
+			throw new RuntimeException(message);
 		}
 	}
 }

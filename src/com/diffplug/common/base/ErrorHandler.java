@@ -37,8 +37,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public abstract class ErrorHandler {
 	/** Package-private for testing - resets all of the static member variables. */
 	static void resetForTesting() {
-		suppress = null;
-		rethrow = null;
 		log = null;
 		dialog = null;
 	}
@@ -72,40 +70,18 @@ public abstract class ErrorHandler {
 	}
 
 	/** Suppresses errors entirely. */
-	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling suppress() {
-		if (suppress == null) {
-			// There is an acceptable race condition here - suppress might get set multiple times.
-			// This would happen if multiple threads called suppress() at the same time
-			// during initialization, and this is likely to actually happen in practice.
-			// 
-			// Because DurianPlugins guarantees that its methods will have the exact same
-			// return value for the duration of the library's runtime existence, the only
-			// adverse symptom of this race condition is that there will temporarily be
-			// multiple instances of ErrorHandler which are wrapping the same Consumer<Throwable>.
-			//
-			// It is important for this method to be fast, so it's better to accept
-			// that suppress() might return different ErrorHandler instances which are wrapping
-			// the same actual Consumer<Throwable>, rather than to incur the cost of some
-			// type of synchronization.
-			suppress = createHandling(DurianPlugins.get(Plugins.Suppress.class, Plugins::defaultSuppress));
-		}
 		return suppress;
 	}
 
-	private static Handling suppress;
+	private static final Handling suppress = createHandling(Consumers.doNothing());
 
 	/** Rethrows any exceptions as runtime exceptions. */
-	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Rethrowing rethrow() {
-		if (rethrow == null) {
-			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
-			rethrow = createRethrowing(DurianPlugins.get(Plugins.Rethrow.class, Plugins::defaultRethrow));
-		}
 		return rethrow;
 	}
 
-	private static Rethrowing rethrow;
+	private static final Rethrowing rethrow = createRethrowing(ErrorHandler::asRuntime);
 
 	/**
 	 * Logs any exceptions.
@@ -113,7 +89,6 @@ public abstract class ErrorHandler {
 	 * By default, log() just calls Exception.printStackTrace(). To modify this behavior
 	 * in your application, call DurianPlugins.registerErrorHandlerLog() on startup.
 	 */
-	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
 		if (log == null) {
 			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
@@ -297,25 +272,11 @@ public abstract class ErrorHandler {
 	 * if you'd like to change the default behavior.
 	 */
 	public interface Plugins {
-		/** ErrorHandler.suppress(). */
-		public interface Suppress extends Consumer<Throwable> {}
-
-		/** ErrorHandler.rethrow(). */
-		public interface Rethrow extends Function<Throwable, RuntimeException> {}
-
 		/** ErrorHandler.log(). */
 		public interface Log extends Consumer<Throwable> {}
 
 		/** ErrorHandler.dialog(). */
 		public interface Dialog extends Consumer<Throwable> {}
-
-		/** Default behavior of ErrorHandler.suppress() is to do absolutely nothing. */
-		static void defaultSuppress(Throwable error) {}
-
-		/** Default behavior of ErrorHandler.rethrow() is ErrorHandler.asRuntime(). */
-		static RuntimeException defaultRethrow(Throwable error) {
-			return asRuntime(error);
-		}
 
 		/** Default behavior of ErrorHandler.log() is Throwable.printStackTrace(). */
 		static void defaultLog(Throwable error) {
@@ -338,14 +299,9 @@ public abstract class ErrorHandler {
 		 * An implementation of all of the ErrorHandler built-ins which throws an AssertionError
 		 * on any exception.  This can be helpful for JUnit tests.
 		 */
-		public static class OnErrorThrowAssertion implements Suppress, Rethrow, Log, Dialog {
+		public static class OnErrorThrowAssertion implements Log, Dialog {
 			@Override
 			public void accept(Throwable error) {
-				apply(error);
-			}
-
-			@Override
-			public RuntimeException apply(Throwable error) {
 				throw new AssertionError(error);
 			}
 		}
