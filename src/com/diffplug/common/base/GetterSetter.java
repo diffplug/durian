@@ -17,7 +17,11 @@ package com.diffplug.common.base;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
 import java.util.function.Function;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -61,5 +65,47 @@ public interface GetterSetter<T> extends Supplier<T> {
 				setter.accept(target, value);
 			}
 		};
+	}
+
+	/** A GetterSetter for doubles. */
+	public interface Double extends DoubleSupplier {
+		/** Sets the value which will later be returned by get(). */
+		void set(double value);
+	
+		/** Creates a GetterSetter.Double from a Supplier and a Consumer. */
+		public static Double from(DoubleSupplier getter, DoubleConsumer setter) {
+			return new Double() {
+				@Override
+				public double getAsDouble() {
+					return getter.getAsDouble();
+				}
+
+				@Override
+				public void set(double value) {
+					setter.accept(value);
+				}
+			};
+		}
+	}
+
+	/** A GetterSetter for ints. */
+	public interface Int extends IntSupplier {
+		/** Sets the value which will later be returned by get(). */
+		void set(int value);
+	
+		/** Creates a GetterSetter.Double from a Supplier and a Consumer. */
+		public static Int from(IntSupplier getter, IntConsumer setter) {
+			return new Int() {
+				@Override
+				public int getAsInt() {
+					return getter.getAsInt();
+				}
+
+				@Override
+				public void set(int value) {
+					setter.accept(value);
+				}
+			};
+		}
 	}
 }
