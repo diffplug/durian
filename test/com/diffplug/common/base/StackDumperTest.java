@@ -60,13 +60,16 @@ public class StackDumperTest {
 
 	private void runWithCleanStack(Throwing.Runnable runnable) throws Throwable {
 		Box<Throwable> testError = Box.empty();
-		Thread thread = new Thread(() -> {
-			try {
-				runnable.run();
-			} catch (Throwable e) {
-				testError.set(e);
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				try {
+					runnable.run();
+				} catch (Throwable e) {
+					testError.set(e);
+				}
 			}
-		});
+		};
 		thread.start();
 		thread.join();
 		if (testError.get() != null) {
@@ -91,18 +94,19 @@ public class StackDumperTest {
 	@Test
 	public void testDump() throws Throwable {
 		// dump with no stack
-		runWithCleanStack(() -> {
-			StackDumper.dump("some message");
-			Assert.assertEquals(StringPrinter.buildStringFromLines(
-					"+----------\\",
-					"| some message",
-					"| at com.diffplug.common.base.StackDumperTest.lambda$4(StackDumperTest.java:95)",
-					"| at com.diffplug.common.base.StackDumperTest$$Lambda$10/914424520.run(null:-1)",
-					"| at com.diffplug.common.base.StackDumperTest.lambda$2(StackDumperTest.java:65)",
-					"| at com.diffplug.common.base.StackDumperTest$$Lambda$11/2143192188.run(null:-1)",
-					"| at java.lang.Thread.run(null:-1)",
-					"+----------/"), testCaseErr.toString());
-		});
+		runWithCleanStack(this::testDumpMethod);
+	}
+
+	private void testDumpMethod() {
+		StackDumper.dump("some message");
+		String errOutput = testCaseErr.toString();
+		Assert.assertTrue(errOutput.startsWith(StringPrinter.buildStringFromLines(
+				"+----------\\",
+				"| some message",
+				"| at com.diffplug.common.base.StackDumperTest.testDumpMethod(StackDumperTest.java:101)")));
+		Assert.assertTrue(errOutput.endsWith(StringPrinter.buildStringFromLines(
+				"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
+				"+----------/")));
 	}
 
 	@Test
@@ -113,7 +117,7 @@ public class StackDumperTest {
 			Assert.assertEquals(StringPrinter.buildStringFromLines(
 					"+----------\\",
 					"| some message",
-					"| at java.lang.Thread.run(null:-1)",
+					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
 					"+----------/"), testCaseErr.toString());
 		});
 	}
@@ -135,7 +139,7 @@ public class StackDumperTest {
 					"+----------\\",
 					"| Triggered by Who did this?")));
 			Assert.assertTrue(errOutput.endsWith(StringPrinter.buildStringFromLines(
-					"| at java.lang.Thread.run(null:-1)",
+					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
 					"+----------/")));
 		});
 	}
@@ -159,7 +163,7 @@ public class StackDumperTest {
 					"+----------\\",
 					"| Triggered by Who did this?")));
 			Assert.assertTrue(errOutput.endsWith(StringPrinter.buildStringFromLines(
-					"| at java.lang.Thread.run(null:-1)",
+					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
 					"+----------/")));
 		});
 	}
