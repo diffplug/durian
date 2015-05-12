@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
 /**
- * A simple class for receiving a stream of Strings.
+ * A simple class for receiving a stream of Strings in a way that resembles a PrintStream or PrintWriter.
  */
 public class StringPrinter {
 	private final Consumer<String> consumer;
