@@ -21,7 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * A registry for plugin implementations which obeys the following contract:
  * 
  * Once someone has requested a class from DurianPlugins, whatever instance was
- * returned will continue to be returned for every future call.
+ * returned will continue to be returned for every future call. This gives the
+ * impression of a global constant.  Before the value has been requested, it
+ * can be set programmatically or by setting a system property, which allows
+ * configuring a system or framework appropriate behavior.
  * 
  * This eternal instance is determined by:
  * - the first call to register(Class<T> pluginClass, T pluginImpl)
@@ -46,14 +49,11 @@ public class DurianPlugins {
 	private final ConcurrentHashMap<Class<?>, Object> map = new ConcurrentHashMap<>();
 
 	/**
-	 * Registers an {@link ErrorHandlerDialog} implementation as a global override of any injected or default
-	 * implementations.
+	 * Registers an implementation as a global override of any injected or default implementations.
 	 * 
-	 * @param impl
-	 *            {@link ErrorHandlerDialog} implementation
-	 * @throws IllegalStateException
-	 *             if called more than once or after the default was initialized (if usage occurs before trying
-	 *             to register)
+	 * @param pluginClass The interface which is being registered.
+	 * @param pluginClass The implementation of that interface which is being registered.
+	 * @throws IllegalStateException If called more than once or if a value has already been requested.
 	 */
 	public static <T> void register(Class<T> pluginClass, T pluginImpl) throws IllegalStateException {
 		INSTANCE.registerInternal(pluginClass, pluginImpl);
@@ -76,6 +76,10 @@ public class DurianPlugins {
 	 *  the fully-qualified name of an implementation class with a no-argument constructor, then
 	 *  an instance of that class will be instantiated and used as the plugin implementation
 	 *  - the defaultImpl that was specified in the first call to get()
+	 *  
+	 * @param pluginClass The interface which is being requested.
+	 * @param defaultImpl A default implementation of that interface.
+	 * @return An instance of pluginClass, which is guaranteed to be returned for every future request for pluginClass.
 	 */
 	public static <T> T get(Class<T> pluginClass, T defaultImpl) {
 		return INSTANCE.getInternal(pluginClass, defaultImpl);

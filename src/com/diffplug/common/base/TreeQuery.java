@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class TreeQuery {
-	/** Returns a list whose first element is the child, and last element is the root. */
+	/** Returns a mutable list whose first element is the child, and last element is the root. */
 	public static <T> List<T> toRoot(TreeDef.Parented<T> treeDef, T node) {
 		List<T> list = new ArrayList<>();
 		T tip = node;
@@ -33,7 +33,7 @@ public class TreeQuery {
 		return list;
 	}
 
-	/** Returns a list whose first element is the child, and last element is the root. */
+	/** Returns a mutable list whose first element is the child, and last element is the root. */
 	public static <T> List<T> toParent(TreeDef.Parented<T> treeDef, T node, T parent) {
 		List<T> list = new ArrayList<>();
 		T tip = node;
@@ -100,7 +100,7 @@ public class TreeQuery {
 		return commonAncestor;
 	}
 
-	/** Returns the common parent of the two given elements. */
+	/** Returns the common parent of N elements. */
 	@SafeVarargs
 	public static <T> Optional<T> lowestCommonAncestorN(TreeDef.Parented<T> treeDef, T... nodes) {
 		if (nodes.length == 0) {

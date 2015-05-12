@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Allows Trees to be defined across any object. */
+/** Allows Trees to be manually defined across any object. */
 public final class TreeNode<T> {
 	final TreeNode<T> parent;
 	final T obj;

@@ -41,7 +41,7 @@ public enum Comparison {
 	}
 
 	/** Returns a Comparison from the given result of Comparable.compareTo(). */
-	@SuppressFBWarnings(value = "UC_USELESS_CONDITION", justification = "Throwing Unhandled keeps the code more explicit.")
+	@SuppressFBWarnings(value = "UC_USELESS_CONDITION", justification = "Throwing Unhandled keeps the full-enumeration more explicit.")
 	public static Comparison from(int compareToResult) {
 		if (compareToResult == 0) {
 			return Comparison.EQUAL;

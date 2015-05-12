@@ -42,9 +42,9 @@ import com.google.common.testing.NullPointerTester;
 import com.diffplug.common.base.Predicates;
 
 /**
+ * Ripped verbatim from Goole Guava 18.0.
+ * 
  * Unit test for {@link Predicates}.
- *
- * @author Kevin Bourrillion
  */
 @GwtCompatible(emulated = true)
 public class PredicatesTest extends TestCase {

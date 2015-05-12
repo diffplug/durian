@@ -18,6 +18,7 @@ package com.diffplug.common.base;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/** Methods which create a Stream<T> which walks a tree structure. */
 public class TreeStream {
 	private TreeStream() {}
 

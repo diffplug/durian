@@ -34,10 +34,9 @@ import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Predicates;
 
 /**
+ * Ripped verbatim from Google Guava 18.0, then truncated to remove serialization tests.
+ * 
  * Tests for {@link Functions}.
- *
- * @author Mike Bostock
- * @author Vlad Patryshev
  */
 @GwtCompatible(emulated = true)
 public class FunctionsTest extends TestCase {

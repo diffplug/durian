@@ -36,26 +36,9 @@ import javax.annotation.Nullable;
  * 
  * Lambdas don't support these methods, and there isn't much reason why they should, so we
  * removed them in Durian.
- * 
- * Original header from Guava:
- * 
- * Static utility methods pertaining to {@code Predicate} instances.
- *
- * <p>All methods returns serializable predicates as long as they're given
- * serializable parameters.
- *
- * <p>See the Guava User Guide article on <a href=
- * "http://code.google.com/p/guava-libraries/wiki/FunctionalExplained">the
- * use of {@code Predicate}</a>.
- *
- * @author Kevin Bourrillion
- * @since 2.0 (imported from Google Collections Library)
  */
 public final class Predicates {
 	private Predicates() {}
-
-	// TODO(kevinb): considering having these implement a VisitablePredicate
-	// interface which specifies an accept(PredicateVisitor) method.
 
 	/**
 	 * Returns a predicate that always evaluates to {@code true}.

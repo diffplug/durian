@@ -35,10 +35,9 @@ import com.google.common.testing.ClassSanityTester;
 import com.diffplug.common.base.Suppliers;
 
 /**
+ * Ripped verbatim from Google Guava 18.0, then truncated to remove serialization tests.
+ * 
  * Tests com.google.common.base.Suppliers.
- *
- * @author Laurence Gonsalves
- * @author Harry Heymann
  */
 @GwtCompatible(emulated = true)
 public class SuppliersTest extends TestCase {

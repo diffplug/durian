@@ -34,17 +34,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * 
  * Lambdas don't support these methods, and there isn't much reason why they should, so we
  * removed them in Durian.
- * 
- * Original header from Guava:
- * 
- * Useful suppliers.
- *
- * <p>All methods return serializable suppliers as long as they're given
- * serializable parameters.
- *
- * @author Laurence Gonsalves
- * @author Harry Heymann
- * @since 2.0 (imported from Google Collections Library)
  */
 public final class Suppliers {
 	private Suppliers() {}

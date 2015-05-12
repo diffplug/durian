@@ -47,7 +47,7 @@ public abstract class ErrorHandler {
 	 * Creates an ErrorHandler.Rethrowing which transforms any exceptions it receives into a RuntimeException
 	 * as specified by the given function, and then throws that RuntimeException.
 	 * 
-	 * If that function happens to throw a RuntimeException itself, that'll work just fine, but it's ugly.
+	 * If that function happens to throw an unchecked error itself, that'll work just fine.
 	 */
 	public static Rethrowing createRethrowing(Function<Throwable, RuntimeException> transform) {
 		return new Rethrowing(transform);
@@ -87,13 +87,13 @@ public abstract class ErrorHandler {
 	 * Logs any exceptions.
 	 * 
 	 * By default, log() calls Throwable.printStackTrace(). To modify this behavior
-	 * in your application, call DurianPlugins.set(ErrorHandler.Plugins.Log.class, error -> doSomething(error));
+	 * in your application, call DurianPlugins.set(ErrorHandler.Plugins.Log.class, error -> myCustomLog(error));
 	 */
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
 		if (log == null) {
-			// There is an acceptable race condition here - suppress might get set multiple times.
-			// This would happen if multiple threads called suppress() at the same time
+			// There is an acceptable race condition here - log might get set multiple times.
+			// This would happen if multiple threads called log() at the same time
 			// during initialization, and this is likely to actually happen in practice.
 			// 
 			// Because DurianPlugins guarantees that its methods will have the exact same
@@ -113,10 +113,14 @@ public abstract class ErrorHandler {
 	private static Handling log;
 
 	/**
-	 * Opens a dialog to notify the user of any exceptions.
+	 * Opens a dialog to notify the user of any exceptions.  It should be used in cases where
+	 * an error is too severe to be silently logged.
 	 * 
 	 * By default, dialog() opens a JOptionPane. To modify this behavior in your application,
-	 * call DurianPlugins.set(ErrorHandler.Plugins.Dialog.class, error -> openDialog(error));
+	 * call DurianPlugins.set(ErrorHandler.Plugins.Dialog.class, error -> openMyDialog(error));
+	 * 
+	 * For a non-interactive console application, a good implementation of would probably
+	 * print the error and call System.exit().
 	 */
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
@@ -130,17 +134,17 @@ public abstract class ErrorHandler {
 	private static Handling dialog;
 
 	/** Passes the given error to be handled by the ErrorHandler. */
-	public final void handle(Throwable error) {
+	public void handle(Throwable error) {
 		handler.accept(error);
 	}
 
 	/** Attempts to run the given runnable. */
-	public final void run(Throwing.Runnable runnable) {
+	public void run(Throwing.Runnable runnable) {
 		wrap(runnable).run();
 	}
 
 	/** Returns a Runnable whose exceptions are handled by this ErrorHandler. */
-	public final Runnable wrap(Throwing.Runnable runnable) {
+	public Runnable wrap(Throwing.Runnable runnable) {
 		return () -> {
 			try {
 				runnable.run();
@@ -151,7 +155,7 @@ public abstract class ErrorHandler {
 	}
 
 	/** Returns a Consumer whose exceptions are handled by this ErrorHandler. */
-	public final <T> Consumer<T> wrap(Throwing.Consumer<T> consumer) {
+	public <T> Consumer<T> wrap(Throwing.Consumer<T> consumer) {
 		return val -> {
 			try {
 				consumer.accept(val);
@@ -173,12 +177,12 @@ public abstract class ErrorHandler {
 		}
 
 		/** Attempts to call the given supplier, returns onFailure if there is a failure. */
-		public final <T> T getWithDefault(Throwing.Supplier<T> supplier, T onFailure) {
+		public <T> T getWithDefault(Throwing.Supplier<T> supplier, T onFailure) {
 			return wrapWithDefault(supplier, onFailure).get();
 		}
 
 		/** Attempts to call the given supplier, and returns the given value on failure. */
-		public final <T> Supplier<T> wrapWithDefault(Throwing.Supplier<T> supplier, T onFailure) {
+		public <T> Supplier<T> wrapWithDefault(Throwing.Supplier<T> supplier, T onFailure) {
 			return () -> {
 				try {
 					return supplier.get();
@@ -190,7 +194,7 @@ public abstract class ErrorHandler {
 		}
 
 		/** Attempts to call the given function, and returns the given value on failure. */
-		public final <T, R> Function<T, R> wrapWithDefault(Throwing.Function<T, R> function, R onFailure) {
+		public <T, R> Function<T, R> wrapWithDefault(Throwing.Function<T, R> function, R onFailure) {
 			return input -> {
 				try {
 					return function.apply(input);
@@ -202,7 +206,7 @@ public abstract class ErrorHandler {
 		}
 
 		/** Attempts to call the given function, and returns the given value on failure. */
-		public final <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> function, boolean onFailure) {
+		public <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> function, boolean onFailure) {
 			return input -> {
 				try {
 					return function.test(input);
@@ -232,12 +236,12 @@ public abstract class ErrorHandler {
 		}
 
 		/** Attempts to call the given supplier, throws some kind of RuntimeException on failure. */
-		public final <T> T get(Throwing.Supplier<T> supplier) {
+		public <T> T get(Throwing.Supplier<T> supplier) {
 			return wrap(supplier).get();
 		}
 
 		/** Attempts to call the given supplier, throws some kind of RuntimeException on failure. */
-		public final <T> Supplier<T> wrap(Throwing.Supplier<T> supplier) {
+		public <T> Supplier<T> wrap(Throwing.Supplier<T> supplier) {
 			return () -> {
 				try {
 					return supplier.get();
@@ -248,7 +252,7 @@ public abstract class ErrorHandler {
 		}
 
 		/** Attempts to call the given function, throws some kind of RuntimeException on failure. */
-		public final <T, R> Function<T, R> wrap(Throwing.Function<T, R> function) {
+		public <T, R> Function<T, R> wrap(Throwing.Function<T, R> function) {
 			return arg -> {
 				try {
 					return function.apply(arg);
@@ -259,7 +263,7 @@ public abstract class ErrorHandler {
 		}
 
 		/** Attempts to call the given function, throws some kind of RuntimeException on failure. */
-		public final <T> Predicate<T> wrap(Throwing.Predicate<T> predicate) {
+		public <T> Predicate<T> wrap(Throwing.Predicate<T> predicate) {
 			return arg -> {
 				try {
 					return predicate.test(arg);

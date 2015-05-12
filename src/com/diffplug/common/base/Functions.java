@@ -32,20 +32,6 @@ import javax.annotation.Nullable;
  * 
  * Lambdas don't support these methods, and there isn't much reason why they should, so we
  * removed them in Durian.
- * 
- * Original header from Guava:
- * 
- * Static utility methods pertaining to {@code Function} instances.
- *
- * <p>All methods return serializable functions as long as they're given serializable parameters.
- * 
- * <p>See the Guava User Guide article on <a href=
- * "http://code.google.com/p/guava-libraries/wiki/FunctionalExplained">the use of {@code
- * Function}</a>.
- *
- * @author Mike Bostock
- * @author Jared Levy
- * @since 2.0 (imported from Google Collections Library)
  */
 public final class Functions {
 	private Functions() {}
@@ -62,10 +48,6 @@ public final class Functions {
 	 * Returns a function which performs a map lookup. The returned function throws an {@link
 	 * IllegalArgumentException} if given a key that does not exist in the map. See also {@link
 	 * #forMap(Map, Object)}, which returns a default value in this case.
-	 *
-	 * <p>Note: if {@code map} is a {@link com.google.common.collect.BiMap BiMap} (or can be one), you
-	 * can use {@link com.google.common.collect.Maps#asConverter Maps.asConverter} instead to get a
-	 * function that also supports reverse conversion.
 	 */
 	public static <K, V> Function<K, V> forMap(Map<K, V> map) {
 		return key -> {

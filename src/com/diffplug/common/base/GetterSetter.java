@@ -28,10 +28,7 @@ import java.util.function.Supplier;
  * Provides get/set access to some field.
  * 
  * It's tempting for this to implement Consumer<T>, but it turns
- * out to be very strange to use with the accept() rather than get().
- * 
- * And in our whole codebase, it turns out there's no where that a GetterSetter
- * is used directly as either a Consumer, 
+ * out to be very strange to use with the accept() rather than set(T value).
  */
 public interface GetterSetter<T> extends Supplier<T> {
 	/** Sets the value which will later be returned by get(). */
@@ -67,11 +64,11 @@ public interface GetterSetter<T> extends Supplier<T> {
 		};
 	}
 
-	/** A GetterSetter for doubles. */
+	/** A GetterSetter for primitive doubles. */
 	public interface Double extends DoubleSupplier {
 		/** Sets the value which will later be returned by get(). */
 		void set(double value);
-	
+
 		/** Creates a GetterSetter.Double from a Supplier and a Consumer. */
 		public static Double from(DoubleSupplier getter, DoubleConsumer setter) {
 			return new Double() {
@@ -88,12 +85,12 @@ public interface GetterSetter<T> extends Supplier<T> {
 		}
 	}
 
-	/** A GetterSetter for ints. */
+	/** A GetterSetter for primitive ints. */
 	public interface Int extends IntSupplier {
 		/** Sets the value which will later be returned by get(). */
 		void set(int value);
-	
-		/** Creates a GetterSetter.Double from a Supplier and a Consumer. */
+
+		/** Creates a GetterSetter.Int from a Supplier and a Consumer. */
 		public static Int from(IntSupplier getter, IntConsumer setter) {
 			return new Int() {
 				@Override

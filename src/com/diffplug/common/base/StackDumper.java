@@ -22,7 +22,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Predicate;
 
-/** Utility methods for dumping the stack - arbitrarily or at specific trigger points (such as when a certain string prints to console). */
+/**
+ * Utility methods for dumping the stack - arbitrarily or at specific trigger points (such as when a certain string prints to console).
+ * 
+ * If someone is printing "junk" to the console and you can't figure out why, try StackDumper.dumpWhenSysOutContains("junk").
+ */
 public class StackDumper {
 	static StringPrinter pristineSysErr = new StringPrinter(System.err::print);
 
@@ -70,7 +74,7 @@ public class StackDumper {
 	 *            the string which triggers a stack dump
 	 * @return a PrintStream with the above properties
 	 */
-	public static PrintStream wrapAndDumpWhenContains(final PrintStream source, final String trigger) {
+	public static PrintStream wrapAndDumpWhenContains(PrintStream source, String trigger) {
 		StringPrinter wrapped = new StringPrinter(StringPrinter.stringsToLines(perLine -> {
 			source.println(perLine);
 			if (perLine.contains(trigger)) {

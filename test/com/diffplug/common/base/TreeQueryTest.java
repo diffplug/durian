@@ -49,12 +49,43 @@ public class TreeQueryTest {
 		return TreeTestData.getByPath(root, segments);
 	}
 
-	private TreeNode<String> root = TreeTestData.create("root", " src", "  org", "   math", "    Array.java",
-			"    Matrix.java", "    QuatRot.java", "    Vector.java", "   model", "    generic", "     Constant.java",
-			"     Constant.xml", "    geometric", "     Constant2.java", "     Constant2.xml", "    Component.java",
-			"    DynamicComponent.java", "    Folder afterwards", "     PerturbDerivative1.java",
-			"      PerturbDerivative2.java", "      PerturbDerivative3.java", "     PerturbDerivative4.java",
-			"      PerturbDerivative5.java", "      PerturbDerivative6.java", " test", "  org2", "   avl",
-			"    allegro.avl", "    allegro.mass", "    b737.avl", "   simulink", "    complex.mdl",
-			"    long_simple.mdl", "    sf_tetris2.mdl", " RunAllTests.java");
+	// @formatter:off
+	private TreeNode<String> root = TreeTestData.create(
+			"root",
+			" src",
+			"  org",
+			"   math",
+			"    Array.java",
+			"    Matrix.java",
+			"    QuatRot.java",
+			"    Vector.java",
+			"   model",
+			"    generic",
+			"     Constant.java",
+			"     Constant.xml",
+			"    geometric",
+			"     Constant2.java",
+			"     Constant2.xml",
+			"    Component.java",
+			"    DynamicComponent.java",
+			"    Folder afterwards",
+			"     PerturbDerivative1.java",
+			"      PerturbDerivative2.java",
+			"      PerturbDerivative3.java",
+			"     PerturbDerivative4.java",
+			"      PerturbDerivative5.java",
+			"      PerturbDerivative6.java",
+			" test",
+			"  org2",
+			"   avl",
+			"    allegro.avl",
+			"    allegro.mass",
+			"    b737.avl",
+			"   simulink",
+			"    complex.mdl",
+			"    long_simple.mdl",
+			"    sf_tetris2.mdl",
+			" RunAllTests.java"
+			);
+	// @formatter:on
 }

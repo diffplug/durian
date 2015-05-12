@@ -20,7 +20,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/** Some useful collectors which aren't included as a Java 8 built-in. */
+/** Some useful collectors which aren't included as Java 8 built-ins. */
 public class MoreCollectors {
 	/**
 	 * Collector which traverses a stream and returns either a single element
