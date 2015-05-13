@@ -12,7 +12,7 @@ Durian complements Guava with some features which are too spiky for Guava, such 
 * [One-liner exception handling](test/com/diffplug/common/base/ErrorHandlerExample.java) for Java 8 functional interfaces (even with checked exceptions).
 * A [simple replacement](src/com/diffplug/common/base/StringPrinter.java) for the mess of `PrintStream`, `OutputStream`, `Writer`, etc. when all you want is to pipe some strings around.
 * Given a node in a tree, and a [`Function<Node, List<Node>>`](src/com/diffplug/common/base/TreeDef.java), create a `Stream` for [traversing](test/com/diffplug/common/base/TreeStreamTest.java) this tree (breadth-first, depth-first, etc.).
-* An [enum for handling comparisons](src/com/diffplug/common/base/StringPrinter.java) in a pattern-matchey way.
+* An [enum for handling comparisons](src/com/diffplug/common/base/Comparison.java) in a pattern-matchey way.
 * Guava's [`Suppliers`](src/com/diffplug/common/base/Suppliers.java), [`Predicates`](src/com/diffplug/common/base/Predicates.java), and [`Functions`](src/com/diffplug/common/base/Functions.java) converted to Java 8, and a new [`Consumers`](src/com/diffplug/common/base/Consumers.java) class to round it out.
 * A few other carefully-curated Java 8 goodies:
 	+ [Box and Box.NonNull](src/com/diffplug/common/base/Box.java)
@@ -28,8 +28,10 @@ Contributions are welcome, see [the contributing guide](CONTRIBUTING.md) for dev
 * The API and tests for `Suppliers`, `Functions`, and `Predicates` were all ripped verbatim from [Guava](https://github.com/google/guava).
 * `StringPrinter.toOutputStream()` borrows heavily from `WriterOutputStream`, inside Apache commons-io.
 * `DurianPlugins` is inspired by RxJava's plugin mechanism.
-* Formatted by [spotless](https://github.com/diffplug/spotless).
-* Bugs found by [findbugs](http://findbugs.sourceforge.net/).
+* Formatted by [spotless](https://github.com/diffplug/spotless)
+	+ [build.gradle](https://github.com/diffplug/durian/blob/develop/build.gradle#L70-90)
+* Bugs found by [findbugs](http://findbugs.sourceforge.net/)
+	+ [build.gradle](https://github.com/diffplug/durian/blob/develop/build.gradle#L101-102)
 * Built by [gradle](http://gradle.org/).
 * Tested by [junit](http://junit.org/).
 * Artifacts hosted by [jcenter](https://bintray.com/bintray/jcenter) and uploaded by [gradle-bintray-plugin](https://github.com/bintray/gradle-bintray-plugin).
