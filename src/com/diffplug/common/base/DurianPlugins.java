@@ -52,7 +52,7 @@ public class DurianPlugins {
 	 * Registers an implementation as a global override of any injected or default implementations.
 	 * 
 	 * @param pluginClass The interface which is being registered.
-	 * @param pluginClass The implementation of that interface which is being registered.
+	 * @param pluginImpl  The implementation of that interface which is being registered.
 	 * @throws IllegalStateException If called more than once or if a value has already been requested.
 	 */
 	public static <T> void register(Class<T> pluginClass, T pluginImpl) throws IllegalStateException {
