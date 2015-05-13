@@ -112,6 +112,7 @@ tasks.withType(FindBugs) {
 // we'll want the findbugs annotations (they don't have a 3.0.1 version)
 dependencies {
 	compile 'com.google.code.findbugs:annotations:3.0.0'
+	compile 'com.google.code.findbugs:jsr305:3.0.0'
 }
 
 ///////////
@@ -144,12 +145,8 @@ publishing {
 			artifact sourcesJar
 			artifact javadocJar
 			pom.withXml {
-				// remove the findbugs dependency
-				asNode().dependencies.'*'.each() {
-					if (it.groupId.text() == 'com.google.code.findbugs') {
-						it.parent().remove(it)
-					}
-				}
+				// findbugs annotations should have scope "provided"
+				asNode().dependencies.'*'.findAll() { it.groupId.text() == 'com.google.code.findbugs' }.each() { it.scope*.value = 'provided' }
 				// add MavenCentral requirements to the POM
 				asNode().children().last() + {
 					resolveStrategy = Closure.DELEGATE_FIRST
