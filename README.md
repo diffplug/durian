@@ -9,7 +9,7 @@
 Guava has become indispensable for many Java developers.  Because of its wide adoption, it must be conservative regarding its minimum requirements.
 
 Durian complements Guava with some features which are too spiky for Guava, such as:
-* [One-liner exception handling](test/com/diffplug/common/base/ErrorsExample.java) for Java 8 functional interfaces (even with checked exceptions).
+* [One-liner exception handling](test/com/diffplug/common/base/ErrorsExample.java?ts=4) for Java 8 functional interfaces (even with checked exceptions).
 * A [simple replacement](src/com/diffplug/common/base/StringPrinter.java) for the mess of `PrintStream`, `OutputStream`, `Writer`, etc. when all you want is to pipe some strings around.
 * Given a node in a tree, and a [`Function<Node, List<Node>>`](src/com/diffplug/common/base/TreeDef.java), create a `Stream` for [traversing](test/com/diffplug/common/base/TreeStreamTest.java) this tree (breadth-first, depth-first, etc.).
 * An [enum for handling comparisons](src/com/diffplug/common/base/Comparison.java) in a pattern-matchey way.
@@ -29,9 +29,9 @@ Contributions are welcome, see [the contributing guide](CONTRIBUTING.md) for dev
 * `StringPrinter.toOutputStream()` borrows heavily from `WriterOutputStream`, inside Apache commons-io.
 * `DurianPlugins` is inspired by RxJava's plugin mechanism.
 * Formatted by [spotless](https://github.com/diffplug/spotless)
-	+ [build.gradle](https://github.com/diffplug/durian/blob/develop/build.gradle#L70-90)
+	+ [build.gradle](https://github.com/diffplug/durian/blob/develop/build.gradle?ts=4#L70-90)
 * Bugs found by [findbugs](http://findbugs.sourceforge.net/)
-	+ [build.gradle](https://github.com/diffplug/durian/blob/develop/build.gradle#L101-102)
+	+ [build.gradle](https://github.com/diffplug/durian/blob/develop/build.gradle?ts=4#L101-102)
 * Built by [gradle](http://gradle.org/).
 * Tested by [junit](http://junit.org/).
 * Artifacts hosted by [jcenter](https://bintray.com/bintray/jcenter) and uploaded by [gradle-bintray-plugin](https://github.com/bintray/gradle-bintray-plugin).
