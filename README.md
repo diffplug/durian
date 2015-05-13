@@ -1,6 +1,6 @@
 # <img align="left" src="durian.png"> Durian: [Guava](https://github.com/google/guava)'s spikier (unofficial) cousin
 
-[![JCenter artifact](https://img.shields.io/badge/jcenter-com.diffplug.durian%3Adurian-blue.svg)](https://bintray.com/diffplug/opensource/durian/view)
+[![JCenter artifact](https://img.shields.io/badge/mavenCentral-com.diffplug.durian%3Adurian-blue.svg)](https://bintray.com/diffplug/opensource/durian/view)
 [![Branch master](http://img.shields.io/badge/master-2.0-lightgrey.svg)](https://github.com/diffplug/durian/releases/latest)
 [![Branch develop](http://img.shields.io/badge/develop-2.1--SNAPSHOT-lightgrey.svg)](https://github.com/diffplug/durian/tree/develop)
 [![Branch develop Travis CI](https://travis-ci.org/diffplug/durian.svg?branch=develop)](https://travis-ci.org/diffplug/durian)
