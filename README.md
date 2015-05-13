@@ -10,14 +10,14 @@ Guava has become indispensable for many Java developers.  Because of its wide ad
 
 Durian complements Guava with some features which are too spiky for Guava, such as:
 * [One-liner exception handling](test/com/diffplug/common/base/ErrorsExample.java?ts=4) for Java 8 functional interfaces (even with checked exceptions).
-* A [simple replacement](src/com/diffplug/common/base/StringPrinter.java) for the mess of `PrintStream`, `OutputStream`, `Writer`, etc. when all you want is to pipe some strings around.
-* Given a node in a tree, and a [`Function<Node, List<Node>>`](src/com/diffplug/common/base/TreeDef.java), create a `Stream` for [traversing](test/com/diffplug/common/base/TreeStreamTest.java) this tree (breadth-first, depth-first, etc.).
-* An [enum for handling comparisons](src/com/diffplug/common/base/Comparison.java) in a pattern-matchey way.
-* Guava's [`Suppliers`](src/com/diffplug/common/base/Suppliers.java), [`Predicates`](src/com/diffplug/common/base/Predicates.java), and [`Functions`](src/com/diffplug/common/base/Functions.java) converted to Java 8, and a new [`Consumers`](src/com/diffplug/common/base/Consumers.java) class to round it out.
+* A [simple replacement](src/com/diffplug/common/base/StringPrinter.java?ts=4) for the mess of `PrintStream`, `OutputStream`, `Writer`, etc. when all you want is to pipe some strings around.
+* Given a node in a tree, and a [`Function<Node, List<Node>>`](src/com/diffplug/common/base/TreeDef.java?ts=4), create a `Stream` for [traversing](test/com/diffplug/common/base/TreeStreamTest.java?ts=4) this tree (breadth-first, depth-first, etc.).
+* An [enum for handling comparisons](src/com/diffplug/common/base/Comparison.java?ts=4) in a pattern-matchey way.
+* Guava's [`Suppliers`](src/com/diffplug/common/base/Suppliers.java?ts=4), [`Predicates`](src/com/diffplug/common/base/Predicates.java?ts=4), and [`Functions`](src/com/diffplug/common/base/Functions.java?ts=4) converted to Java 8, and a new [`Consumers`](src/com/diffplug/common/base/Consumers.java?ts=4) class to round it out.
 * A few other carefully-curated Java 8 goodies:
-	+ [Box and Box.NonNull](src/com/diffplug/common/base/Box.java)
-	+ [GetterSetter](src/com/diffplug/common/base/GetterSetter.java)
-	+ [MoreCollectors](src/com/diffplug/common/base/MoreCollectors.java)
+	+ [Box and Box.NonNull](src/com/diffplug/common/base/Box.java?ts=4)
+	+ [GetterSetter](src/com/diffplug/common/base/GetterSetter.java?ts=4)
+	+ [MoreCollectors](src/com/diffplug/common/base/MoreCollectors.java?ts=4)
 
 Durian's only requirement is Java 8 or greater, no other libraries are needed (not even Guava).
 
