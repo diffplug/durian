@@ -86,6 +86,14 @@ public class ErrorHandlerExample {
 		// are used anywhere in your whole application.  Once log() or dialog() have been used, they are
 		// fixed for the duration of the runtime. If you're writing a library, then you probably shouldn't
 		// try to change them.  If you're writing an application or framework, then you probably should.
+
+		// If you're running in a JUnit environment, then you probably want any call to log() or dialog()
+		// to kill the test. Setting the following system properties (again, before log() or dialog() are
+		// called) will cause any errors to get wrapped and thrown as a java.lang.AssertionError.
+		System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log",
+				"com.diffplug.common.base.ErrorHandler$Plugins$OnErrorThrowAssertion");
+		System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Dialog",
+				"com.diffplug.common.base.ErrorHandler$Plugins$OnErrorThrowAssertion");
 	}
 
 	@Override
@@ -184,8 +192,8 @@ public class ErrorHandlerExample {
 
 		// If your function has more than 1 input, you can either
 		//    A) Make a wrapper function that calls ErrorHandler.get() to return a value (recommended)
-		//    B) Make a "wrapper wrapper" (see ErrorHandlerMultipleInputs.png for more details)
-		// If your function has more than 1 output, see ErrorHandlerMultipleOutputs.png
+		//    B) Make a "wrapper wrapper" (see https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorHandlerMultipleInputs.png)
+		// If your function has more than 1 output, see https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorHandlerMultipleOutputs.png
 	}
 
 	@SuppressWarnings("unused")
@@ -199,9 +207,9 @@ public class ErrorHandlerExample {
 		//
 		// The only way to know the type of List<T> is to grab an element out of the
 		// list and call getClass() on it.  And then you still mostly don't know the type of the list.
-		// This same limitation ripples throw exception handling in the following way:
+		// This same limitation ripples through exception handling in the following way:
 		class BarfHarness {
-			// If you knew it was Barf at compile time then you're all set!
+			// If you knew it was Barf at compile time then you can catch it
 			void exceptionKnownAtCompileTime(Throwing.Specific.Runnable<Barf> eatAndThen) {
 				try {
 					eatAndThen.run();
@@ -210,7 +218,7 @@ public class ErrorHandlerExample {
 				}
 			}
 
-			// If the exception was generic at compile time, then you have to catch the most-general possible exception
+			// If the exception was generic at compile time, then you have to catch the most-general possible exception, which is Throwable
 			<E extends Throwable> void exceptionGenericAtCompileTime(Throwing.Specific.Runnable<E> eatAndThen) {
 				try {
 					eatAndThen.run();
