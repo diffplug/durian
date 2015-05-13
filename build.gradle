@@ -143,6 +143,13 @@ publishing {
 			from components.java
 			artifact sourcesJar
 			artifact javadocJar
+			pom.withXml {
+				asNode().dependencies.'*'.each() {
+					if (it.groupId.text() == 'com.google.code.findbugs') {
+						it.parent().remove(it)
+					}
+				}
+			}
 		}
 	}
 	if (project.hasProperty('dp_maven')) {
