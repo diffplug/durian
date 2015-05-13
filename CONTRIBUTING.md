@@ -2,8 +2,6 @@
 
 Pull requests are welcome, preferably against the branch `develop`, and definitely not against `master`.
 
-It's a great idea to discuss any new features as a GitHub issue before taking the work to implement it.
-
 ## Build instructions
 
 It's a bog-standard gradle build.
