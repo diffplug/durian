@@ -150,7 +150,7 @@ public class StringPrinter {
 
 	/** Creates a PrintStream of the given charset, which passes its content to this StringPrinter. */
 	public PrintStream toPrintStream(Charset charset) {
-		return ErrorHandler.rethrow().get(() -> {
+		return Errors.rethrow().get(() -> {
 			return new PrintStream(toOutputStream(charset), true, charset.name());
 		});
 	}

@@ -27,14 +27,14 @@ import javax.swing.SwingUtilities;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /** 
- * ErrorHandler makes it easy to create implementations of the standard
+ * Errors makes it easy to create implementations of the standard
  * functional interfaces (which don't allow checked exceptions).
  * 
  * Even for cases where you aren't required to stuff some code into a
- * functional interface, ErrorHandler is useful as a concise way to
+ * functional interface, Errors is useful as a concise way to
  * specify how errors will be handled. 
  */
-public abstract class ErrorHandler {
+public abstract class Errors {
 	/** Package-private for testing - resets all of the static member variables. */
 	static void resetForTesting() {
 		log = null;
@@ -44,7 +44,7 @@ public abstract class ErrorHandler {
 	protected final Consumer<Throwable> handler;
 
 	/**
-	 * Creates an ErrorHandler.Rethrowing which transforms any exceptions it receives into a RuntimeException
+	 * Creates an Errors.Rethrowing which transforms any exceptions it receives into a RuntimeException
 	 * as specified by the given function, and then throws that RuntimeException.
 	 * 
 	 * If that function happens to throw an unchecked error itself, that'll work just fine.
@@ -54,18 +54,18 @@ public abstract class ErrorHandler {
 	}
 
 	/**
-	 * Creates an ErrorHandler.Handling which passes any exceptions it receives
+	 * Creates an Errors.Handling which passes any exceptions it receives
 	 * to the given handler.
 	 * 
 	 * The handler is free to throw a RuntimeException if it wants to. If it always
-	 * throws a RuntimeException, then you should instead create an ErrorHandler.Rethrowing
+	 * throws a RuntimeException, then you should instead create an Errors.Rethrowing
 	 * using creeateRethrowAs().
 	 */
 	public static Handling createHandling(Consumer<Throwable> handler) {
 		return new Handling(handler);
 	}
 
-	protected ErrorHandler(Consumer<Throwable> error) {
+	protected Errors(Consumer<Throwable> error) {
 		this.handler = error;
 	}
 
@@ -81,13 +81,13 @@ public abstract class ErrorHandler {
 		return rethrow;
 	}
 
-	private static final Rethrowing rethrow = createRethrowing(ErrorHandler::asRuntime);
+	private static final Rethrowing rethrow = createRethrowing(Errors::asRuntime);
 
 	/**
 	 * Logs any exceptions.
 	 * 
 	 * By default, log() calls Throwable.printStackTrace(). To modify this behavior
-	 * in your application, call DurianPlugins.set(ErrorHandler.Plugins.Log.class, error -> myCustomLog(error));
+	 * in your application, call DurianPlugins.set(Errors.Plugins.Log.class, error -> myCustomLog(error));
 	 */
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
@@ -99,10 +99,10 @@ public abstract class ErrorHandler {
 			// Because DurianPlugins guarantees that its methods will have the exact same
 			// return value for the duration of the library's runtime existence, the only
 			// adverse symptom of this race condition is that there will temporarily be
-			// multiple instances of ErrorHandler which are wrapping the same Consumer<Throwable>.
+			// multiple instances of Errors which are wrapping the same Consumer<Throwable>.
 			//
 			// It is important for this method to be fast, so it's better to accept
-			// that suppress() might return different ErrorHandler instances which are wrapping
+			// that suppress() might return different Errors instances which are wrapping
 			// the same actual Consumer<Throwable>, rather than to incur the cost of some
 			// type of synchronization.
 			log = createHandling(DurianPlugins.get(Plugins.Log.class, Plugins::defaultLog));
@@ -117,7 +117,7 @@ public abstract class ErrorHandler {
 	 * an error is too severe to be silently logged.
 	 * 
 	 * By default, dialog() opens a JOptionPane. To modify this behavior in your application,
-	 * call DurianPlugins.set(ErrorHandler.Plugins.Dialog.class, error -> openMyDialog(error));
+	 * call DurianPlugins.set(Errors.Plugins.Dialog.class, error -> openMyDialog(error));
 	 * 
 	 * For a non-interactive console application, a good implementation of would probably
 	 * print the error and call System.exit().
@@ -125,7 +125,7 @@ public abstract class ErrorHandler {
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
 		if (dialog == null) {
-			// There is an acceptable race condition here.  See ErrorHandler.log() for details.
+			// There is an acceptable race condition here.  See Errors.log() for details.
 			dialog = createHandling(DurianPlugins.get(Plugins.Dialog.class, Plugins::defaultDialog));
 		}
 		return dialog;
@@ -133,7 +133,7 @@ public abstract class ErrorHandler {
 
 	private static Handling dialog;
 
-	/** Passes the given error to be handled by the ErrorHandler. */
+	/** Passes the given error to be handled by the Errors. */
 	public void handle(Throwable error) {
 		handler.accept(error);
 	}
@@ -143,7 +143,7 @@ public abstract class ErrorHandler {
 		wrap(runnable).run();
 	}
 
-	/** Returns a Runnable whose exceptions are handled by this ErrorHandler. */
+	/** Returns a Runnable whose exceptions are handled by this Errors. */
 	public Runnable wrap(Throwing.Runnable runnable) {
 		return () -> {
 			try {
@@ -154,7 +154,7 @@ public abstract class ErrorHandler {
 		};
 	}
 
-	/** Returns a Consumer whose exceptions are handled by this ErrorHandler. */
+	/** Returns a Consumer whose exceptions are handled by this Errors. */
 	public <T> Consumer<T> wrap(Throwing.Consumer<T> consumer) {
 		return val -> {
 			try {
@@ -166,12 +166,12 @@ public abstract class ErrorHandler {
 	}
 
 	/**
-	 * An ErrorHandler which is free to rethrow the exception, but it might not.
+	 * An Errors which is free to rethrow the exception, but it might not.
 	 * 
 	 * If we want to wrap a method with a return value, since the handler might
 	 * not throw an exception, we need a default value to return.
 	 */
-	public static class Handling extends ErrorHandler {
+	public static class Handling extends Errors {
 		protected Handling(Consumer<Throwable> error) {
 			super(error);
 		}
@@ -219,13 +219,13 @@ public abstract class ErrorHandler {
 	}
 
 	/**
-	 * An ErrorHandler which is guaranteed to always throw a RuntimeException.
+	 * An Errors which is guaranteed to always throw a RuntimeException.
 	 * 
 	 * If we want to wrap a method with a return value, it's pointless to specify
 	 * a default value because if the wrapped method fails, a RuntimeException is
 	 * guaranteed to throw.
 	 */
-	public static class Rethrowing extends ErrorHandler {
+	public static class Rethrowing extends Errors {
 		private final Function<Throwable, RuntimeException> transform;
 
 		protected Rethrowing(Function<Throwable, RuntimeException> transform) {
@@ -284,23 +284,23 @@ public abstract class ErrorHandler {
 	}
 
 	/**
-	 * Namespace for the plugins which ErrorHandler supports. Call
-	 * DurianPlugins.register(Plugins.Log.class, logImplementation)
+	 * Namespace for the plugins which Errors supports. Call
+	 * DurianPlugins.register(Errors.Plugins.Log.class, logImplementation)
 	 * if you'd like to change the default behavior.
 	 */
 	public interface Plugins {
-		/** ErrorHandler.log(). */
+		/** Errors.log(). */
 		public interface Log extends Consumer<Throwable> {}
 
-		/** ErrorHandler.dialog(). */
+		/** Errors.dialog(). */
 		public interface Dialog extends Consumer<Throwable> {}
 
-		/** Default behavior of ErrorHandler.log() is Throwable.printStackTrace(). */
+		/** Default behavior of Errors.log() is Throwable.printStackTrace(). */
 		static void defaultLog(Throwable error) {
 			error.printStackTrace();
 		}
 
-		/** Default behavior of ErrorHandler.dialog() is JOptionPane.showMessageDialog without a parent. */
+		/** Default behavior of Errors.dialog() is JOptionPane.showMessageDialog without a parent. */
 		static void defaultDialog(Throwable error) {
 			SwingUtilities.invokeLater(() -> {
 				error.printStackTrace();
@@ -314,7 +314,7 @@ public abstract class ErrorHandler {
 		}
 
 		/**
-		 * An implementation of all of the ErrorHandler built-ins which throws an AssertionError
+		 * An implementation of all of the Errors built-ins which throws an AssertionError
 		 * on any exception.  This can be helpful for JUnit tests.
 		 */
 		public static class OnErrorThrowAssertion implements Log, Dialog {

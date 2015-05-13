@@ -52,7 +52,7 @@ public class StringPrinterTest {
 	@Test
 	public void testToOutputStream() {
 		Assert.assertEquals(TEST_STR, StringPrinter.buildString(printer -> {
-			ErrorHandler.rethrow().run(() -> {
+			Errors.rethrow().run(() -> {
 				printer.toOutputStream(StandardCharsets.UTF_8).write(TEST_STR.getBytes(StandardCharsets.UTF_8));
 			});
 		}));
@@ -61,7 +61,7 @@ public class StringPrinterTest {
 	@Test
 	public void testToPrintStream() {
 		Assert.assertEquals(TEST_STR, StringPrinter.buildString(printer -> {
-			ErrorHandler.rethrow().run(() -> {
+			Errors.rethrow().run(() -> {
 				printer.toPrintStream().print(TEST_STR);
 			});
 		}));
@@ -86,7 +86,7 @@ public class StringPrinterTest {
 
 	private void writerTestCase(String expected, Throwing.Consumer<Writer> underTest) {
 		Assert.assertEquals(expected, StringPrinter.buildString(printer -> {
-			ErrorHandler.rethrow().run(() -> {
+			Errors.rethrow().run(() -> {
 				underTest.accept(printer.toWriter());
 			});
 		}));
@@ -109,7 +109,7 @@ public class StringPrinterTest {
 
 		// write the complicated UTF string one byte at a time to an OutputStream
 		String byteByByteOutputStream = StringPrinter.buildString(printer -> {
-			ErrorHandler.rethrow().run(() -> {
+			Errors.rethrow().run(() -> {
 				OutputStream output = printer.toOutputStream(charset);
 				for (byte b : bytes) {
 					output.write(b);
@@ -120,7 +120,7 @@ public class StringPrinterTest {
 
 		// write the complicated UTF string one byte at a time to a PrintStream
 		String byteByBytePrintStream = StringPrinter.buildString(printer -> {
-			ErrorHandler.rethrow().run(() -> {
+			Errors.rethrow().run(() -> {
 				OutputStream output = printer.toPrintStream(charset);
 				for (byte b : bytes) {
 					output.write(b);

@@ -18,44 +18,44 @@ package com.diffplug.common.base;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.diffplug.common.base.ErrorHandler.Plugins.Dialog;
-import com.diffplug.common.base.ErrorHandler.Plugins.Log;
+import com.diffplug.common.base.Errors.Plugins.Dialog;
+import com.diffplug.common.base.Errors.Plugins.Log;
 
-public class ErrorHandlerTest {
+public class ErrorsTest {
 	@Test(expected = AssertionError.class)
 	public void testAssertionPlugin() {
 		DurianPlugins.resetForTesting();
-		ErrorHandler.resetForTesting();
+		Errors.resetForTesting();
 		try {
-			// set the Suppress handler to the be the OnErrorThrowAssertion
-			System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log",
-					"com.diffplug.common.base.ErrorHandler$Plugins$OnErrorThrowAssertion");
+			// set the Log handler to the be the OnErrorThrowAssertion
+			System.setProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log",
+					"com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion");
 			// send something to the suppress handler, but we should get an AssertionError
-			ErrorHandler.log().run(() -> {
+			Errors.log().run(() -> {
 				throw new RuntimeException("Didn't see this coming.");
 			});
 		} finally {
-			System.clearProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Suppress");
+			System.clearProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Suppress");
 			DurianPlugins.resetForTesting();
-			ErrorHandler.resetForTesting();
+			Errors.resetForTesting();
 		}
 	}
 
 	@Test
 	public void testWrapWithDefault() {
 		// function
-		Assert.assertEquals("called", ErrorHandler.suppress().wrapWithDefault(input -> "called", "default").apply(null));
-		Assert.assertEquals("default", ErrorHandler.suppress().wrapWithDefault(input -> {
+		Assert.assertEquals("called", Errors.suppress().wrapWithDefault(input -> "called", "default").apply(null));
+		Assert.assertEquals("default", Errors.suppress().wrapWithDefault(input -> {
 			throw new IllegalArgumentException();
 		}, "default").apply(null));
 		// supplier
-		Assert.assertEquals("called", ErrorHandler.suppress().wrapWithDefault(() -> "called", "default").get());
-		Assert.assertEquals("default", ErrorHandler.suppress().wrapWithDefault(() -> {
+		Assert.assertEquals("called", Errors.suppress().wrapWithDefault(() -> "called", "default").get());
+		Assert.assertEquals("default", Errors.suppress().wrapWithDefault(() -> {
 			throw new IllegalArgumentException();
 		}, "default").get());
 		// predicate
-		Assert.assertEquals(true, ErrorHandler.suppress().wrapWithDefault(input -> true, false).test(null));
-		Assert.assertEquals(false, ErrorHandler.suppress().wrapWithDefault(input -> {
+		Assert.assertEquals(true, Errors.suppress().wrapWithDefault(input -> true, false).test(null));
+		Assert.assertEquals(false, Errors.suppress().wrapWithDefault(input -> {
 			throw new IllegalArgumentException();
 		}, false).test(null));
 	}
@@ -63,33 +63,33 @@ public class ErrorHandlerTest {
 	@Test
 	public void testWiresCrossed() {
 		DurianPlugins.resetForTesting();
-		ErrorHandler.resetForTesting();
+		Errors.resetForTesting();
 
-		DurianPlugins.register(ErrorHandler.Plugins.Log.class, new TestHandler("Log"));
-		DurianPlugins.register(ErrorHandler.Plugins.Dialog.class, new TestHandler("Dialog"));
+		DurianPlugins.register(Errors.Plugins.Log.class, new TestHandler("Log"));
+		DurianPlugins.register(Errors.Plugins.Dialog.class, new TestHandler("Dialog"));
 
 		try {
-			ErrorHandler.suppress().run(ErrorHandlerTest::throwException);
+			Errors.suppress().run(ErrorsTest::throwException);
 
 			try {
-				ErrorHandler.rethrow().run(ErrorHandlerTest::throwException);
+				Errors.rethrow().run(ErrorsTest::throwException);
 			} catch (RuntimeException e) {
 				// it should pass the RuntimeException unphased
 				Assert.assertNull(e.getCause());
 			}
 			try {
-				ErrorHandler.log().run(ErrorHandlerTest::throwException);
+				Errors.log().run(ErrorsTest::throwException);
 			} catch (RuntimeException e) {
 				Assert.assertEquals("Log", e.getMessage());
 			}
 			try {
-				ErrorHandler.dialog().run(ErrorHandlerTest::throwException);
+				Errors.dialog().run(ErrorsTest::throwException);
 			} catch (RuntimeException e) {
 				Assert.assertEquals("Dialog", e.getMessage());
 			}
 		} finally {
 			DurianPlugins.resetForTesting();
-			ErrorHandler.resetForTesting();
+			Errors.resetForTesting();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class ErrorHandlerTest {
 		throw new RuntimeException();
 	}
 
-	/** Implementation of the various ErrorHandlers which throws a RuntimeException with the given message. */
+	/** Implementation of the various Errors which throws a RuntimeException with the given message. */
 	public static class TestHandler implements Log, Dialog {
 		private String message;
 

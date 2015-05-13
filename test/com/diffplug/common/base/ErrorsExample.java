@@ -18,19 +18,20 @@ package com.diffplug.common.base;
 import java.util.Arrays;
 import java.util.List;
 
-import com.diffplug.common.base.ErrorHandler;
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
 
 // @formatter:off
 @SuppressWarnings({"serial"})
-public class ErrorHandlerExample {
+public class ErrorsExample {
+	/** Errors is a simple little class that makes ErrorHandling a lot easier. */
 	public void whyItsGreat() throws Exception {
 		List<Food> foodOnPlate = Arrays.asList(
 				cook("salmon"),
 				cook("asparagus"),
 				cook("enterotoxin"));
 
-		// without ErrorHandler, we have to write this
+		// without Errors, we have to write this
 		foodOnPlate.forEach(val -> {
 			try {
 				eat(val);
@@ -39,18 +40,18 @@ public class ErrorHandlerExample {
 			}
 		});
 
-		// With ErrorHandler, we can succinctly
-		//                               sweep it under the rug
-		foodOnPlate.forEach(ErrorHandler.suppress().wrap(this::eat));
-		//                               save it for later
-		foodOnPlate.forEach(ErrorHandler.log().wrap(this::eat));
-		//                               make mom deal with it
-		foodOnPlate.forEach(ErrorHandler.rethrow().wrap(this::eat));
-		//                               ask the user deal with it
-		foodOnPlate.forEach(ErrorHandler.dialog().wrap(this::eat));
+		// With Errors, we can succinctly
+		//                         sweep it under the rug
+		foodOnPlate.forEach(Errors.suppress().wrap(this::eat));
+		//                         save it for later
+		foodOnPlate.forEach(Errors.log().wrap(this::eat));
+		//                         make mom deal with it
+		foodOnPlate.forEach(Errors.rethrow().wrap(this::eat));
+		//                         ask the user deal with it
+		foodOnPlate.forEach(Errors.dialog().wrap(this::eat));
 
-		// We can also make our own ErrorHandlers, which can be reused across a project
-		ErrorHandler retryHandler = ErrorHandler.createHandling(error -> {
+		// We can also make our own Errorses, which can be reused across a project
+		Errors retryHandler = Errors.createHandling(error -> {
 			if (error instanceof Barf) {
 				Food cause = ((Barf) error).looksLikeItUsedToBe();
 				try {
@@ -64,25 +65,25 @@ public class ErrorHandlerExample {
 	}
 
 	public void whereDoLogAndDialogComeFrom() {
-		// ErrorHandler.log() promises to "log", and ErrorHandler.dialog() promises to alert the user.
+		// Errors.log() promises to "log", and Errors.dialog() promises to alert the user.
 		// Doing those things is very different depending on whether your code is running as a web
 		// application, console application, or desktop gui
 
-		// One way around this ambiguity is to avoid using ErrorHandler.log() and ErrorHandler.dialog()
-		// entirely, and only use your own custom ErrorHandlers.  But if you are shipping a framework,
-		// and your users might end up using ErrorHandler.log() and .dialog(), then you might want to
+		// One way around this ambiguity is to avoid using Errors.log() and Errors.dialog()
+		// entirely, and only use your own custom Errors.  But if you are shipping a framework,
+		// and your users might end up using Errors.log() and .dialog(), then you might want to
 		// specify what those do.
 
-		// By default, ErrorHandler.log() is just Throwable.printStackTrace, and ErrorHandler.dialog()
+		// By default, Errors.log() is just Throwable.printStackTrace, and Errors.dialog()
 		// opens a JOptionPane. You can modify this behavior with the following:
-		DurianPlugins.register(ErrorHandler.Plugins.Log.class, error -> {
+		DurianPlugins.register(Errors.Plugins.Log.class, error -> {
 			// log to twitter
 		});
-		DurianPlugins.register(ErrorHandler.Plugins.Dialog.class, error -> {
+		DurianPlugins.register(Errors.Plugins.Dialog.class, error -> {
 			// Headless application: email the sysadmin and exit
 			// Web application: ajax an alert() to the user
 		});
-		// The trick is, you have to call these methods BEFORE ErrorHandler.log() or ErrorHandler.dialog()
+		// The trick is, you have to call these methods BEFORE Errors.log() or Errors.dialog()
 		// are used anywhere in your whole application.  Once log() or dialog() have been used, they are
 		// fixed for the duration of the runtime. If you're writing a library, then you probably shouldn't
 		// try to change them.  If you're writing an application or framework, then you probably should.
@@ -90,10 +91,10 @@ public class ErrorHandlerExample {
 		// If you're running in a JUnit environment, then you probably want any call to log() or dialog()
 		// to kill the test. Setting the following system properties (again, before log() or dialog() are
 		// called) will cause any errors to get wrapped and thrown as a java.lang.AssertionError.
-		System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log",
-				"com.diffplug.common.base.ErrorHandler$Plugins$OnErrorThrowAssertion");
-		System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Dialog",
-				"com.diffplug.common.base.ErrorHandler$Plugins$OnErrorThrowAssertion");
+		System.setProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log",
+				"com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion");
+		System.setProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Dialog",
+				"com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion");
 	}
 
 	@Override
@@ -119,16 +120,16 @@ public class ErrorHandlerExample {
 
 	@Override
 	public void finalize() {
-		// If we're taking the "default value" route, ErrorHandler has you covered
-		Food logged = ErrorHandler.log().getWithDefault(() -> cook("spaghetti"), CEREAL); // log to twitter
-		Food suppressed = ErrorHandler.suppress().getWithDefault(() -> cook("spaghetti"), CEREAL); // suppress to insecurity buffer
+		// If we're taking the "default value" route, Errors has you covered
+		Food logged = Errors.log().getWithDefault(() -> cook("spaghetti"), CEREAL); // log to twitter
+		Food suppressed = Errors.suppress().getWithDefault(() -> cook("spaghetti"), CEREAL); // suppress to insecurity buffer
 
 		// If we're taking the "rethrow RuntimeException" route, then specifying a
 		// default value would be nonsensical, so we don't do it
-		Food rethrow = ErrorHandler.rethrow().get(() -> cook("spaghetti"));
+		Food rethrow = Errors.rethrow().get(() -> cook("spaghetti"));
 
 		// I'm stressed, don't judge me
-		ErrorHandler.suppress().run(() -> {
+		Errors.suppress().run(() -> {
 			eat(logged);
 			eat(suppressed);
 			eat(rethrow);
@@ -136,24 +137,24 @@ public class ErrorHandlerExample {
 	}
 
 	public void finalizeAdvanced() {
-		// The previous example uncovered one of ErrorHandler's secrets. There are two 
-		// subclasses of ErrorHandler: ErrorHandler.Handling, and ErrorHandler.Rethrowing.
+		// The previous example uncovered one of Errors's secrets. There are two 
+		// subclasses of Errors: Errors.Handling, and Errors.Rethrowing.
 
-		// An instance of ErrorHandler.Rethrowing is an ErrorHandler that guarantees by construction
+		// An instance of Errors.Rethrowing is an Errors that guarantees by construction
 		// to always handle errors by throwing a RuntimeException.  This means that when it is returning
 		// a value from a fallible function, it doesn't need a default value.
-		ErrorHandler.Rethrowing rethrowing = ErrorHandler.createRethrowing(error -> {
+		Errors.Rethrowing rethrowing = Errors.createRethrowing(error -> {
 			// Note that we're returning the exception, not throwing it.
-			// The ErrorHandler will throw it for us, thus "guaranteed by construction".
+			// The Errors will throw it for us, thus "guaranteed by construction".
 			// It'd be okay if we threw it ourselves too, but it's not as pretty.
 			return new RuntimeException("AHHHHHHHHHHHHHHHHHH!!!!");
 		});
 		Food thrown = rethrowing.get(() -> cook("spaghetti")); // no default needed
 
-		// An instance of ErrorHandler.Handling is an ErrorHandler that doesn't make this guarantee.
+		// An instance of Errors.Handling is an Errors that doesn't make this guarantee.
 		// Since it isn't going to handle errors by throwing an exception (well, it might, but it isn't
 		// promising to, so it might not), a default value is required.
-		ErrorHandler.Handling handling = ErrorHandler.createHandling(error -> {
+		Errors.Handling handling = Errors.createHandling(error -> {
 			if (error instanceof RuntimeException) {
 				throw (RuntimeException) error;
 			} else {
@@ -162,7 +163,7 @@ public class ErrorHandlerExample {
 		});
 		Food handled = handling.getWithDefault(() -> cook("spaghetti"), CEREAL); // gotta have that default
 
-		// A plain-old ErrorHandler can deal with functions that don't return values (namely Runnable and Consumer).
+		// A plain-old Errors can deal with functions that don't return values (namely Runnable and Consumer).
 		// But to work with functions that do return a value (namely Supplier and Function), you're gonna
 		// need to have it in its true Handling / Rethrowing form.  In a modern IDE with autocomplete,
 		// The Right Thing will just automatically happen for you.
@@ -175,25 +176,25 @@ public class ErrorHandlerExample {
 
 	@SuppressWarnings("unused")
 	public void wrapping() {
-		// If your functional interface has 0 or 1 outputs, and 0 or 1 inputs, then ErrorHandler can wrap it into its standard Java 8 form
+		// If your functional interface has 0 or 1 outputs, and 0 or 1 inputs, then Errors can wrap it into its standard Java 8 form
 		Throwing.Runnable marathon = () -> { throw new IAmOnFire(); };
-		java.lang.Runnable marathonSafe = ErrorHandler.log().wrap(marathon);
+		java.lang.Runnable marathonSafe = Errors.log().wrap(marathon);
 
 		Throwing.Consumer<Food> eat = this::eat;
-		java.util.function.Consumer<Food> eatSafe = ErrorHandler.log().wrap(eat);
+		java.util.function.Consumer<Food> eatSafe = Errors.log().wrap(eat);
 
 		Throwing.Supplier<Food> cookSpatula = () -> cook("spatula");
-		java.util.function.Supplier<Food> cookSpatulaOrGetCereal = ErrorHandler.log().wrapWithDefault(cookSpatula, CEREAL);
-		java.util.function.Supplier<Food> cookSpatulaOrBurn = ErrorHandler.rethrow().wrap(cookSpatula);
+		java.util.function.Supplier<Food> cookSpatulaOrGetCereal = Errors.log().wrapWithDefault(cookSpatula, CEREAL);
+		java.util.function.Supplier<Food> cookSpatulaOrBurn = Errors.rethrow().wrap(cookSpatula);
 
 		Throwing.Function<String, Food> cookAnything = this::cook;
-		java.util.function.Function<String, Food> cookAnythingOrGetCereal = ErrorHandler.log().wrapWithDefault(this::cook, CEREAL);
-		java.util.function.Function<String, Food> cookAnythingOrBurn = ErrorHandler.rethrow().wrap(this::cook);
+		java.util.function.Function<String, Food> cookAnythingOrGetCereal = Errors.log().wrapWithDefault(this::cook, CEREAL);
+		java.util.function.Function<String, Food> cookAnythingOrBurn = Errors.rethrow().wrap(this::cook);
 
 		// If your function has more than 1 input, you can either
-		//    A) Make a wrapper function that calls ErrorHandler.get() to return a value (recommended)
-		//    B) Make a "wrapper wrapper" (see https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorHandlerMultipleInputs.png)
-		// If your function has more than 1 output, see https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorHandlerMultipleOutputs.png
+		//    A) Make a wrapper function that calls Errors.get() to return a value (recommended)
+		//    B) Make a "wrapper wrapper" (see https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorsMultipleInputs.png)
+		// If your function has more than 1 output, see https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorsMultipleOutputs.png
 	}
 
 	@SuppressWarnings("unused")
@@ -223,7 +224,7 @@ public class ErrorHandlerExample {
 				try {
 					eatAndThen.run();
 					// You can try "catch (E e)", but you'll get: "Cannot use the type parameter E in a catch block"
-					// You can try "catch (Barf e)", but you'll get: "Unreachable catch block for ErrorHandlerExample.Barf. This exception is never thrown from the try statement body"
+					// You can try "catch (Barf e)", but you'll get: "Unreachable catch block for ErrorsExample.Barf. This exception is never thrown from the try statement body"
 				} catch (Throwable e) {
 					// Looks like we're stuck catching Throwable.  Why should we bother having the exception be generic?
 				}
@@ -242,7 +243,7 @@ public class ErrorHandlerExample {
 		// public interface Function<T, R> extends Specific.Function<T, R, Throwable> {}
 		// public interface Predicate<T> extends Specific.Predicate<T, Throwable> {}
 
-		// Now you know how to cook spaghetti and eat salmon using Java >= 8 and generic exceptions!
+		// Now you know how to cook spaghetti and eat salmon using Java >= 8 and generic exceptions using Errors!
 	}
 
 	/** Immutable, unfortunately. */

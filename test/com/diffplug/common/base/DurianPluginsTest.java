@@ -33,31 +33,31 @@ public class DurianPluginsTest {
 		// the instance that will be set as a default
 		TestLogHandler logHandler = new TestLogHandler();
 		// set the plugin as the default
-		DurianPlugins.register(ErrorHandler.Plugins.Log.class, logHandler);
+		DurianPlugins.register(Errors.Plugins.Log.class, logHandler);
 		// make sure that it returns the value we set, and not the default value
-		Assert.assertEquals(logHandler, DurianPlugins.get(ErrorHandler.Plugins.Log.class, new TheWrongLogHandler()));
+		Assert.assertEquals(logHandler, DurianPlugins.get(Errors.Plugins.Log.class, new TheWrongLogHandler()));
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testRegisterTooLate() {
 		TestLogHandler logHandler = new TestLogHandler();
 		// set the value using a default value
-		Assert.assertEquals(logHandler, DurianPlugins.get(ErrorHandler.Plugins.Log.class, logHandler));
+		Assert.assertEquals(logHandler, DurianPlugins.get(Errors.Plugins.Log.class, logHandler));
 		// try to set the value using register (it should throw an exception)
-		DurianPlugins.register(ErrorHandler.Plugins.Log.class, logHandler);
+		DurianPlugins.register(Errors.Plugins.Log.class, logHandler);
 	}
 
 	@Test
 	public void testSystemProperty() {
 		try {
 			// set the system property to TestLogHandler's name
-			System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log", TestLogHandler.class.getName());
+			System.setProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log", TestLogHandler.class.getName());
 			// get the property with TheWrongLogHandler as the default
-			Consumer<Throwable> impl = DurianPlugins.get(ErrorHandler.Plugins.Log.class, new TheWrongLogHandler());
+			Consumer<Throwable> impl = DurianPlugins.get(Errors.Plugins.Log.class, new TheWrongLogHandler());
 			// make sure it's the right value
 			Assert.assertTrue(impl instanceof TestLogHandler);
 		} finally {
-			System.clearProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log");
+			System.clearProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log");
 		}
 	}
 
@@ -65,22 +65,22 @@ public class DurianPluginsTest {
 	public void testDefault() {
 		// set the value using the default
 		TestLogHandler firstDefault = new TestLogHandler();
-		Consumer<Throwable> firstCall = DurianPlugins.get(ErrorHandler.Plugins.Log.class, firstDefault);
+		Consumer<Throwable> firstCall = DurianPlugins.get(Errors.Plugins.Log.class, firstDefault);
 		Assert.assertEquals(firstDefault, firstCall);
 
 		// get with a different default, but it should still be the first one
-		Consumer<Throwable> secondCall = DurianPlugins.get(ErrorHandler.Plugins.Log.class, new TheWrongLogHandler());
+		Consumer<Throwable> secondCall = DurianPlugins.get(Errors.Plugins.Log.class, new TheWrongLogHandler());
 		Assert.assertEquals(firstDefault, secondCall);
 	}
 
-	static class TestLogHandler implements ErrorHandler.Plugins.Log {
+	static class TestLogHandler implements Errors.Plugins.Log {
 		@Override
 		public void accept(Throwable error) {
 			throw new UnsupportedOperationException("No such thing as an error in Durian.");
 		}
 	}
 
-	static class TheWrongLogHandler implements ErrorHandler.Plugins.Log {
+	static class TheWrongLogHandler implements Errors.Plugins.Log {
 		@Override
 		public void accept(Throwable error) {}
 	}
