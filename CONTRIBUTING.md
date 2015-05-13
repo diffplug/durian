@@ -1,6 +1,8 @@
 # Contributing to Durian
 
-Pull requests are welcome, preferably against the branch `develop`, but definitely not against `master`.
+Pull requests are welcome, preferably against the branch `develop`, and definitely not against `master`.
+
+It's a great idea to discuss any new features as a GitHub issue before taking the work to implement it.
 
 ## Build instructions
 
@@ -14,12 +16,8 @@ It's a bog-standard gradle build.
 * runs FindBugs
 * checks the formatting
 * runs the tests
-* updates the manifest
 
-If you're getting style warnings:
-
-`gradlew licenseFormat` will apply the license template.
-~~`gradlew format` will apply the coding style~~ [Github issue](https://github.com/youribonnaffe/gradle-format-plugin/issues/8).
+If you're getting style warnings, `gradlew spotlessApply` will apply anything necessary to fix formatting. For more info on the formatter, check out [spotless](https://github.com/diffplug/spotless).
 
 ## License
 
