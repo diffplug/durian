@@ -15,6 +15,8 @@
  */
 package com.diffplug.common.base;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /** Utility class to make reading the result of "compareTo" results a little easier. */
 public enum Comparison {
 	LESSER, EQUAL, GREATER;
@@ -39,6 +41,7 @@ public enum Comparison {
 	}
 
 	/** Returns a Comparison from the given result of Comparable.compareTo(). */
+	@SuppressFBWarnings(value = "UC_USELESS_CONDITION", justification = "Throwing Unhandled keeps the code more explicit.")
 	public static Comparison from(int compareToResult) {
 		if (compareToResult == 0) {
 			return Comparison.EQUAL;
