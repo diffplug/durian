@@ -303,6 +303,7 @@ public abstract class ErrorHandler {
 		/** Default behavior of ErrorHandler.dialog() is JOptionPane.showMessageDialog without a parent. */
 		static void defaultDialog(Throwable error) {
 			SwingUtilities.invokeLater(() -> {
+				error.printStackTrace();
 				String title = error.getClass().getSimpleName();
 				JOptionPane.showMessageDialog(null, error.getMessage() + "\n\n" + StringPrinter.buildString(printer -> {
 					PrintWriter writer = printer.toPrintWriter();
