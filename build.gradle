@@ -109,9 +109,9 @@ tasks.withType(FindBugs) {
 		html.enabled = true
 	}
 }
-// we'll want the findbugs annotations
+// we'll want the findbugs annotations (they don't have a 3.0.1 version)
 dependencies {
-	compile "com.google.code.findbugs:annotations:${VER_FINDBUGS}"
+	compile 'com.google.code.findbugs:annotations:3.0.0'
 }
 
 ///////////
