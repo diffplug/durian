@@ -102,19 +102,18 @@ spotless {
 apply plugin: 'findbugs'
 findbugs {
 	toolVersion = VER_FINDBUGS
-	sourceSets = []			// don't run findbugs on a regular build
-	ignoreFailures = true 	// don't stop a build because of findbugs
+	sourceSets = [sourceSets.main]	// don't check the test code
+	ignoreFailures = false 	// bug free or it doesn't ship!
 	reportsDir = file('build/findbugs')
 	effort = 'max'			// min|default|max
-	reportLevel = 'high'	// low|medium |high
+	reportLevel = 'low'		// low|medium|high (low = sensitive to even minor mistakes)
 	omitVisitors = []		// bugs that we want to ignore
 }
-
-// XML instead of HTML
+// HTML instead of XML
 tasks.withType(FindBugs) {
 	reports {
-		xml.enabled = true
-		html.enabled = false
+		xml.enabled = false
+		html.enabled = true
 	}
 }
 // we'll want the findbugs annotations

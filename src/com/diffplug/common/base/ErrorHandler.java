@@ -15,10 +15,14 @@
  */
 package com.diffplug.common.base;
 
+import java.io.PrintWriter;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -60,18 +64,40 @@ public abstract class ErrorHandler {
 	}
 
 	/** Suppresses errors entirely. */
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling suppress() {
+		if (suppress == null) {
+			// There is an acceptable race condition here - suppress might get set multiple times.
+			// This would happen if multiple threads called suppress() at the same time
+			// during initialization, and this is likely to actually happen in practice.
+			// 
+			// Because DurianPlugins guarantees that its methods will have the exact same
+			// return value for the duration of the library's runtime existence, the only
+			// adverse symptom of this race condition is that there will temporarily be
+			// multiple instances of ErrorHandler which are wrapping the same Consumer<Throwable>.
+			//
+			// It is important for this method to be fast, so it's better to accept
+			// that suppress() might return different ErrorHandler instances which are wrapping
+			// the same actual Consumer<Throwable>, rather than to incur the cost of some
+			// type of synchronization.
+			suppress = createHandling(DurianPlugins.get(Plugins.Suppress.class, Plugins::defaultSuppress));
+		}
 		return suppress;
 	}
 
-	private static final Handling suppress = createHandling(obj -> {} );
+	private static Handling suppress;
 
 	/** Rethrows any exceptions as runtime exceptions. */
+	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Rethrowing rethrow() {
+		if (rethrow == null) {
+			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
+			rethrow = createRethrowing(DurianPlugins.get(Plugins.Rethrow.class, Plugins::defaultRethrow));
+		}
 		return rethrow;
 	}
 
-	private static final Rethrowing rethrow = createRethrowing(ErrorHandler::asRuntime);
+	private static Rethrowing rethrow;
 
 	/**
 	 * Logs any exceptions.
@@ -82,18 +108,8 @@ public abstract class ErrorHandler {
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
 		if (log == null) {
-			// There is an acceptable race condition here - log might get set multiple times.
-			// This would happen if multiple threads called log() at the same time
-			// during initialization, and this is likely to actually happen in practice.
-			// BUT, there are no adverse symptoms (unless users are relying on identity
-			// equality of this return value, which there's no reason to do) because
-			// DurianPlugins guarantees that its methods will have the exact same
-			// return value for the duration of the library's runtime existence.
-			//
-			// It is important for this method to be fast, so it's better to accept
-			// that log() might return different ErrorHandler instances which are wrapping
-			// the same actual Consumer<Throwable>.
-			log = createHandling(DurianPlugins.getInstance().getErrorHandlerLog());
+			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
+			log = createHandling(DurianPlugins.get(Plugins.Log.class, Plugins::defaultLog));
 		}
 		return log;
 	}
@@ -109,8 +125,8 @@ public abstract class ErrorHandler {
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
 		if (dialog == null) {
-			// There is an acceptable race condition here.  See ErrorHandler.log() for details.
-			dialog = createHandling(DurianPlugins.getInstance().getErrorHandlerDialog());
+			// There is an acceptable race condition here.  See ErrorHandler.suppress() for details.
+			dialog = createHandling(DurianPlugins.get(Plugins.Dialog.class, Plugins::defaultDialog));
 		}
 		return dialog;
 	}
@@ -215,7 +231,7 @@ public abstract class ErrorHandler {
 		protected Rethrowing(Function<Throwable, RuntimeException> transform) {
 			super(error -> {
 				throw transform.apply(error);
-			} );
+			});
 			this.transform = transform;
 		}
 
@@ -264,6 +280,50 @@ public abstract class ErrorHandler {
 			return (RuntimeException) e;
 		} else {
 			return new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Namespace for the plugins which ErrorHandler supports. Call
+	 * DurianPlugins.register(Plugins.Log.class, logImplementation)
+	 * if you'd like to change the default behavior.
+	 */
+	public interface Plugins {
+		/** ErrorHandler.suppress(). */
+		public interface Suppress extends Consumer<Throwable> {}
+
+		/** ErrorHandler.rethrow(). */
+		public interface Rethrow extends Function<Throwable, RuntimeException> {}
+
+		/** ErrorHandler.log(). */
+		public interface Log extends Consumer<Throwable> {}
+
+		/** ErrorHandler.dialog(). */
+		public interface Dialog extends Consumer<Throwable> {}
+
+		/** Default behavior of ErrorHandler.suppress() is to do absolutely nothing. */
+		static void defaultSuppress(Throwable error) {}
+
+		/** Default behavior of ErrorHandler.rethrow() is ErrorHandler.asRuntime(). */
+		static RuntimeException defaultRethrow(Throwable error) {
+			return asRuntime(error);
+		}
+
+		/** Default behavior of ErrorHandler.log() is Throwable.printStackTrace(). */
+		static void defaultLog(Throwable error) {
+			error.printStackTrace();
+		}
+
+		/** Default behavior of ErrorHandler.dialog() is JOptionPane.showMessageDialog without a parent. */
+		static void defaultDialog(Throwable error) {
+			SwingUtilities.invokeLater(() -> {
+				String title = error.getClass().getSimpleName();
+				JOptionPane.showMessageDialog(null, error.getMessage() + "\n\n" + StringPrinter.buildString(printer -> {
+					PrintWriter writer = printer.toPrintWriter();
+					error.printStackTrace(writer);
+					writer.close();
+				}), title, JOptionPane.ERROR_MESSAGE);
+			});
 		}
 	}
 }

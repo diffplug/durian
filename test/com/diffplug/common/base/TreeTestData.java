@@ -144,7 +144,7 @@ public class TreeTestData {
 		TreeIterable.breadthFirst(TreeNode.treeDef(), root).forEach(node -> {
 			TreeNode<String> oldValue = mapByName.put(node.getObj(), node);
 			Assert.assertTrue("Multiple nodes with name " + node.getObj(), oldValue == null);
-		} );
+		});
 		TreeNode<String> node = mapByName.get(name);
 		Assert.assertNotNull(node);
 		return node;

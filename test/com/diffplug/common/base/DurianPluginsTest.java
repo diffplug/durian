@@ -18,62 +18,70 @@ package com.diffplug.common.base;
 import java.util.function.Consumer;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DurianPluginsTest {
-	@Test
-	public void testErrorHandlerLogDefault() throws InterruptedException {
-		// TODO: test that the logging is happening
+	/** Create a fresh instance of plugins for each test. */
+	@Before
+	public void setup() {
+		DurianPlugins.resetForTesting();
 	}
 
-	/*
 	@Test
-	public void testErrorHandlerDialogDefault() throws InterruptedException {
-		// if you want to tinker with the error handler dialog, uncomment this test
-		new DurianPlugins().getErrorHandlerDialog().accept(new Throwable("This dialog will close in 1 second"));
-		Thread.sleep(1000);
-	}
-	*/
-
-	@Test
-	public void testErrorHandlerLogViaRegisterMethod() {
+	public void testRegister() {
+		// the instance that will be set as a default
 		TestLogHandler logHandler = new TestLogHandler();
+		// set the plugin as the default
+		DurianPlugins.register(ErrorHandler.Plugins.Log.class, logHandler);
+		// make sure that it returns the value we set, and not the default value
+		Assert.assertEquals(logHandler, DurianPlugins.get(ErrorHandler.Plugins.Log.class, new TheWrongLogHandler()));
+	}
 
-		DurianPlugins plugins = new DurianPlugins();
-		plugins.registerErrorHandlerLog(logHandler);
-		Assert.assertEquals(logHandler, plugins.getErrorHandlerLog());
+	@Test(expected = IllegalStateException.class)
+	public void testRegisterTooLate() {
+		TestLogHandler logHandler = new TestLogHandler();
+		// set the value using a default value
+		Assert.assertEquals(logHandler, DurianPlugins.get(ErrorHandler.Plugins.Log.class, logHandler));
+		// try to set the value using register (it should throw an exception)
+		DurianPlugins.register(ErrorHandler.Plugins.Log.class, logHandler);
 	}
 
 	@Test
-	public void testErrorHandlerLogViaProperty() {
+	public void testSystemProperty() {
 		try {
-			System.setProperty("durian.plugin.ErrorHandlerLog.implementation", TestLogHandler.class.getName());
-			DurianPlugins plugins = new DurianPlugins();
-			Consumer<Throwable> impl = plugins.getErrorHandlerLog();
+			// set the system property to TestLogHandler's name
+			System.setProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log", TestLogHandler.class.getName());
+			// get the property with TheWrongLogHandler as the default
+			Consumer<Throwable> impl = DurianPlugins.get(ErrorHandler.Plugins.Log.class, new TheWrongLogHandler());
+			// make sure it's the right value
 			Assert.assertTrue(impl instanceof TestLogHandler);
 		} finally {
-			System.clearProperty("rxjava.plugin.RxJavaErrorHandler.implementation");
+			System.clearProperty("durian.plugins.com.diffplug.common.base.ErrorHandler.Plugins.Log");
 		}
 	}
 
-	static class TestLogHandler implements DurianPlugins.ErrorHandlerLog {
+	@Test
+	public void testDefault() {
+		// set the value using the default
+		TestLogHandler firstDefault = new TestLogHandler();
+		Consumer<Throwable> firstCall = DurianPlugins.get(ErrorHandler.Plugins.Log.class, firstDefault);
+		Assert.assertEquals(firstDefault, firstCall);
+
+		// get with a different default, but it should still be the first one
+		Consumer<Throwable> secondCall = DurianPlugins.get(ErrorHandler.Plugins.Log.class, new TheWrongLogHandler());
+		Assert.assertEquals(firstDefault, secondCall);
+	}
+
+	static class TestLogHandler implements ErrorHandler.Plugins.Log {
 		@Override
 		public void accept(Throwable error) {
 			throw new UnsupportedOperationException("No such thing as an error in Durian.");
 		}
 	}
 
-	@Test
-	public void testWiresNotCrossed() {
-		TestLogHandler log = new TestLogHandler();
-		DurianPlugins.ErrorHandlerDialog dialog = error -> {};
-
-		DurianPlugins plugins = new DurianPlugins();
-		plugins.registerErrorHandlerLog(log);
-		plugins.registerErrorHandlerDialog(dialog);
-
-		Assert.assertEquals(log, plugins.getErrorHandlerLog());
-		Assert.assertEquals(dialog, plugins.getErrorHandlerDialog());
-		Assert.assertFalse(plugins.getErrorHandlerDialog() == plugins.getErrorHandlerLog());
+	static class TheWrongLogHandler implements ErrorHandler.Plugins.Log {
+		@Override
+		public void accept(Throwable error) {}
 	}
 }
