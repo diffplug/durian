@@ -26,6 +26,18 @@ import com.diffplug.common.base.TreeNode;
 import com.diffplug.common.base.TreeStream;
 
 public class TreeStreamTest {
+	// @formatter:off
+	private TreeNode<String> root = TreeTestData.create(
+			"root",
+			" A",
+			"  B",
+			"   C",
+			" 1",
+			"  2",
+			"   3",
+			"   a");
+	// @formatter:on
+
 	@Test
 	public void toParentTest() {
 		toParentTestCase("root");
@@ -80,16 +92,4 @@ public class TreeStreamTest {
 	private TreeNode<String> getNode(String name) {
 		return TreeTestData.getByName(root, name);
 	}
-
-	// @formatter:off
-	private TreeNode<String> root = TreeTestData.create(
-			"root",
-			" A",
-			"  B",
-			"   C",
-			" 1",
-			"  2",
-			"   3",
-			"   a");
-	// @formatter:on
 }
