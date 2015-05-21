@@ -26,13 +26,15 @@ import java.util.function.Supplier;
 
 /**
  * Provides get/set access to some field.
- * 
- * It's tempting for this to implement Consumer<T>, but it turns
- * out to be very strange to use with the accept() rather than set(T value).
  */
-public interface GetterSetter<T> extends Supplier<T> {
+public interface GetterSetter<T> extends Supplier<T>, Consumer<T> {
 	/** Sets the value which will later be returned by get(). */
 	void set(T value);
+
+	/** Delegates to set(). */
+	default void accept(T value) {
+		set(value);
+	}
 
 	/** Creates a GetterSetter from a Supplier and a Consumer. */
 	public static <T> GetterSetter<T> from(Supplier<T> getter, Consumer<T> setter) {
