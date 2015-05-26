@@ -77,7 +77,7 @@ public class Unhandled extends IllegalArgumentException {
 		return new Unhandled("Unsupported operation.");
 	}
 
-	public static Unhandled exception(String template, Object ... args) {
+	public static Unhandled exception(String template, Object... args) {
 		return new Unhandled(format(template, args));
 	}
 

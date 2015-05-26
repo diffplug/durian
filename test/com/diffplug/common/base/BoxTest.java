@@ -18,8 +18,8 @@ package com.diffplug.common.base;
 import org.junit.Assert;
 import org.junit.Test;
 
-/** Stupid-simple test for the very simple GetterSetter class. */
-public class GetterSetterTest {
+/** Stupid-simple test for the very simple Box class. */
+public class BoxTest {
 	private static String staticValue;
 
 	private static String getStaticValue() {
@@ -32,7 +32,7 @@ public class GetterSetterTest {
 
 	@Test
 	public void testStatic() {
-		GetterSetter<String> forValue = GetterSetter.from(GetterSetterTest::getStaticValue, GetterSetterTest::setStaticValue);
+		Box<String> forValue = Box.from(BoxTest::getStaticValue, BoxTest::setStaticValue);
 		forValue.set("A");
 		Assert.assertEquals("A", forValue.get());
 		forValue.set("B");
@@ -51,7 +51,7 @@ public class GetterSetterTest {
 
 	@Test
 	public void testInstance() {
-		GetterSetter<String> forValue = GetterSetter.from(this, GetterSetterTest::getValue, GetterSetterTest::setValue);
+		Box<String> forValue = Box.from(this, BoxTest::getValue, BoxTest::setValue);
 		forValue.set("A");
 		Assert.assertEquals("A", forValue.get());
 		forValue.set("B");

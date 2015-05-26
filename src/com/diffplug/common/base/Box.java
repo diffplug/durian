@@ -16,57 +16,205 @@
 package com.diffplug.common.base;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
+import java.util.function.Function;
+import java.util.function.IntConsumer;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
-/**
- * Simple class for creating boxed variables. Useful when you
- * need to make a mutable variable available to a closure.
- */
-public class Box<T> implements GetterSetter<T> {
-	/** The (possibly-null) object being held. */
-	private volatile T obj;
+/** Provides get/set access to some field. */
+public interface Box<T> extends Supplier<T>, Consumer<T> {
+	/** Sets the value which will later be returned by get(). */
+	void set(T value);
 
-	protected Box(T init) {
-		this.set(init);
+	/** Delegates to set(). */
+	default void accept(T value) {
+		set(value);
 	}
 
 	/** Creates a Holder of the given object. */
 	public static <T> Box<T> of(T init) {
-		return new Box<T>(init);
+		return new BoxImp<T>(init);
 	}
 
 	/** Creates an empty Holder object. */
-	public static <T> Box<T> empty() {
-		return new Box<T>(null);
+	public static <T> Box<T> ofNull() {
+		return new BoxImp<T>(null);
 	}
 
-	@Override
-	public T get() {
-		return obj;
-	}
+	/** A simple implementation of Box. */
+	static class BoxImp<T> implements Box<T> {
+		/** The (possibly-null) object being held. */
+		private volatile T obj;
 
-	@Override
-	public void set(T obj) {
-		this.obj = obj;
-	}
-
-	@Override
-	public String toString() {
-		return get() == null ? "(null)" : get().toString();
-	}
-
-	/** A Box<T> which guarantees to never be null (by disallowing null values in its setter). */
-	public static class NonNull<T> extends Box<T> {
-		public static <T> NonNull<T> of(T value) {
-			return new NonNull<T>(value);
+		protected BoxImp(T init) {
+			this.set(init);
 		}
 
-		protected NonNull(T value) {
-			super(Objects.requireNonNull(value));
+		@Override
+		public T get() {
+			return obj;
 		}
 
 		@Override
 		public void set(T obj) {
-			super.set(Objects.requireNonNull(obj));
+			this.obj = obj;
+		}
+
+		@Override
+		public String toString() {
+			return get() == null ? "(null)" : get().toString();
+		}
+	}
+
+	/** Creates a Box from a Supplier and a Consumer. */
+	public static <T> Box<T> from(Supplier<T> getter, Consumer<T> setter) {
+		return new Box<T>() {
+			@Override
+			public T get() {
+				return getter.get();
+			}
+
+			@Override
+			public void set(T value) {
+				setter.accept(value);
+			}
+		};
+	}
+
+	/** Creates a Box from an argument and two functions which operate on that argument. */
+	public static <T, V> Box<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
+		return new Box<T>() {
+			@Override
+			public T get() {
+				return getter.apply(target);
+			}
+
+			@Override
+			public void set(T value) {
+				setter.accept(target, value);
+			}
+		};
+	}
+
+	/** A Box<T> which promises to never be null. */
+	public interface NonNull<T> extends Box<T> {
+		/** Creates a NonNull box holding the given value. */
+		public static <T> NonNull<T> of(T value) {
+			return new NonNullImp<T>(value);
+		}
+
+		/** Creates a Box from a Supplier and a Consumer. */
+		public static <T> NonNull<T> from(Supplier<T> getter, Consumer<T> setter) {
+			return new NonNull<T>() {
+				@Override
+				public T get() {
+					return Objects.requireNonNull(getter.get());
+				}
+
+				@Override
+				public void set(T value) {
+					setter.accept(Objects.requireNonNull(value));
+				}
+			};
+		}
+
+		/** Creates a Box from an argument and two functions which operate on that argument. */
+		public static <T, V> NonNull<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
+			return new NonNull<T>() {
+				@Override
+				public T get() {
+					return Objects.requireNonNull(getter.apply(target));
+				}
+
+				@Override
+				public void set(T value) {
+					setter.accept(target, Objects.requireNonNull(value));
+				}
+			};
+		}
+
+		/** Creates a NonNull box holding the given value. */
+		public static <T> NonNull<T> wrap(Box<T> wrapped) {
+			Objects.requireNonNull(wrapped.get());
+			return new NonNull<T>() {
+				@Override
+				public void set(T value) {
+					wrapped.set(Objects.requireNonNull(value));
+				}
+
+				@Override
+				public T get() {
+					return Objects.requireNonNull(wrapped.get());
+				}
+			};
+		}
+
+		/** A standard implementation of NonNull<T>. */
+		static class NonNullImp<T> extends BoxImp<T>implements NonNull<T> {
+			protected NonNullImp(T init) {
+				super(Objects.requireNonNull(init));
+			}
+
+			@Override
+			public void set(T obj) {
+				super.set(Objects.requireNonNull(obj));
+			}
+		}
+	}
+
+	/** A Box for primitive doubles. */
+	public interface Double extends DoubleSupplier, DoubleConsumer {
+		/** Sets the value which will later be returned by get(). */
+		void set(double value);
+
+		/** Implement the DoubleConsumer interface. */
+		default void accept(double value) {
+			set(value);
+		}
+
+		/** Creates a Box.Double from a Supplier and a Consumer. */
+		public static Double from(DoubleSupplier getter, DoubleConsumer setter) {
+			return new Double() {
+				@Override
+				public double getAsDouble() {
+					return getter.getAsDouble();
+				}
+
+				@Override
+				public void set(double value) {
+					setter.accept(value);
+				}
+			};
+		}
+	}
+
+	/** A Box for primitive ints. */
+	public interface Int extends IntSupplier, IntConsumer {
+		/** Sets the value which will later be returned by get(). */
+		void set(int value);
+
+		/** Implement the IntConsumer interface. */
+		default void accept(int value) {
+			set(value);
+		}
+
+		/** Creates a Box.Int from a Supplier and a Consumer. */
+		public static Int from(IntSupplier getter, IntConsumer setter) {
+			return new Int() {
+				@Override
+				public int getAsInt() {
+					return getter.getAsInt();
+				}
+
+				@Override
+				public void set(int value) {
+					setter.accept(value);
+				}
+			};
 		}
 	}
 }

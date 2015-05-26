@@ -59,7 +59,7 @@ public class StackDumperTest {
 	StringBuilder testCaseErr = new StringBuilder();
 
 	private void runWithCleanStack(Throwing.Runnable runnable) throws Throwable {
-		Box<Throwable> testError = Box.empty();
+		Box<Throwable> testError = Box.ofNull();
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
