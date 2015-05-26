@@ -1,5 +1,12 @@
 # Durian releases
 
+### Version 3.0 - TBD
+
+* Merged `GetterSetter` and `Box` into just `Box`.
+* Rather than `Box` and `Box.NonNull extends Box`, we now have `Box` and `Box.Nullable`.
+	+ Non-null by default is much better.
+	+ There should not be an inheritance hierarchy between the nullable and non-null versions, and now there isn't.
+
 ### Version 2.0 - May 13th 2015 ([jcenter](https://bintray.com/diffplug/opensource/spotless/2.0/view))
 
 * Renamed ErrorHandler to Errors.  This was done mainly to avoid name conflicts with the many other ErrorHandler classes that are out in the wild, but it also has the advantage of being shorter.

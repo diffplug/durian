@@ -82,7 +82,7 @@ spotless {
 		custom 'Lambda fix', { it.replace('} )', '})').replace('} ,', '},') }
 	}
 	format 'misc', {
-		target '**/*.gradle', '**/*.md', '**/.gitignore'
+		target '**/.gitignore', '**/*.gradle', '**/*.md', '**/*.sh'
 		indentWithTabs()
 		trimTrailingWhitespace()
 		endWithNewline()
@@ -176,18 +176,17 @@ publishing {
 			}
 		}
 	}
-	if (project.hasProperty('dp_maven')) {
+	if (System.env.'nexus_user') {
+		project.nexus_user = System.env.'nexus_user'
+		project.nexus_pass = System.env.'nexus_pass'
+	}
+	if (project.hasProperty('nexus_user') && project.version.endsWith('-SNAPSHOT')) {
 		repositories {
 			maven {
-				if (project.version.endsWith('-SNAPSHOT')) {
-					url "${dp_maven}/libs-snapshot-local"
-				} else {
-					url "${dp_maven}/libs-release-local"
-				}
-
+				url 'https://oss.sonatype.org/content/repositories/snapshots/'
 				credentials {
-					username "${dp_maven_user}"
-					password "${dp_maven_pass}"
+					username "${nexus_user}"
+					password "${nexus_pass}"
 				}
 			}
 		}

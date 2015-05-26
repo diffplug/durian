@@ -1,3 +1,7 @@
 language: java
 jdk:
   - oraclejdk8
+script: ./gradlew build
+after_success:
+- .ci/initiate-publish.sh
+- .ci/push-javadoc-to-gh-pages.sh
