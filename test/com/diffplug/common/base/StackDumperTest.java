@@ -95,12 +95,12 @@ public class StackDumperTest {
 	private void testDumpMethod() {
 		StackDumper.dump("some message");
 		String errOutput = testCaseErr.toString();
-		Assert.assertTrue(errOutput.startsWith(StringPrinter.buildStringFromLines(
+		Assert.assertTrue(errOutput, errOutput.startsWith(StringPrinter.buildStringFromLines(
 				"+----------\\",
 				"| some message",
-				"| at com.diffplug.common.base.StackDumperTest.testDumpMethod(StackDumperTest.java:101)")));
-		Assert.assertTrue(errOutput.endsWith(StringPrinter.buildStringFromLines(
-				"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
+				"| at com.diffplug.common.base.StackDumperTest.testDumpMethod(StackDumperTest.java:96)")));
+		Assert.assertTrue(errOutput, errOutput.endsWith(StringPrinter.buildStringFromLines(
+				"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:62)",
 				"+----------/")));
 	}
 
@@ -112,7 +112,7 @@ public class StackDumperTest {
 			Assert.assertEquals(StringPrinter.buildStringFromLines(
 					"+----------\\",
 					"| some message",
-					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
+					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:62)",
 					"+----------/"), testCaseErr.toString());
 		});
 	}
@@ -134,7 +134,7 @@ public class StackDumperTest {
 					"+----------\\",
 					"| Triggered by Who did this?")));
 			Assert.assertTrue(errOutput.endsWith(StringPrinter.buildStringFromLines(
-					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
+					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:62)",
 					"+----------/")));
 		});
 	}
@@ -158,7 +158,7 @@ public class StackDumperTest {
 					"+----------\\",
 					"| Triggered by Who did this?")));
 			Assert.assertTrue(errOutput.endsWith(StringPrinter.buildStringFromLines(
-					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:67)",
+					"| at com.diffplug.common.base.StackDumperTest$1.run(StackDumperTest.java:62)",
 					"+----------/")));
 		});
 	}
