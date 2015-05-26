@@ -37,7 +37,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 	/** Creates a Box holding the given value. */
 	public static <T> Box<T> of(T value) {
-		return new Box.BoxImp<T>(value);
+		return new BoxPrivate.BoxImp<T>(value);
 	}
 
 	/** Creates a Box from a Supplier and a Consumer. */
@@ -86,31 +86,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		};
 	}
 
-	/** A simple implementation of Nullable. */
-	static class BoxImp<T> implements Box<T> {
-		/** The (possibly-null) object being held. */
-		private volatile T obj;
-
-		protected BoxImp(T init) {
-			this.set(init);
-		}
-
-		@Override
-		public T get() {
-			return obj;
-		}
-
-		@Override
-		public void set(T obj) {
-			this.obj = obj;
-		}
-
-		@Override
-		public String toString() {
-			return "Box[" + get().toString() + "]";
-		}
-	}
-
 	/** Provides get/set access to some field. */
 	public interface Nullable<T> extends Supplier<T>, Consumer<T> {
 		/** Sets the value which will later be returned by get(). */
@@ -123,37 +98,12 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		/** Creates a Holder of the given object. */
 		public static <T> Nullable<T> of(T init) {
-			return new NullableImp<T>(init);
+			return new BoxPrivate.NullableImp<T>(init);
 		}
 
 		/** Creates an empty Holder object. */
 		public static <T> Nullable<T> ofNull() {
-			return new NullableImp<T>(null);
-		}
-
-		/** A simple implementation of Nullable. */
-		static class NullableImp<T> implements Nullable<T> {
-			/** The (possibly-null) object being held. */
-			private volatile T obj;
-
-			protected NullableImp(T init) {
-				this.set(init);
-			}
-
-			@Override
-			public T get() {
-				return obj;
-			}
-
-			@Override
-			public void set(T obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Nullable[" + (get() == null ? "null" : get().toString()) + "]";
-			}
+			return new BoxPrivate.NullableImp<T>(null);
 		}
 
 		/** Creates a Nullable from a Supplier and a Consumer. */
@@ -187,8 +137,13 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 	}
 
-	/** A Nullable for primitive doubles. */
+	/** A Box for primitive doubles. */
 	public interface Double extends DoubleSupplier, DoubleConsumer {
+		/** Returns a Box wrapped around the given double. */
+		public static Double of(double value) {
+			return new BoxPrivate.DoubleImp(value);
+		}
+
 		/** Sets the value which will later be returned by get(). */
 		void set(double value);
 
@@ -213,8 +168,13 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 	}
 
-	/** A Nullable for primitive ints. */
+	/** A Box for primitive ints. */
 	public interface Int extends IntSupplier, IntConsumer {
+		/** Returns a Box wrapped around the given int. */
+		public static Int of(int value) {
+			return new BoxPrivate.IntImp(value);
+		}
+
 		/** Sets the value which will later be returned by get(). */
 		void set(int value);
 
