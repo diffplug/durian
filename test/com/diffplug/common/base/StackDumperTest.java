@@ -22,11 +22,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.diffplug.common.base.Box;
-import com.diffplug.common.base.StackDumper;
-import com.diffplug.common.base.StringPrinter;
-import com.diffplug.common.base.Throwing;
-
 public class StackDumperTest {
 	PrintStream cleanOut, cleanErr;
 
@@ -59,7 +54,7 @@ public class StackDumperTest {
 	StringBuilder testCaseErr = new StringBuilder();
 
 	private void runWithCleanStack(Throwing.Runnable runnable) throws Throwable {
-		Box<Throwable> testError = Box.ofNull();
+		Box.Nullable<Throwable> testError = Box.Nullable.ofNull();
 		Thread thread = new Thread() {
 			@Override
 			public void run() {

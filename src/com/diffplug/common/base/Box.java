@@ -25,7 +25,7 @@ import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
-/** Provides get/set access to some field. */
+/** Provides get/set access to some value. */
 public interface Box<T> extends Supplier<T>, Consumer<T> {
 	/** Sets the value which will later be returned by get(). */
 	void set(T value);
@@ -35,17 +35,58 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		set(value);
 	}
 
-	/** Creates a Holder of the given object. */
-	public static <T> Box<T> of(T init) {
-		return new BoxImp<T>(init);
+	/** Creates a Box holding the given value. */
+	public static <T> Box<T> of(T value) {
+		return new Box.BoxImp<T>(value);
 	}
 
-	/** Creates an empty Holder object. */
-	public static <T> Box<T> ofNull() {
-		return new BoxImp<T>(null);
+	/** Creates a Box from a Supplier and a Consumer. */
+	public static <T> Box<T> from(Supplier<T> getter, Consumer<T> setter) {
+		return new Box<T>() {
+			@Override
+			public T get() {
+				return Objects.requireNonNull(getter.get());
+			}
+
+			@Override
+			public void set(T value) {
+				setter.accept(Objects.requireNonNull(value));
+			}
+		};
 	}
 
-	/** A simple implementation of Box. */
+	/** Creates a Nullable from an argument and two functions which operate on that argument. */
+	public static <T, V> Box<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
+		return new Box<T>() {
+			@Override
+			public T get() {
+				return Objects.requireNonNull(getter.apply(target));
+			}
+
+			@Override
+			public void set(T value) {
+				setter.accept(target, Objects.requireNonNull(value));
+			}
+		};
+	}
+
+	/** Creates a Box box holding the given value. */
+	public static <T> Box<T> wrap(Nullable<T> wrapped) {
+		Objects.requireNonNull(wrapped.get());
+		return new Box<T>() {
+			@Override
+			public void set(T value) {
+				wrapped.set(Objects.requireNonNull(value));
+			}
+
+			@Override
+			public T get() {
+				return Objects.requireNonNull(wrapped.get());
+			}
+		};
+	}
+
+	/** A simple implementation of Nullable. */
 	static class BoxImp<T> implements Box<T> {
 		/** The (possibly-null) object being held. */
 		private volatile T obj;
@@ -66,107 +107,87 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		@Override
 		public String toString() {
-			return get() == null ? "(null)" : get().toString();
+			return "Box[" + get().toString() + "]";
 		}
 	}
 
-	/** Creates a Box from a Supplier and a Consumer. */
-	public static <T> Box<T> from(Supplier<T> getter, Consumer<T> setter) {
-		return new Box<T>() {
+	/** Provides get/set access to some field. */
+	public interface Nullable<T> extends Supplier<T>, Consumer<T> {
+		/** Sets the value which will later be returned by get(). */
+		void set(T value);
+
+		/** Delegates to set(). */
+		default void accept(T value) {
+			set(value);
+		}
+
+		/** Creates a Holder of the given object. */
+		public static <T> Nullable<T> of(T init) {
+			return new NullableImp<T>(init);
+		}
+
+		/** Creates an empty Holder object. */
+		public static <T> Nullable<T> ofNull() {
+			return new NullableImp<T>(null);
+		}
+
+		/** A simple implementation of Nullable. */
+		static class NullableImp<T> implements Nullable<T> {
+			/** The (possibly-null) object being held. */
+			private volatile T obj;
+
+			protected NullableImp(T init) {
+				this.set(init);
+			}
+
 			@Override
 			public T get() {
-				return getter.get();
-			}
-
-			@Override
-			public void set(T value) {
-				setter.accept(value);
-			}
-		};
-	}
-
-	/** Creates a Box from an argument and two functions which operate on that argument. */
-	public static <T, V> Box<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
-		return new Box<T>() {
-			@Override
-			public T get() {
-				return getter.apply(target);
-			}
-
-			@Override
-			public void set(T value) {
-				setter.accept(target, value);
-			}
-		};
-	}
-
-	/** A Box<T> which promises to never be null. */
-	public interface NonNull<T> extends Box<T> {
-		/** Creates a NonNull box holding the given value. */
-		public static <T> NonNull<T> of(T value) {
-			return new NonNullImp<T>(value);
-		}
-
-		/** Creates a Box from a Supplier and a Consumer. */
-		public static <T> NonNull<T> from(Supplier<T> getter, Consumer<T> setter) {
-			return new NonNull<T>() {
-				@Override
-				public T get() {
-					return Objects.requireNonNull(getter.get());
-				}
-
-				@Override
-				public void set(T value) {
-					setter.accept(Objects.requireNonNull(value));
-				}
-			};
-		}
-
-		/** Creates a Box from an argument and two functions which operate on that argument. */
-		public static <T, V> NonNull<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
-			return new NonNull<T>() {
-				@Override
-				public T get() {
-					return Objects.requireNonNull(getter.apply(target));
-				}
-
-				@Override
-				public void set(T value) {
-					setter.accept(target, Objects.requireNonNull(value));
-				}
-			};
-		}
-
-		/** Creates a NonNull box holding the given value. */
-		public static <T> NonNull<T> wrap(Box<T> wrapped) {
-			Objects.requireNonNull(wrapped.get());
-			return new NonNull<T>() {
-				@Override
-				public void set(T value) {
-					wrapped.set(Objects.requireNonNull(value));
-				}
-
-				@Override
-				public T get() {
-					return Objects.requireNonNull(wrapped.get());
-				}
-			};
-		}
-
-		/** A standard implementation of NonNull<T>. */
-		static class NonNullImp<T> extends BoxImp<T>implements NonNull<T> {
-			protected NonNullImp(T init) {
-				super(Objects.requireNonNull(init));
+				return obj;
 			}
 
 			@Override
 			public void set(T obj) {
-				super.set(Objects.requireNonNull(obj));
+				this.obj = obj;
 			}
+
+			@Override
+			public String toString() {
+				return "Box.Nullable[" + (get() == null ? "null" : get().toString()) + "]";
+			}
+		}
+
+		/** Creates a Nullable from a Supplier and a Consumer. */
+		public static <T> Nullable<T> from(Supplier<T> getter, Consumer<T> setter) {
+			return new Nullable<T>() {
+				@Override
+				public T get() {
+					return getter.get();
+				}
+
+				@Override
+				public void set(T value) {
+					setter.accept(value);
+				}
+			};
+		}
+
+		/** Creates a Nullable from an argument and two functions which operate on that argument. */
+		public static <T, V> Nullable<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
+			return new Nullable<T>() {
+				@Override
+				public T get() {
+					return getter.apply(target);
+				}
+
+				@Override
+				public void set(T value) {
+					setter.accept(target, value);
+				}
+			};
 		}
 	}
 
-	/** A Box for primitive doubles. */
+	/** A Nullable for primitive doubles. */
 	public interface Double extends DoubleSupplier, DoubleConsumer {
 		/** Sets the value which will later be returned by get(). */
 		void set(double value);
@@ -176,7 +197,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
-		/** Creates a Box.Double from a Supplier and a Consumer. */
+		/** Creates a Nullable.Double from a Supplier and a Consumer. */
 		public static Double from(DoubleSupplier getter, DoubleConsumer setter) {
 			return new Double() {
 				@Override
@@ -192,7 +213,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 	}
 
-	/** A Box for primitive ints. */
+	/** A Nullable for primitive ints. */
 	public interface Int extends IntSupplier, IntConsumer {
 		/** Sets the value which will later be returned by get(). */
 		void set(int value);
@@ -202,7 +223,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
-		/** Creates a Box.Int from a Supplier and a Consumer. */
+		/** Creates a Nullable.Int from a Supplier and a Consumer. */
 		public static Int from(IntSupplier getter, IntConsumer setter) {
 			return new Int() {
 				@Override

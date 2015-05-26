@@ -223,7 +223,7 @@ public class StringPrinter {
 	 * @return a Consumer<String> which accepts any strings, and will feed them to perLine. 
 	 */
 	public static Consumer<String> stringsToLines(Consumer<String> perLine) {
-		Box.NonNull<String> leftover = Box.NonNull.of("");
+		Box<String> leftover = Box.of("");
 		return rawString -> {
 			rawString = leftover.get() + rawString.replace("\r", "");
 
