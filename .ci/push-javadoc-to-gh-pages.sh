@@ -3,7 +3,7 @@
 # NOTE: Travis-CI can only publish SNAPSHOT versions.
 if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
 
-	echo -e "Publishing javadoc...\n"
+	echo "Publishing javadoc..."
 
 	# save the version
 	VERSION=$(./gradlew -q printVersion)
@@ -31,5 +31,9 @@ if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "
 	# add all of the stuff and commit it
 	git add -f -A
 	git commit -m "Lastest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
-	git push -fq origin gh-pages > /dev/null
+	if ! git push -fq origin gh-pages &> /dev/null; then
+		echo "Error pushing gh-pages to origin. Bad gh_token? GitHub down?"
+	else
+		echo "Published javadoc to gh-pages."
+	fi
 fi
