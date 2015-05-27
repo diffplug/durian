@@ -192,6 +192,7 @@ publishing {
 	}
 }
 
+// helps external scripts detect version
 task printVersion << {
 	println version
 }
