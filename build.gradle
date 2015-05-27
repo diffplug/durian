@@ -152,11 +152,11 @@ publishing {
 					resolveStrategy = Closure.DELEGATE_FIRST
 					name project.name
 					description project.description
-					url "https://github.com/${org}/${name}"
+					url "https://github.com/${project.org}/${project.name}"
 					scm {
-						url "https://github.com/${org}/${name}"
-						connection "scm:git:git://github.com/${org}/${name}"
-						developerConnection "scm:git:ssh:git@github.com/${org}/${name}"
+						url "https://github.com/${project.org}/${project.name}"
+						connection "scm:git:git://github.com/${project.org}/${project.name}"
+						developerConnection "scm:git:ssh:git@github.com/${project.org}/${project.name}"
 					}
 					licenses {
 						license {
