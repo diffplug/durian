@@ -5,8 +5,6 @@ buildscript {
 	dependencies {
 		// applies the Eclipse java formatter
 		classpath "com.diffplug.gradle.spotless:spotless:${VER_SPOTLESS}"
-		// uploads artifacts to jcenter
-		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${VER_BINTRAY}"
 	}
 }
 
