@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script initiates publishing the proper Javadoc page whenever pushes to master occur.
 # NOTE: Travis-CI can only publish SNAPSHOT versions.
-if [ "$TRAVIS_REPO_SLUG" == "DiffPlug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
 
 	echo -e "Publishing javadoc...\n"
 
@@ -13,7 +13,7 @@ if [ "$TRAVIS_REPO_SLUG" == "DiffPlug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "
 	git config --global user.email "travis@travis-ci.org"
 	git config --global user.name "travis-ci"
 	rm -rf $HOME/gh-pages
-	git clone --quiet --branch=gh-pages https://${gh_token}@github.com/DiffPlug/durian gh-pages > /dev/null
+	git clone --quiet --branch=gh-pages https://${gh_token}@github.com/diffplug/durian gh-pages > /dev/null
 
 	# copy the javadoc into the build
 	cd gh-pages

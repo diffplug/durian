@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script initiates the Gradle publishing task when pushes to master occur.
 # NOTE: Travis-CI can only publish SNAPSHOT versions.
-if [ "$TRAVIS_REPO_SLUG" == "DiffPlug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
 	if [[ $(./gradlew -q printVersion) != *SNAPSHOT* ]]; then
 		echo -e "Publishing snapshot\n"
 	else
