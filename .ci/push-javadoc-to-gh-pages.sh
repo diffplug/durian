@@ -5,6 +5,9 @@ if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "
 
 	echo -e "Publishing javadoc...\n"
 
+	# save the version
+	VERSION=$(./gradlew -q printVersion)
+
 	# copy javadoc from the build to ~/javadoc-temp
 	cp -R build/docs/javadoc $HOME/javadoc-temp
 
@@ -17,7 +20,6 @@ if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "
 
 	# copy the javadoc into the build
 	cd gh-pages
-	VERSION=$(./gradlew -q printVersion)
 	if [[ "$VERSION" != *SNAPSHOT* ]]; then
 		git rm -rf javadoc/${VERSION}
 		cp -Rf $HOME/javadoc-temp/ ./javadoc/${VERSION}/
@@ -30,7 +32,4 @@ if [ "$TRAVIS_REPO_SLUG" == "diffplug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "
 	git add -f -A
 	git commit -m "Lastest javadoc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
 	git push -fq origin gh-pages > /dev/null
-
-	# success
-	echo -e "Published Javadoc to gh-pages.\n"
 fi
