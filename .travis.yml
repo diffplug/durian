@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 script: ./gradlew build
 after_success:
 - .ci/initiate-publish.sh
