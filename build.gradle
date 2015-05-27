@@ -176,51 +176,22 @@ publishing {
 			}
 		}
 	}
-	if (project.hasProperty('nexus_user') && project.version.endsWith('-SNAPSHOT')) {
-		repositories {
-			maven {
-				url 'https://oss.sonatype.org/content/repositories/snapshots/'
-				credentials {
-					username "${nexus_user}"
-					password "${nexus_pass}"
-				}
+	repositories {
+		maven {
+			def isSnapshot = project.version.endsWith('-SNAPSHOT')
+			if (isSnapshot) {
+				url = 'https://oss.sonatype.org/content/repositories/snapshots'
+			} else {
+				url = "https://api.bintray.com/maven/diffplug/opensource/${project.name}"
+			}
+			credentials {
+				username = System.env[isSnapshot ? 'nexus_user' : 'bintray_user']
+				password = System.env[isSnapshot ? 'nexus_pass' : 'bintray_pass']
 			}
 		}
 	}
 }
 
-/////////////
-// BINTRAY //
-/////////////
-if (project.hasProperty('dp_bintray_user')) {
-	apply plugin: 'com.jfrog.bintray'
-	bintray {
-		user = dp_bintray_user
-		key = dp_bintray_key
-
-		publish=false
-		publications = ['mavenJava']
-		pkg {
-			repo = 'opensource'
-			name = project.name
-			userOrg = project.org
-			desc = project.description
-			websiteUrl = "https://github.com/${org}/${name}"
-			issueTrackerUrl = "https://github.com/${org}/${name}/issues"
-			vcsUrl = "https://github.com/${org}/${name}"
-			licenses = ['Apache-2.0']
-			publicDownloadNumbers = true
-			// Optional version descriptor
-			version {
-				name = project.version
-				if (project.version.endsWith('SNAPSHOT')) {
-					vcsTag = 'develop'
-				} else {
-					vcsTag = 'v' + project.version
-				}
-			}
-		}
-	}
-	// surprisingly, this actually needs to be here
-	bintrayUpload.dependsOn(publish)
+task printVersion << {
+	println version
 }
