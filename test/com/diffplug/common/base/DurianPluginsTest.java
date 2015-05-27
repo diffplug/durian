@@ -15,16 +15,49 @@
  */
 package com.diffplug.common.base;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class DurianPluginsTest {
-	/** Create a fresh instance of plugins for each test. */
+	private List<Class<?>> pluginsToStore = Arrays.asList(Errors.Plugins.Log.class);
+	private Map<Class<?>, Optional<String>> state = new HashMap<>();
+
+	/** Create a fresh instance of DurianPlugins for each test, and save the system properties that we're gonna futz with. */
 	@Before
-	public void setup() {
+	public void before() {
+		DurianPlugins.resetForTesting();
+		for (Class<?> plugin : pluginsToStore) {
+			String key = DurianPlugins.PROPERTY_PREFIX + plugin.getCanonicalName();
+			// store the current value
+			Optional<String> value = Optional.ofNullable(System.getProperty(key));
+			state.put(plugin, value);
+			// then clear the property
+			System.clearProperty(key);
+		}
+	}
+
+	/** Restore the system properties. */
+	@After
+	public void after() {
+		for (Class<?> plugin : pluginsToStore) {
+			String key = DurianPlugins.PROPERTY_PREFIX + plugin.getCanonicalName();
+			// restore the stored value
+			Optional<String> value = state.get(plugin);
+			if (value.isPresent()) {
+				System.setProperty(key, value.get());
+			} else {
+				System.clearProperty(key);
+			}
+		}
 		DurianPlugins.resetForTesting();
 	}
 
@@ -49,16 +82,12 @@ public class DurianPluginsTest {
 
 	@Test
 	public void testSystemProperty() {
-		try {
-			// set the system property to TestLogHandler's name
-			System.setProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log", TestLogHandler.class.getName());
-			// get the property with TheWrongLogHandler as the default
-			Consumer<Throwable> impl = DurianPlugins.get(Errors.Plugins.Log.class, new TheWrongLogHandler());
-			// make sure it's the right value
-			Assert.assertTrue(impl instanceof TestLogHandler);
-		} finally {
-			System.clearProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log");
-		}
+		// set the system property to TestLogHandler's name
+		System.setProperty("durian.plugins.com.diffplug.common.base.Errors.Plugins.Log", TestLogHandler.class.getName());
+		// get the property with TheWrongLogHandler as the default
+		Consumer<Throwable> impl = DurianPlugins.get(Errors.Plugins.Log.class, new TheWrongLogHandler());
+		// make sure it's the right value
+		Assert.assertTrue(impl instanceof TestLogHandler);
 	}
 
 	@Test

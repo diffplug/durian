@@ -104,7 +104,7 @@ public class DurianPlugins {
 		// Check system properties for plugin class.
 		// This will only happen during system startup thus it's okay to use the synchronized
 		// System.getProperties as it will never get called in normal operations.
-		String implementingClass = System.getProperty("durian.plugins." + className);
+		String implementingClass = System.getProperty(PROPERTY_PREFIX + className);
 		if (implementingClass != null) {
 			try {
 				Class<?> cls = Class.forName(implementingClass);
@@ -124,4 +124,7 @@ public class DurianPlugins {
 			return null;
 		}
 	}
+
+	/** Prefix to system property keys for specifying plugin classes. */
+	public static final String PROPERTY_PREFIX = "durian.plugins.";
 }
