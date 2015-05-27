@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/** Queries against trees, e.g. lowest common ancestor, list of parents, etc. */
 public class TreeQuery {
 	/** Returns a mutable list whose first element is the child, and last element is the root. */
 	public static <T> List<T> toRoot(TreeDef.Parented<T> treeDef, T node) {
