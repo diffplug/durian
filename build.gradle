@@ -185,6 +185,9 @@ publishing {
 				username = System.env[isSnapshot ? 'nexus_user' : 'bintray_user']
 				password = System.env[isSnapshot ? 'nexus_pass' : 'bintray_pass']
 			}
+
+			println('user=' + System.env[isSnapshot ? 'nexus_user' : 'bintray_user'].length())
+			println('pass=' + System.env[isSnapshot ? 'nexus_pass' : 'bintray_pass'].length())
 		}
 	}
 }
