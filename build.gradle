@@ -7,9 +7,6 @@ buildscript {
 		classpath "com.diffplug.gradle.spotless:spotless:${VER_SPOTLESS}"
 		// uploads artifacts to jcenter
 		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${VER_BINTRAY}"
-		configurations.all {
-			resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-		}
 	}
 }
 
