@@ -8,7 +8,7 @@ if [ "$TRAVIS_REPO_SLUG" == "DiffPlug/durian" ] && [ "$TRAVIS_PULL_REQUEST" == "
 	fi
 
 	echo -e "Starting publish to Sonatype...\n"
-	./gradlew publish
+	./gradlew publish -Pnexus_user="${nexus_user}" -Pnexus_pass="${nexus_pass}"
 	RETVAL=$?
 
 	if [ $RETVAL -eq 0 ]; then

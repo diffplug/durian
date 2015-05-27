@@ -176,10 +176,6 @@ publishing {
 			}
 		}
 	}
-	if (System.env.'nexus_user') {
-		project.nexus_user = System.env.'nexus_user'
-		project.nexus_pass = System.env.'nexus_pass'
-	}
 	if (project.hasProperty('nexus_user') && project.version.endsWith('-SNAPSHOT')) {
 		repositories {
 			maven {
