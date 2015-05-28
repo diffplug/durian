@@ -1,6 +1,6 @@
 # Durian releases
 
-### Version 3.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/latest/))
+### Version 3.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
 
 * Merged `GetterSetter` and `Box` into just `Box`.
 * Rather than `Box` and `Box.NonNull extends Box`, we now have `Box` and `Box.Nullable`.

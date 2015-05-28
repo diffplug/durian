@@ -21,8 +21,8 @@ if [[ "$VERSION" != *SNAPSHOT* ]]; then
 	git rm -rf javadoc/${VERSION}
 	cp -Rf $HOME/javadoc-temp/ ./javadoc/${VERSION}/
 else
-	git rm -rf javadoc/latest
-	cp -Rf $HOME/javadoc-temp/ ./javadoc/latest/
+	git rm -rf javadoc/snapshot
+	cp -Rf $HOME/javadoc-temp/ ./javadoc/snapshot/
 fi
 
 # add all of the stuff and commit it
