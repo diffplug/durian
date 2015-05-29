@@ -16,12 +16,12 @@
 package com.diffplug.common.base;
 
 /**
- * Versions of the standard functional interfaces which throw Throwable.
- *
- * ErrorHandler can convert these into standard functional interfaces.
+ * Variations on the standard functional interfaces which throw Throwable.
+ * <p>
+ * {@link Errors} can convert these into standard functional interfaces.
  */
 public interface Throwing {
-	/** Versions of the standard functional interfaces which throw a specific exception type. */
+	/** Variations on the standard functional interfaces which throw a specific subclass of Throwable. */
 	public interface Specific {
 		@FunctionalInterface
 		public interface Runnable<E extends Throwable> {

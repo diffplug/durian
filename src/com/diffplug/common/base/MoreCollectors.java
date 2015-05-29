@@ -28,7 +28,7 @@ public class MoreCollectors {
 	 * elements).  It traverses the entire stream, even if two elements
 	 * have been encountered and the empty return value is now certain. 
 	 * <p>
-	 * Implementation credit to Misha {@link http://stackoverflow.com/a/26812693/1153071}
+	 * Implementation credit to Misha <a href="http://stackoverflow.com/a/26812693/1153071">on StackOverflow</a>.
 	 */
 	public static <T> Collector<T, ?, Optional<T>> singleOrEmpty() {
 		return Collectors.collectingAndThen(Collectors.toList(),
@@ -41,7 +41,7 @@ public class MoreCollectors {
 	 * to implement early-return behavior using the Collector interface,
 	 * so MoreCollectors takes the stream as an argument.
 	 * <p>
-	 * Implementation credit to Thomas Jungblut {@link http://stackoverflow.com/a/26810932/1153071}
+	 * Implementation credit to Thomas Jungblut <a href="http://stackoverflow.com/a/26810932/1153071">on StackOverflow</a>.
 	 */
 	public static <T> Optional<T> singleOrEmptyShortCircuiting(Stream<T> stream) {
 		return stream.limit(2).map(Optional::ofNullable).reduce(Optional.empty(),

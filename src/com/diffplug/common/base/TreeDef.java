@@ -20,13 +20,18 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/** A function which defines a tree structure. */
+/**
+ * A function which defines a tree structure.
+ * @see TreeStream
+ * @see TreeQuery
+ * @see TreeIterable
+ */
 @FunctionalInterface
 public interface TreeDef<T> {
 	/** Returns all the children of the given node. */
 	List<T> childrenOf(T node);
 
-	/** Returns a new TreeDef which whose childrenOf() method is filtered by the given predicate. */
+	/** Creates a new TreeDef which whose {@code childrenOf} method is filtered by the given predicate. */
 	default TreeDef<T> filter(Predicate<T> predicate) {
 		return TreeDef.of(node -> filteredList(childrenOf(node), predicate));
 	}
@@ -43,18 +48,18 @@ public interface TreeDef<T> {
 
 	/**
 	 * A pair of functions which define a doubly-linked tree, where nodes know about both their parent and their children.
-	 * 
-	 * It is CRITICAL that the TreeDef.Parented is consistent - if Vader claims that Luke
+	 * <p>
+	 * It is <i>critical</i> that the {@code TreeDef.Parented} is consistent - if Vader claims that Luke
 	 * and Leia are his children, then both Luke and Leia must say that Vader is their parent.
-	 * 
+	 * <p>
 	 * If Luke or Leia don't agree that Vader is their father, then the algorithms that use
-	 * this TreeDef.Parented are likely to fail in unexpected ways.
+	 * this {@code TreeDef.Parented} are likely to fail in unexpected ways.
 	 */
 	public interface Parented<T> extends TreeDef<T> {
 		/** Returns the parent of the given node. */
 		T parentOf(T node);
 
-		/** Returns a new TreeDef which whose childrenOf() and parentOf() methods are filtered by the given predicate. */
+		/** Creates a new {@code TreeDef.Parented} whose {@code childrenOf} and {@code parentOf} methods are filtered by {@code predicate}. */
 		@Override
 		default Parented<T> filter(Predicate<T> predicate) {
 			return of(node -> filteredList(childrenOf(node), predicate), node -> {
@@ -66,7 +71,7 @@ public interface TreeDef<T> {
 			});
 		}
 
-		/** Creates a TreeDef.Parented which is implemented by the given two functions. */
+		/** Creates a new {@code TreeDef.Parented} which is implemented by the two given functions. */
 		public static <T> TreeDef.Parented<T> of(Function<T, List<T>> childFunc, Function<T, T> parentFunc) {
 			return new TreeDef.Parented<T>() {
 				@Override

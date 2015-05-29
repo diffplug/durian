@@ -29,7 +29,7 @@ public class TreeTestData {
 	@Test
 	public void testTrivial() {
 		TreeNode<String> root = create("root");
-		Assert.assertEquals("root", root.getObj());
+		Assert.assertEquals("root", root.getContent());
 		Assert.assertEquals(null, root.getParent());
 		Assert.assertEquals(Collections.emptyList(), root.getChildren());
 	}
@@ -37,17 +37,17 @@ public class TreeTestData {
 	@Test
 	public void testLinear() {
 		TreeNode<String> root = create("root", " middle", "  child");
-		Assert.assertEquals("root", root.getObj());
+		Assert.assertEquals("root", root.getContent());
 		Assert.assertEquals(null, root.getParent());
 		Assert.assertEquals(1, root.getChildren().size());
 
 		TreeNode<String> middle = root.getChildren().get(0);
-		Assert.assertEquals("middle", middle.getObj());
+		Assert.assertEquals("middle", middle.getContent());
 		Assert.assertEquals(root, middle.getParent());
 		Assert.assertEquals(1, middle.getChildren().size());
 
 		TreeNode<String> child = middle.getChildren().get(0);
-		Assert.assertEquals("child", child.getObj());
+		Assert.assertEquals("child", child.getContent());
 		Assert.assertEquals(middle, child.getParent());
 		Assert.assertEquals(0, child.getChildren().size());
 	}
@@ -55,7 +55,7 @@ public class TreeTestData {
 	@Test
 	public void testVee() {
 		TreeNode<String> root = create("root", " middle", "  child", " middle", "  child");
-		Assert.assertEquals("root", root.getObj());
+		Assert.assertEquals("root", root.getContent());
 		Assert.assertEquals(null, root.getParent());
 		Assert.assertEquals(2, root.getChildren().size());
 
@@ -64,12 +64,12 @@ public class TreeTestData {
 	}
 
 	private void testVeeMiddleChild(TreeNode<String> root, TreeNode<String> middle) {
-		Assert.assertEquals("middle", middle.getObj());
+		Assert.assertEquals("middle", middle.getContent());
 		Assert.assertEquals(root, middle.getParent());
 		Assert.assertEquals(1, middle.getChildren().size());
 
 		TreeNode<String> child = middle.getChildren().get(0);
-		Assert.assertEquals("child", child.getObj());
+		Assert.assertEquals("child", child.getContent());
 		Assert.assertEquals(middle, child.getParent());
 		Assert.assertEquals(0, child.getChildren().size());
 	}
@@ -129,11 +129,11 @@ public class TreeTestData {
 
 	/** Finds the given node by path within root. */
 	public static TreeNode<String> getByPath(TreeNode<String> root, String... names) {
-		Assert.assertEquals(names[0], root.getObj());
+		Assert.assertEquals(names[0], root.getContent());
 		TreeNode<String> value = root;
 		for (int i = 1; i < names.length; ++i) {
 			String toMatch = names[i];
-			value = value.getChildren().stream().filter(node -> node.getObj().equals(toMatch)).findFirst().get();
+			value = value.getChildren().stream().filter(node -> node.getContent().equals(toMatch)).findFirst().get();
 		}
 		return value;
 	}
@@ -142,8 +142,8 @@ public class TreeTestData {
 	public static TreeNode<String> getByName(TreeNode<String> root, String name) {
 		Map<String, TreeNode<String>> mapByName = new HashMap<>();
 		TreeIterable.breadthFirst(TreeNode.treeDef(), root).forEach(node -> {
-			TreeNode<String> oldValue = mapByName.put(node.getObj(), node);
-			Assert.assertTrue("Multiple nodes with name " + node.getObj(), oldValue == null);
+			TreeNode<String> oldValue = mapByName.put(node.getContent(), node);
+			Assert.assertTrue("Multiple nodes with name " + node.getContent(), oldValue == null);
 		});
 		TreeNode<String> node = mapByName.get(name);
 		Assert.assertNotNull(node);

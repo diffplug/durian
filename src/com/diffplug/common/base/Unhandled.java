@@ -17,7 +17,7 @@ package com.diffplug.common.base;
 
 import javax.annotation.Nullable;
 
-/** These exceptions are designed for checking programming errors (e.g. unexpected default or else clauses). */
+/** Exceptions designed for checking programming errors (e.g. unexpected default or else clauses). */
 public class Unhandled extends IllegalArgumentException {
 	private static final long serialVersionUID = 1781209245301127264L;
 

@@ -16,14 +16,15 @@
 package com.diffplug.common.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-/** Queries against trees, e.g. lowest common ancestor, list of parents, etc. */
+/** Queries against {@link TreeDef} trees, e.g. lowest common ancestor, list of parents, etc. */
 public class TreeQuery {
-	/** Returns a mutable list whose first element is the child, and last element is the root. */
+	/** Creates a mutable list whose first element is {@code node}, and last element is its root parent. */
 	public static <T> List<T> toRoot(TreeDef.Parented<T> treeDef, T node) {
 		List<T> list = new ArrayList<>();
 		T tip = node;
@@ -34,7 +35,10 @@ public class TreeQuery {
 		return list;
 	}
 
-	/** Returns a mutable list whose first element is the child, and last element is the root. */
+	/**
+	 * Creates a mutable list whose first element is {@code node}, and last element is {@code parent}.
+	 * @throws IllegalArgumentException if {@code parent} is not a parent of {@code node}
+	 */
 	public static <T> List<T> toParent(TreeDef.Parented<T> treeDef, T node, T parent) {
 		List<T> list = new ArrayList<>();
 		T tip = node;
@@ -51,7 +55,7 @@ public class TreeQuery {
 	}
 
 	/** Returns the common parent of the two given elements. */
-	public static <T> Optional<T> lowestCommonAncestor(TreeDef.Parented<T> treeDef, T nodeA, T nodeB) {
+	private static <T> Optional<T> lowestCommonAncestor(TreeDef.Parented<T> treeDef, T nodeA, T nodeB) {
 		class TreeSearcher {
 			private T tip;
 			private final Set<T> visited;
@@ -103,13 +107,18 @@ public class TreeQuery {
 
 	/** Returns the common parent of N elements. */
 	@SafeVarargs
-	public static <T> Optional<T> lowestCommonAncestorN(TreeDef.Parented<T> treeDef, T... nodes) {
-		if (nodes.length == 0) {
+	public static <T> Optional<T> lowestCommonAncestor(TreeDef.Parented<T> treeDef, T... nodes) {
+		return lowestCommonAncestor(treeDef, Arrays.asList(nodes));
+	}
+
+	/** Returns the common parent of N elements. */
+	public static <T> Optional<T> lowestCommonAncestor(TreeDef.Parented<T> treeDef, List<T> nodes) {
+		if (nodes.size() == 0) {
 			return Optional.empty();
 		} else {
-			Optional<T> soFar = Optional.of(nodes[0]);
-			for (int i = 1; i < nodes.length && soFar.isPresent(); ++i) {
-				soFar = lowestCommonAncestor(treeDef, soFar.get(), nodes[i]);
+			Optional<T> soFar = Optional.of(nodes.get(0));
+			for (int i = 1; i < nodes.size() && soFar.isPresent(); ++i) {
+				soFar = lowestCommonAncestor(treeDef, soFar.get(), nodes.get(i));
 			}
 			return soFar;
 		}

@@ -48,7 +48,7 @@ public class TreeStreamTest {
 
 	private void toParentTestCase(String root, String... values) {
 		List<String> actual = TreeStream.toParent(TreeNode.treeDef(), getNode(root))
-				.map(TreeNode::getObj)
+				.map(TreeNode::getContent)
 				.collect(Collectors.toList());
 		Assert.assertEquals(root, actual.get(0));
 		Assert.assertEquals(Arrays.asList(values), actual.subList(1, actual.size()));
@@ -61,7 +61,7 @@ public class TreeStreamTest {
 
 	private void breadthFirstTestCase(String root, String... values) {
 		List<String> actual = TreeStream.breadthFirst(TreeNode.treeDef(), getNode(root))
-				.map(TreeNode::getObj)
+				.map(TreeNode::getContent)
 				.collect(Collectors.toList());
 
 		Assert.assertEquals(root, actual.get(0));
@@ -75,7 +75,7 @@ public class TreeStreamTest {
 
 	private void depthFirstTestCase(TreeDef<TreeNode<String>> treeDef, String root, String... values) {
 		List<String> actual = TreeStream.depthFirst(treeDef, getNode(root))
-				.map(TreeNode::getObj)
+				.map(TreeNode::getContent)
 				.collect(Collectors.toList());
 
 		Assert.assertEquals(root, actual.get(0));
@@ -85,7 +85,7 @@ public class TreeStreamTest {
 	@Test
 	public void filterTest() {
 		// filter out non-alphabetic nodes
-		depthFirstTestCase(TreeNode.<String> treeDef().filter(node -> node.obj.codePoints().allMatch(Character::isAlphabetic)),
+		depthFirstTestCase(TreeNode.<String> treeDef().filter(node -> node.getContent().codePoints().allMatch(Character::isAlphabetic)),
 				"root", "A", "B", "C");
 	}
 

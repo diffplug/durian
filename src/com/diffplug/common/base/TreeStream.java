@@ -18,21 +18,21 @@ package com.diffplug.common.base;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-/** Methods which create a Stream<T> which walks a tree structure. */
+/** Creates {@code Stream}s that iterate across a tree defined by a {@link TreeDef} in various orders. */
 public class TreeStream {
 	private TreeStream() {}
 
-	/** Creates a Stream<T> towards the parent. */
+	/** Creates a {@code Stream} that starts at {@code node} and ends at its root parent. */
 	public static <T> Stream<T> toParent(TreeDef.Parented<T> treeDef, T node) {
 		return StreamSupport.stream(TreeIterable.toParent(treeDef, node).spliterator(), false);
 	}
 
-	/** Creates a Stream<T> doing a breadth-first iteration. */
+	/** Creates a {@code Stream} that starts at {@code node} and iterates deeper into the tree in a bread-first order. */
 	public static <T> Stream<T> breadthFirst(TreeDef<T> treeDef, T node) {
 		return StreamSupport.stream(TreeIterable.breadthFirst(treeDef, node).spliterator(), false);
 	}
 
-	/** Creates a Stream<T> doing a depth-first iteration. */
+	/** Creates a {@code Stream} that starts at {@code node} and iterates deeper into the tree in a depth-first order. */
 	public static <T> Stream<T> depthFirst(TreeDef<T> treeDef, T node) {
 		return StreamSupport.stream(TreeIterable.depthFirst(treeDef, node).spliterator(), false);
 	}

@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-/** An immutable tree. */
+/** Creates {@code Iterable}s that iterate across a tree defined by a {@link TreeDef} in various orders. */
 public class TreeIterable {
 	private TreeIterable() {}
 
-	/** Returns a breadth-first traversal of the given tree, including the current node. */
+	/** Creates an {@code Iterable} that starts at {@code node} and ends at its root parent.  */
 	public static <T> Iterable<T> toParent(TreeDef.Parented<T> treeDef, T node) {
 		return () -> new Iterator<T>() {
 			T tip = node;
@@ -49,7 +49,7 @@ public class TreeIterable {
 		};
 	}
 
-	/** Returns a breadth-first search of the given tree, not including root. */
+	/** Creates an {@code Iterable} that starts at {@code node} and iterates deeper into the tree in a bread-first order. */
 	public static <T> Iterable<T> breadthFirst(TreeDef<T> treeDef, T node) {
 		return () -> new Iterator<T>() {
 			Deque<T> queue = new ArrayDeque<>(Arrays.asList(node));
@@ -71,7 +71,7 @@ public class TreeIterable {
 		};
 	}
 
-	/** Returns a breadth-first traversal of the given tree, not including root. */
+	/** Creates an {@code Iterable} that starts at {@code node} and iterates deeper into the tree in a depth-first order. */
 	public static <T> Iterable<T> depthFirst(TreeDef<T> treeDef, T node) {
 		return () -> new Iterator<T>() {
 			Deque<T> queue = new ArrayDeque<>(Arrays.asList(node));

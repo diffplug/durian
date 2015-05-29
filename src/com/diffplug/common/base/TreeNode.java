@@ -19,33 +19,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Allows Trees to be manually defined across any object. */
+/** Class for manually constructing a tree, or for copying an existing tree. */
 public final class TreeNode<T> {
-	final TreeNode<T> parent;
-	final T obj;
-	List<TreeNode<T>> children = null;
+	private TreeNode<T> parent;
+	private T content;
+	private List<TreeNode<T>> children = Collections.emptyList();
 
+	/** Creates a TreeNode with the given parent and content. Automatically adds itself as a child of its parent. */
 	public TreeNode(TreeNode<T> parent, T obj) {
 		this.parent = parent;
-		this.obj = obj;
+		this.content = obj;
 		if (parent != null) {
-			if (parent.children == null) {
+			// if it's empty, it's a Collections.emptyList(), so we need to make a list we can add to
+			if (parent.children.isEmpty()) {
 				parent.children = new ArrayList<>();
 			}
 			parent.children.add(this);
 		}
 	}
 
+	/** Returns the object which is encapsulated by this TreeNode. */
+	public T getContent() {
+		return content;
+	}
+
+	/** Returns the parent of this TreeNode. */
 	public TreeNode<T> getParent() {
 		return parent;
 	}
 
-	public T getObj() {
-		return obj;
-	}
-
+	/** Returns the children of this TreeNode. */
 	public List<TreeNode<T>> getChildren() {
-		return children == null ? Collections.emptyList() : children;
+		return Collections.unmodifiableList(children);
 	}
 
 	/** Creates a hierarchy of TreeNodes that copies the structure and content of the given Tree. */
@@ -56,13 +61,13 @@ public final class TreeNode<T> {
 	}
 
 	private static <T> void copyRecurse(TreeNode<T> root, TreeDef<T> treeDef) {
-		List<T> children = treeDef.childrenOf(root.obj);
+		List<T> children = treeDef.childrenOf(root.content);
 		for (T child : children) {
 			copyRecurse(new TreeNode<>(root, child), treeDef);
 		}
 	}
 
-	/** TreeDef for the generic TreeNode class. */
+	/** {@link TreeDef.Parented} for TreeNodes. */
 	public static <T> TreeDef.Parented<TreeNode<T>> treeDef() {
 		return new TreeDef.Parented<TreeNode<T>>() {
 			@Override

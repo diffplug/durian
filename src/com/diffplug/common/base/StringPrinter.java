@@ -30,7 +30,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
 /**
- * A simple class for receiving a stream of Strings in a way that resembles a PrintStream or PrintWriter.
+ * Pipes strings to a {@code Consumer<String>} through an API similar to PrintWriter and PrintStream.
+ * 
+ * Can present itself as an {@link OutputStream}, {@link PrintStream}, {@link Writer}, or {@link PrintWriter}.
  */
 public class StringPrinter {
 	private final Consumer<String> consumer;
@@ -75,9 +77,9 @@ public class StringPrinter {
 	/**
 	 * Creates an OutputStream which will print its content to the given StringPrinter, encoding bytes according to the given Charset.
 	 * Doesn't matter if you close the stream or not, because StringPrinter doesn't have a close().
-	 * 
-	 * Strings are sent to the consumer as soon as their consituent bytes are written to this OutputStream.
-	 * 
+	 * <p>
+	 * Strings are sent to the consumer as soon as their constituent bytes are written to this OutputStream.
+	 * <p>
 	 * The implementation is lifted from Apache commons-io.  Many thanks to them!
 	 */
 	public OutputStream toOutputStream(Charset charset) {
@@ -166,6 +168,7 @@ public class StringPrinter {
 
 			@Override
 			public Writer append(CharSequence csq) {
+				// Why the StringBuilder? BUGS, that's why: http://stackoverflow.com/a/15870428/1153071
 				StringBuilder sb = new StringBuilder(csq.length());
 				sb.append(csq);
 				consumer.accept(sb.toString());
@@ -174,6 +177,7 @@ public class StringPrinter {
 
 			@Override
 			public Writer append(CharSequence csq, int start, int end) {
+				// Why the StringBuilder? BUGS, that's why: http://stackoverflow.com/a/15870428/1153071
 				StringBuilder sb = new StringBuilder(end - start);
 				sb.append(csq.subSequence(start, end));
 				consumer.accept(sb.toString());
@@ -214,11 +218,11 @@ public class StringPrinter {
 	 * which will combine its input until it finds a newline, and
 	 * split its input when it contains multiple newlines.  Examples
 	 * make this more clear:
-	 * 
-	 * e.g. "some", "\n", "simple ", "lines", "\n" -> "some", "simple lines"
-	 *      "some\nsimple lines\n" -> "some", "simple lines"
-	 *      "no newline\nno output" -> "no newline"
-	 * 
+	 * <pre>
+	 * "some", "\n", "simple ", "lines", "\n" -> "some", "simple lines"
+	 * "some\nsimple lines\n"                 -> "some", "simple lines"
+	 * "no newline\nno output"                -> "no newline"
+	 * </pre>
 	 * @param perLine a Consumer<String> which will receive strings which were terminated by newlines (but aren't anymore).
 	 * @return a Consumer<String> which accepts any strings, and will feed them to perLine. 
 	 */
