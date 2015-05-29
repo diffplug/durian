@@ -15,9 +15,11 @@
  */
 package com.diffplug.common.base;
 
+import java.util.Comparator;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-/** Utility class to make reading the result of "compareTo" results a little easier. */
+/** Safe representation of the result of a comparison (better than int). */
 public enum Comparison {
 	LESSER, EQUAL, GREATER;
 
@@ -35,12 +37,17 @@ public enum Comparison {
 		}
 	}
 
-	/** Returns a Comparison result from the two given comparables. */
+	/** Returns a Comparison result from the two given Comparables. */
 	public static <T extends Comparable<T>> Comparison compare(T a, T b) {
 		return from(a.compareTo(b));
 	}
 
-	/** Returns a Comparison from the given result of Comparable.compareTo(). */
+	/** Returns a Comparison result from the two values using a Comparator. */
+	public static <T> Comparison compare(Comparator<T> comparator, T a, T b) {
+		return from(comparator.compare(a, b));
+	}
+
+	/** Returns a Comparison from the given result of a call to <code>Comparable.compareTo()</code> or <code>Comparator.compare</code>. */
 	@SuppressFBWarnings(value = "UC_USELESS_CONDITION", justification = "Throwing Unhandled keeps the full-enumeration more explicit.")
 	public static Comparison from(int compareToResult) {
 		if (compareToResult == 0) {

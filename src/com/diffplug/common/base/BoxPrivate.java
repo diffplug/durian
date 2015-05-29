@@ -15,8 +15,10 @@
  */
 package com.diffplug.common.base;
 
+import java.util.Objects;
+
 class BoxPrivate {
-	/** A simple implementation of Nullable. */
+	/** A simple implementation of Box. */
 	static class BoxImp<T> implements Box<T> {
 		/** The (possibly-null) object being held. */
 		private volatile T obj;
@@ -32,7 +34,7 @@ class BoxPrivate {
 
 		@Override
 		public void set(T obj) {
-			this.obj = obj;
+			this.obj = Objects.requireNonNull(obj);
 		}
 
 		@Override
@@ -41,7 +43,7 @@ class BoxPrivate {
 		}
 	}
 
-	/** A simple implementation of Nullable. */
+	/** A simple implementation of Box.Nullable. */
 	static class NullableImp<T> implements Box.Nullable<T> {
 		/** The (possibly-null) object being held. */
 		private volatile T obj;
@@ -66,7 +68,7 @@ class BoxPrivate {
 		}
 	}
 
-	/** A simple implementation of Nullable. */
+	/** A simple implementation of Box.Double. */
 	static class DoubleImp implements Box.Double {
 		/** The (possibly-null) object being held. */
 		private volatile double obj;
@@ -76,7 +78,7 @@ class BoxPrivate {
 		}
 
 		@Override
-		public double getAsDouble() {
+		public double get() {
 			return obj;
 		}
 
@@ -91,7 +93,7 @@ class BoxPrivate {
 		}
 	}
 
-	/** A simple implementation of Nullable. */
+	/** A simple implementation of Box.Int. */
 	static class IntImp implements Box.Int {
 		/** The (possibly-null) object being held. */
 		private volatile int obj;
@@ -101,7 +103,7 @@ class BoxPrivate {
 		}
 
 		@Override
-		public int getAsInt() {
+		public int get() {
 			return obj;
 		}
 
@@ -112,7 +114,7 @@ class BoxPrivate {
 
 		@Override
 		public String toString() {
-			return "Box.Double[" + obj + "]";
+			return "Box.Int[" + obj + "]";
 		}
 	}
 }

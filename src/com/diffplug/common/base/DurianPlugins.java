@@ -18,22 +18,32 @@ package com.diffplug.common.base;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A registry for plugin implementations which obeys the following contract:
- * 
+ * A programmatic and pluggable implementation of <code>public static final</code>.
+ * <p>
+ * To write code that requires an instance of <code>IPlugin</code>, you write something like this:
+ * <p>
+ * <code>IPlugin instance = DurianPlugins.get(IPlugin.class, defaultImplementation);</code>
+ * <p>
  * Once someone has requested a class from DurianPlugins, whatever instance was
- * returned will continue to be returned for every future call. This gives the
- * impression of a global constant.  Before the value has been requested, it
- * can be set programmatically or by setting a system property, which allows
- * configuring a system or framework appropriate behavior.
- * 
- * This eternal instance is determined by:
- * - the first call to register(Class<T> pluginClass, T pluginImpl)
- * - if a system property named "durian.plugins.{pluginClass.getCanonicalName()}" is set to
- *  the fully-qualified name of an implementation class with a no-argument constructor, then
- *  an instance of that class will be instantiated and used as the plugin implementation
- *  - the defaultImpl that was specified in the first call to get()
- *
+ * returned will continue to be returned for every future call. This has the same
+ * behavior as if you declared a <code>public static final IPlugin</code>.
+ * <p>
+ * Before the value has been requested, it can be set programmatically using {@link #register},
+ * or by setting a system property.  This allows setting global behaviors appropriate
+ * for diverse environments.
+ * <p>
+ * This eternal instance for a given class is determined by:
+ * <ol>
+ * <li> the first call to {@link #register}
+ * <li> if a system property named <code>durian.plugins.{pluginClass.getCanonicalName()}</code> is set to
+ *      the fully-qualified name (<code>Class.getName()</code>) of an implementation class with a no-argument
+ *      constructor, then an instance of that class will be instantiated and used as the plugin implementation
+ * <li> the <code>defaultImplementation</code> that was specified in the first call to get()
+ * </ol>
+ * <p>
  * This class was inspired by <a href="https://github.com/ReactiveX/RxJava/blob/86147542573004f4df84d2a2de83577cf62fe787/src/main/java/rx/plugins/RxJavaPlugins.java">RxJava's RxJavaPlugins</a>. Many thanks to them!
+ * @see <a href="https://diffplug.github.io/durian/javadoc/snapshot/com/diffplug/common/base/Errors.Plugins.OnErrorThrowAssertion.html">Errors.Plugins.OnErrorThrowAssertion</a>
+ * @see <a href="https://diffplug.github.io/durian-rx/javadoc/snapshot/com/diffplug/common/rx/RxTracingPolicy.LogSubscriptionTrace.html">RxTracingPolicy.LogSubscriptionTrace</a>
  */
 public class DurianPlugins {
 	/** Resets the plugin instance for testing. */
@@ -70,13 +80,13 @@ public class DurianPlugins {
 	/**
 	 * Returns an instance of pluginClass which is guaranteed to be identical throughout
 	 * the runtime existence of this library. The returned instance is determined by:
-	 * 
-	 * - the first call to register(Class<T> pluginClass, T pluginImpl)
-	 * - if a system property named "durian.plugins.{pluginClass.getCanonicalName()}" is set to
-	 *  the fully-qualified name of an implementation class with a no-argument constructor, then
-	 *  an instance of that class will be instantiated and used as the plugin implementation
-	 *  - the defaultImpl that was specified in the first call to get()
-	 *  
+	 * <ol>
+	 * <li> the first call to {@link #register}
+	 * <li> if a system property named <code>durian.plugins.{pluginClass.getCanonicalName()}</code> is set to
+	 *      the fully-qualified name (<code>Class.getName()</code>) of an implementation class with a no-argument
+	 *      constructor, then an instance of that class will be instantiated and used as the plugin implementation
+	 * <li> the <code>defaultImplementation</code> that was specified in the first call to get()
+	 * </ol>
 	 * @param pluginClass The interface which is being requested.
 	 * @param defaultImpl A default implementation of that interface.
 	 * @return An instance of pluginClass, which is guaranteed to be returned for every future request for pluginClass.

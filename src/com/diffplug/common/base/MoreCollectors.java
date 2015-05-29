@@ -20,15 +20,15 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/** Some useful collectors which aren't included as Java 8 built-ins. */
+/** Useful collectors which aren't included as Java 8 built-ins. */
 public class MoreCollectors {
 	/**
 	 * Collector which traverses a stream and returns either a single element
 	 * (if there was only one element) or empty (if there were 0 or more than 1
 	 * elements).  It traverses the entire stream, even if two elements
 	 * have been encountered and the empty return value is now certain. 
-	 * 
-	 * Implementation credit to Misha: http://stackoverflow.com/a/26812693/1153071
+	 * <p>
+	 * Implementation credit to Misha {@link http://stackoverflow.com/a/26812693/1153071}
 	 */
 	public static <T> Collector<T, ?, Optional<T>> singleOrEmpty() {
 		return Collectors.collectingAndThen(Collectors.toList(),
@@ -36,12 +36,12 @@ public class MoreCollectors {
 	}
 
 	/**
-	 * Same behavior as MoreCollectors.singleOrEmpty(), except that it returns
+	 * Same behavior as {@link #singleOrEmpty}, except that it returns
 	 * early if it is possible to do so.  Unfortunately, it is not possible
 	 * to implement early-return behavior using the Collector interface,
 	 * so MoreCollectors takes the stream as an argument.
-	 * 
-	 * Implementation credit to Thomas Jungblut: http://stackoverflow.com/a/26810932/1153071
+	 * <p>
+	 * Implementation credit to Thomas Jungblut {@link http://stackoverflow.com/a/26810932/1153071}
 	 */
 	public static <T> Optional<T> singleOrEmptyShortCircuiting(Stream<T> stream) {
 		return stream.limit(2).map(Optional::ofNullable).reduce(Optional.empty(),

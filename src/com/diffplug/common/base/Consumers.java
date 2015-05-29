@@ -18,17 +18,17 @@ package com.diffplug.common.base;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/** Utilities for creating consumers. */
+/** Helper functions for manipulating {@code java.util.function.Consumer}. */
 public class Consumers {
-	/** A consumer which does nothing. */
+	/** A Consumer which does nothing. */
 	public static <T> Consumer<T> doNothing() {
 		return value -> {};
 	}
 
 	/**
-	 * A Consumer which always passes its input to the given target.
-	 * 
-	 * By passing something mutable, such as a Box<Consumer<T>>, as
+	 * A Consumer which always passes its its input to whatever Consumer is supplied by target.
+	 * <p>
+	 * By passing something mutable, such as a {@link Box}, as
 	 * the input, you can redirect the returned consumer.
 	 */
 	public static <T> Consumer<T> redirectable(Supplier<Consumer<T>> target) {

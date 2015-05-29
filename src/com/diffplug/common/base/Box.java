@@ -25,7 +25,7 @@ import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
-/** Provides get/set access to some value. */
+/** Provides get/set access to a mutable non-null value. */
 public interface Box<T> extends Supplier<T>, Consumer<T> {
 	/** Sets the value which will later be returned by get(). */
 	void set(T value);
@@ -55,7 +55,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		};
 	}
 
-	/** Creates a Nullable from an argument and two functions which operate on that argument. */
+	/** Creates a Box from an argument and two functions which operate on that argument. */
 	public static <T, V> Box<T> from(V target, Function<V, T> getter, BiConsumer<V, T> setter) {
 		return new Box<T>() {
 			@Override
@@ -70,23 +70,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		};
 	}
 
-	/** Creates a Box box holding the given value. */
-	public static <T> Box<T> wrap(Nullable<T> wrapped) {
-		Objects.requireNonNull(wrapped.get());
-		return new Box<T>() {
-			@Override
-			public void set(T value) {
-				wrapped.set(Objects.requireNonNull(value));
-			}
-
-			@Override
-			public T get() {
-				return Objects.requireNonNull(wrapped.get());
-			}
-		};
-	}
-
-	/** Provides get/set access to some field. */
+	/** Provides get/set access to a mutable nullable value. */
 	public interface Nullable<T> extends Supplier<T>, Consumer<T> {
 		/** Sets the value which will later be returned by get(). */
 		void set(T value);
@@ -96,12 +80,12 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
-		/** Creates a Holder of the given object. */
+		/** Creates a Nullable of the given object. */
 		public static <T> Nullable<T> of(T init) {
 			return new BoxPrivate.NullableImp<T>(init);
 		}
 
-		/** Creates an empty Holder object. */
+		/** Creates an Nullable holding null. */
 		public static <T> Nullable<T> ofNull() {
 			return new BoxPrivate.NullableImp<T>(null);
 		}
@@ -147,16 +131,26 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		/** Sets the value which will later be returned by get(). */
 		void set(double value);
 
-		/** Implement the DoubleConsumer interface. */
+		/** Returns the boxed value. */
+		double get();
+
+		/** Delegates to set(). */
+		@Override
 		default void accept(double value) {
 			set(value);
 		}
 
-		/** Creates a Nullable.Double from a Supplier and a Consumer. */
+		/** Delegates to get(). */
+		@Override
+		default double getAsDouble() {
+			return get();
+		}
+
+		/** Creates a Box.Double from a Supplier and a Consumer. */
 		public static Double from(DoubleSupplier getter, DoubleConsumer setter) {
 			return new Double() {
 				@Override
-				public double getAsDouble() {
+				public double get() {
 					return getter.getAsDouble();
 				}
 
@@ -170,24 +164,34 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 	/** A Box for primitive ints. */
 	public interface Int extends IntSupplier, IntConsumer {
-		/** Returns a Box wrapped around the given int. */
-		public static Int of(int value) {
-			return new BoxPrivate.IntImp(value);
+		/** Returns a Box wrapped around the given double. */
+		public static Double of(double value) {
+			return new BoxPrivate.DoubleImp(value);
 		}
 
 		/** Sets the value which will later be returned by get(). */
 		void set(int value);
 
-		/** Implement the IntConsumer interface. */
+		/** Returns the boxed value. */
+		int get();
+
+		/** Delegates to set(). */
+		@Override
 		default void accept(int value) {
 			set(value);
 		}
 
-		/** Creates a Nullable.Int from a Supplier and a Consumer. */
+		/** Delegates to get(). */
+		@Override
+		default int getAsInt() {
+			return get();
+		}
+
+		/** Creates a Box.Double from a Supplier and a Consumer. */
 		public static Int from(IntSupplier getter, IntConsumer setter) {
 			return new Int() {
 				@Override
-				public int getAsInt() {
+				public int get() {
 					return getter.getAsInt();
 				}
 

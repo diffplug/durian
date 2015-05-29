@@ -124,8 +124,14 @@ task sourcesJar(type: Jar) {
 // that javadoc is not necessary, why make the code bigger?
 //
 // Thus, no javadoc warnings.
+def makeLink = { url, text -> "<a href=\"${url}\" style=\"text-transform: none;\">${text}</a>" }
+def javadocInfo = '<h2>' + makeLink("https://github.com/${org}/${name}", "${group}:${name}:${version}") +
+' by ' + makeLink('http://www.diffplug.com', 'DiffPlug') + '</h2>'
 javadoc {
 	options.addStringOption('Xdoclint:none', '-quiet')
+	options.header javadocInfo
+	options.footer javadocInfo
+	options.noQualifiers 'java.lang.*', 'java.util.function.*'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/** Function which defines a Tree structure based on a root object. */
+/** A function which defines a tree structure. */
 @FunctionalInterface
 public interface TreeDef<T> {
 	/** Returns all the children of the given node. */
@@ -42,7 +42,7 @@ public interface TreeDef<T> {
 	}
 
 	/**
-	 * A "doubly-linked" tree, where nodes know about both their parent and their children.
+	 * A pair of functions which define a doubly-linked tree, where nodes know about both their parent and their children.
 	 * 
 	 * It is CRITICAL that the TreeDef.Parented is consistent - if Vader claims that Luke
 	 * and Leia are his children, then both Luke and Leia must say that Vader is their parent.

@@ -24,8 +24,8 @@ import java.util.function.Predicate;
 
 /**
  * Utility methods for dumping the stack - arbitrarily or at specific trigger points (such as when a certain string prints to console).
- * 
- * If someone is printing "junk" to the console and you can't figure out why, try StackDumper.dumpWhenSysOutContains("junk").
+ * <p>
+ * If someone is printing "junk" to the console and you can't figure out why, try {@code StackDumper.dumpWhenSysOutContains("junk")}.
  */
 public class StackDumper {
 	static StringPrinter pristineSysErr = new StringPrinter(System.err::print);

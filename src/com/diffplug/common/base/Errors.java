@@ -27,12 +27,8 @@ import javax.swing.SwingUtilities;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /** 
- * Errors makes it easy to create implementations of the standard
- * functional interfaces (which don't allow checked exceptions).
- * 
- * Even for cases where you aren't required to stuff some code into a
- * functional interface, Errors is useful as a concise way to
- * specify how errors will be handled. 
+ * Executes code and wraps functions, sending any errors to a {@code Consumer<Throwable>} error handler,
+ * see <a href="https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorsExample.java">ErrorsExample</a>.
  */
 public abstract class Errors {
 	/** Package-private for testing - resets all of the static member variables. */
@@ -43,30 +39,30 @@ public abstract class Errors {
 
 	protected final Consumer<Throwable> handler;
 
-	/**
-	 * Creates an Errors.Rethrowing which transforms any exceptions it receives into a RuntimeException
-	 * as specified by the given function, and then throws that RuntimeException.
-	 * 
-	 * If that function happens to throw an unchecked error itself, that'll work just fine.
-	 */
-	public static Rethrowing createRethrowing(Function<Throwable, RuntimeException> transform) {
-		return new Rethrowing(transform);
+	protected Errors(Consumer<Throwable> error) {
+		this.handler = error;
 	}
 
 	/**
 	 * Creates an Errors.Handling which passes any exceptions it receives
 	 * to the given handler.
-	 * 
+	 * <p>
 	 * The handler is free to throw a RuntimeException if it wants to. If it always
 	 * throws a RuntimeException, then you should instead create an Errors.Rethrowing
-	 * using creeateRethrowAs().
+	 * using {@link #createRethrowing}.
 	 */
 	public static Handling createHandling(Consumer<Throwable> handler) {
 		return new Handling(handler);
 	}
 
-	protected Errors(Consumer<Throwable> error) {
-		this.handler = error;
+	/**
+	 * Creates an Errors.Rethrowing which transforms any exceptions it receives into a RuntimeException
+	 * as specified by the given function, and then throws that RuntimeException.
+	 * <p>
+	 * If that function happens to throw an unchecked error itself, that'll work just fine too.
+	 */
+	public static Rethrowing createRethrowing(Function<Throwable, RuntimeException> transform) {
+		return new Rethrowing(transform);
 	}
 
 	/** Suppresses errors entirely. */
@@ -85,9 +81,12 @@ public abstract class Errors {
 
 	/**
 	 * Logs any exceptions.
-	 * 
+	 * <p>
 	 * By default, log() calls Throwable.printStackTrace(). To modify this behavior
 	 * in your application, call DurianPlugins.set(Errors.Plugins.Log.class, error -> myCustomLog(error));
+	 * 
+	 * @see DurianPlugins
+	 * @see Errors.Plugins.OnErrorThrowAssertion
 	 */
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling log() {
@@ -115,12 +114,15 @@ public abstract class Errors {
 	/**
 	 * Opens a dialog to notify the user of any exceptions.  It should be used in cases where
 	 * an error is too severe to be silently logged.
-	 * 
+	 * <p>
 	 * By default, dialog() opens a JOptionPane. To modify this behavior in your application,
 	 * call DurianPlugins.set(Errors.Plugins.Dialog.class, error -> openMyDialog(error));
-	 * 
+	 * <p>
 	 * For a non-interactive console application, a good implementation of would probably
 	 * print the error and call System.exit().
+	 * 
+	 * @see DurianPlugins
+	 * @see Errors.Plugins.OnErrorThrowAssertion
 	 */
 	@SuppressFBWarnings(value = "LI_LAZY_INIT_STATIC", justification = "This race condition is fine, as explained in the comment below.")
 	public static Handling dialog() {
@@ -133,7 +135,7 @@ public abstract class Errors {
 
 	private static Handling dialog;
 
-	/** Passes the given error to be handled by the Errors. */
+	/** Passes the given error to this Errors. */
 	public void handle(Throwable error) {
 		handler.accept(error);
 	}
@@ -166,8 +168,8 @@ public abstract class Errors {
 	}
 
 	/**
-	 * An Errors which is free to rethrow the exception, but it might not.
-	 * 
+	 * An {@link Errors} which is free to rethrow the exception, but it might not.
+	 * <p>
 	 * If we want to wrap a method with a return value, since the handler might
 	 * not throw an exception, we need a default value to return.
 	 */
@@ -176,12 +178,12 @@ public abstract class Errors {
 			super(error);
 		}
 
-		/** Attempts to call the given supplier, returns onFailure if there is a failure. */
+		/** Attempts to call {@code supplier} and returns {@code onFailure} if an exception is thrown. */
 		public <T> T getWithDefault(Throwing.Supplier<T> supplier, T onFailure) {
 			return wrapWithDefault(supplier, onFailure).get();
 		}
 
-		/** Attempts to call the given supplier, and returns the given value on failure. */
+		/** Returns a Supplier which wraps {@code supplier} and returns {@code onFailure} if an exception is thrown. */
 		public <T> Supplier<T> wrapWithDefault(Throwing.Supplier<T> supplier, T onFailure) {
 			return () -> {
 				try {
@@ -193,7 +195,7 @@ public abstract class Errors {
 			};
 		}
 
-		/** Attempts to call the given function, and returns the given value on failure. */
+		/** Returns a Function which wraps {@code function} and returns {@code onFailure} if an exception is thrown. */
 		public <T, R> Function<T, R> wrapWithDefault(Throwing.Function<T, R> function, R onFailure) {
 			return input -> {
 				try {
@@ -205,11 +207,11 @@ public abstract class Errors {
 			};
 		}
 
-		/** Attempts to call the given function, and returns the given value on failure. */
-		public <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> function, boolean onFailure) {
+		/** Returns a Predicate which wraps {@code predicate} and returns {@code onFailure} if an exception is thrown. */
+		public <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> predicate, boolean onFailure) {
 			return input -> {
 				try {
-					return function.test(input);
+					return predicate.test(input);
 				} catch (Throwable e) {
 					handler.accept(e);
 					return onFailure;
@@ -219,8 +221,8 @@ public abstract class Errors {
 	}
 
 	/**
-	 * An Errors which is guaranteed to always throw a RuntimeException.
-	 * 
+	 * An {@link Errors} which is guaranteed to always throw a RuntimeException.
+	 * <p>
 	 * If we want to wrap a method with a return value, it's pointless to specify
 	 * a default value because if the wrapped method fails, a RuntimeException is
 	 * guaranteed to throw.
@@ -235,12 +237,12 @@ public abstract class Errors {
 			this.transform = transform;
 		}
 
-		/** Attempts to call the given supplier, throws some kind of RuntimeException on failure. */
+		/** Attempts to call {@code supplier} and rethrows any exceptions as unchecked exceptions. */
 		public <T> T get(Throwing.Supplier<T> supplier) {
 			return wrap(supplier).get();
 		}
 
-		/** Attempts to call the given supplier, throws some kind of RuntimeException on failure. */
+		/** Returns a Supplier which wraps {@code supplier} and rethrows any exceptions as unchecked exceptions. */
 		public <T> Supplier<T> wrap(Throwing.Supplier<T> supplier) {
 			return () -> {
 				try {
@@ -251,7 +253,7 @@ public abstract class Errors {
 			};
 		}
 
-		/** Attempts to call the given function, throws some kind of RuntimeException on failure. */
+		/** Returns a Function which wraps {@code function} and rethrows any exceptions as unchecked exceptions. */
 		public <T, R> Function<T, R> wrap(Throwing.Function<T, R> function) {
 			return arg -> {
 				try {
@@ -262,7 +264,7 @@ public abstract class Errors {
 			};
 		}
 
-		/** Attempts to call the given function, throws some kind of RuntimeException on failure. */
+		/** Returns a Predicate which wraps {@code predicate} and rethrows any exceptions as unchecked exceptions. */
 		public <T> Predicate<T> wrap(Throwing.Predicate<T> predicate) {
 			return arg -> {
 				try {
@@ -274,7 +276,7 @@ public abstract class Errors {
 		}
 	}
 
-	/** Converts the given exception to a RuntimeException, with a minimum of new exceptions to obscure the cause. */
+	/** Casts or wraps the given exception to be a RuntimeException. */
 	public static RuntimeException asRuntime(Throwable e) {
 		if (e instanceof RuntimeException) {
 			return (RuntimeException) e;
@@ -283,24 +285,20 @@ public abstract class Errors {
 		}
 	}
 
-	/**
-	 * Namespace for the plugins which Errors supports. Call
-	 * DurianPlugins.register(Errors.Plugins.Log.class, logImplementation)
-	 * if you'd like to change the default behavior.
-	 */
+	/** Namespace for the plugins which Errors supports. */
 	public interface Plugins {
-		/** Errors.log(). */
+		/** Plugin interface for {@link Errors#log}. */
 		public interface Log extends Consumer<Throwable> {}
 
-		/** Errors.dialog(). */
+		/** Plugin interface for {@link Errors#dialog}. */
 		public interface Dialog extends Consumer<Throwable> {}
 
-		/** Default behavior of Errors.log() is Throwable.printStackTrace(). */
+		/** Default behavior of {@link Errors#log} is @{code Throwable.printStackTrace()}. */
 		static void defaultLog(Throwable error) {
 			error.printStackTrace();
 		}
 
-		/** Default behavior of Errors.dialog() is JOptionPane.showMessageDialog without a parent. */
+		/** Default behavior of {@link Errors#dialog} is @{code JOptionPane.showMessageDialog} without a parent. */
 		static void defaultDialog(Throwable error) {
 			SwingUtilities.invokeLater(() -> {
 				error.printStackTrace();
@@ -314,8 +312,22 @@ public abstract class Errors {
 		}
 
 		/**
-		 * An implementation of all of the Errors built-ins which throws an AssertionError
+		 * An implementation of all of the {@link Errors} plugins which throws an AssertionError
 		 * on any exception.  This can be helpful for JUnit tests.
+		 * <p>
+		 * To enable this in your application, you can either:
+		 * <ul>
+		 * <li>Execute this code at the very beginning of your application:<pre>
+		 * DurianPlugins.set(Errors.Plugins.Log.class, new OnErrorThrowAssertion());
+		 * DurianPlugins.set(Errors.Plugins.Dialog.class, new OnErrorThrowAssertion());
+		 * </pre></li>
+		 * <li>Set these system variables:<pre>
+		 * durian.plugins.com.diffplug.common.base.Errors.Plugins.Log=com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion
+		 * durian.plugins.com.diffplug.common.base.Errors.Plugins.Dialog=com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion
+		 * </pre></li>
+		 * </ul>
+		 * 
+		 * @see DurianPlugins
 		 */
 		public static class OnErrorThrowAssertion implements Log, Dialog {
 			@Override
