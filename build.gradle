@@ -131,7 +131,7 @@ javadoc {
 	options.addStringOption('Xdoclint:none', '-quiet')
 	options.header javadocInfo
 	options.footer javadocInfo
-	options.noQualifiers 'java.lang.*', 'java.util.function.*'
+	options.links('https://docs.oracle.com/javase/8/docs/api/')
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
