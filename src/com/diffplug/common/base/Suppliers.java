@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
- * Helper functions for manipulating {@code java.util.function.Supplier}, copied from Guava.
+ * Helper functions for manipulating {@link Supplier}, copied from Guava.
  * <p>
  * The function signatures below are identical to Google's Guava 18.0, except that guava's functional
  * interfaces have been swapped with Java 8's. It is tested against the same test suite

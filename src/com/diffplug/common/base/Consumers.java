@@ -18,7 +18,7 @@ package com.diffplug.common.base;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/** Helper functions for manipulating {@code java.util.function.Consumer}. */
+/** Helper functions for manipulating {@link Consumer}. */
 public class Consumers {
 	/** A Consumer which does nothing. */
 	public static <T> Consumer<T> doNothing() {
