@@ -321,7 +321,7 @@ public abstract class Errors {
 		 * DurianPlugins.set(Errors.Plugins.Log.class, new OnErrorThrowAssertion());
 		 * DurianPlugins.set(Errors.Plugins.Dialog.class, new OnErrorThrowAssertion());
 		 * </pre></li>
-		 * <li>Set these system variables:<pre>
+		 * <li>Set these system properties:<pre>
 		 * durian.plugins.com.diffplug.common.base.Errors.Plugins.Log=com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion
 		 * durian.plugins.com.diffplug.common.base.Errors.Plugins.Dialog=com.diffplug.common.base.Errors$Plugins$OnErrorThrowAssertion
 		 * </pre></li>
