@@ -35,6 +35,11 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		set(value);
 	}
 
+	/** Maps one {@code Box} to another {@code Box}. */
+	default <R> Box<R> map(Function<? super T, ? extends R> getMapper, Function<? super R, ? extends T> setMapper) {
+		return Box.from(() -> getMapper.apply(get()), toSet -> set(setMapper.apply(toSet)));
+	}
+
 	/** Creates a Box holding the given value. */
 	public static <T> Box<T> of(T value) {
 		return new BoxPrivate.BoxImp<T>(value);
