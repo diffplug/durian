@@ -42,7 +42,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 	/** Creates a Box holding the given value. */
 	public static <T> Box<T> of(T value) {
-		return new BoxPrivate.BoxImp<T>(value);
+		return new BoxImplementations.BoxImp<T>(value);
 	}
 
 	/** Creates a Box from a Supplier and a Consumer. */
@@ -87,12 +87,12 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		/** Creates a Nullable of the given object. */
 		public static <T> Nullable<T> of(T init) {
-			return new BoxPrivate.NullableImp<T>(init);
+			return new BoxImplementations.NullableImp<T>(init);
 		}
 
 		/** Creates an Nullable holding null. */
 		public static <T> Nullable<T> ofNull() {
-			return new BoxPrivate.NullableImp<T>(null);
+			return new BoxImplementations.NullableImp<T>(null);
 		}
 
 		/** Creates a Nullable from a Supplier and a Consumer. */
@@ -130,7 +130,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	public interface Double extends DoubleSupplier, DoubleConsumer {
 		/** Returns a Box wrapped around the given double. */
 		public static Double of(double value) {
-			return new BoxPrivate.DoubleImp(value);
+			return new BoxImplementations.DoubleImp(value);
 		}
 
 		/** Sets the value which will later be returned by get(). */
@@ -171,7 +171,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	public interface Int extends IntSupplier, IntConsumer {
 		/** Returns a Box wrapped around the given double. */
 		public static Double of(double value) {
-			return new BoxPrivate.DoubleImp(value);
+			return new BoxImplementations.DoubleImp(value);
 		}
 
 		/** Sets the value which will later be returned by get(). */

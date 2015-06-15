@@ -17,14 +17,18 @@ package com.diffplug.common.base;
 
 import java.util.Objects;
 
-class BoxPrivate {
+/**
+ * Trivial implementations of the various {@link Box} classes. Useful for overriding
+ * them to create custom behaviors on get() or set().
+ */
+public class BoxImplementations {
 	/** A simple implementation of Box. */
-	static class BoxImp<T> implements Box<T> {
+	public static class BoxImp<T> implements Box<T> {
 		/** The (possibly-null) object being held. */
-		private volatile T obj;
+		protected volatile T obj;
 
-		BoxImp(T init) {
-			this.set(init);
+		protected BoxImp(T init) {
+			this.obj = Objects.requireNonNull(init);
 		}
 
 		@Override
@@ -44,12 +48,12 @@ class BoxPrivate {
 	}
 
 	/** A simple implementation of Box.Nullable. */
-	static class NullableImp<T> implements Box.Nullable<T> {
+	public static class NullableImp<T> implements Box.Nullable<T> {
 		/** The (possibly-null) object being held. */
-		private volatile T obj;
+		protected volatile T obj;
 
-		NullableImp(T init) {
-			this.set(init);
+		protected NullableImp(T init) {
+			this.obj = init;
 		}
 
 		@Override
@@ -69,12 +73,12 @@ class BoxPrivate {
 	}
 
 	/** A simple implementation of Box.Double. */
-	static class DoubleImp implements Box.Double {
+	public static class DoubleImp implements Box.Double {
 		/** The (possibly-null) object being held. */
-		private volatile double obj;
+		protected volatile double obj;
 
-		DoubleImp(double init) {
-			this.set(init);
+		protected DoubleImp(double init) {
+			this.obj = init;
 		}
 
 		@Override
@@ -94,12 +98,12 @@ class BoxPrivate {
 	}
 
 	/** A simple implementation of Box.Int. */
-	static class IntImp implements Box.Int {
+	public static class IntImp implements Box.Int {
 		/** The (possibly-null) object being held. */
-		private volatile int obj;
+		protected volatile int obj;
 
-		IntImp(int init) {
-			this.set(init);
+		protected IntImp(int init) {
+			this.obj = init;
 		}
 
 		@Override
