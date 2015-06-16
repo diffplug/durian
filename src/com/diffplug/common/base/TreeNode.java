@@ -53,6 +53,11 @@ public final class TreeNode<T> {
 		return Collections.unmodifiableList(children);
 	}
 
+	@Override
+	public String toString() {
+		return "TreeNode[" + content + "]";
+	}
+
 	/** Creates a hierarchy of TreeNodes that copies the structure and content of the given Tree. */
 	public static <T> TreeNode<T> copy(T root, TreeDef<T> treeDef) {
 		TreeNode<T> copyRoot = new TreeNode<>(null, root);
