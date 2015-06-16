@@ -48,9 +48,15 @@ public class StackDumper {
 		}));
 	}
 
-	/** Dumps the given stack to the system error console. */
+	/** Dumps the current stack to the system error console. */
 	public static void dump(String message) {
 		dump(message, captureStackBelow(StackDumper.class));
+	}
+
+	/** Dumps the first {@code stackLimit} frames of the current stack to the system error console. */
+	public static void dump(String message, int stackLimit) {
+		List<StackTraceElement> list = captureStackBelow(StackDumper.class);
+		dump(message, list.subList(0, Math.min(stackLimit, list.size())));
 	}
 
 	/** Dumps a stack trace anytime the trigger string is printed to System.out. */
