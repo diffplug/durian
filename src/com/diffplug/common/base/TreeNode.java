@@ -16,8 +16,10 @@
 package com.diffplug.common.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /** Class for manually constructing a tree, or for copying an existing tree. */
 public final class TreeNode<T> {
@@ -72,18 +74,125 @@ public final class TreeNode<T> {
 		}
 	}
 
-	/** {@link TreeDef.Parented} for TreeNodes. */
+	/** {@link TreeDef.Parented} for {@code TreeNode}s. */
+	@SuppressWarnings("unchecked")
 	public static <T> TreeDef.Parented<TreeNode<T>> treeDef() {
-		return new TreeDef.Parented<TreeNode<T>>() {
-			@Override
-			public List<TreeNode<T>> childrenOf(TreeNode<T> root) {
-				return root.getChildren();
-			}
+		return (TreeDef.Parented<TreeNode<T>>) TREE_DEF;
+	}
 
-			@Override
-			public TreeNode<T> parentOf(TreeNode<T> child) {
-				return child.parent;
+	@SuppressWarnings("rawtypes")
+	private static final TreeDef.Parented TREE_DEF = new TreeDef.Parented<TreeNode<Object>>() {
+		@Override
+		public List<TreeNode<Object>> childrenOf(TreeNode<Object> root) {
+			return root.getChildren();
+		}
+
+		@Override
+		public TreeNode<Object> parentOf(TreeNode<Object> child) {
+			return child.parent;
+		}
+	};
+
+	////////////////
+	// Test stuff //
+	////////////////
+	/**
+	 * Creates a hierarchy of {@code TreeNode<String>} using an easy-to-read array of strings.
+	 * <p>
+	 * Spaces are used to represent parent / child relationships, e.g.
+	 * {@code
+	 * TreeNode<String> root = createTestData(
+	 *     "root",
+	 *     " bigNode1",
+	 *     " bigNode2",
+	 *     "  child1",
+	 *     "  child2",
+	 *     " bigNode3"
+	 * );
+	 * }
+	 * <p>
+	 * There can only be one root node, and that is the node that is returned.
+	 */
+	public static TreeNode<String> createTestData(String... testData) {
+		List<String> test = Arrays.asList(testData);
+
+		// make the first node (which should have 0 leading spaces)
+		assert(test.size() > 0);
+		assert(0 == TreeNode.leadingSpaces(test.get(0)));
+
+		TreeNode<String> rootNode = new TreeNode<String>(null, test.get(0));
+		TreeNode<String> lastNode = rootNode;
+		int lastSpaces = 0;
+
+		for (int i = 1; i < test.size(); ++i) {
+			int newSpaces = TreeNode.leadingSpaces(test.get(i));
+			String name = test.get(i).substring(newSpaces);
+			if (newSpaces == lastSpaces + 1) {
+				// one level deeper, so the last guy should be the parent
+				lastNode = new TreeNode<String>(lastNode, name);
+				lastSpaces = newSpaces;
+			} else if (newSpaces <= lastSpaces) {
+				// any level back up, or the same level
+				TreeNode<String> properParent = lastNode.getParent();
+				int diff = lastSpaces - newSpaces;
+				for (int j = 0; j < diff; ++j) {
+					properParent = properParent.getParent();
+				}
+				lastNode = new TreeNode<String>(properParent, name);
+				lastSpaces = newSpaces;
+			} else {
+				throw new IllegalArgumentException("Last element \"" + test.get(i - 1) + "\""
+						+ " and this element \"" + test.get(i) + "\" have too many spaces between them.");
 			}
-		};
+		}
+		return rootNode;
+	}
+
+	/** Helps makeDummyTree */
+	private static int leadingSpaces(String name) {
+		int i = 0;
+		while ((i < name.length()) && (name.charAt(i) == ' ')) {
+			++i;
+		}
+		return i;
+	}
+
+	/**
+	 * Finds a child {@code TreeNode} based on its path.
+	 * <p>
+	 * Searches the child nodes for the first element, then that
+	 * node's children for the second element, etc.
+	 * 
+	 * @throws IllegalArgumentException if no such node exists
+	 */
+	@SuppressWarnings("unchecked")
+	public TreeNode<T> findByPath(T... contents) {
+		return findByPath(Arrays.asList(contents));
+	}
+
+	/** @see #findByPath(Object...) */
+	public TreeNode<T> findByPath(List<T> contents) {
+		TreeNode<T> value = this;
+		for (T content : contents) {
+			Optional<TreeNode<T>> valueOpt = value.getChildren().stream().filter(node -> node.getContent().equals(content)).findFirst();
+			if (!valueOpt.isPresent()) {
+				throw new IllegalArgumentException(this.toString() + " has no child at path " + contents);
+			}
+			value = valueOpt.get();
+		}
+		return value;
+	}
+
+	/**
+	 * Searches breadth-first for the {@code TreeNode} with the given content.
+	 * 
+	 * @throws IllegalArgumentException if no such node exists
+	 */
+	public TreeNode<T> findByContent(T content) {
+		Optional<TreeNode<T>> opt = TreeStream.breadthFirst(treeDef(), this).filter(node -> node.getContent().equals(content)).findFirst();
+		if (!opt.isPresent()) {
+			throw new IllegalArgumentException(this.toString() + " has no child with content " + content);
+		}
+		return opt.get();
 	}
 }

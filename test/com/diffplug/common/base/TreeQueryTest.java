@@ -25,9 +25,8 @@ public class TreeQueryTest {
 	@Test
 	public void testLowestCommonAncestor() {
 		// test the trivial case
-		TreeNode<String> root = getNode("root");
-		TreeNode<String> arrayJava = getNode("root", "src", "org", "math", "Array.java");
-		TreeNode<String> matrixJava = getNode("root", "src", "org", "math", "Matrix.java");
+		TreeNode<String> arrayJava = root.findByPath("src", "org", "math", "Array.java");
+		TreeNode<String> matrixJava = root.findByPath("src", "org", "math", "Matrix.java");
 		lcaTestCase(root, root, root);
 		lcaTestCase(arrayJava, arrayJava, arrayJava);
 		lcaTestCase(matrixJava, matrixJava, matrixJava);
@@ -37,7 +36,7 @@ public class TreeQueryTest {
 		lcaTestCase(root, matrixJava, root);
 
 		// test the intersection case
-		lcaTestCase(matrixJava, arrayJava, getNode("root", "src", "org", "math"));
+		lcaTestCase(matrixJava, arrayJava, root.findByPath("src", "org", "math"));
 	}
 
 	private void lcaTestCase(TreeNode<String> a, TreeNode<String> b, TreeNode<String> expected) {
@@ -45,12 +44,8 @@ public class TreeQueryTest {
 		Assert.assertEquals(expected, actual);
 	}
 
-	private TreeNode<String> getNode(String... segments) {
-		return TreeTestData.getByPath(root, segments);
-	}
-
 	// @formatter:off
-	private TreeNode<String> root = TreeTestData.create(
+	private TreeNode<String> root = TreeNode.createTestData(
 			"root",
 			" src",
 			"  org",

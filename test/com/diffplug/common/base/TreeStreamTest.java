@@ -27,7 +27,7 @@ import com.diffplug.common.base.TreeStream;
 
 public class TreeStreamTest {
 	// @formatter:off
-	private TreeNode<String> root = TreeTestData.create(
+	private TreeNode<String> testData = TreeNode.createTestData(
 			"root",
 			" A",
 			"  B",
@@ -90,6 +90,6 @@ public class TreeStreamTest {
 	}
 
 	private TreeNode<String> getNode(String name) {
-		return TreeTestData.getByName(root, name);
+		return testData.findByContent(name);
 	}
 }
