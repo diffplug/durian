@@ -100,8 +100,8 @@ public final class TreeNode<T> {
 	 * Creates a hierarchy of {@code TreeNode<String>} using an easy-to-read array of strings.
 	 * <p>
 	 * Spaces are used to represent parent / child relationships, e.g.
-	 * {@code
-	 * TreeNode<String> root = createTestData(
+	 * <pre>
+	 * TreeNode&lt;String&gt; root = createTestData(
 	 *     "root",
 	 *     " bigNode1",
 	 *     " bigNode2",
@@ -109,8 +109,7 @@ public final class TreeNode<T> {
 	 *     "  child2",
 	 *     " bigNode3"
 	 * );
-	 * }
-	 * <p>
+	 * </pre>
 	 * There can only be one root node, and that is the node that is returned.
 	 */
 	public static TreeNode<String> createTestData(String... testData) {
