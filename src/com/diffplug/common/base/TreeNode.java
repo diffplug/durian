@@ -19,24 +19,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 /** Class for manually constructing a tree, or for copying an existing tree. */
 public final class TreeNode<T> {
 	private TreeNode<T> parent;
 	private T content;
-	private List<TreeNode<T>> children = Collections.emptyList();
+	private List<TreeNode<T>> children;
 
 	/** Creates a TreeNode with the given parent and content. Automatically adds itself as a child of its parent. */
-	public TreeNode(TreeNode<T> parent, T obj) {
+	public TreeNode(TreeNode<T> parent, T content) {
+		this(parent, content, 0);
+	}
+
+	/**
+	 * Creates a TreeNode with the given parent, content, and initial child capacity. Automatically adds itself as a child of its parent.
+	 * <p>
+	 * {@code childCapacity} is provided strictly for performance reasons.
+	 */
+	@SuppressWarnings("unchecked")
+	public TreeNode(TreeNode<T> parent, T content, int childCapacity) {
 		this.parent = parent;
-		this.content = obj;
+		this.content = content;
 		if (parent != null) {
-			// if it's empty, it's a Collections.emptyList(), so we need to make a list we can add to
-			if (parent.children.isEmpty()) {
+			// if it's a Collections.emptyList(), then we need to make it a list we can add to
+			if (parent.children == Collections.EMPTY_LIST) {
 				parent.children = new ArrayList<>();
 			}
 			parent.children.add(this);
+		}
+		if (childCapacity == 0) {
+			children = Collections.EMPTY_LIST;
+		} else {
+			children = new ArrayList<>(childCapacity);
 		}
 	}
 
@@ -45,7 +62,12 @@ public final class TreeNode<T> {
 		return content;
 	}
 
-	/** Returns the parent of this TreeNode. */
+	/** Sets the object which is encapsulated by this TreeNode. */
+	public void setContent(T content) {
+		this.content = content;
+	}
+
+	/** Returns the (possibly-null) parent of this TreeNode. */
 	public TreeNode<T> getParent() {
 		return parent;
 	}
@@ -55,26 +77,58 @@ public final class TreeNode<T> {
 		return Collections.unmodifiableList(children);
 	}
 
+	/** Removes this TreeNode from its parent. */
+	public void removeFromParent() {
+		Objects.requireNonNull(parent);
+		parent.children.remove(this);
+		parent = null;
+	}
+
 	@Override
 	public String toString() {
 		return "TreeNode[" + content + "]";
 	}
 
-	/** Creates a hierarchy of TreeNodes that copies the structure and content of the given Tree. */
-	public static <T> TreeNode<T> copy(T root, TreeDef<T> treeDef) {
-		TreeNode<T> copyRoot = new TreeNode<>(null, root);
-		copyRecurse(copyRoot, treeDef);
+	/**
+	 * Returns a "deep" toString, including the entire tree below this level.
+	 * 
+	 * @see TreeQuery#toString(TreeDef, Object, com.google.common.base.Function)
+	 */
+	public String toStringDeep() {
+		return TreeQuery.toString(treeDef(), this, node -> node.getContent().toString());
+	}
+
+	/** Creates a deep copy of this TreeNode. */
+	public TreeNode<T> copy() {
+		return copy(treeDef(), this, TreeNode::getContent);
+	}
+
+	/** Creates a hierarchy of TreeNodes that copies the structure and content of the given tree. */
+	public static <T> TreeNode<T> copy(TreeDef<T> treeDef, T root) {
+		return copy(treeDef, root, Function.identity());
+	}
+
+	/**
+	 * Creates a hierarchy of TreeNodes that copies the structure and content of the given tree,
+	 * using {@code mapper} to calculate the content of the nodes.
+	 */
+	public static <T, R> TreeNode<R> copy(TreeDef<T> treeDef, T root, Function<? super T, ? extends R> mapper) {
+		List<T> children = treeDef.childrenOf(root);
+		R mapped = mapper.apply(root);
+		TreeNode<R> copyRoot = new TreeNode<>(null, mapped, children.size());
+		copyRecurse(copyRoot, treeDef, root, children, mapper);
 		return copyRoot;
 	}
 
-	private static <T> void copyRecurse(TreeNode<T> root, TreeDef<T> treeDef) {
-		List<T> children = treeDef.childrenOf(root.content);
+	private static <T, R> void copyRecurse(TreeNode<R> copiedRoot, TreeDef<T> treeDef, T root, List<T> children, Function<? super T, ? extends R> mapper) {
 		for (T child : children) {
-			copyRecurse(new TreeNode<>(root, child), treeDef);
+			R mapped = mapper.apply(child);
+			List<T> grandChildren = treeDef.childrenOf(child);
+			copyRecurse(new TreeNode<>(copiedRoot, mapped, grandChildren.size()), treeDef, child, grandChildren, mapper);
 		}
 	}
 
-	/** {@link TreeDef.Parented} for {@code TreeNode}s. */
+	/** {@link TreeDef.Parented} for TreeNodes. */
 	@SuppressWarnings("unchecked")
 	public static <T> TreeDef.Parented<TreeNode<T>> treeDef() {
 		return (TreeDef.Parented<TreeNode<T>>) TREE_DEF;
@@ -157,7 +211,7 @@ public final class TreeNode<T> {
 	}
 
 	/**
-	 * Finds a child {@code TreeNode} based on its path.
+	 * Finds a child TreeNode based on its path.
 	 * <p>
 	 * Searches the child nodes for the first element, then that
 	 * node's children for the second element, etc.
@@ -183,7 +237,7 @@ public final class TreeNode<T> {
 	}
 
 	/**
-	 * Searches breadth-first for the {@code TreeNode} with the given content.
+	 * Searches breadth-first for the TreeNode with the given content.
 	 * 
 	 * @throws IllegalArgumentException if no such node exists
 	 */
