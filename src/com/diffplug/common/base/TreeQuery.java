@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /** Queries against {@link TreeDef} trees, e.g. lowest common ancestor, list of parents, etc. */
 public class TreeQuery {
@@ -121,6 +122,49 @@ public class TreeQuery {
 				soFar = lowestCommonAncestor(treeDef, soFar.get(), nodes.get(i));
 			}
 			return soFar;
+		}
+	}
+
+	/**
+	 * Converts the entire tree into a string-based representation.
+	 * 
+	 * @see #toString(TreeDef, Object, Function, String)
+	 */
+	public static <T> String toString(TreeDef<T> treeDef, T root) {
+		return toString(treeDef, root, Object::toString);
+	}
+
+	/**
+	 * Converts the entire tree into a string-based representation.
+	 * 
+	 * @see #toString(TreeDef, Object, Function, String)
+	 */
+	public static <T> String toString(TreeDef<T> treeDef, T root, Function<? super T, String> toString) {
+		return toString(treeDef, root, toString, " ");
+	}
+
+	/**
+	 * Converts the entire tree into a string-based representation.
+	 * 
+	 * @param treeDef	the treeDef
+	 * @param root		the root of the tree
+	 * @param toString	the function which generates the name for each node in the tree
+	 * @param indent	the string to use for each level of indentation
+	 */
+	public static <T> String toString(TreeDef<T> treeDef, T root, Function<? super T, String> toString, String indent) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(toString.apply(root));
+		builder.append("\n");
+		toStringHelper(treeDef, root, toString, indent, builder, indent);
+		return builder.toString();
+	}
+
+	private static <T> void toStringHelper(TreeDef<T> treeDef, T root, Function<? super T, String> toString, String indent, StringBuilder builder, String prefix) {
+		for (T child : treeDef.childrenOf(root)) {
+			builder.append(prefix);
+			builder.append(toString.apply(child));
+			builder.append("\n");
+			toStringHelper(treeDef, child, toString, indent, builder, prefix + indent);
 		}
 	}
 }
