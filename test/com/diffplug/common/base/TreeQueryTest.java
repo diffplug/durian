@@ -18,9 +18,6 @@ package com.diffplug.common.base;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.diffplug.common.base.TreeNode;
-import com.diffplug.common.base.TreeQuery;
-
 public class TreeQueryTest {
 	@Test
 	public void testLowestCommonAncestor() {
@@ -42,6 +39,18 @@ public class TreeQueryTest {
 	private void lcaTestCase(TreeNode<String> a, TreeNode<String> b, TreeNode<String> expected) {
 		TreeNode<String> actual = TreeQuery.lowestCommonAncestor(TreeNode.treeDef(), a, b).get();
 		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testToString() {
+		// put the testData into its string form
+		String[] pieces = root.toStringDeep().split("\n");
+		// turn it back into a treeNode
+		TreeNode<String> copiedFromString = TreeNode.createTestData(pieces);
+		// make sure the strings are identical
+		Assert.assertEquals(root.toStringDeep(), copiedFromString.toStringDeep());
+		// and the same for the underlying tree
+		TreeComparison.of(root, copiedFromString).assertEqual();
 	}
 
 	// @formatter:off

@@ -24,7 +24,9 @@ import java.util.stream.Collectors;
  * A function which defines a tree structure.
  * @see TreeStream
  * @see TreeQuery
+ * @see TreeComparison
  * @see TreeIterable
+ * @see TreeNode
  */
 @FunctionalInterface
 public interface TreeDef<T> {
