@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods for dumping the stack - arbitrarily or at specific trigger points (such as when a certain string prints to console).
@@ -50,13 +51,27 @@ public class StackDumper {
 
 	/** Dumps the current stack to the system error console. */
 	public static void dump(String message) {
-		dump(message, captureStackBelow(StackDumper.class));
+		dump(message, captureStackBelow());
 	}
 
-	/** Dumps the first {@code stackLimit} frames of the current stack to the system error console. */
-	public static void dump(String message, int stackLimit) {
-		List<StackTraceElement> list = captureStackBelow(StackDumper.class);
-		dump(message, list.subList(0, Math.min(stackLimit, list.size())));
+	/** Dumps the first {@code stackLimit} frames of the current stack to the system error console, excluding traces from {@code classPrefixesToExclude}. */
+	public static void dump(String message, int stackLimit, String... classPrefixesToExclude) {
+		// class names to include
+		Predicate<StackTraceElement> isIncluded = trace -> {
+			for (String prefix : classPrefixesToExclude) {
+				if (trace.getClassName().startsWith(prefix)) {
+					return false;
+				}
+			}
+			return true;
+		};
+		// filter the stack
+		List<StackTraceElement> stack = captureStackBelow().stream()
+				.filter(trace -> trace.getLineNumber() >= 0)
+				.filter(isIncluded)
+				.limit(stackLimit)
+				.collect(Collectors.toList());
+		dump(message, stack);
 	}
 
 	/** Dumps a stack trace anytime the trigger string is printed to System.out. */
