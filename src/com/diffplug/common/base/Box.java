@@ -42,7 +42,32 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 	/** Creates a Box holding the given value. */
 	public static <T> Box<T> of(T value) {
-		return new BoxImplementations.BoxImp<T>(value);
+		return new Default<T>(value);
+	}
+
+	/** A simple implementation of Box. */
+	public static class Default<T> implements Box<T> {
+		/** The (possibly-null) object being held. */
+		protected volatile T obj;
+
+		protected Default(T init) {
+			this.obj = Objects.requireNonNull(init);
+		}
+
+		@Override
+		public T get() {
+			return obj;
+		}
+
+		@Override
+		public void set(T obj) {
+			this.obj = Objects.requireNonNull(obj);
+		}
+
+		@Override
+		public String toString() {
+			return "Box[" + get().toString() + "]";
+		}
 	}
 
 	/** Creates a Box from a Supplier and a Consumer. */
@@ -87,12 +112,37 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		/** Creates a Nullable of the given object. */
 		public static <T> Nullable<T> of(T init) {
-			return new BoxImplementations.NullableImp<T>(init);
+			return new Default<T>(init);
 		}
 
 		/** Creates an Nullable holding null. */
 		public static <T> Nullable<T> ofNull() {
-			return new BoxImplementations.NullableImp<T>(null);
+			return new Default<T>(null);
+		}
+
+		/** A simple implementation of Box.Nullable. */
+		public static class Default<T> implements Box.Nullable<T> {
+			/** The (possibly-null) object being held. */
+			protected volatile T obj;
+
+			protected Default(T init) {
+				this.obj = init;
+			}
+
+			@Override
+			public T get() {
+				return obj;
+			}
+
+			@Override
+			public void set(T obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Nullable[" + (get() == null ? "null" : get().toString()) + "]";
+			}
 		}
 
 		/** Creates a Nullable from a Supplier and a Consumer. */
@@ -127,12 +177,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	}
 
 	/** A Box for primitive doubles. */
-	public interface Double extends DoubleSupplier, DoubleConsumer {
-		/** Returns a Box wrapped around the given double. */
-		public static Double of(double value) {
-			return new BoxImplementations.DoubleImp(value);
-		}
-
+	public interface Dbl extends DoubleSupplier, DoubleConsumer {
 		/** Sets the value which will later be returned by get(). */
 		void set(double value);
 
@@ -151,9 +196,39 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			return get();
 		}
 
+		/** Returns a Box wrapped around the given double. */
+		public static Dbl of(double value) {
+			return new Default(value);
+		}
+
+		/** A simple implementation of Box.Double. */
+		public static class Default implements Box.Dbl {
+			/** The (possibly-null) object being held. */
+			protected volatile double obj;
+
+			protected Default(double init) {
+				this.obj = init;
+			}
+
+			@Override
+			public double get() {
+				return obj;
+			}
+
+			@Override
+			public void set(double obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Double[" + obj + "]";
+			}
+		}
+
 		/** Creates a Box.Double from a Supplier and a Consumer. */
-		public static Double from(DoubleSupplier getter, DoubleConsumer setter) {
-			return new Double() {
+		public static Dbl from(DoubleSupplier getter, DoubleConsumer setter) {
+			return new Dbl() {
 				@Override
 				public double get() {
 					return getter.getAsDouble();
@@ -169,11 +244,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 	/** A Box for primitive ints. */
 	public interface Int extends IntSupplier, IntConsumer {
-		/** Returns a Box wrapped around the given double. */
-		public static Double of(double value) {
-			return new BoxImplementations.DoubleImp(value);
-		}
-
 		/** Sets the value which will later be returned by get(). */
 		void set(int value);
 
@@ -190,6 +260,36 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		@Override
 		default int getAsInt() {
 			return get();
+		}
+
+		/** Returns a Box wrapped around the given double. */
+		public static Int of(int value) {
+			return new Default(value);
+		}
+
+		/** A simple implementation of Box.Int. */
+		public static class Default implements Box.Int {
+			/** The (possibly-null) object being held. */
+			protected volatile int obj;
+
+			protected Default(int init) {
+				this.obj = init;
+			}
+
+			@Override
+			public int get() {
+				return obj;
+			}
+
+			@Override
+			public void set(int obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Int[" + obj + "]";
+			}
 		}
 
 		/** Creates a Box.Double from a Supplier and a Consumer. */
