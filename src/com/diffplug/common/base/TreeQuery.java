@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -123,6 +124,48 @@ public class TreeQuery {
 			}
 			return soFar;
 		}
+	}
+
+	/**
+	 * Returns the path of the given node.
+	 * 
+	 * @param treeDef	the treeDef
+	 * @param node		the root of the tree
+	 * @param toString	a function to map each node to a string in the path 
+	 * @param delimiter	a string to use as a path separator
+	 */
+	public static <T> String path(TreeDef.Parented<T> treeDef, T node, Function<? super T, String> toString, String delimiter) {
+		List<T> toRoot = toRoot(treeDef, node);
+		ListIterator<T> iterator = toRoot.listIterator(toRoot.size());
+		StringBuilder builder = new StringBuilder();
+		while (iterator.hasPrevious()) {
+			T segment = iterator.previous();
+			// add the node
+			builder.append(toString.apply(segment));
+			// add the separator if it makes sense
+			if (iterator.hasPrevious()) {
+				builder.append(delimiter);
+			}
+		}
+		return builder.toString();
+	}
+
+	/**
+	 * Returns the path of the given node, using {@code /} as the path delimiter.
+	 * 
+	 * @see #path(com.diffplug.common.base.TreeDef.Parented, Object, Function, String)
+	 */
+	public static <T> String path(TreeDef.Parented<T> treeDef, T node, Function<? super T, String> toString) {
+		return path(treeDef, node, toString, "/");
+	}
+
+	/**
+	 * Returns the path of the given node, using {@code /} as the path delimiter and {@link Object#toString()} as the mapping function.
+	 * 
+	 * @see #path(com.diffplug.common.base.TreeDef.Parented, Object, Function, String)
+	 */
+	public static <T> String path(TreeDef.Parented<T> treeDef, T node) {
+		return path(treeDef, node, Object::toString);
 	}
 
 	/**

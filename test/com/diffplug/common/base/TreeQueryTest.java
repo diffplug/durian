@@ -42,6 +42,12 @@ public class TreeQueryTest {
 	}
 
 	@Test
+	public void testPath() {
+		Assert.assertEquals("root", TreeQuery.path(TreeNode.treeDef(), root, TreeNode::getContent));
+		Assert.assertEquals("root/test/org2/avl/allegro.avl", TreeQuery.path(TreeNode.treeDef(), root.findByContent("allegro.avl"), TreeNode::getContent));
+	}
+
+	@Test
 	public void testToString() {
 		// put the testData into its string form
 		String[] pieces = root.toStringDeep().split("\n");
