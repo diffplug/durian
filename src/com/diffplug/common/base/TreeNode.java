@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /** Class for manually constructing a tree, or for copying an existing tree. */
-public final class TreeNode<T> {
+public class TreeNode<T> {
 	private TreeNode<T> parent;
 	private T content;
 	private List<TreeNode<T>> children;
