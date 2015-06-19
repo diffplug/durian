@@ -107,7 +107,7 @@ public final class TreeNode<T> {
 	/**
 	 * Returns a "deep" toString, including the entire tree below this level.
 	 * 
-	 * @see TreeQuery#toString(TreeDef, Object, com.google.common.base.Function)
+	 * @see TreeQuery#toString(TreeDef, Object, Function, String)
 	 */
 	public String toStringDeep() {
 		return TreeQuery.toString(treeDef(), this, node -> node.getContent().toString());

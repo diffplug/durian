@@ -241,12 +241,12 @@ public class StringPrinter {
 		};
 	}
 
-	/** Returns a StringPrinter for {@link System.out}. */
+	/** Returns a StringPrinter for {@link System#out}. */
 	public static StringPrinter systemOut() {
 		return new StringPrinter(System.out::print);
 	}
 
-	/** Returns a StringPrinter for {@link System.err}. */
+	/** Returns a StringPrinter for {@link System#err}. */
 	public static StringPrinter systemErr() {
 		return new StringPrinter(System.out::print);
 	}
