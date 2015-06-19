@@ -15,7 +15,13 @@
  */
 package com.diffplug.common.base;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -92,5 +98,37 @@ public interface TreeDef<T> {
 	/** Returns a filtered version of the given list. */
 	static <T> List<T> filteredList(List<T> unfiltered, Predicate<T> filter) {
 		return unfiltered.stream().filter(filter).collect(Collectors.toList());
+	}
+
+	/** An instance of {@code TreeDef.Parented} for {@link File}. */
+	public static TreeDef.Parented<File> forFile(Consumer<Throwable> errorPolicy) {
+		Errors.Handling errors = Errors.createHandling(errorPolicy);
+		return TreeDef.Parented.of(
+				file -> errors.<List<File>> getWithDefault(() -> {
+					if (file.isDirectory()) {
+						return Arrays.asList(file.listFiles());
+					} else {
+						return Collections.emptyList();
+					}
+				}, Collections.emptyList()),
+				file -> errors.<File> getWithDefault(() -> {
+					return file.getParentFile();
+				}, null));
+	}
+
+	/** An instance of {@code TreeDef.Parented} for {@link Path}. */
+	public static TreeDef.Parented<Path> forPath(Consumer<Throwable> errorPolicy) {
+		Errors.Handling errors = Errors.createHandling(errorPolicy);
+		return TreeDef.Parented.of(
+				path -> errors.<List<Path>> getWithDefault(() -> {
+					if (Files.isDirectory(path)) {
+						return Files.list(path).collect(Collectors.toList());
+					} else {
+						return Collections.emptyList();
+					}
+				}, Collections.emptyList()),
+				path -> errors.<Path> getWithDefault(() -> {
+					return path.getParent();
+				}, null));
 	}
 }
