@@ -240,4 +240,14 @@ public class StringPrinter {
 			leftover.set(rawString.substring(lastIdx));
 		};
 	}
+
+	/** Returns a StringPrinter for {@link System.out}. */
+	public static StringPrinter systemOut() {
+		return new StringPrinter(System.out::print);
+	}
+
+	/** Returns a StringPrinter for {@link System.err}. */
+	public static StringPrinter systemErr() {
+		return new StringPrinter(System.out::print);
+	}
 }
