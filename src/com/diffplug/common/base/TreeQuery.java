@@ -20,8 +20,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 /** Queries against {@link TreeDef} trees, e.g. lowest common ancestor, list of parents, etc. */
@@ -166,6 +168,65 @@ public class TreeQuery {
 	 */
 	public static <T> String path(TreeDef.Parented<T> treeDef, T node) {
 		return path(treeDef, node, Object::toString);
+	}
+
+	/**
+	 * Finds a child TreeNode based on its path.
+	 * <p>
+	 * Searches the child nodes for the first element, then that
+	 * node's children for the second element, etc.
+	 * 
+	 * @param treeDef	defines a tree
+	 * @param node		starting point for the search
+	 * @param path		the path of nodes which we're looking
+	 * @param equality	a function for determining equality between the tree nodes and the path elements
+	 * @return the node we found (if we found one)
+	 */
+	public static <T, P> Optional<T> findByPath(TreeDef<T> treeDef, T node, List<P> path, BiPredicate<T, P> equality) {
+		T value = node;
+		for (P segment : path) {
+			Optional<T> valueOpt = treeDef.childrenOf(value).stream().filter(n -> equality.test(n, segment)).findFirst();
+			if (!valueOpt.isPresent()) {
+				return valueOpt;
+			}
+			value = valueOpt.get();
+		}
+		return Optional.of(value);
+	}
+
+	/**
+	 * Finds a child TreeNode based on its path.
+	 * <p>
+	 * Searches the child nodes for the first element, then that
+	 * node's children for the second element, etc.
+	 * 
+	 * @param treeDef		defines a tree
+	 * @param node			starting point for the search
+	 * @param treeMapper	maps elements in the tree to some value for comparison with the path elements
+	 * @param path			the path of nodes which we're looking
+	 * @param pathMapper	maps elements in the path to some value for comparison with the tree elements
+	 * @return
+	 */
+	public static <T, P> Optional<T> findByPath(TreeDef<T> treeDef, T node, Function<? super T, ?> treeMapper, List<P> path, Function<? super P, ?> pathMapper) {
+		return findByPath(treeDef, node, path, (treeSide, pathSide) -> {
+			return Objects.equals(treeMapper.apply(treeSide), pathMapper.apply(pathSide));
+		});
+	}
+
+	/**
+	 * Finds a child TreeNode based on its path.
+	 * <p>
+	 * Searches the child nodes for the first element, then that
+	 * node's children for the second element, etc.
+	 * 
+	 * @param treeDef		defines a tree
+	 * @param node			starting point for the search
+	 * @param path			the path of nodes which we're looking
+	 * @param mapper		maps elements to some value for comparison between the tree and the path
+	 * @return
+	 */
+	public static <T> Optional<T> findByPath(TreeDef<T> treeDef, T node, List<T> path, Function<? super T, ?> mapper) {
+		return findByPath(treeDef, node, mapper, path, mapper);
 	}
 
 	/**

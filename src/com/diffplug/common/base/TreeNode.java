@@ -234,21 +234,18 @@ public final class TreeNode<T> {
 	 * @throws IllegalArgumentException if no such node exists
 	 */
 	@SuppressWarnings("unchecked")
-	public TreeNode<T> findByPath(T... contents) {
-		return findByPath(Arrays.asList(contents));
+	public TreeNode<T> findByPath(T... path) {
+		return findByPath(Arrays.asList(path));
 	}
 
 	/** @see #findByPath(Object...) */
-	public TreeNode<T> findByPath(List<T> contents) {
-		TreeNode<T> value = this;
-		for (T content : contents) {
-			Optional<TreeNode<T>> valueOpt = value.getChildren().stream().filter(node -> node.getContent().equals(content)).findFirst();
-			if (!valueOpt.isPresent()) {
-				throw new IllegalArgumentException(this.toString() + " has no child at path " + contents);
-			}
-			value = valueOpt.get();
+	public TreeNode<T> findByPath(List<T> path) {
+		Optional<TreeNode<T>> result = TreeQuery.findByPath(treeDef(), this, TreeNode::getContent, path, Function.identity());
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			throw new IllegalArgumentException(this.toString() + " has no element with path " + path);
 		}
-		return value;
 	}
 
 	/**
@@ -258,9 +255,10 @@ public final class TreeNode<T> {
 	 */
 	public TreeNode<T> findByContent(T content) {
 		Optional<TreeNode<T>> opt = TreeStream.breadthFirst(treeDef(), this).filter(node -> node.getContent().equals(content)).findFirst();
-		if (!opt.isPresent()) {
+		if (opt.isPresent()) {
+			return opt.get();
+		} else {
 			throw new IllegalArgumentException(this.toString() + " has no child with content " + content);
 		}
-		return opt.get();
 	}
 }
