@@ -89,6 +89,21 @@ public final class TreeNode<T> {
 		return "TreeNode[" + content + "]";
 	}
 
+	/** Returns the path of this node, using the content's {@code toString()} method and {@code /} as the delimiter. */
+	public String getPath() {
+		return getPath(Object::toString);
+	}
+
+	/** Returns the path of this node, using the given {@code toString} method and {@code /} as the delimiter. */
+	public String getPath(Function<? super T, String> toString) {
+		return getPath(toString, "/");
+	}
+
+	/** Returns the path of this node, using the given {@code toString} method and {@code delimiter}. */
+	public String getPath(Function<? super T, String> toString, String delimiter) {
+		return TreeQuery.path(treeDef(), this, node -> toString.apply(node.getContent()), delimiter);
+	}
+
 	/**
 	 * Returns a "deep" toString, including the entire tree below this level.
 	 * 
