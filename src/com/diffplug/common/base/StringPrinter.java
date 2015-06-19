@@ -248,6 +248,6 @@ public class StringPrinter {
 
 	/** Returns a StringPrinter for {@link System#err}. */
 	public static StringPrinter systemErr() {
-		return new StringPrinter(System.out::print);
+		return new StringPrinter(System.err::print);
 	}
 }
