@@ -30,7 +30,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Executes code and wraps functions, sending any errors to a {@code Consumer<Throwable>} error handler,
  * see <a href="https://github.com/diffplug/durian/blob/master/test/com/diffplug/common/base/ErrorsExample.java">ErrorsExample</a>.
  */
-public abstract class Errors {
+public abstract class Errors implements Consumer<Throwable> {
 	/** Package-private for testing - resets all of the static member variables. */
 	static void resetForTesting() {
 		log = null;
@@ -136,7 +136,8 @@ public abstract class Errors {
 	private static Handling dialog;
 
 	/** Passes the given error to this Errors. */
-	public void handle(Throwable error) {
+	@Override
+	public void accept(Throwable error) {
 		handler.accept(error);
 	}
 
