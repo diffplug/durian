@@ -35,6 +35,11 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		set(value);
 	}
 
+	/** Shortcut for doing a set() on the result of a get(). */
+	default void modify(Function<? super T, ? extends T> mutator) {
+		set(mutator.apply(get()));
+	}
+
 	/** Maps one {@code Box} to another {@code Box}. */
 	default <R> Box<R> map(Function<? super T, ? extends R> getMapper, Function<? super R, ? extends T> setMapper) {
 		return Box.from(() -> getMapper.apply(get()), toSet -> set(setMapper.apply(toSet)));
