@@ -180,7 +180,6 @@ public class TreeQuery {
 	 * @param node		starting point for the search
 	 * @param path		the path of nodes which we're looking
 	 * @param equality	a function for determining equality between the tree nodes and the path elements
-	 * @return the node we found (if we found one)
 	 */
 	public static <T, P> Optional<T> findByPath(TreeDef<T> treeDef, T node, List<P> path, BiPredicate<T, P> equality) {
 		T value = node;
@@ -205,7 +204,6 @@ public class TreeQuery {
 	 * @param treeMapper	maps elements in the tree to some value for comparison with the path elements
 	 * @param path			the path of nodes which we're looking
 	 * @param pathMapper	maps elements in the path to some value for comparison with the tree elements
-	 * @return
 	 */
 	public static <T, P> Optional<T> findByPath(TreeDef<T> treeDef, T node, Function<? super T, ?> treeMapper, List<P> path, Function<? super P, ?> pathMapper) {
 		return findByPath(treeDef, node, path, (treeSide, pathSide) -> {
@@ -223,7 +221,6 @@ public class TreeQuery {
 	 * @param node			starting point for the search
 	 * @param path			the path of nodes which we're looking
 	 * @param mapper		maps elements to some value for comparison between the tree and the path
-	 * @return
 	 */
 	public static <T> Optional<T> findByPath(TreeDef<T> treeDef, T node, List<T> path, Function<? super T, ?> mapper) {
 		return findByPath(treeDef, node, mapper, path, mapper);
