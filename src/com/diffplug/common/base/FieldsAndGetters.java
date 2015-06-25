@@ -24,8 +24,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import com.google.common.collect.Maps;
-
 /**
  * Utilities for obtaining the fields and getter methods of an object using reflection.
  * Useful for first-pass debugging of runtime objects.
@@ -57,7 +55,7 @@ public class FieldsAndGetters {
 				// gotta pass the predicate 
 				.filter(predicate)
 				// get its value
-				.map(field -> Maps.immutableEntry(field, tryCall(field.getName(), () -> field.get(obj))));
+				.map(field -> createEntry(field, tryCall(field.getName(), () -> field.get(obj))));
 	}
 
 	/**
@@ -94,7 +92,7 @@ public class FieldsAndGetters {
 				// we only want methods that pass our predicate
 				.filter(predicate)
 				// turn it into Map<Method, Result>
-				.map(method -> Maps.immutableEntry(method, tryCall(method.getName(), () -> method.invoke(obj))));
+				.map(method -> createEntry(method, tryCall(method.getName(), () -> method.invoke(obj))));
 	}
 
 	/** Sentinel class for null objects. */
@@ -146,10 +144,10 @@ public class FieldsAndGetters {
 	 */
 	public static Stream<Map.Entry<String, Object>> fieldsAndGetters(Object obj, Predicate<String> predicate) {
 		Stream<Map.Entry<String, Object>> fields = fields(obj, field -> predicate.test(field.getName()))
-				.map(entry -> Maps.immutableEntry(entry.getKey().getName(), entry.getValue()));
+				.map(entry -> createEntry(entry.getKey().getName(), entry.getValue()));
 		Function<Method, String> methodName = method -> method.getName() + "()";
 		Stream<Map.Entry<String, Object>> getters = getters(obj, field -> predicate.test(methodName.apply(field)))
-				.map(entry -> Maps.immutableEntry(methodName.apply(entry.getKey()), entry.getValue()));
+				.map(entry -> createEntry(methodName.apply(entry.getKey()), entry.getValue()));
 		return Stream.concat(fields, getters);
 	}
 
@@ -194,5 +192,25 @@ public class FieldsAndGetters {
 	 */
 	public static void dumpNonNull(String name, Object obj, StringPrinter printer) {
 		dumpIf(name, obj, Predicates.alwaysTrue(), entry -> entry.getValue() != null, printer);
+	}
+
+	/** Creates an immutable Map.Entry. */
+	private static <K, V> Map.Entry<K, V> createEntry(K key, V value) {
+		return new Map.Entry<K, V>() {
+			@Override
+			public K getKey() {
+				return key;
+			}
+
+			@Override
+			public V getValue() {
+				return value;
+			}
+
+			@Override
+			public V setValue(V value) {
+				throw Unhandled.operationException();
+			}
+		};
 	}
 }
