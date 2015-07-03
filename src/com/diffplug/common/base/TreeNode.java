@@ -18,6 +18,7 @@ package com.diffplug.common.base;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -116,6 +117,20 @@ public class TreeNode<T> {
 	/** Creates a deep copy of this TreeNode. */
 	public TreeNode<T> copy() {
 		return copy(treeDef(), this, TreeNode::getContent);
+	}
+
+	/** Recursively sorts all children using the given comparator of their content. */
+	public void sortChildrenByContent(Comparator<? super T> comparator) {
+		Comparator<TreeNode<T>> byContent = Comparator.comparing(TreeNode::getContent, comparator);
+		sortChildrenByNode(byContent);
+	}
+
+	/** Recursively sorts all children using the given comparator of TreeNode. */
+	public void sortChildrenByNode(Comparator<TreeNode<T>> comparator) {
+		Collections.sort(children, comparator);
+		for (TreeNode<T> child : children) {
+			child.sortChildrenByNode(comparator);
+		}
 	}
 
 	/** Creates a hierarchy of TreeNodes that copies the structure and content of the given tree. */
