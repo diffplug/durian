@@ -108,6 +108,11 @@ public interface Either<L, R> {
 		public int hashCode() {
 			return Objects.hash(Left.class, value);
 		}
+
+		@Override
+		public String toString() {
+			return "Left[" + value.toString() + "]";
+		}
 	}
 
 	/** Implementation of right. */
@@ -145,6 +150,11 @@ public interface Either<L, R> {
 		@Override
 		public int hashCode() {
 			return Objects.hash(Right.class, value);
+		}
+
+		@Override
+		public String toString() {
+			return "Right[" + value.toString() + "]";
 		}
 	}
 }
