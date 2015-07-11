@@ -47,6 +47,21 @@ public interface Throwing {
 		public interface Predicate<T, E extends Throwable> {
 			boolean test(T t) throws E;
 		}
+
+		@FunctionalInterface
+		public interface BiConsumer<T, U, E extends Throwable> {
+			void accept(T t, U u);
+		}
+
+		@FunctionalInterface
+		public interface BiFunction<T, U, R, E extends Throwable> {
+			R apply(T t, U u);
+		}
+
+		@FunctionalInterface
+		public interface BiPredicate<T, U, E extends Throwable> {
+			boolean accept(T t, U u);
+		}
 	}
 
 	@FunctionalInterface
@@ -63,4 +78,13 @@ public interface Throwing {
 
 	@FunctionalInterface
 	public interface Predicate<T> extends Specific.Predicate<T, Throwable> {}
+
+	@FunctionalInterface
+	public interface BiConsumer<T, U> extends Specific.BiConsumer<T, U, Throwable> {}
+
+	@FunctionalInterface
+	public interface BiFunction<T, U, R> extends Specific.BiFunction<T, U, R, Throwable> {}
+
+	@FunctionalInterface
+	public interface BiPredicate<T, U> extends Specific.BiPredicate<T, U, Throwable> {}
 }
