@@ -16,6 +16,7 @@
 package com.diffplug.common.base;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -37,20 +38,34 @@ public interface Either<L, R> {
 	/** Returns the right side. Throws an exception if it's really a Left. */
 	R getRight();
 
-	/** Returns the left side, or the default if it's actually a right. */
-	default L getLeftOrElse(L value) {
-		return isLeft() ? getLeft() : value;
+	/** Performs the given action if this is a Left. */
+	default void ifLeft(Consumer<? super L> consumer) {
+		if (isLeft()) {
+			consumer.accept(getLeft());
+		}
 	}
 
-	/** Returns the right side, or the default if it's actually a left. */
-	default R getRightOrElse(R value) {
-		return isRight() ? getRight() : value;
+	/** Performs the given action if this is a Right. */
+	default void ifRight(Consumer<? super R> consumer) {
+		if (isRight()) {
+			consumer.accept(getRight());
+		}
+	}
+
+	/** Returns the left side as an Optional. */
+	default Optional<L> asOptionalLeft() {
+		return fold(Optional::of, val -> Optional.<L> empty());
+	}
+
+	/** Returns the right side as an Optional. */
+	default Optional<R> asOptionalRight() {
+		return fold(val -> Optional.<R> empty(), Optional::of);
 	}
 
 	/** Sets both the left and right consumers, using the default values to set the empty side. */
 	default void setBoth(Consumer<L> left, Consumer<R> right, L defaultLeft, R defaultRight) {
-		left.accept(getLeftOrElse(defaultLeft));
-		right.accept(getRightOrElse(defaultRight));
+		left.accept(isLeft() ? getLeft() : defaultLeft);
+		right.accept(isRight() ? getRight() : defaultRight);
 	}
 
 	/** Applies either the left or the right function as appropriate. */

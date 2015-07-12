@@ -15,6 +15,7 @@
  */
 package com.diffplug.common.base;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -28,8 +29,8 @@ public class EitherTest {
 		Assert.assertTrue(left.isLeft());
 		Assert.assertFalse(left.isRight());
 		Assert.assertEquals(TimeUnit.DAYS, left.getLeft());
-		Assert.assertEquals(TimeUnit.DAYS, left.getLeftOrElse(TimeUnit.MILLISECONDS));
-		Assert.assertEquals("milliseconds", left.getRightOrElse("milliseconds"));
+		Assert.assertEquals(Optional.of(TimeUnit.DAYS), left.asOptionalLeft());
+		Assert.assertEquals(Optional.empty(), left.asOptionalRight());
 		try {
 			left.getRight();
 			Assert.fail();
@@ -49,8 +50,8 @@ public class EitherTest {
 		Assert.assertTrue(right.isRight());
 		Assert.assertFalse(right.isLeft());
 		Assert.assertEquals("word", right.getRight());
-		Assert.assertEquals("word", right.getRightOrElse("milliseconds"));
-		Assert.assertEquals(TimeUnit.MICROSECONDS, right.getLeftOrElse(TimeUnit.MICROSECONDS));
+		Assert.assertEquals(Optional.of("word"), right.asOptionalRight());
+		Assert.assertEquals(Optional.empty(), right.asOptionalLeft());
 		try {
 			right.getLeft();
 			Assert.fail();
