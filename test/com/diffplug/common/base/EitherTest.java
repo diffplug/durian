@@ -39,7 +39,7 @@ public class EitherTest {
 
 		Box.Nullable<TimeUnit> leftSide = Box.Nullable.ofNull();
 		Box.Nullable<String> rightSide = Box.Nullable.ofNull();
-		left.setBoth(leftSide, rightSide, TimeUnit.HOURS, "wahoo");
+		left.acceptBoth(leftSide, rightSide, TimeUnit.HOURS, "wahoo");
 		Assert.assertEquals(TimeUnit.DAYS, leftSide.get());
 		Assert.assertEquals("wahoo", rightSide.get());
 	}
@@ -60,7 +60,7 @@ public class EitherTest {
 
 		Box.Nullable<TimeUnit> leftSide = Box.Nullable.ofNull();
 		Box.Nullable<String> rightSide = Box.Nullable.ofNull();
-		right.setBoth(leftSide, rightSide, TimeUnit.HOURS, "wahoo");
+		right.acceptBoth(leftSide, rightSide, TimeUnit.HOURS, "wahoo");
 		Assert.assertEquals(TimeUnit.HOURS, leftSide.get());
 		Assert.assertEquals("word", rightSide.get());
 	}

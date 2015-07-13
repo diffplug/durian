@@ -62,12 +62,6 @@ public interface Either<L, R> {
 		return fold(val -> Optional.<R> empty(), Optional::of);
 	}
 
-	/** Sets both the left and right consumers, using the default values to set the empty side. */
-	default void setBoth(Consumer<L> left, Consumer<R> right, L defaultLeft, R defaultRight) {
-		left.accept(isLeft() ? getLeft() : defaultLeft);
-		right.accept(isRight() ? getRight() : defaultRight);
-	}
-
 	/** Applies either the left or the right function as appropriate. */
 	default <T> T fold(Function<? super L, ? extends T> left, Function<? super R, ? extends T> right) {
 		if (isLeft()) {
@@ -75,6 +69,21 @@ public interface Either<L, R> {
 		} else {
 			return right.apply(getRight());
 		}
+	}
+
+	/** Accepts either the left or the right consumer as appropriate. */
+	default void accept(Consumer<? super L> left, Consumer<? super R> right) {
+		if (isLeft()) {
+			left.accept(getLeft());
+		} else {
+			right.accept(getRight());
+		}
+	}
+
+	/** Accepts both the left and right consumers, using the default values to set the empty side. */
+	default void acceptBoth(Consumer<? super L> left, Consumer<? super R> right, L defaultLeft, R defaultRight) {
+		left.accept(isLeft() ? getLeft() : defaultLeft);
+		right.accept(isRight() ? getRight() : defaultRight);
 	}
 
 	/** Creates an instance of Left. */
