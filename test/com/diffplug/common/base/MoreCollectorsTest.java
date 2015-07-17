@@ -36,4 +36,11 @@ public class MoreCollectorsTest {
 		// and the simpler one
 		Assert.assertEquals(expected, Arrays.stream(values).collect(MoreCollectors.singleOrEmpty()));
 	}
+
+	@Test
+	public void testCodePointsToString() {
+		String spacesRemoved = MoreCollectors.codePointsToString("a b c".codePoints().filter(c -> c != ' '));
+		Assert.assertEquals("abc", spacesRemoved);
+		;
+	}
 }

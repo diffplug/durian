@@ -18,6 +18,7 @@ package com.diffplug.common.base;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /** Useful collectors which aren't included as Java 8 built-ins. */
@@ -46,5 +47,18 @@ public class MoreCollectors {
 	public static <T> Optional<T> singleOrEmptyShortCircuiting(Stream<T> stream) {
 		return stream.limit(2).map(Optional::ofNullable).reduce(Optional.empty(),
 				(a, b) -> a.isPresent() ^ b.isPresent() ? b : Optional.empty());
+	}
+
+	/**
+	 * Converts a stream of unicode code points into a String.
+	 * <pre>
+	 * {@code
+	 * String spacesRemoved = MoreCollectors.codePointsToString("a b c".codePoints().filter(c -> c != ' '));
+	 * Assert.assertEquals("abc", spacesRemoved);;
+	 * }
+	 * </pre>
+	 */
+	public static String codePointsToString(IntStream codePoints) {
+		return codePoints.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 }
