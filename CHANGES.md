@@ -1,11 +1,16 @@
 # Durian releases
 
-### Version 3.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+### Version 3.1 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
 
+### Version 3.0 - July 19th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.0/view))
+
+* Now available on Maven Central!
 * Merged `GetterSetter` and `Box` into just `Box`.
 * Rather than `Box` and `Box.NonNull extends Box`, we now have `Box` and `Box.Nullable`.
 	+ Non-null by default is much better.
 	+ There should not be an inheritance hierarchy between the nullable and non-null versions, and now there isn't.
+* Added a mechanism for testing trees for equality.
+* Other miscellaneous changes.
 
 ### Version 2.0 - May 13th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/2.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/2.0/view))
 
