@@ -282,7 +282,16 @@ public abstract class Errors implements Consumer<Throwable> {
 		if (e instanceof RuntimeException) {
 			return (RuntimeException) e;
 		} else {
-			return new RuntimeException(e);
+			return new WrappedAsRuntimeException(e);
+		}
+	}
+
+	/** A RuntimeException specifically for the purpose of wrapping non-runtime Throwables as RuntimeExceptions. */
+	public static class WrappedAsRuntimeException extends RuntimeException {
+		private static final long serialVersionUID = -912202209702586994L;
+
+		public WrappedAsRuntimeException(Throwable e) {
+			super(e);
 		}
 	}
 
