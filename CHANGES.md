@@ -1,6 +1,10 @@
 # Durian releases
 
-### Version 3.1 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+### Version 3.2 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+
+### Version 3.1 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/3.1/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1/view))
+
+* When `Errors.asRuntime()` wraps an exception as a `RuntimeException`, it now uses `Errors.WrappedAsRuntimeException` rather than a generic `RuntimeException`.
 
 ### Version 3.0 - July 19th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.0/view))
 
