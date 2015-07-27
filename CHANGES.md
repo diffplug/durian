@@ -1,6 +1,6 @@
 # Durian releases
 
-Z### Version 3.2 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+### Version 3.2.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
 
 ### Version 3.1.1 - July 27th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.1.1/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1.1/view))
 
