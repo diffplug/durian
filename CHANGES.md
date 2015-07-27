@@ -1,8 +1,12 @@
 # Durian releases
 
-### Version 3.2 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+Z### Version 3.2 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
 
-### Version 3.1 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/3.1/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1/view))
+### Version 3.1.1 - July 27th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.1.1/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1.1/view))
+
+* Gah! MANIFEST.MF still had -SNAPSHOT version.  Fixed now.  Would be really nice if we could get MANIFEST.MF generation working.
+
+### Version 3.1 - July 24th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.1/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1/view))
 
 * When `Errors.asRuntime()` wraps an exception as a `RuntimeException`, it now uses `Errors.WrappedAsRuntimeException` rather than a generic `RuntimeException`.
 

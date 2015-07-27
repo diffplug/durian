@@ -7,7 +7,7 @@ Bundle-Name: com.diffplug.durian
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian
 Bundle-Vendor: DiffPlug
-Bundle-Version: 3.0.0.SNAPSHOT
+Bundle-Version: 3.1.1
 Created-By: 1.8.0_40 (Oracle Corporation)
 Export-Package: com.diffplug.common.base;version="3.0.0"
 Import-Package: javax.swing
