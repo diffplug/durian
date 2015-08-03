@@ -30,6 +30,10 @@ Durian's only requirement is Java 8 or greater, no other libraries are needed (n
 
 Contributions are welcome, see [the contributing guide](CONTRIBUTING.md) for development info.
 
+## Related
+
+If you have a `Box`, but you'd like to subscribe to changes in its value, you should look at `RxBox` in [DurianRx](https://github.com/diffplug/durian-rx).
+
 ## Acknowledgements
 
 * The API and tests for `Suppliers`, `Functions`, and `Predicates` are all verbatim from [Guava](https://github.com/google/guava).
