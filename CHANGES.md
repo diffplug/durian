@@ -2,6 +2,10 @@
 
 ### Version 3.2.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
 
+### Version 3.1.2 - August 19th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.1.2/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1.2/view))
+
+* Fixed a bug in `Throwing.Specific.Bi*` where these interfaces did not throw exceptions - which is the whole reason they exist.
+
 ### Version 3.1.1 - July 27th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.1.1/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1.1/view))
 
 * Gah! MANIFEST.MF still had -SNAPSHOT version.  Fixed now.  Would be really nice if we could get MANIFEST.MF generation working.
