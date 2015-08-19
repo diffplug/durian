@@ -50,17 +50,17 @@ public interface Throwing {
 
 		@FunctionalInterface
 		public interface BiConsumer<T, U, E extends Throwable> {
-			void accept(T t, U u);
+			void accept(T t, U u) throws E;
 		}
 
 		@FunctionalInterface
 		public interface BiFunction<T, U, R, E extends Throwable> {
-			R apply(T t, U u);
+			R apply(T t, U u) throws E;
 		}
 
 		@FunctionalInterface
 		public interface BiPredicate<T, U, E extends Throwable> {
-			boolean accept(T t, U u);
+			boolean accept(T t, U u) throws E;
 		}
 	}
 
