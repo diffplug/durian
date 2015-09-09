@@ -16,6 +16,7 @@
 package com.diffplug.common.base;
 
 import java.io.PrintWriter;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -139,6 +140,15 @@ public abstract class Errors implements Consumer<Throwable> {
 	@Override
 	public void accept(Throwable error) {
 		handler.accept(error);
+	}
+
+	/** Converts this {@code Consumer<Throwable>} to a {@code Consumer<Optional<Throwable>>}. */
+	public Consumer<Optional<Throwable>> asTerminal() {
+		return errorOpt -> {
+			if (errorOpt.isPresent()) {
+				accept(errorOpt.get());
+			}
+		};
 	}
 
 	/** Attempts to run the given runnable. */
