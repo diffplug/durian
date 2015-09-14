@@ -28,6 +28,17 @@ import java.util.function.Function;
 
 /** Queries against {@link TreeDef} trees, e.g. lowest common ancestor, list of parents, etc. */
 public class TreeQuery {
+	/** Returns the root of the given tree. */
+	public static <T> T root(TreeDef.Parented<T> treeDef, T node) {
+		T lastParent;
+		T parent = node;
+		do {
+			lastParent = parent;
+			parent = treeDef.parentOf(lastParent);
+		} while (parent != null);
+		return lastParent;
+	}
+
 	/** Creates a mutable list whose first element is {@code node}, and last element is its root parent. */
 	public static <T> List<T> toRoot(TreeDef.Parented<T> treeDef, T node) {
 		List<T> list = new ArrayList<>();

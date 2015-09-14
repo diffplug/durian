@@ -20,6 +20,13 @@ import org.junit.Test;
 
 public class TreeQueryTest {
 	@Test
+	public void testToRoot() {
+		Assert.assertEquals(root, TreeQuery.root(TreeNode.treeDef(), root));
+		Assert.assertEquals(root, TreeQuery.root(TreeNode.treeDef(), root.findByContent("src")));
+		Assert.assertEquals(root, TreeQuery.root(TreeNode.treeDef(), root.findByContent("Array.java")));
+	}
+
+	@Test
 	public void testLowestCommonAncestor() {
 		// test the trivial case
 		TreeNode<String> arrayJava = root.findByPath("src", "org", "math", "Array.java");
