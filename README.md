@@ -1,11 +1,11 @@
 # <img align="left" src="durian.png"> Durian: [Guava](https://github.com/google/guava)'s spikier (unofficial) cousin
 
 [![Maven artifact](https://img.shields.io/badge/mavenCentral-com.diffplug.durian%3Adurian-blue.svg)](https://bintray.com/diffplug/opensource/durian/view)
-[![Latest version](http://img.shields.io/badge/latest-3.1.2-blue.svg)](https://github.com/diffplug/durian/releases/latest)
-[![Javadoc](http://img.shields.io/badge/javadoc-OK-blue.svg)](https://diffplug.github.io/durian/javadoc/3.1.2/)
+[![Latest version](http://img.shields.io/badge/latest-3.2.0-blue.svg)](https://github.com/diffplug/durian/releases/latest)
+[![Javadoc](http://img.shields.io/badge/javadoc-OK-blue.svg)](https://diffplug.github.io/durian/javadoc/3.2.0/)
 [![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
 
-[![Changelog](http://img.shields.io/badge/changelog-3.2.0--SNAPSHOT-brightgreen.svg)](CHANGES.md)
+[![Changelog](http://img.shields.io/badge/changelog-3.3.0--SNAPSHOT-brightgreen.svg)](CHANGES.md)
 [![Travis CI](https://travis-ci.org/diffplug/durian.svg?branch=master)](https://travis-ci.org/diffplug/durian)
 
 Guava has become indispensable for many Java developers.  Because of its wide adoption, it must be conservative regarding its minimum requirements.

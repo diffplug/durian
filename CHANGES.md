@@ -1,6 +1,11 @@
 # Durian releases
 
-### Version 3.2.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+### Version 3.3.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+
+### Version 3.2.0 - September 14th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.2.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.2.0/view))
+
+* Added the `Errors.asTerminal()` method, for treating an `Errors` instance as a `Consumer<Optional<Throwable>>` rather than the usual `Consumer<Throwable>`.
+* Added the `TreeQuery.root(TreeDef<T> treeDef, T node)` method, which returns the root node based on the given node.
 
 ### Version 3.1.2 - August 19th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.1.2/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.1.2/view))
 
