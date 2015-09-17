@@ -2,6 +2,8 @@
 
 ### Version 3.3.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
 
+* Added `Box.Nullable.modify()`, which has the same behavior as `Box.modify()`.
+
 ### Version 3.2.0 - September 14th 2015 ([javadoc](http://diffplug.github.io/durian/javadoc/3.2.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.2.0/view))
 
 * Added the `Errors.asTerminal()` method, for treating an `Errors` instance as a `Consumer<Optional<Throwable>>` rather than the usual `Consumer<Throwable>`.

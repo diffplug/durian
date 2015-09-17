@@ -117,6 +117,13 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
+		/** Shortcut for doing a set() on the result of a get(). */
+		default T modify(Function<? super T, ? extends T> mutator) {
+			T modified = mutator.apply(get());
+			set(modified);
+			return modified;
+		}
+
 		/** Creates a Nullable of the given object. */
 		public static <T> Nullable<T> of(T init) {
 			return new Default<T>(init);
