@@ -1,15 +1,8 @@
-buildscript {
-	repositories {
-		jcenter()
-		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-	}
-	dependencies {
-		// applies the Eclipse java formatter
-		configurations.all {
-			resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-		}
-		classpath "com.diffplug.gradle.spotless:spotless:${VER_SPOTLESS}"
-	}
+plugins {
+	// code formatting
+	id "com.diffplug.gradle.spotless" version "1.3.0"
+	// bintray uploading
+	id "com.jfrog.bintray" version "1.3.1"
 }
 
 repositories {
@@ -144,6 +137,21 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 	from javadoc.destinationDir
 }
 
+////////////////
+// PUBLISHING //
+////////////////
+def isSnapshot = project.version.endsWith('-SNAPSHOT')
+// pulls the credentials from either the environment variable or gradle.properties
+def cred = {
+	if (System.env[it] != null) {
+		return System.env[it]
+	} else if (project[it] != null) {
+		return project[it]
+	} else {
+		return 'unknown_' + it
+	}
+}
+
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
@@ -182,20 +190,41 @@ publishing {
 			}
 		}
 	}
-	repositories {
-		maven {
-			def isSnapshot = project.version.endsWith('-SNAPSHOT')
-			if (isSnapshot) {
-				url = 'https://oss.sonatype.org/content/repositories/snapshots'
-			} else {
-				url = "https://api.bintray.com/maven/diffplug/opensource/${project.name}"
-			}
+	if (isSnapshot) {
+		// upload snapshots to oss.sonatype.org
+		repositories { maven {
+			url = 'https://oss.sonatype.org/content/repositories/snapshots'
 			credentials {
-				username = System.env[isSnapshot ? 'nexus_user' : 'bintray_user']
-				password = System.env[isSnapshot ? 'nexus_pass' : 'bintray_pass']
+				username = cred('nexus_user')
+				password = cred('nexus_pass')
+			}
+		} }
+	}
+}
+
+if (!isSnapshot) {
+	// upload releases to bintray and then mavenCentral
+	bintray {
+		user = cred('bintray_user')
+		key = cred('bintray_pass')
+		publications = ['mavenJava']
+		publish = true
+		pkg {
+			repo = 'opensource'
+			name = project.name
+			userOrg = project.org
+			version {
+				name = project.version
+				mavenCentralSync {
+					user = cred('nexus_user')
+					password = cred('nexus_pass')
+				}
 			}
 		}
 	}
+
+	publish.dependsOn(bintrayUpload)
+	bintrayUpload.dependsOn(['generatePomFileForMavenJavaPublication', jar, sourcesJar, javadocJar])
 }
 
 // helps external scripts detect version
