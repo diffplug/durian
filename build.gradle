@@ -1,4 +1,6 @@
 plugins {
+	// osgi
+	id "org.jruyi.osgibnd" version "0.4.0"
 	// code formatting
 	id "com.diffplug.gradle.spotless" version "1.3.0"
 	// bintray uploading
@@ -30,8 +32,25 @@ dependencies {
 	testCompile "junit:junit:${VER_JUNIT}"
 }
 
+//////////
+// OSGI //
+//////////
 jar.manifest {
-	from 'META-INF/MANIFEST.MF'
+	attributes (
+		'Export-Package': 'com.diffplug.common.base.*',
+		'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+		'Bundle-Vendor': 'DiffPlug',
+		'Bundle-DocURL': "https://github.com/${project.org}/${project.name}",
+		'Bundle-License': "https://github.com/${project.org}/${project.name}/blob/v${project.version}/LICENSE",
+		'-removeheaders': 'Bnd-LastModified,Bundle-Name,Created-By,Tool',
+	)
+}
+// copy the manifest into the WC
+jar << {
+	def jarContent = java.nio.file.FileSystems.newFileSystem(jar.archivePath.toPath(), null);
+	def outputFile = project.file('META-INF/MANIFEST.MF')
+	def source = jarContent.getPath('META-INF/MANIFEST.MF')
+	java.nio.file.Files.copy(source, outputFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 }
 
 /////////////
