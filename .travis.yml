@@ -2,10 +2,9 @@ language: java
 jdk:
 - oraclejdk8
 script: "./.ci/ci.sh"
-env:
-  global:
-  - secure: PbLOEuiXV0rhFatmXedk8/dPYR8AVGssHQZy5AVQMsb7/MiGX9u+hC2Su55GuG2TlsoDrON9/I8BreyMoI8ABzEC6ssSqYAIyTxa7S8Lo3Av6YhVr0hE7sOkVaXXBtvFUeKO2MYYDLhcQahEyoWds1xqfQEYw8OwIMFkryGzV7w=
-  - secure: vZtXxR86ZZrLrc+H0ztVUgNo1BtreZM4CSzk7uSWa1D6qazKHXX/Hp0L6luZjBGYEH1uq1nPc5M7C1Bttcy1FznG8w5kGQz9xeNSkEz9vx4yQTdsO8s5NTD5pe3WosxhEjEQNwtIJlh65CN/K1eEJ01MC+zEzv7QN9stQ0ZkIQk=
-  - secure: I29sz+Rd2N522YGF4iOrVV/3YfZtpHBeIDCTkxgN2M4OHf4SZ3eQmYWLltb9lKfIkE5DN9z6L14GOwiVsJR7uAaLvZqtqsMY2LTFhfMqymEzZHEVWYA/mx0u4+7Q48nl4hqX0YHdvjwModrHzomghAwOi0je3cuj/WToEpE07ts=
-  - secure: OLSyTS6fUWWGVNLF2zEfcFdM3j/jkO/UO5pbdkX3LqbAQef9kGSjill+RogRWYlV5unfgo9Ufjlch/WWDTgjVHMugKbF3aNscTccOvyH4cbe7xGgdWlbDj2MgFHhL2I0IK1Wl7H5aJrYjBCYkEe3KjF8EyaYVAVwMhP8xPajGIU=
-  - secure: JNNz5XMK8Q0assKzJ9oKkm1q4GWgmgmyQWU1K31riTzYFehtDTiXm+v6pce1HfP7hj/TavRPzprlB00QxucFAo2OivCwG2cMV8ycESn4Id405wvFJv/r99+r1cntzUo8rpSAIjK7RRv6Kj0lfxIfZEVNNyYMSAUA2MsWjCKCvXY=
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
