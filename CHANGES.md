@@ -1,6 +1,8 @@
 # Durian releases
 
-### Version 3.3.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/))
+### Version 3.4.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/)) [snapshot](https://oss.sonatype.org/content/repositories/snapshots/com/diffplug/durian/durian/))
+
+### Version 3.3.0 - October 19th ([javadoc](http://diffplug.github.io/durian/javadoc/3.3.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.3.0/view))
 
 * Added `Box.Nullable.modify()`, which has the same behavior as `Box.modify()`.
 * OSGi metadata is now auto-generated using bnd.
