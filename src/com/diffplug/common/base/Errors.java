@@ -206,8 +206,30 @@ public abstract class Errors implements Consumer<Throwable> {
 			};
 		}
 
-		/** Returns a Function which wraps {@code function} and returns {@code onFailure} if an exception is thrown. */
+		/**
+		 * Returns a Function which wraps {@code function} and returns {@code onFailure} if an exception is thrown.
+		 *
+		 * If you are getting an error about {@code the method wrapWithDefault is ambiguous}, use
+		 * {@link #wrapFunctionWithDefault(com.diffplug.common.base.Throwing.Function)} or
+		 * {@link #wrapPredicateWithDefault(com.diffplug.common.base.Throwing.Predicate).
+		 */
 		public <T, R> Function<T, R> wrapWithDefault(Throwing.Function<T, R> function, R onFailure) {
+			return wrapFunctionWithDefault(function, onFailure);
+		}
+
+		/**
+		 * Returns a Predicate which wraps {@code predicate} and returns {@code onFailure} if an exception is thrown.
+		 *
+		 * If you are getting an error about {@code the method wrapWithDefault is ambiguous}, use
+		 * {@link #wrapFunctionWithDefault(com.diffplug.common.base.Throwing.Function)} or
+		 * {@link #wrapPredicateWithDefault(com.diffplug.common.base.Throwing.Predicate).
+		 */
+		public <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> predicate, boolean onFailure) {
+			return wrapPredicateWithDefault(predicate, onFailure);
+		}
+
+		/** Returns a Function which wraps {@code function} and returns {@code onFailure} if an exception is thrown. */
+		public <T, R> Function<T, R> wrapFunctionWithDefault(Throwing.Function<T, R> function, R onFailure) {
 			return input -> {
 				try {
 					return function.apply(input);
@@ -219,7 +241,7 @@ public abstract class Errors implements Consumer<Throwable> {
 		}
 
 		/** Returns a Predicate which wraps {@code predicate} and returns {@code onFailure} if an exception is thrown. */
-		public <T> Predicate<T> wrapWithDefault(Throwing.Predicate<T> predicate, boolean onFailure) {
+		public <T> Predicate<T> wrapPredicateWithDefault(Throwing.Predicate<T> predicate, boolean onFailure) {
 			return input -> {
 				try {
 					return predicate.test(input);
@@ -264,8 +286,30 @@ public abstract class Errors implements Consumer<Throwable> {
 			};
 		}
 
-		/** Returns a Function which wraps {@code function} and rethrows any exceptions as unchecked exceptions. */
+		/**
+		 * Returns a Function which wraps {@code function} and rethrows any exceptions as unchecked exceptions.
+		 * <p>
+		 * If you are getting an error about {@code the method wrap is ambiguous}, use
+		 * {@link #wrapFunction(com.diffplug.common.base.Throwing.Function)} or
+		 * {@link #wrapPredicate(com.diffplug.common.base.Throwing.Predicate).
+		 * */
 		public <T, R> Function<T, R> wrap(Throwing.Function<T, R> function) {
+			return wrapFunction(function);
+		}
+
+		/**
+		 * Returns a Predicate which wraps {@code predicate} and rethrows any exceptions as unchecked exceptions.
+		 * <p>
+		 * If you are getting an error about {@code the method wrap is ambiguous}, use
+		 * {@link #wrapFunction(com.diffplug.common.base.Throwing.Function)} or
+		 * {@link #wrapPredicate(com.diffplug.common.base.Throwing.Predicate).
+		 * */
+		public <T> Predicate<T> wrap(Throwing.Predicate<T> predicate) {
+			return wrapPredicate(predicate);
+		}
+
+		/** Returns a Function which wraps {@code function} and rethrows any exceptions as unchecked exceptions. */
+		public <T, R> Function<T, R> wrapFunction(Throwing.Function<T, R> function) {
 			return arg -> {
 				try {
 					return function.apply(arg);
@@ -276,7 +320,7 @@ public abstract class Errors implements Consumer<Throwable> {
 		}
 
 		/** Returns a Predicate which wraps {@code predicate} and rethrows any exceptions as unchecked exceptions. */
-		public <T> Predicate<T> wrap(Throwing.Predicate<T> predicate) {
+		public <T> Predicate<T> wrapPredicate(Throwing.Predicate<T> predicate) {
 			return arg -> {
 				try {
 					return predicate.test(arg);
