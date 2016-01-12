@@ -1,0 +1,10 @@
+// the testlib
+include 'testlib'
+// we split each lib into sources and tests
+apply from: 'gradle/libs-parse.gradle'
+libDeps.each { lib, deps ->
+	include ":$lib"		// testlib will depend on lib:SRC
+	project(":$lib").projectDir = file("$lib/$SRC")
+	include ":$lib-$TEST"	// lib:TEST will depend on testlib
+	project(":$lib-$TEST").projectDir = file("$lib/$TEST")
+}

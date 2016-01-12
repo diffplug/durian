@@ -1,0 +1,5 @@
+// parses the inter-lib depedencies and packages
+// from the root gradle.properties file
+rootProject.ext.javadocPkgList = {String name ->
+	return rootProject.file('gradle/javadoc-util/' + name + '/package-list')
+}

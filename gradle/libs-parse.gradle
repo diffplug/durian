@@ -1,0 +1,12 @@
+// parses the inter-lib depedencies and packages
+// from the root gradle.properties file
+ext.libDeps = new HashMap()
+ext.libPkgs = new HashMap()
+ext.getProperties().each { key, value ->
+	if (key.startsWith(DEPKEY)) {
+		String lib = key.substring(DEPKEY.length())
+		libDeps[lib] = value.empty ? [] : value.split(',')
+		String pkgs = ext.getProperties().get(PKGKEY + lib, lib)
+		libPkgs[lib] = pkgs.split(',')
+	}
+}

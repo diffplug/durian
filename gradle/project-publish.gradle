@@ -1,0 +1,146 @@
+///////////
+// MAVEN //
+///////////
+apply plugin: 'maven-publish'
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allJava
+}
+
+def artifactName(String lib) {
+	String guava_or_durian = project.group.substring(project.group.lastIndexOf('.') + 1)
+	return guava_or_durian + '-' + lib
+}
+String version_str = version.endsWith('-SNAPSHOT') ? 'snapshot' : version
+
+apply from: rootProject.file('gradle/javadoc-util.gradle')
+def javadocUrl(String name) {
+	return rootProject.ext.javadocPkgList(name).absolutePath.replace('package-list', '')
+}
+
+// Where it's possible to name parameters and methods clearly enough
+// that javadoc is not necessary, why make the code bigger?
+//
+// Thus, no javadoc warnings.
+def makeLink = { url, text -> "<a href=\"${url}\" style=\"text-transform: none;\">${text}</a>" }
+def javadocInfo = '<h2>' + makeLink("https://github.com/${org}/durian", "${group}:${artifactName(project.name)}:${version}") +
+' by ' + makeLink('http://www.diffplug.com', 'DiffPlug') + '</h2>'
+javadoc {
+	exclude '**/thirdparty/**'
+	exclude '**/internal/**'
+	destinationDir rootProject.file("build/docs/javadoc/${artifactName(project.name)}/${version_str}")
+	options.addStringOption('Xdoclint:none', '-quiet')
+	options.encoding 'UTF-8'
+	options.header javadocInfo
+	options.footer javadocInfo
+	// link to JRE
+	options.linksOffline('https://docs.oracle.com/javase/8/docs/api/', javadocUrl('java8'))
+	// link to javadoc
+	options.linksOffline("https://static.javadoc.io/junit/junit/${VER_JUNIT}/", javadocUrl('junit4'))
+	options.linksOffline("https://static.javadoc.io/junit/junit/3.8.2/", javadocUrl('junit3'))
+	// link to each other javadoc
+	rootProject.ext.libDeps.each { lib, deps ->
+		options.linksOffline("https://diffplug.github.io/durian/javadoc/${artifactName(lib)}/$version_str/", javadocUrl(lib))
+	}
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+////////////////
+// PUBLISHING //
+////////////////
+def isSnapshot = project.version.endsWith('-SNAPSHOT')
+// pulls the credentials from either the environment variable or gradle.properties
+def cred = {
+	if (System.env[it] != null) {
+		return System.env[it]
+	} else if (project.hasProperty(it)) {
+		return project[it]
+	} else {
+		return 'unknown_' + it
+	}
+}
+
+def mavenPomName = artifactName(project.name)
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId artifactName(project.name)
+			from components.java
+			artifact sourcesJar
+			artifact javadocJar
+			pom.withXml {
+				// findbugs annotations should have scope "provided"
+				asNode().dependencies.'*'.findAll() { it.groupId.text() == 'com.google.code.findbugs' }.each() { it.scope*.value = 'provided' }
+				// add MavenCentral requirements to the POM
+				asNode().children().last() + {
+					resolveStrategy = Closure.DELEGATE_FIRST
+					name mavenPomName
+					description project.description
+					url "https://github.com/${org}/durian"
+					scm {
+						url "https://github.com/${org}/durian"
+						connection "scm:git:git://github.com/${org}/durian"
+						developerConnection "scm:git:ssh:git@github.com/${org}/durian"
+					}
+					licenses {
+						license {
+							name 'The Apache Software License, Version 2.0'
+							url 'http://www.apache.org/license/LICENSE-2.0.txt'
+							distribution 'repo'
+						}
+					}
+					developers {
+						developer {
+							id 'nedtwigg'
+							name 'Ned Twigg'
+							email 'ned.twigg@diffplug.com'
+						}
+					}
+				}
+			}
+		}
+	}
+	if (isSnapshot) {
+		// upload snapshots to oss.sonatype.org
+		repositories { maven {
+			url = 'https://oss.sonatype.org/content/repositories/snapshots'
+			credentials {
+				username = cred('nexus_user')
+				password = cred('nexus_pass')
+			}
+		} }
+	}
+}
+
+if (!isSnapshot) {
+	// upload releases to bintray and then mavenCentral
+	apply plugin: 'com.jfrog.bintray'
+	bintray {
+		user = cred('bintray_user')
+		key = cred('bintray_pass')
+		publications = ['mavenJava']
+		publish = true
+		pkg {
+			repo = 'opensource'
+			name = artifactName(project.name)
+			userOrg = project.org
+			licenses = ['Apache-2.0']
+			vcsUrl = 'https://github.com/diffplug/durian'
+			version {
+				name = project.version
+				//mavenCentralSync {
+				//	user = cred('nexus_user')
+				//	password = cred('nexus_pass')
+				//}
+			}
+		}
+	}
+
+	publish.dependsOn(bintrayUpload)
+	bintrayUpload.dependsOn(['generatePomFileForMavenJavaPublication', jar, sourcesJar, javadocJar])
+}

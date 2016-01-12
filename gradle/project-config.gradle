@@ -1,0 +1,212 @@
+repositories {
+	mavenCentral()
+}
+
+// figure out which kind of project this is
+boolean IS_TESTLIB = project.name.equals('testlib')
+boolean IS_TEST = project.name.endsWith(TEST)
+boolean IS_SRC = !IS_TESTLIB && !IS_TEST
+String libname = project.name.replace("-$TEST", '')
+
+//////////
+// JAVA //
+//////////
+apply plugin: 'java'
+
+// setup the source and test directories
+sourceSets {
+	if (IS_TESTLIB) {
+		main.java.srcDir SRC
+		test.java.srcDir TEST
+		test.resources.srcDir TEST
+		test.resources.include '**/*.txt'
+	} else if (IS_SRC) {
+		main.java.srcDir SRC
+	} else if (IS_TEST) {
+		test.java.srcDir TEST
+		test.resources.srcDir TEST
+		test.resources.include '**/*.txt'
+	} else {
+		throw new GradleException('Unknown project type.')
+	}
+}
+
+sourceCompatibility = VER_JAVA
+targetCompatibility = VER_JAVA
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+// determine inter-project dependencies
+List<String> projectDeps = []
+if (IS_TESTLIB) {
+	// testlib depends on all source
+	rootProject.ext.libDeps.each { lib, deps ->
+		projectDeps.add(":$lib")
+	}
+} else if (IS_TEST) {
+	// each test depends on testlib and its own source
+	projectDeps.add(':testlib')
+	projectDeps.add(":$libname")
+} else if (IS_SRC) {
+	// each lib depends on its dependencies
+	rootProject.ext.libDeps[libname].each { dep ->
+		projectDeps.add(":$dep")
+	}
+} else {
+	throw new GradleException('Unknown project type.')
+}
+
+// add the project dependencies
+dependencies {
+	projectDeps.each { dep ->
+		compile project(dep)
+	}
+	compile "org.codehaus.mojo:animal-sniffer-annotations:${VER_ANIMAL_SNIFFER}"
+	compile "com.google.j2objc:j2objc-annotations:${VER_J2OBJC}"
+
+	if (IS_TEST || IS_TESTLIB) {
+		testCompile "com.google.truth:truth:${VER_TRUTH}"
+		testCompile "org.easymock:easymock:${VER_EASYMOCK}"
+		testCompile "org.mockito:mockito-core:${VER_MOCKITO}"
+
+		if (IS_TESTLIB) {
+			compile "junit:junit:${VER_JUNIT}"
+		} else {
+			testCompile "junit:junit:${VER_JUNIT}"
+		}
+	}
+}
+
+// make sure that guava doesn't get sucked in as a transitive
+configurations {
+	all*.exclude group: 'com.google.guava'
+}
+
+////////////////////
+// TEST BREAKDOWN //
+////////////////////
+test {
+	include '**/*Test.class'
+	maxParallelForks = Runtime.runtime.availableProcessors()
+}
+
+//////////
+// OSGI //
+//////////
+if (IS_SRC || IS_TESTLIB) {
+	apply plugin: 'com.diffplug.gradle.osgi.bndmanifest'
+	jar.manifest.attributes(
+		'Bundle-SymbolicName': "${group}.${libname.replace('-','.')}",
+		'Bundle-Description': "${description}",
+		'-exportcontents': '!*.internal,*',
+		'Import-Package': 'sun.misc;resolution:=optional,javax.annotation;resolution:=optional,*',
+		'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+		'Bundle-Vendor': 'DiffPlug',
+		'Bundle-DocURL': "https://github.com/diffplug/durian",
+		'Bundle-License': "https://github.com/diffplug/durian/blob/v${project.version}/LICENSE",
+		'-removeheaders': 'Bnd-LastModified,Bundle-Name,Created-By,Tool',
+	)
+	osgiBndManifest {
+		copyTo 'META-INF/MANIFEST.MF'
+	}
+}
+
+/////////////
+// ECLIPSE //
+/////////////
+apply plugin: 'eclipse'
+def eclipsifyPath(String projectPath) {
+	return 'durian' + projectPath.replace(':', '-')
+}
+
+def eclipseName = eclipsifyPath(project.path)
+eclipse {
+	project {
+		name = eclipseName
+
+		natures 'org.eclipse.pde.PluginNature'
+		natures 'org.eclipse.jdt.core.javanature'
+
+		buildCommand 'org.eclipse.jdt.core.javabuilder'
+		buildCommand 'org.eclipse.pde.ManifestBuilder'
+		buildCommand 'org.eclipse.pde.SchemaBuilder'
+	}
+	classpath {
+		downloadSources true
+		downloadJavadoc true
+		file {
+			withXml { xmlProvider ->
+				// remove all durian dependencies, to ensure no double-entries
+				Node classpath = xmlProvider.asNode()
+				Iterator iter = classpath.iterator()
+				while (iter.hasNext()) {
+					def node = iter.next();
+					def path = node.attributes().get('path')
+					if (path != null && path.startsWith('/durian-')) {
+						iter.remove()
+					}
+				}
+				// add each project
+				projectDeps.each { dep ->
+					Node entry = classpath.appendNode('classpathentry')
+					entry.attributes().put('combineaccessrules', 'true')
+					entry.attributes().put('exported', 'true')
+					entry.attributes().put('kind', 'src')
+					entry.attributes().put('path', '/' + eclipsifyPath(dep))
+				}
+			}
+		}
+	}
+	jdt {
+		sourceCompatibility VER_JAVA
+		targetCompatibility VER_JAVA
+		file {
+			withProperties { properties ->
+				properties.put('org.eclipse.jdt.core.compiler.problem.missingSerialVersion', 'ignore')
+				properties.put('org.eclipse.jdt.core.compiler.problem.discouragedReference', 'ignore')
+				properties.put('org.eclipse.jdt.core.compiler.problem.forbiddenReference', 'ignore')
+				properties.put('org.eclipse.jdt.core.compiler.problem.uncheckedTypeOperation', 'ignore')
+				properties.put('org.eclipse.jdt.core.compiler.problem.rawTypeReference', 'ignore')
+				properties.put('org.eclipse.jdt.core.compiler.problem.unhandledWarningToken', 'ignore')
+			}
+		}
+	}
+}
+// always create fresh projects
+tasks.eclipse.dependsOn(cleanEclipse)
+
+//////////////
+// FINDBUGS //
+//////////////
+/*
+apply plugin: 'findbugs'
+findbugs {
+	toolVersion = VER_FINDBUGS
+	sourceSets = [sourceSets.main]	// don't check the test code
+	ignoreFailures = false 	// bug free or it doesn't ship!
+	reportsDir = file('build/findbugs')
+	effort = 'max'			// min|default|max
+	reportLevel = 'low'		// low|medium|high (low = sensitive to even minor mistakes)
+	omitVisitors = []		// bugs that we want to ignore
+}
+// HTML instead of XML
+tasks.withType(FindBugs) {
+	reports {
+		xml.enabled = false
+		html.enabled = true
+	}
+}
+*/
+
+// we'll want the findbugs annotations (they don't have a 3.0.1 version)
+dependencies {
+	compile 'com.google.code.findbugs:annotations:3.0.0'
+	compile 'com.google.code.findbugs:jsr305:3.0.0'
+}
+
+// if it's a project that we publish, publish it
+if (IS_SRC || IS_TESTLIB) {
+	apply from: rootProject.file('gradle/project-publish.gradle')
+}

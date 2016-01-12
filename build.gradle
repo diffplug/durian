@@ -1,0 +1,135 @@
+buildscript {
+	repositories {
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		// osgi
+		classpath "com.diffplug.gradle:goomph:${VER_GOOMPH}"
+		// code formatting
+		classpath "com.diffplug.gradle.spotless:spotless:${VER_SPOTLESS}"
+		// bintray uploading
+		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${VER_BINTRAY}"
+		// github pages javadoc upload
+		classpath "org.ajoberstar:gradle-git:${VER_GRADLE_GIT}"
+	}
+}
+
+////////////
+// FORMAT //
+////////////
+// apply formatting in the root project so that we get formatting for our README, project files, etc
+apply plugin: 'com.diffplug.gradle.spotless'
+spotless {
+	java {
+		target '**/*.java'
+		licenseHeaderFile	'gradle/spotless/spotless.license.javaheader'	// License header file
+		importOrderFile		'gradle/spotless/spotless.importorder'			// An import ordering file, exported from Eclipse
+		eclipseFormatFile	'gradle/spotless/spotless.eclipseformat.xml'	// XML file dumped out by the Eclipse formatter
+		// Eclipse formatter puts excess whitespace after lambda blocks
+		//    funcThatTakesLambdas(x -> {} , y -> {} )	// what Eclipse does
+		//    funcThatTakesLambdas(x -> {}, y -> {})	// what I wish Eclipse did
+		custom 'Lambda fix', { it.replace('} )', '})').replace('} ,', '},') }
+	}
+	format 'misc', {
+		target '**/.gitignore', '**/*.gradle', '**/*.md', '**/*.sh'
+		indentWithTabs()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+	freshmark {}
+}
+
+//////////////////////////////////////////////////////////
+// SUBPROJECTS (all the way to the bottom of this file) //
+//////////////////////////////////////////////////////////
+apply from: 'gradle/libs-parse.gradle'
+
+subprojects {
+	if (project.subprojects.isEmpty()) {
+		apply from: rootProject.file('gradle/project-config.gradle')
+	}
+}
+
+////////////////////
+// GLOBAL ACTIONS //
+////////////////////
+task clean(type: Delete) {
+	delete 'build'
+}
+
+apply from: rootProject.file('gradle/javadoc-util.gradle')
+task generatePackageLists << {
+	description 'Generates javadoc package-list files for each project.'
+	rootProject.ext.libPkgs.each { lib, pkgs ->
+		StringBuilder builder = new StringBuilder()
+		pkgs.each {
+			builder.append('com.google.common.')
+			builder.append(it)
+			builder.append('\n')
+		}
+		File dest = rootProject.ext.javadocPkgList(lib)
+		dest.parentFile.mkdirs()
+		dest.setText(builder.toString())
+	}
+}
+
+apply plugin: 'org.ajoberstar.github-pages'
+githubPages {
+	repoUri = 'https://github.com/diffplug/durian-collect'
+	deleteExistingFiles = false
+	pages {
+		from 'build/docs'
+	}
+	credentials {
+		username = System.getenv('gh_token')
+		password = ''
+	}
+}
+tasks.prepareGhPages.dependsOn(":testlib:javadoc")
+rootProject.ext.libPkgs.each { lib, pkgs ->
+	tasks.prepareGhPages.dependsOn(":$lib:javadoc")
+}
+
+task copyGuava << {
+	description "Copies source code from Guava's monolithic source into Durian's libraries."
+	// parse out guavaDir
+	if (!rootProject.hasProperty('guavaDir')) {
+		throw new GradleException('Specify guavaDir with -PguavaDir=path/to/guava')
+	}
+	String guavaDir = rootProject.getProperty('guavaDir').replace('\\', '/')
+
+	// copy testlib
+	copy {
+		from "$guavaDir/guava-testlib/src"
+		into "testlib/$SRC"
+	}
+	copy {
+		from "$guavaDir/guava-testlib/test"
+		into "testlib/$TEST"
+	}
+
+	// copy each lib and its packages
+	rootProject.ext.libPkgs.each { lib, pkgs ->
+		pkgs.each { pkg ->
+			copy {
+				from "$guavaDir/guava/src/com/google/common/$pkg"
+				into "$lib/$SRC/$SRC/com/google/common/$pkg"
+			}
+			copy {
+				from "$guavaDir/guava-tests/test/com/google/common/$pkg"
+				into "$lib/$TEST/$TEST/com/google/common/$pkg"
+			}
+		}
+		if (lib == 'parse') {
+			copy {
+				from "$guavaDir/guava/src/com/google/thirdparty"
+				into "$lib/$SRC/$SRC/com/google/thirdparty"
+			}
+		}
+	}
+}
+
+// helps external scripts detect version
+task printVersion << {
+	println version
+}
