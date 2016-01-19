@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.reflect;
 
 import static com.google.common.base.Preconditions.checkArgument;
-
-import com.google.common.annotations.Beta;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.Beta;
 
 /**
  * Captures a free type variable that can be used in {@link TypeToken#where}.
@@ -41,27 +41,30 @@ import javax.annotation.Nullable;
 @Beta
 public abstract class TypeParameter<T> extends TypeCapture<T> {
 
-  final TypeVariable<?> typeVariable;
+	final TypeVariable<?> typeVariable;
 
-  protected TypeParameter() {
-    Type type = capture();
-    checkArgument(type instanceof TypeVariable, "%s should be a type variable.", type);
-    this.typeVariable = (TypeVariable<?>) type;
-  }
+	protected TypeParameter() {
+		Type type = capture();
+		checkArgument(type instanceof TypeVariable, "%s should be a type variable.", type);
+		this.typeVariable = (TypeVariable<?>) type;
+	}
 
-  @Override public final int hashCode() {
-    return typeVariable.hashCode();
-  }
+	@Override
+	public final int hashCode() {
+		return typeVariable.hashCode();
+	}
 
-  @Override public final boolean equals(@Nullable Object o) {
-    if (o instanceof TypeParameter) {
-      TypeParameter<?> that = (TypeParameter<?>) o;
-      return typeVariable.equals(that.typeVariable);
-    }
-    return false;
-  }
+	@Override
+	public final boolean equals(@Nullable Object o) {
+		if (o instanceof TypeParameter) {
+			TypeParameter<?> that = (TypeParameter<?>) o;
+			return typeVariable.equals(that.typeVariable);
+		}
+		return false;
+	}
 
-  @Override public String toString() {
-    return typeVariable.toString();
-  }
+	@Override
+	public String toString() {
+		return typeVariable.toString();
+	}
 }

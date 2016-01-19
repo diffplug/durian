@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.annotations;
 
 import java.lang.annotation.Documented;
@@ -40,11 +40,11 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({
-    ElementType.ANNOTATION_TYPE,
-    ElementType.CONSTRUCTOR,
-    ElementType.FIELD,
-    ElementType.METHOD,
-    ElementType.TYPE})
+		ElementType.ANNOTATION_TYPE,
+		ElementType.CONSTRUCTOR,
+		ElementType.FIELD,
+		ElementType.METHOD,
+		ElementType.TYPE})
 @Documented
 @GwtCompatible
 public @interface Beta {}

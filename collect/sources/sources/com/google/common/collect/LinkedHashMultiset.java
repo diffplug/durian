@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedHashMap;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 /**
  * A {@code Multiset} implementation with predictable iteration order. Its
@@ -44,65 +44,65 @@ import java.util.LinkedHashMap;
 @SuppressWarnings("serial") // we're overriding default serialization
 public final class LinkedHashMultiset<E> extends AbstractMapBasedMultiset<E> {
 
-  /**
-   * Creates a new, empty {@code LinkedHashMultiset} using the default initial
-   * capacity.
-   */
-  public static <E> LinkedHashMultiset<E> create() {
-    return new LinkedHashMultiset<E>();
-  }
+	/**
+	 * Creates a new, empty {@code LinkedHashMultiset} using the default initial
+	 * capacity.
+	 */
+	public static <E> LinkedHashMultiset<E> create() {
+		return new LinkedHashMultiset<E>();
+	}
 
-  /**
-   * Creates a new, empty {@code LinkedHashMultiset} with the specified expected
-   * number of distinct elements.
-   *
-   * @param distinctElements the expected number of distinct elements
-   * @throws IllegalArgumentException if {@code distinctElements} is negative
-   */
-  public static <E> LinkedHashMultiset<E> create(int distinctElements) {
-    return new LinkedHashMultiset<E>(distinctElements);
-  }
+	/**
+	 * Creates a new, empty {@code LinkedHashMultiset} with the specified expected
+	 * number of distinct elements.
+	 *
+	 * @param distinctElements the expected number of distinct elements
+	 * @throws IllegalArgumentException if {@code distinctElements} is negative
+	 */
+	public static <E> LinkedHashMultiset<E> create(int distinctElements) {
+		return new LinkedHashMultiset<E>(distinctElements);
+	}
 
-  /**
-   * Creates a new {@code LinkedHashMultiset} containing the specified elements.
-   *
-   * <p>This implementation is highly efficient when {@code elements} is itself
-   * a {@link Multiset}.
-   *
-   * @param elements the elements that the multiset should contain
-   */
-  public static <E> LinkedHashMultiset<E> create(Iterable<? extends E> elements) {
-    LinkedHashMultiset<E> multiset = create(Multisets.inferDistinctElements(elements));
-    Iterables.addAll(multiset, elements);
-    return multiset;
-  }
+	/**
+	 * Creates a new {@code LinkedHashMultiset} containing the specified elements.
+	 *
+	 * <p>This implementation is highly efficient when {@code elements} is itself
+	 * a {@link Multiset}.
+	 *
+	 * @param elements the elements that the multiset should contain
+	 */
+	public static <E> LinkedHashMultiset<E> create(Iterable<? extends E> elements) {
+		LinkedHashMultiset<E> multiset = create(Multisets.inferDistinctElements(elements));
+		Iterables.addAll(multiset, elements);
+		return multiset;
+	}
 
-  private LinkedHashMultiset() {
-    super(new LinkedHashMap<E, Count>());
-  }
+	private LinkedHashMultiset() {
+		super(new LinkedHashMap<E, Count>());
+	}
 
-  private LinkedHashMultiset(int distinctElements) {
-    super(Maps.<E, Count>newLinkedHashMapWithExpectedSize(distinctElements));
-  }
+	private LinkedHashMultiset(int distinctElements) {
+		super(Maps.<E, Count> newLinkedHashMapWithExpectedSize(distinctElements));
+	}
 
-  /**
-   * @serialData the number of distinct elements, the first element, its count,
-   *     the second element, its count, and so on
-   */
-  @GwtIncompatible("java.io.ObjectOutputStream")
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.defaultWriteObject();
-    Serialization.writeMultiset(this, stream);
-  }
+	/**
+	 * @serialData the number of distinct elements, the first element, its count,
+	 *     the second element, its count, and so on
+	 */
+	@GwtIncompatible("java.io.ObjectOutputStream")
+	private void writeObject(ObjectOutputStream stream) throws IOException {
+		stream.defaultWriteObject();
+		Serialization.writeMultiset(this, stream);
+	}
 
-  @GwtIncompatible("java.io.ObjectInputStream")
-  private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-    stream.defaultReadObject();
-    int distinctElements = Serialization.readCount(stream);
-    setBackingMap(new LinkedHashMap<E, Count>());
-    Serialization.populateMultiset(this, stream, distinctElements);
-  }
+	@GwtIncompatible("java.io.ObjectInputStream")
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject();
+		int distinctElements = Serialization.readCount(stream);
+		setBackingMap(new LinkedHashMap<E, Count>());
+		Serialization.populateMultiset(this, stream, distinctElements);
+	}
 
-  @GwtIncompatible("not needed in emulated source")
-  private static final long serialVersionUID = 0;
+	@GwtIncompatible("not needed in emulated source")
+	private static final long serialVersionUID = 0;
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.base;
 
 import java.lang.ref.PhantomReference;
@@ -30,15 +30,15 @@ import java.lang.ref.ReferenceQueue;
  * @since 2.0
  */
 public abstract class FinalizablePhantomReference<T> extends PhantomReference<T>
-    implements FinalizableReference {
-  /**
-   * Constructs a new finalizable phantom reference.
-   *
-   * @param referent to phantom reference
-   * @param queue that should finalize the referent
-   */
-  protected FinalizablePhantomReference(T referent, FinalizableReferenceQueue queue) {
-    super(referent, queue.queue);
-    queue.cleanUp();
-  }
+		implements FinalizableReference {
+	/**
+	 * Constructs a new finalizable phantom reference.
+	 *
+	 * @param referent to phantom reference
+	 * @param queue that should finalize the referent
+	 */
+	protected FinalizablePhantomReference(T referent, FinalizableReferenceQueue queue) {
+		super(referent, queue.queue);
+		queue.cleanUp();
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.Collections;
 import java.util.Iterator;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * A utility for testing an Iterator implementation by comparing its behavior to
@@ -62,22 +62,22 @@ import java.util.Iterator;
  */
 @GwtCompatible
 public abstract class IteratorTester<E> extends
-    AbstractIteratorTester<E, Iterator<E>> {
-  /**
-   * Creates an IteratorTester.
-   *
-   * @param steps how many operations to test for each tested pair of iterators
-   * @param features the features supported by the iterator
-   */
-  protected IteratorTester(int steps,
-      Iterable<? extends IteratorFeature> features,
-      Iterable<E> expectedElements, KnownOrder knownOrder) {
-    super(steps, Collections.<E>singleton(null), features, expectedElements,
-        knownOrder, 0);
-  }
+		AbstractIteratorTester<E, Iterator<E>> {
+	/**
+	 * Creates an IteratorTester.
+	 *
+	 * @param steps how many operations to test for each tested pair of iterators
+	 * @param features the features supported by the iterator
+	 */
+	protected IteratorTester(int steps,
+			Iterable<? extends IteratorFeature> features,
+			Iterable<E> expectedElements, KnownOrder knownOrder) {
+		super(steps, Collections.<E> singleton(null), features, expectedElements,
+				knownOrder, 0);
+	}
 
-  @Override
-  protected final Iterable<Stimulus<E, Iterator<E>>> getStimulusValues() {
-    return iteratorStimuli();
-  }
+	@Override
+	protected final Iterable<Stimulus<E, Iterator<E>>> getStimulusValues() {
+		return iteratorStimuli();
+	}
 }

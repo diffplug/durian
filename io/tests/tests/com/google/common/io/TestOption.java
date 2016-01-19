@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 /**
@@ -22,10 +22,5 @@ package com.google.common.io;
  * @author Colin Decker
  */
 public enum TestOption {
-  OPEN_THROWS,
-  SKIP_THROWS,
-  READ_THROWS,
-  WRITE_THROWS,
-  CLOSE_THROWS,
-  AVAILABLE_ALWAYS_ZERO
+	OPEN_THROWS, SKIP_THROWS, READ_THROWS, WRITE_THROWS, CLOSE_THROWS, AVAILABLE_ALWAYS_ZERO
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
+
+import java.util.Queue;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.collect.testing.AbstractCollectionTester;
-
-import java.util.Queue;
 
 /**
  * Base class for queue collection tests.
@@ -28,7 +28,7 @@ import java.util.Queue;
  */
 @GwtCompatible
 public class AbstractQueueTester<E> extends AbstractCollectionTester<E> {
-  protected final Queue<E> getQueue() {
-    return (Queue<E>) collection;
-  }
+	protected final Queue<E> getQueue() {
+		return (Queue<E>) collection;
+	}
 }

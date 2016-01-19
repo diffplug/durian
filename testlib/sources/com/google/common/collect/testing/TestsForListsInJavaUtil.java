@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
-
-import com.google.common.collect.testing.features.CollectionFeature;
-import com.google.common.collect.testing.features.CollectionSize;
-import com.google.common.collect.testing.features.ListFeature;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 import java.lang.reflect.Method;
 import java.util.AbstractList;
@@ -35,6 +28,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import com.google.common.collect.testing.features.CollectionFeature;
+import com.google.common.collect.testing.features.CollectionSize;
+import com.google.common.collect.testing.features.ListFeature;
+
 /**
  * Generates a test suite covering the {@link List} implementations in the
  * {@link java.util} package. Can be subclassed to specify tests that should
@@ -43,246 +43,271 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Kevin Bourrillion
  */
 public class TestsForListsInJavaUtil {
-  public static Test suite() {
-    return new TestsForListsInJavaUtil().allTests();
-  }
+	public static Test suite() {
+		return new TestsForListsInJavaUtil().allTests();
+	}
 
-  public Test allTests() {
-    TestSuite suite = new TestSuite("java.util Lists");
-    suite.addTest(testsForEmptyList());
-    suite.addTest(testsForSingletonList());
-    suite.addTest(testsForArraysAsList());
-    suite.addTest(testsForArrayList());
-    suite.addTest(testsForLinkedList());
-    suite.addTest(testsForCopyOnWriteArrayList());
-    suite.addTest(testsForUnmodifiableList());
-    suite.addTest(testsForCheckedList());
-    suite.addTest(testsForAbstractList());
-    suite.addTest(testsForAbstractSequentialList());
-    return suite;
-  }
+	public Test allTests() {
+		TestSuite suite = new TestSuite("java.util Lists");
+		suite.addTest(testsForEmptyList());
+		suite.addTest(testsForSingletonList());
+		suite.addTest(testsForArraysAsList());
+		suite.addTest(testsForArrayList());
+		suite.addTest(testsForLinkedList());
+		suite.addTest(testsForCopyOnWriteArrayList());
+		suite.addTest(testsForUnmodifiableList());
+		suite.addTest(testsForCheckedList());
+		suite.addTest(testsForAbstractList());
+		suite.addTest(testsForAbstractSequentialList());
+		return suite;
+	}
 
-  protected Collection<Method> suppressForEmptyList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForSingletonList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForArraysAsList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForArrayList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForLinkedList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForCopyOnWriteArrayList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForUnmodifiableList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForCheckedList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForAbstractList() {
-    return Collections.emptySet();
-  }
-  protected Collection<Method> suppressForAbstractSequentialList() {
-    return Collections.emptySet();
-  }
+	protected Collection<Method> suppressForEmptyList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForEmptyList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              return Collections.emptyList();
-            }
-          })
-        .named("emptyList")
-        .withFeatures(
-            CollectionFeature.SERIALIZABLE,
-            CollectionSize.ZERO)
-        .suppressing(suppressForEmptyList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForSingletonList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForSingletonList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              return Collections.singletonList(elements[0]);
-            }
-          })
-        .named("singletonList")
-        .withFeatures(
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ONE)
-        .suppressing(suppressForSingletonList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForArraysAsList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForArraysAsList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              return Arrays.asList(elements.clone());
-            }
-          })
-        .named("Arrays.asList")
-        .withFeatures(
-            ListFeature.SUPPORTS_SET,
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ANY)
-        .suppressing(suppressForArraysAsList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForArrayList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForArrayList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              return new ArrayList<String>(MinimalCollection.of(elements));
-            }
-          })
-        .named("ArrayList")
-        .withFeatures(
-            ListFeature.GENERAL_PURPOSE,
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionFeature.FAILS_FAST_ON_CONCURRENT_MODIFICATION,
-            CollectionSize.ANY)
-        .suppressing(suppressForArrayList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForLinkedList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForLinkedList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              return new LinkedList<String>(MinimalCollection.of(elements));
-            }
-          })
-        .named("LinkedList")
-        .withFeatures(
-            ListFeature.GENERAL_PURPOSE,
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionFeature.FAILS_FAST_ON_CONCURRENT_MODIFICATION,
-            CollectionSize.ANY)
-        .suppressing(suppressForLinkedList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForCopyOnWriteArrayList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForCopyOnWriteArrayList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              return new CopyOnWriteArrayList<String>(
-                  MinimalCollection.of(elements));
-            }
-          })
-        .named("CopyOnWriteArrayList")
-        .withFeatures(
-            ListFeature.SUPPORTS_ADD_WITH_INDEX,
-            ListFeature.SUPPORTS_REMOVE_WITH_INDEX,
-            ListFeature.SUPPORTS_SET,
-            CollectionFeature.SUPPORTS_ADD,
-            CollectionFeature.SUPPORTS_REMOVE,
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ANY)
-        .suppressing(suppressForCopyOnWriteArrayList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForUnmodifiableList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForUnmodifiableList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              List<String> innerList = new ArrayList<String>();
-              Collections.addAll(innerList, elements);
-              return Collections.unmodifiableList(innerList);
-            }
-          })
-        .named("unmodifiableList/ArrayList")
-        .withFeatures(
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ANY)
-        .suppressing(suppressForUnmodifiableList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForCheckedList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForCheckedList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator() {
-            @Override public List<String> create(String[] elements) {
-              List<String> innerList = new ArrayList<String>();
-              Collections.addAll(innerList, elements);
-              return Collections.checkedList(innerList, String.class);
-            }
-          })
-        .named("checkedList/ArrayList")
-        .withFeatures(
-            ListFeature.GENERAL_PURPOSE,
-            CollectionFeature.SERIALIZABLE,
-            CollectionFeature.RESTRICTS_ELEMENTS,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ANY)
-        .suppressing(suppressForCheckedList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForAbstractList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForAbstractList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator () {
-            @Override protected List<String> create(final String[] elements) {
-              return new AbstractList<String>() {
-                @Override public int size() {
-                  return elements.length;
-                }
-                @Override public String get(int index) {
-                  return elements[index];
-                }
-              };
-            }
-          })
-        .named("AbstractList")
-        .withFeatures(
-            CollectionFeature.NONE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ANY)
-        .suppressing(suppressForAbstractList())
-        .createTestSuite();
-  }
+	protected Collection<Method> suppressForAbstractSequentialList() {
+		return Collections.emptySet();
+	}
 
-  public Test testsForAbstractSequentialList() {
-    return ListTestSuiteBuilder
-        .using(new TestStringListGenerator () {
-            @Override protected List<String> create(final String[] elements) {
-              // For this test we trust ArrayList works
-              final List<String> list = new ArrayList<String>();
-              Collections.addAll(list, elements);
-              return new AbstractSequentialList<String>() {
-                @Override public int size() {
-                  return list.size();
-                }
-                @Override public ListIterator<String> listIterator(int index) {
-                  return list.listIterator(index);
-                }
-              };
-            }
-          })
-        .named("AbstractSequentialList")
-        .withFeatures(
-            ListFeature.GENERAL_PURPOSE,
-            CollectionFeature.ALLOWS_NULL_VALUES,
-            CollectionSize.ANY)
-        .suppressing(suppressForAbstractSequentialList())
-        .createTestSuite();
-  }
+	public Test testsForEmptyList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						return Collections.emptyList();
+					}
+				})
+				.named("emptyList")
+				.withFeatures(
+						CollectionFeature.SERIALIZABLE,
+						CollectionSize.ZERO)
+				.suppressing(suppressForEmptyList())
+				.createTestSuite();
+	}
+
+	public Test testsForSingletonList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						return Collections.singletonList(elements[0]);
+					}
+				})
+				.named("singletonList")
+				.withFeatures(
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ONE)
+				.suppressing(suppressForSingletonList())
+				.createTestSuite();
+	}
+
+	public Test testsForArraysAsList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						return Arrays.asList(elements.clone());
+					}
+				})
+				.named("Arrays.asList")
+				.withFeatures(
+						ListFeature.SUPPORTS_SET,
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ANY)
+				.suppressing(suppressForArraysAsList())
+				.createTestSuite();
+	}
+
+	public Test testsForArrayList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						return new ArrayList<String>(MinimalCollection.of(elements));
+					}
+				})
+				.named("ArrayList")
+				.withFeatures(
+						ListFeature.GENERAL_PURPOSE,
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionFeature.FAILS_FAST_ON_CONCURRENT_MODIFICATION,
+						CollectionSize.ANY)
+				.suppressing(suppressForArrayList())
+				.createTestSuite();
+	}
+
+	public Test testsForLinkedList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						return new LinkedList<String>(MinimalCollection.of(elements));
+					}
+				})
+				.named("LinkedList")
+				.withFeatures(
+						ListFeature.GENERAL_PURPOSE,
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionFeature.FAILS_FAST_ON_CONCURRENT_MODIFICATION,
+						CollectionSize.ANY)
+				.suppressing(suppressForLinkedList())
+				.createTestSuite();
+	}
+
+	public Test testsForCopyOnWriteArrayList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						return new CopyOnWriteArrayList<String>(
+								MinimalCollection.of(elements));
+					}
+				})
+				.named("CopyOnWriteArrayList")
+				.withFeatures(
+						ListFeature.SUPPORTS_ADD_WITH_INDEX,
+						ListFeature.SUPPORTS_REMOVE_WITH_INDEX,
+						ListFeature.SUPPORTS_SET,
+						CollectionFeature.SUPPORTS_ADD,
+						CollectionFeature.SUPPORTS_REMOVE,
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ANY)
+				.suppressing(suppressForCopyOnWriteArrayList())
+				.createTestSuite();
+	}
+
+	public Test testsForUnmodifiableList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						List<String> innerList = new ArrayList<String>();
+						Collections.addAll(innerList, elements);
+						return Collections.unmodifiableList(innerList);
+					}
+				})
+				.named("unmodifiableList/ArrayList")
+				.withFeatures(
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ANY)
+				.suppressing(suppressForUnmodifiableList())
+				.createTestSuite();
+	}
+
+	public Test testsForCheckedList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					public List<String> create(String[] elements) {
+						List<String> innerList = new ArrayList<String>();
+						Collections.addAll(innerList, elements);
+						return Collections.checkedList(innerList, String.class);
+					}
+				})
+				.named("checkedList/ArrayList")
+				.withFeatures(
+						ListFeature.GENERAL_PURPOSE,
+						CollectionFeature.SERIALIZABLE,
+						CollectionFeature.RESTRICTS_ELEMENTS,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ANY)
+				.suppressing(suppressForCheckedList())
+				.createTestSuite();
+	}
+
+	public Test testsForAbstractList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					protected List<String> create(final String[] elements) {
+						return new AbstractList<String>() {
+							@Override
+							public int size() {
+								return elements.length;
+							}
+
+							@Override
+							public String get(int index) {
+								return elements[index];
+							}
+						};
+					}
+				})
+				.named("AbstractList")
+				.withFeatures(
+						CollectionFeature.NONE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ANY)
+				.suppressing(suppressForAbstractList())
+				.createTestSuite();
+	}
+
+	public Test testsForAbstractSequentialList() {
+		return ListTestSuiteBuilder
+				.using(new TestStringListGenerator() {
+					@Override
+					protected List<String> create(final String[] elements) {
+						// For this test we trust ArrayList works
+						final List<String> list = new ArrayList<String>();
+						Collections.addAll(list, elements);
+						return new AbstractSequentialList<String>() {
+							@Override
+							public int size() {
+								return list.size();
+							}
+
+							@Override
+							public ListIterator<String> listIterator(int index) {
+								return list.listIterator(index);
+							}
+						};
+					}
+				})
+				.named("AbstractSequentialList")
+				.withFeatures(
+						ListFeature.GENERAL_PURPOSE,
+						CollectionFeature.ALLOWS_NULL_VALUES,
+						CollectionSize.ANY)
+				.suppressing(suppressForAbstractSequentialList())
+				.createTestSuite();
+	}
 }

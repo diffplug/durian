@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.collect.testing.SampleElements.Enums;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.collect.testing.SampleElements.Enums;
 
 /**
  * An abstract TestSetGenerator for generating sets containing enum values.
@@ -30,34 +30,34 @@ import java.util.Set;
  */
 @GwtCompatible
 public abstract class TestEnumSetGenerator implements TestSetGenerator<AnEnum> {
-  @Override
-  public SampleElements<AnEnum> samples() {
-    return new Enums();
-  }
+	@Override
+	public SampleElements<AnEnum> samples() {
+		return new Enums();
+	}
 
-  @Override
-  public Set<AnEnum> create(Object... elements) {
-    AnEnum[] array = new AnEnum[elements.length];
-    int i = 0;
-    for (Object e : elements) {
-      array[i++] = (AnEnum) e;
-    }
-    return create(array);
-  }
+	@Override
+	public Set<AnEnum> create(Object... elements) {
+		AnEnum[] array = new AnEnum[elements.length];
+		int i = 0;
+		for (Object e : elements) {
+			array[i++] = (AnEnum) e;
+		}
+		return create(array);
+	}
 
-  protected abstract Set<AnEnum> create(AnEnum[] elements);
+	protected abstract Set<AnEnum> create(AnEnum[] elements);
 
-  @Override
-  public AnEnum[] createArray(int length) {
-    return new AnEnum[length];
-  }
+	@Override
+	public AnEnum[] createArray(int length) {
+		return new AnEnum[length];
+	}
 
-  /**
-   * Sorts the enums according to their natural ordering.
-   */
-  @Override
-  public List<AnEnum> order(List<AnEnum> insertionOrder) {
-    Collections.sort(insertionOrder);
-    return insertionOrder;
-  }
+	/**
+	 * Sorts the enums according to their natural ordering.
+	 */
+	@Override
+	public List<AnEnum> order(List<AnEnum> insertionOrder) {
+		Collections.sort(insertionOrder);
+		return insertionOrder;
+	}
 }

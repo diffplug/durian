@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.REJECTS_DUPLICATES_AT_CREATION;
@@ -33,13 +33,13 @@ import com.google.common.collect.testing.features.CollectionSize;
  */
 @GwtCompatible
 public class ListCreationTester<E> extends AbstractListTester<E> {
-  @CollectionFeature.Require(absent = REJECTS_DUPLICATES_AT_CREATION)
-  @CollectionSize.Require(absent = {ZERO, ONE})
-  public void testCreateWithDuplicates() {
-    E[] array = createSamplesArray();
-    array[1] = e0();
-    collection = getSubjectGenerator().create(array);
+	@CollectionFeature.Require(absent = REJECTS_DUPLICATES_AT_CREATION)
+	@CollectionSize.Require(absent = {ZERO, ONE})
+	public void testCreateWithDuplicates() {
+		E[] array = createSamplesArray();
+		array[1] = e0();
+		collection = getSubjectGenerator().create(array);
 
-    expectContents(array);
-  }
+		expectContents(array);
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionSize.ZERO;
@@ -31,13 +31,13 @@ import com.google.common.collect.testing.features.CollectionSize;
  */
 @GwtCompatible
 public class MapIsEmptyTester<K, V> extends AbstractMapTester<K, V> {
-  @CollectionSize.Require(ZERO)
-  public void testIsEmpty_yes() {
-    assertTrue("isEmpty() should return true", getMap().isEmpty());
-  }
+	@CollectionSize.Require(ZERO)
+	public void testIsEmpty_yes() {
+		assertTrue("isEmpty() should return true", getMap().isEmpty());
+	}
 
-  @CollectionSize.Require(absent = ZERO)
-  public void testIsEmpty_no() {
-    assertFalse("isEmpty() should return false", getMap().isEmpty());
-  }
+	@CollectionSize.Require(absent = ZERO)
+	public void testIsEmpty_no() {
+		assertFalse("isEmpty() should return false", getMap().isEmpty());
+	}
 }

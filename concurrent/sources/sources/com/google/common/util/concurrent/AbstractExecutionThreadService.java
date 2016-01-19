@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
-
-import com.google.common.annotations.Beta;
-import com.google.common.base.Supplier;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.google.common.annotations.Beta;
+import com.google.common.base.Supplier;
 
 /**
  * Base class for services that can implement {@link #startUp}, {@link #run} and
@@ -36,203 +36,219 @@ import java.util.logging.Logger;
  */
 @Beta
 public abstract class AbstractExecutionThreadService implements Service {
-  private static final Logger logger = Logger.getLogger(
-      AbstractExecutionThreadService.class.getName());
-  
-  /* use AbstractService for state management */
-  private final Service delegate = new AbstractService() {
-    @Override protected final void doStart() {
-      Executor executor = MoreExecutors.renamingDecorator(executor(), new Supplier<String>() {
-        @Override public String get() {
-          return serviceName();
-        }
-      });
-      executor.execute(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            startUp();
-            notifyStarted();
-            // If stopAsync() is called while starting we may be in the STOPPING state in which
-            // case we should skip right down to shutdown.
-            if (isRunning()) {
-              try {
-                AbstractExecutionThreadService.this.run();
-              } catch (Throwable t) {
-                try {
-                  shutDown();
-                } catch (Exception ignored) {
-                  // TODO(lukes): if guava ever moves to java7, this would be a good candidate for
-                  // a suppressed exception, or maybe we could generalize Closer.Suppressor
-                  logger.log(Level.WARNING, 
-                      "Error while attempting to shut down the service"
-                      + " after failure.", ignored);
-                }
-                notifyFailed(t);
-                return;
-              }
-            }
+	private static final Logger logger = Logger.getLogger(
+			AbstractExecutionThreadService.class.getName());
 
-            shutDown();
-            notifyStopped();
-          } catch (Throwable t) {
-            notifyFailed(t);
-          }
-        }
-      });
-    }
+	/* use AbstractService for state management */
+	private final Service delegate = new AbstractService() {
+		@Override
+		protected final void doStart() {
+			Executor executor = MoreExecutors.renamingDecorator(executor(), new Supplier<String>() {
+				@Override
+				public String get() {
+					return serviceName();
+				}
+			});
+			executor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						startUp();
+						notifyStarted();
+						// If stopAsync() is called while starting we may be in the STOPPING state in which
+						// case we should skip right down to shutdown.
+						if (isRunning()) {
+							try {
+								AbstractExecutionThreadService.this.run();
+							} catch (Throwable t) {
+								try {
+									shutDown();
+								} catch (Exception ignored) {
+									// TODO(lukes): if guava ever moves to java7, this would be a good candidate for
+									// a suppressed exception, or maybe we could generalize Closer.Suppressor
+									logger.log(Level.WARNING,
+											"Error while attempting to shut down the service"
+													+ " after failure.",
+											ignored);
+								}
+								notifyFailed(t);
+								return;
+							}
+						}
 
-    @Override protected void doStop() {
-      triggerShutdown();
-    }
-    
-    @Override public String toString() {
-      return AbstractExecutionThreadService.this.toString();
-    }
-  };
+						shutDown();
+						notifyStopped();
+					} catch (Throwable t) {
+						notifyFailed(t);
+					}
+				}
+			});
+		}
 
-  /**
-   * Constructor for use by subclasses.
-   */
-  protected AbstractExecutionThreadService() {}
+		@Override
+		protected void doStop() {
+			triggerShutdown();
+		}
 
-  /**
-   * Start the service. This method is invoked on the execution thread.
-   * 
-   * <p>By default this method does nothing.
-   */
-  protected void startUp() throws Exception {}
+		@Override
+		public String toString() {
+			return AbstractExecutionThreadService.this.toString();
+		}
+	};
 
-  /**
-   * Run the service. This method is invoked on the execution thread.
-   * Implementations must respond to stop requests. You could poll for lifecycle
-   * changes in a work loop:
-   * <pre>
-   *   public void run() {
-   *     while ({@link #isRunning()}) {
-   *       // perform a unit of work
-   *     }
-   *   }
-   * </pre>
-   * ...or you could respond to stop requests by implementing {@link
-   * #triggerShutdown()}, which should cause {@link #run()} to return.
-   */
-  protected abstract void run() throws Exception;
+	/**
+	 * Constructor for use by subclasses.
+	 */
+	protected AbstractExecutionThreadService() {}
 
-  /**
-   * Stop the service. This method is invoked on the execution thread.
-   * 
-   * <p>By default this method does nothing.
-   */
-  // TODO: consider supporting a TearDownTestCase-like API
-  protected void shutDown() throws Exception {}
+	/**
+	 * Start the service. This method is invoked on the execution thread.
+	 * 
+	 * <p>By default this method does nothing.
+	 */
+	protected void startUp() throws Exception {}
 
-  /**
-   * Invoked to request the service to stop.
-   * 
-   * <p>By default this method does nothing.
-   */
-  protected void triggerShutdown() {}
+	/**
+	 * Run the service. This method is invoked on the execution thread.
+	 * Implementations must respond to stop requests. You could poll for lifecycle
+	 * changes in a work loop:
+	 * <pre>
+	 *   public void run() {
+	 *     while ({@link #isRunning()}) {
+	 *       // perform a unit of work
+	 *     }
+	 *   }
+	 * </pre>
+	 * ...or you could respond to stop requests by implementing {@link
+	 * #triggerShutdown()}, which should cause {@link #run()} to return.
+	 */
+	protected abstract void run() throws Exception;
 
-  /**
-   * Returns the {@link Executor} that will be used to run this service.
-   * Subclasses may override this method to use a custom {@link Executor}, which
-   * may configure its worker thread with a specific name, thread group or
-   * priority. The returned executor's {@link Executor#execute(Runnable)
-   * execute()} method is called when this service is started, and should return
-   * promptly.
-   * 
-   * <p>The default implementation returns a new {@link Executor} that sets the 
-   * name of its threads to the string returned by {@link #serviceName}
-   */
-  protected Executor executor() {
-    return new Executor() {
-      @Override
-      public void execute(Runnable command) {
-        MoreExecutors.newThread(serviceName(), command).start();
-      }
-    };
-  }
+	/**
+	 * Stop the service. This method is invoked on the execution thread.
+	 * 
+	 * <p>By default this method does nothing.
+	 */
+	// TODO: consider supporting a TearDownTestCase-like API
+	protected void shutDown() throws Exception {}
 
-  @Override public String toString() {
-    return serviceName() + " [" + state() + "]";
-  }
+	/**
+	 * Invoked to request the service to stop.
+	 * 
+	 * <p>By default this method does nothing.
+	 */
+	protected void triggerShutdown() {}
 
-  @Override public final boolean isRunning() {
-    return delegate.isRunning();
-  }
+	/**
+	 * Returns the {@link Executor} that will be used to run this service.
+	 * Subclasses may override this method to use a custom {@link Executor}, which
+	 * may configure its worker thread with a specific name, thread group or
+	 * priority. The returned executor's {@link Executor#execute(Runnable)
+	 * execute()} method is called when this service is started, and should return
+	 * promptly.
+	 * 
+	 * <p>The default implementation returns a new {@link Executor} that sets the 
+	 * name of its threads to the string returned by {@link #serviceName}
+	 */
+	protected Executor executor() {
+		return new Executor() {
+			@Override
+			public void execute(Runnable command) {
+				MoreExecutors.newThread(serviceName(), command).start();
+			}
+		};
+	}
 
-  @Override public final State state() {
-    return delegate.state();
-  }
+	@Override
+	public String toString() {
+		return serviceName() + " [" + state() + "]";
+	}
 
-  /**
-   * @since 13.0
-   */
-  @Override public final void addListener(Listener listener, Executor executor) {
-    delegate.addListener(listener, executor);
-  }
-  
-  /**
-   * @since 14.0
-   */
-  @Override public final Throwable failureCause() {
-    return delegate.failureCause();
-  }
-  
-  /**
-   * @since 15.0
-   */
-  @Override public final Service startAsync() {
-    delegate.startAsync();
-    return this;
-  }
-  
-  /**
-   * @since 15.0
-   */
-  @Override public final Service stopAsync() {
-    delegate.stopAsync();
-    return this;
-  }
-  
-  /**
-   * @since 15.0
-   */
-  @Override public final void awaitRunning() {
-    delegate.awaitRunning();
-  }
-  
-  /**
-   * @since 15.0
-   */
-  @Override public final void awaitRunning(long timeout, TimeUnit unit) throws TimeoutException {
-    delegate.awaitRunning(timeout, unit);
-  }
-  
-  /**
-   * @since 15.0
-   */
-  @Override public final void awaitTerminated() {
-    delegate.awaitTerminated();
-  }
-  
-  /**
-   * @since 15.0
-   */
-  @Override public final void awaitTerminated(long timeout, TimeUnit unit) throws TimeoutException {
-    delegate.awaitTerminated(timeout, unit);
-  }
-  
-  /**
-   * Returns the name of this service. {@link AbstractExecutionThreadService}
-   * may include the name in debugging output.
-   *
-   * <p>Subclasses may override this method.
-   *
-   * @since 14.0 (present in 10.0 as getServiceName)
-   */
-  protected String serviceName() {
-    return getClass().getSimpleName();
-  }
+	@Override
+	public final boolean isRunning() {
+		return delegate.isRunning();
+	}
+
+	@Override
+	public final State state() {
+		return delegate.state();
+	}
+
+	/**
+	 * @since 13.0
+	 */
+	@Override
+	public final void addListener(Listener listener, Executor executor) {
+		delegate.addListener(listener, executor);
+	}
+
+	/**
+	 * @since 14.0
+	 */
+	@Override
+	public final Throwable failureCause() {
+		return delegate.failureCause();
+	}
+
+	/**
+	 * @since 15.0
+	 */
+	@Override
+	public final Service startAsync() {
+		delegate.startAsync();
+		return this;
+	}
+
+	/**
+	 * @since 15.0
+	 */
+	@Override
+	public final Service stopAsync() {
+		delegate.stopAsync();
+		return this;
+	}
+
+	/**
+	 * @since 15.0
+	 */
+	@Override
+	public final void awaitRunning() {
+		delegate.awaitRunning();
+	}
+
+	/**
+	 * @since 15.0
+	 */
+	@Override
+	public final void awaitRunning(long timeout, TimeUnit unit) throws TimeoutException {
+		delegate.awaitRunning(timeout, unit);
+	}
+
+	/**
+	 * @since 15.0
+	 */
+	@Override
+	public final void awaitTerminated() {
+		delegate.awaitTerminated();
+	}
+
+	/**
+	 * @since 15.0
+	 */
+	@Override
+	public final void awaitTerminated(long timeout, TimeUnit unit) throws TimeoutException {
+		delegate.awaitTerminated(timeout, unit);
+	}
+
+	/**
+	 * Returns the name of this service. {@link AbstractExecutionThreadService}
+	 * may include the name in debugging output.
+	 *
+	 * <p>Subclasses may override this method.
+	 *
+	 * @since 14.0 (present in 10.0 as getServiceName)
+	 */
+	protected String serviceName() {
+		return getClass().getSimpleName();
+	}
 }

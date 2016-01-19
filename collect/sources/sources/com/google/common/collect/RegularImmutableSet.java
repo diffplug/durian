@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
+
+import javax.annotation.Nullable;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
-
-import javax.annotation.Nullable;
 
 /**
  * Implementation of {@link ImmutableSet} with two or more elements.
@@ -29,74 +29,74 @@ import javax.annotation.Nullable;
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // uses writeReplace(), not default serialization
 final class RegularImmutableSet<E> extends ImmutableSet<E> {
-  static final RegularImmutableSet<Object> EMPTY =
-      new RegularImmutableSet<Object>(ObjectArrays.EMPTY_ARRAY, 0, null, 0);
+	static final RegularImmutableSet<Object> EMPTY = new RegularImmutableSet<Object>(ObjectArrays.EMPTY_ARRAY, 0, null, 0);
 
-  private final transient Object[] elements;
-  // the same elements in hashed positions (plus nulls)
-  @VisibleForTesting final transient Object[] table;
-  // 'and' with an int to get a valid table index.
-  private final transient int mask;
-  private final transient int hashCode;
+	private final transient Object[] elements;
+	// the same elements in hashed positions (plus nulls)
+	@VisibleForTesting
+	final transient Object[] table;
+	// 'and' with an int to get a valid table index.
+	private final transient int mask;
+	private final transient int hashCode;
 
-  RegularImmutableSet(Object[] elements, int hashCode, Object[] table, int mask) {
-    this.elements = elements;
-    this.table = table;
-    this.mask = mask;
-    this.hashCode = hashCode;
-  }
+	RegularImmutableSet(Object[] elements, int hashCode, Object[] table, int mask) {
+		this.elements = elements;
+		this.table = table;
+		this.mask = mask;
+		this.hashCode = hashCode;
+	}
 
-  @Override
-  public boolean contains(@Nullable Object target) {
-    Object[] table = this.table;
-    if (target == null || table == null) {
-      return false;
-    }
-    for (int i = Hashing.smearedHash(target); ; i++) {
-      i &= mask;
-      Object candidate = table[i];
-      if (candidate == null) {
-        return false;
-      } else if (candidate.equals(target)) {
-        return true;
-      }
-    }
-  }
+	@Override
+	public boolean contains(@Nullable Object target) {
+		Object[] table = this.table;
+		if (target == null || table == null) {
+			return false;
+		}
+		for (int i = Hashing.smearedHash(target);; i++) {
+			i &= mask;
+			Object candidate = table[i];
+			if (candidate == null) {
+				return false;
+			} else if (candidate.equals(target)) {
+				return true;
+			}
+		}
+	}
 
-  @Override
-  public int size() {
-    return elements.length;
-  }
+	@Override
+	public int size() {
+		return elements.length;
+	}
 
-  @SuppressWarnings("unchecked") // all elements are E's
-  @Override
-  public UnmodifiableIterator<E> iterator() {
-    return (UnmodifiableIterator<E>) Iterators.forArray(elements);
-  }
+	@SuppressWarnings("unchecked") // all elements are E's
+	@Override
+	public UnmodifiableIterator<E> iterator() {
+		return (UnmodifiableIterator<E>) Iterators.forArray(elements);
+	}
 
-  @Override
-  int copyIntoArray(Object[] dst, int offset) {
-    System.arraycopy(elements, 0, dst, offset, elements.length);
-    return offset + elements.length;
-  }
+	@Override
+	int copyIntoArray(Object[] dst, int offset) {
+		System.arraycopy(elements, 0, dst, offset, elements.length);
+		return offset + elements.length;
+	}
 
-  @Override
-  ImmutableList<E> createAsList() {
-    return (table == null) ? ImmutableList.<E>of() : new RegularImmutableAsList<E>(this, elements);
-  }
+	@Override
+	ImmutableList<E> createAsList() {
+		return (table == null) ? ImmutableList.<E> of() : new RegularImmutableAsList<E>(this, elements);
+	}
 
-  @Override
-  boolean isPartialView() {
-    return false;
-  }
+	@Override
+	boolean isPartialView() {
+		return false;
+	}
 
-  @Override
-  public int hashCode() {
-    return hashCode;
-  }
+	@Override
+	public int hashCode() {
+		return hashCode;
+	}
 
-  @Override
-  boolean isHashCodeFast() {
-    return true;
-  }
+	@Override
+	boolean isHashCodeFast() {
+		return true;
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
-import com.google.common.util.concurrent.UncaughtExceptionHandlers.Exiter;
-
 import junit.framework.TestCase;
+
+import com.google.common.util.concurrent.UncaughtExceptionHandlers.Exiter;
 
 /**
  * @author Gregory Kick
@@ -30,16 +30,17 @@ import junit.framework.TestCase;
 
 public class UncaughtExceptionHandlersTest extends TestCase {
 
-  private Runtime runtimeMock;
+	private Runtime runtimeMock;
 
-  @Override protected void setUp() {
-    runtimeMock = createMock(Runtime.class);
-  }
+	@Override
+	protected void setUp() {
+		runtimeMock = createMock(Runtime.class);
+	}
 
-  public void testExiter() {
-    runtimeMock.exit(1);
-    replay(runtimeMock);
-    new Exiter(runtimeMock).uncaughtException(new Thread(), new Exception());
-    verify(runtimeMock);
-  }
+	public void testExiter() {
+		runtimeMock.exit(1);
+		replay(runtimeMock);
+		new Exiter(runtimeMock).uncaughtException(new Thread(), new Exception());
+		verify(runtimeMock);
+	}
 }

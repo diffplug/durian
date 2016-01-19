@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * A map, each entry of which maps a Java
@@ -47,20 +47,20 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 public interface ClassToInstanceMap<B> extends Map<Class<? extends B>, B> {
-  /**
-   * Returns the value the specified class is mapped to, or {@code null} if no
-   * entry for this class is present. This will only return a value that was
-   * bound to this specific class, not a value that may have been bound to a
-   * subtype.
-   */
-  <T extends B> T getInstance(Class<T> type);
+	/**
+	 * Returns the value the specified class is mapped to, or {@code null} if no
+	 * entry for this class is present. This will only return a value that was
+	 * bound to this specific class, not a value that may have been bound to a
+	 * subtype.
+	 */
+	<T extends B> T getInstance(Class<T> type);
 
-  /**
-   * Maps the specified class to the specified value. Does <i>not</i> associate
-   * this value with any of the class's supertypes.
-   *
-   * @return the value previously associated with this class (possibly {@code
-   *     null}), or {@code null} if there was no previous entry.
-   */
-  <T extends B> T putInstance(Class<T> type, @Nullable T value);
+	/**
+	 * Maps the specified class to the specified value. Does <i>not</i> associate
+	 * this value with any of the class's supertypes.
+	 *
+	 * @return the value previously associated with this class (possibly {@code
+	 *     null}), or {@code null} if there was no previous entry.
+	 */
+	<T extends B> T putInstance(Class<T> type, @Nullable T value);
 }

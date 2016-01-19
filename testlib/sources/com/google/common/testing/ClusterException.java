@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.testing;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * An {@link ClusterException} is a data structure that allows for some code to
@@ -61,62 +61,62 @@ import java.util.Collections;
 @GwtCompatible
 final class ClusterException extends RuntimeException {
 
-  public final Collection<? extends Throwable> exceptions;
+	public final Collection<? extends Throwable> exceptions;
 
-  private ClusterException(Collection<? extends Throwable> exceptions) {
-    super(
-        exceptions.size() + " exceptions were thrown. The first exception is listed as a cause.",
-        exceptions.iterator().next());
-    ArrayList<Throwable> temp = new ArrayList<Throwable>();
-    temp.addAll(exceptions);
-    this.exceptions = Collections.unmodifiableCollection(temp);
-  }
+	private ClusterException(Collection<? extends Throwable> exceptions) {
+		super(
+				exceptions.size() + " exceptions were thrown. The first exception is listed as a cause.",
+				exceptions.iterator().next());
+		ArrayList<Throwable> temp = new ArrayList<Throwable>();
+		temp.addAll(exceptions);
+		this.exceptions = Collections.unmodifiableCollection(temp);
+	}
 
-  /**
-   * @see #create(Collection)
-   */
-  public static RuntimeException create(Throwable... exceptions) {
-    ArrayList<Throwable> temp = new ArrayList<Throwable>();
-    for (Throwable exception : exceptions) {
-      temp.add(exception);
-    }
-    return create(temp);
-  }
+	/**
+	 * @see #create(Collection)
+	 */
+	public static RuntimeException create(Throwable... exceptions) {
+		ArrayList<Throwable> temp = new ArrayList<Throwable>();
+		for (Throwable exception : exceptions) {
+			temp.add(exception);
+		}
+		return create(temp);
+	}
 
-  /**
-   * Given a collection of exceptions, returns a {@link RuntimeException}, with
-   * the following rules:
-   *
-   * <ul>
-   *  <li>If {@code exceptions} has a single exception and that exception is a
-   *    {@link RuntimeException}, return it
-   *  <li>If {@code exceptions} has a single exceptions and that exceptions is
-   *    <em>not</em> a {@link RuntimeException}, return a simple
-   *    {@code RuntimeException} that wraps it
-   *  <li>Otherwise, return an instance of {@link ClusterException} that wraps
-   *    the first exception in the {@code exceptions} collection.
-   * </ul>
-   *
-   * <p>Though this method takes any {@link Collection}, it often makes most
-   * sense to pass a {@link java.util.List} or some other collection that
-   * preserves the order in which the exceptions got added.
-   *
-   * @throws NullPointerException if {@code exceptions} is null
-   * @throws IllegalArgumentException if {@code exceptions} is empty
-   */
-  public static RuntimeException create(Collection<? extends Throwable> exceptions) {
-    if (exceptions.size() == 0) {
-      throw new IllegalArgumentException(
-          "Can't create an ExceptionCollection with no exceptions");
-    }
-    if (exceptions.size() == 1) {
-      Throwable temp = exceptions.iterator().next();
-      if (temp instanceof RuntimeException) {
-        return (RuntimeException)temp;
-      } else {
-        return new RuntimeException(temp);
-      }
-    }
-    return new ClusterException(exceptions);
-  }
+	/**
+	 * Given a collection of exceptions, returns a {@link RuntimeException}, with
+	 * the following rules:
+	 *
+	 * <ul>
+	 *  <li>If {@code exceptions} has a single exception and that exception is a
+	 *    {@link RuntimeException}, return it
+	 *  <li>If {@code exceptions} has a single exceptions and that exceptions is
+	 *    <em>not</em> a {@link RuntimeException}, return a simple
+	 *    {@code RuntimeException} that wraps it
+	 *  <li>Otherwise, return an instance of {@link ClusterException} that wraps
+	 *    the first exception in the {@code exceptions} collection.
+	 * </ul>
+	 *
+	 * <p>Though this method takes any {@link Collection}, it often makes most
+	 * sense to pass a {@link java.util.List} or some other collection that
+	 * preserves the order in which the exceptions got added.
+	 *
+	 * @throws NullPointerException if {@code exceptions} is null
+	 * @throws IllegalArgumentException if {@code exceptions} is empty
+	 */
+	public static RuntimeException create(Collection<? extends Throwable> exceptions) {
+		if (exceptions.size() == 0) {
+			throw new IllegalArgumentException(
+					"Can't create an ExceptionCollection with no exceptions");
+		}
+		if (exceptions.size() == 1) {
+			Throwable temp = exceptions.iterator().next();
+			if (temp instanceof RuntimeException) {
+				return (RuntimeException) temp;
+			} else {
+				return new RuntimeException(temp);
+			}
+		}
+		return new ClusterException(exceptions);
+	}
 }

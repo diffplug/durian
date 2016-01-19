@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
 import java.util.List;
@@ -25,25 +25,24 @@ import java.util.List;
  * @author Louis Wasserman
  */
 public class ConcurrentNavigableMapTestSuiteBuilder<K, V> extends
-    NavigableMapTestSuiteBuilder<K, V> {
+		NavigableMapTestSuiteBuilder<K, V> {
 
-  public static <K, V> ConcurrentNavigableMapTestSuiteBuilder<K, V> using(
-      TestSortedMapGenerator<K, V> generator) {
-    ConcurrentNavigableMapTestSuiteBuilder<K, V> result =
-        new ConcurrentNavigableMapTestSuiteBuilder<K, V>();
-    result.usingGenerator(generator);
-    return result;
-  }
+	public static <K, V> ConcurrentNavigableMapTestSuiteBuilder<K, V> using(
+			TestSortedMapGenerator<K, V> generator) {
+		ConcurrentNavigableMapTestSuiteBuilder<K, V> result = new ConcurrentNavigableMapTestSuiteBuilder<K, V>();
+		result.usingGenerator(generator);
+		return result;
+	}
 
-  @Override
-  protected List<Class<? extends AbstractTester>> getTesters() {
-    List<Class<? extends AbstractTester>> testers = Helpers.copyToList(super.getTesters());
-    testers.addAll(ConcurrentMapTestSuiteBuilder.TESTERS);
-    return testers;
-  }
+	@Override
+	protected List<Class<? extends AbstractTester>> getTesters() {
+		List<Class<? extends AbstractTester>> testers = Helpers.copyToList(super.getTesters());
+		testers.addAll(ConcurrentMapTestSuiteBuilder.TESTERS);
+		return testers;
+	}
 
-  @Override
-  NavigableMapTestSuiteBuilder<K, V> subSuiteUsing(TestSortedMapGenerator<K, V> generator) {
-    return using(generator);
-  }
+	@Override
+	NavigableMapTestSuiteBuilder<K, V> subSuiteUsing(TestSortedMapGenerator<K, V> generator) {
+		return using(generator);
+	}
 }

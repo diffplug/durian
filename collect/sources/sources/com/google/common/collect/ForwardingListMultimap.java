@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * A list multimap which forwards all its method calls to another list multimap.
@@ -33,26 +33,26 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 public abstract class ForwardingListMultimap<K, V> extends ForwardingMultimap<K, V>
-    implements ListMultimap<K, V> {
+		implements ListMultimap<K, V> {
 
-  /** Constructor for use by subclasses. */
-  protected ForwardingListMultimap() {}
+	/** Constructor for use by subclasses. */
+	protected ForwardingListMultimap() {}
 
-  @Override
-  protected abstract ListMultimap<K, V> delegate();
+	@Override
+	protected abstract ListMultimap<K, V> delegate();
 
-  @Override
-  public List<V> get(@Nullable K key) {
-    return delegate().get(key);
-  }
+	@Override
+	public List<V> get(@Nullable K key) {
+		return delegate().get(key);
+	}
 
-  @Override
-  public List<V> removeAll(@Nullable Object key) {
-    return delegate().removeAll(key);
-  }
+	@Override
+	public List<V> removeAll(@Nullable Object key) {
+		return delegate().removeAll(key);
+	}
 
-  @Override
-  public List<V> replaceValues(K key, Iterable<? extends V> values) {
-    return delegate().replaceValues(key, values);
-  }
+	@Override
+	public List<V> replaceValues(K key, Iterable<? extends V> values) {
+		return delegate().replaceValues(key, values);
+	}
 }

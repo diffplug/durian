@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.KNOWN_ORDER;
@@ -34,24 +34,24 @@ import com.google.common.collect.testing.features.CollectionSize;
  */
 @GwtCompatible
 public class QueuePeekTester<E> extends AbstractQueueTester<E> {
-  @CollectionSize.Require(ZERO)
-  public void testPeek_empty() {
-    assertNull("emptyQueue.peek() should return null", getQueue().peek());
-    expectUnchanged();
-  }
+	@CollectionSize.Require(ZERO)
+	public void testPeek_empty() {
+		assertNull("emptyQueue.peek() should return null", getQueue().peek());
+		expectUnchanged();
+	}
 
-  @CollectionSize.Require(ONE)
-  public void testPeek_size1() {
-    assertEquals("size1Queue.peek() should return first element",
-        e0(), getQueue().peek());
-    expectUnchanged();
-  }
+	@CollectionSize.Require(ONE)
+	public void testPeek_size1() {
+		assertEquals("size1Queue.peek() should return first element",
+				e0(), getQueue().peek());
+		expectUnchanged();
+	}
 
-  @CollectionFeature.Require(KNOWN_ORDER)
-  @CollectionSize.Require(SEVERAL)
-  public void testPeek_sizeMany() {
-    assertEquals("sizeManyQueue.peek() should return first element",
-        e0(), getQueue().peek());
-    expectUnchanged();
-  }
+	@CollectionFeature.Require(KNOWN_ORDER)
+	@CollectionSize.Require(SEVERAL)
+	public void testPeek_sizeMany() {
+		assertEquals("sizeManyQueue.peek() should return first element",
+				e0(), getQueue().peek());
+		expectUnchanged();
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.annotations.Beta;
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.VisibleForTesting;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Queue;
+
+import com.google.common.annotations.Beta;
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.VisibleForTesting;
 
 /**
  * A non-blocking queue which automatically evicts elements from the head of the queue when
@@ -43,89 +43,90 @@ import java.util.Queue;
  */
 @Beta
 @GwtCompatible
-public final class EvictingQueue<E> extends ForwardingQueue<E> implements Serializable {
+public final class EvictingQueue<E> extends ForwardingQueue<E>implements Serializable {
 
-  private final Queue<E> delegate;
+	private final Queue<E> delegate;
 
-  @VisibleForTesting final int maxSize;
+	@VisibleForTesting
+	final int maxSize;
 
-  private EvictingQueue(int maxSize) {
-    checkArgument(maxSize >= 0, "maxSize (%s) must >= 0", maxSize);
-    this.delegate = Platform.newFastestQueue(maxSize);
-    this.maxSize = maxSize;
-  }
+	private EvictingQueue(int maxSize) {
+		checkArgument(maxSize >= 0, "maxSize (%s) must >= 0", maxSize);
+		this.delegate = Platform.newFastestQueue(maxSize);
+		this.maxSize = maxSize;
+	}
 
-  /**
-   * Creates and returns a new evicting queue that will hold up to {@code maxSize} elements.
-   *
-   * <p>When {@code maxSize} is zero, elements will be evicted immediately after being added to the
-   * queue.
-   */
-  public static <E> EvictingQueue<E> create(int maxSize) {
-    return new EvictingQueue<E>(maxSize);
-  }
+	/**
+	 * Creates and returns a new evicting queue that will hold up to {@code maxSize} elements.
+	 *
+	 * <p>When {@code maxSize} is zero, elements will be evicted immediately after being added to the
+	 * queue.
+	 */
+	public static <E> EvictingQueue<E> create(int maxSize) {
+		return new EvictingQueue<E>(maxSize);
+	}
 
-  /**
-   * Returns the number of additional elements that this queue can accept without evicting;
-   * zero if the queue is currently full.
-   *
-   * @since 16.0
-   */
-  public int remainingCapacity() {
-    return maxSize - size();
-  }
+	/**
+	 * Returns the number of additional elements that this queue can accept without evicting;
+	 * zero if the queue is currently full.
+	 *
+	 * @since 16.0
+	 */
+	public int remainingCapacity() {
+		return maxSize - size();
+	}
 
-  @Override
-  protected Queue<E> delegate() {
-    return delegate;
-  }
+	@Override
+	protected Queue<E> delegate() {
+		return delegate;
+	}
 
-  /**
-   * Adds the given element to this queue. If the queue is currently full, the element at the head
-   * of the queue is evicted to make room.
-   *
-   * @return {@code true} always
-   */
-  @Override
-  public boolean offer(E e) {
-    return add(e);
-  }
+	/**
+	 * Adds the given element to this queue. If the queue is currently full, the element at the head
+	 * of the queue is evicted to make room.
+	 *
+	 * @return {@code true} always
+	 */
+	@Override
+	public boolean offer(E e) {
+		return add(e);
+	}
 
-  /**
-   * Adds the given element to this queue. If the queue is currently full, the element at the head
-   * of the queue is evicted to make room.
-   *
-   * @return {@code true} always
-   */
-  @Override
-  public boolean add(E e) {
-    checkNotNull(e); // check before removing
-    if (maxSize == 0) {
-      return true;
-    }
-    if (size() == maxSize) {
-      delegate.remove();
-    }
-    delegate.add(e);
-    return true;
-  }
+	/**
+	 * Adds the given element to this queue. If the queue is currently full, the element at the head
+	 * of the queue is evicted to make room.
+	 *
+	 * @return {@code true} always
+	 */
+	@Override
+	public boolean add(E e) {
+		checkNotNull(e); // check before removing
+		if (maxSize == 0) {
+			return true;
+		}
+		if (size() == maxSize) {
+			delegate.remove();
+		}
+		delegate.add(e);
+		return true;
+	}
 
-  @Override
-  public boolean addAll(Collection<? extends E> collection) {
-    return standardAddAll(collection);
-  }
+	@Override
+	public boolean addAll(Collection<? extends E> collection) {
+		return standardAddAll(collection);
+	}
 
-  @Override
-  public boolean contains(Object object) {
-    return delegate().contains(checkNotNull(object));
-  }
+	@Override
+	public boolean contains(Object object) {
+		return delegate().contains(checkNotNull(object));
+	}
 
-  @Override
-  public boolean remove(Object object) {
-    return delegate().remove(checkNotNull(object));
-  }
+	@Override
+	public boolean remove(Object object) {
+		return delegate().remove(checkNotNull(object));
+	}
 
-  // TODO(kak): Do we want to checkNotNull each element in containsAll, removeAll, and retainAll?
+	// TODO(kak): Do we want to checkNotNull each element in containsAll, removeAll, and retainAll?
 
-  private static final long serialVersionUID = 0L;
+	private static final long serialVersionUID = 0L;
 }

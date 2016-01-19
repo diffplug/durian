@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
@@ -29,41 +29,42 @@ import com.google.j2objc.annotations.Weak;
 @GwtCompatible(emulated = true)
 @SuppressWarnings("serial") // uses writeReplace, not default serialization
 class RegularImmutableAsList<E> extends ImmutableAsList<E> {
-  @Weak private final ImmutableCollection<E> delegate;
-  private final ImmutableList<? extends E> delegateList;
+	@Weak
+	private final ImmutableCollection<E> delegate;
+	private final ImmutableList<? extends E> delegateList;
 
-  RegularImmutableAsList(ImmutableCollection<E> delegate, ImmutableList<? extends E> delegateList) {
-    this.delegate = delegate;
-    this.delegateList = delegateList;
-  }
+	RegularImmutableAsList(ImmutableCollection<E> delegate, ImmutableList<? extends E> delegateList) {
+		this.delegate = delegate;
+		this.delegateList = delegateList;
+	}
 
-  RegularImmutableAsList(ImmutableCollection<E> delegate, Object[] array) {
-    this(delegate, ImmutableList.<E>asImmutableList(array));
-  }
+	RegularImmutableAsList(ImmutableCollection<E> delegate, Object[] array) {
+		this(delegate, ImmutableList.<E> asImmutableList(array));
+	}
 
-  @Override
-  ImmutableCollection<E> delegateCollection() {
-    return delegate;
-  }
+	@Override
+	ImmutableCollection<E> delegateCollection() {
+		return delegate;
+	}
 
-  ImmutableList<? extends E> delegateList() {
-    return delegateList;
-  }
+	ImmutableList<? extends E> delegateList() {
+		return delegateList;
+	}
 
-  @SuppressWarnings("unchecked") // safe covariant cast!
-  @Override
-  public UnmodifiableListIterator<E> listIterator(int index) {
-    return (UnmodifiableListIterator<E>) delegateList.listIterator(index);
-  }
+	@SuppressWarnings("unchecked") // safe covariant cast!
+	@Override
+	public UnmodifiableListIterator<E> listIterator(int index) {
+		return (UnmodifiableListIterator<E>) delegateList.listIterator(index);
+	}
 
-  @GwtIncompatible("not present in emulated superclass")
-  @Override
-  int copyIntoArray(Object[] dst, int offset) {
-    return delegateList.copyIntoArray(dst, offset);
-  }
+	@GwtIncompatible("not present in emulated superclass")
+	@Override
+	int copyIntoArray(Object[] dst, int offset) {
+		return delegateList.copyIntoArray(dst, offset);
+	}
 
-  @Override
-  public E get(int index) {
-    return delegateList.get(index);
-  }
+	@Override
+	public E get(int index) {
+		return delegateList.get(index);
+	}
 }

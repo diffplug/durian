@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 import static com.google.common.base.Charsets.UTF_8;
@@ -28,36 +28,36 @@ import java.io.OutputStreamWriter;
  */
 public class TestWriter extends FilterWriter {
 
-  private final TestOutputStream out;
+	private final TestOutputStream out;
 
-  public TestWriter(TestOption... options) throws IOException {
-    this(new TestOutputStream(ByteStreams.nullOutputStream(), options));
-  }
+	public TestWriter(TestOption... options) throws IOException {
+		this(new TestOutputStream(ByteStreams.nullOutputStream(), options));
+	}
 
-  public TestWriter(TestOutputStream out) {
-    super(new OutputStreamWriter(checkNotNull(out), UTF_8));
-    this.out = out;
-  }
+	public TestWriter(TestOutputStream out) {
+		super(new OutputStreamWriter(checkNotNull(out), UTF_8));
+		this.out = out;
+	}
 
-  @Override
-  public void write(int c) throws IOException {
-    super.write(c);
-    flush(); // flush write to TestOutputStream to get its behavior
-  }
+	@Override
+	public void write(int c) throws IOException {
+		super.write(c);
+		flush(); // flush write to TestOutputStream to get its behavior
+	}
 
-  @Override
-  public void write(char[] cbuf, int off, int len) throws IOException {
-    super.write(cbuf, off, len);
-    flush();
-  }
+	@Override
+	public void write(char[] cbuf, int off, int len) throws IOException {
+		super.write(cbuf, off, len);
+		flush();
+	}
 
-  @Override
-  public void write(String str, int off, int len) throws IOException {
-    super.write(str, off, len);
-    flush();
-  }
+	@Override
+	public void write(String str, int off, int len) throws IOException {
+		super.write(str, off, len);
+		flush();
+	}
 
-  public boolean closed() {
-    return out.closed();
-  }
+	public boolean closed() {
+		return out.closed();
+	}
 }

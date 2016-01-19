@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.ALLOWS_NULL_VALUES;
@@ -38,38 +38,37 @@ import com.google.common.collect.testing.features.CollectionSize;
  */
 @GwtCompatible
 public class CollectionToStringTester<E> extends AbstractCollectionTester<E> {
-  public void testToString_minimal() {
-    assertNotNull("toString() should not return null",
-        collection.toString());
-  }
+	public void testToString_minimal() {
+		assertNotNull("toString() should not return null",
+				collection.toString());
+	}
 
-  @CollectionSize.Require(ZERO)
-  @CollectionFeature.Require(absent = NON_STANDARD_TOSTRING)
-  public void testToString_size0() {
-    assertEquals("emptyCollection.toString should return []", "[]",
-        collection.toString());
-  }
+	@CollectionSize.Require(ZERO)
+	@CollectionFeature.Require(absent = NON_STANDARD_TOSTRING)
+	public void testToString_size0() {
+		assertEquals("emptyCollection.toString should return []", "[]",
+				collection.toString());
+	}
 
-  @CollectionSize.Require(ONE)
-  @CollectionFeature.Require(absent = NON_STANDARD_TOSTRING)
-  public void testToString_size1() {
-    assertEquals("size1Collection.toString should return [{element}]",
-        "[" + e0() + "]", collection.toString());
-  }
+	@CollectionSize.Require(ONE)
+	@CollectionFeature.Require(absent = NON_STANDARD_TOSTRING)
+	public void testToString_size1() {
+		assertEquals("size1Collection.toString should return [{element}]",
+				"[" + e0() + "]", collection.toString());
+	}
 
-  @CollectionSize.Require(SEVERAL)
-  @CollectionFeature.Require(
-      value = KNOWN_ORDER, absent = NON_STANDARD_TOSTRING)
-  public void testToString_sizeSeveral() {
-    String expected = Helpers.copyToList(getOrderedElements()).toString();
-    assertEquals("collection.toString() incorrect",
-        expected, collection.toString());
-  }
+	@CollectionSize.Require(SEVERAL)
+	@CollectionFeature.Require(value = KNOWN_ORDER, absent = NON_STANDARD_TOSTRING)
+	public void testToString_sizeSeveral() {
+		String expected = Helpers.copyToList(getOrderedElements()).toString();
+		assertEquals("collection.toString() incorrect",
+				expected, collection.toString());
+	}
 
-  @CollectionSize.Require(absent = ZERO)
-  @CollectionFeature.Require(ALLOWS_NULL_VALUES)
-  public void testToString_null() {
-    initCollectionWithNullElement();
-    testToString_minimal();
-  }
+	@CollectionSize.Require(absent = ZERO)
+	@CollectionFeature.Require(ALLOWS_NULL_VALUES)
+	public void testToString_null() {
+		initCollectionWithNullElement();
+		testToString_minimal();
+	}
 }

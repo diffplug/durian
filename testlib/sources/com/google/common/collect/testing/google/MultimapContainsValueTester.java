@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.google;
 
 import static com.google.common.collect.testing.features.CollectionSize.ZERO;
@@ -32,35 +32,35 @@ import com.google.common.collect.testing.features.MapFeature;
  */
 @GwtCompatible
 public class MultimapContainsValueTester<K, V>
-    extends AbstractMultimapTester<K, V, Multimap<K, V>> {
-  @CollectionSize.Require(absent = ZERO)
-  public void testContainsValueYes() {
-    assertTrue(multimap().containsValue(v0()));
-  }
+		extends AbstractMultimapTester<K, V, Multimap<K, V>> {
+	@CollectionSize.Require(absent = ZERO)
+	public void testContainsValueYes() {
+		assertTrue(multimap().containsValue(v0()));
+	}
 
-  public void testContainsValueNo() {
-    assertFalse(multimap().containsValue(v3()));
-  }
+	public void testContainsValueNo() {
+		assertFalse(multimap().containsValue(v3()));
+	}
 
-  @MapFeature.Require(ALLOWS_NULL_VALUES)
-  @CollectionSize.Require(absent = ZERO)
-  public void testContainsNullValueYes() {
-    initMultimapWithNullValue();
-    assertTrue(multimap().containsValue(null));
-  }
+	@MapFeature.Require(ALLOWS_NULL_VALUES)
+	@CollectionSize.Require(absent = ZERO)
+	public void testContainsNullValueYes() {
+		initMultimapWithNullValue();
+		assertTrue(multimap().containsValue(null));
+	}
 
-  @MapFeature.Require(ALLOWS_NULL_VALUE_QUERIES)
-  public void testContainsNullValueNo() {
-    assertFalse(multimap().containsValue(null));
-  }
+	@MapFeature.Require(ALLOWS_NULL_VALUE_QUERIES)
+	public void testContainsNullValueNo() {
+		assertFalse(multimap().containsValue(null));
+	}
 
-  @MapFeature.Require(absent = ALLOWS_NULL_VALUE_QUERIES)
-  public void testContainsNullValueFails() {
-    try {
-      multimap().containsValue(null);
-      fail("Expected NullPointerException");
-    } catch (NullPointerException expected) {
-      // success
-    }
-  }
+	@MapFeature.Require(absent = ALLOWS_NULL_VALUE_QUERIES)
+	public void testContainsNullValueFails() {
+		try {
+			multimap().containsValue(null);
+			fail("Expected NullPointerException");
+		} catch (NullPointerException expected) {
+			// success
+		}
+	}
 }

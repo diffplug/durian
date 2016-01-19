@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.testing;
 
-import com.google.common.testing.RelationshipTester.ItemReporter;
-
 import junit.framework.TestCase;
+
+import com.google.common.testing.RelationshipTester.ItemReporter;
 
 /**
  * Tests for {@link RelationshipTester}.
@@ -27,9 +27,9 @@ import junit.framework.TestCase;
  */
 public class RelationshipTesterTest extends TestCase {
 
-  public void testNulls() {
-    new ClassSanityTester()
-        .setDefault(ItemReporter.class, new ItemReporter())
-        .testNulls(RelationshipTester.class);
-  }
+	public void testNulls() {
+		new ClassSanityTester()
+				.setDefault(ItemReporter.class, new ItemReporter())
+				.testNulls(RelationshipTester.class);
+	}
 }

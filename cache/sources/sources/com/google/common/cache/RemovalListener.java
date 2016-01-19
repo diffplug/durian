@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.cache;
 
 import com.google.common.annotations.GwtCompatible;
@@ -37,13 +37,13 @@ import com.google.common.annotations.GwtCompatible;
  */
 @GwtCompatible
 public interface RemovalListener<K, V> {
-  /**
-   * Notifies the listener that a removal occurred at some point in the past.
-   *
-   * <p>This does not always signify that the key is now absent from the cache,
-   * as it may have already been re-added.
-   */
-  // Technically should accept RemovalNotification<? extends K, ? extends V>, but because
-  // RemovalNotification is guaranteed covariant, let's make users' lives simpler.
-  void onRemoval(RemovalNotification<K, V> notification);
+	/**
+	 * Notifies the listener that a removal occurred at some point in the past.
+	 *
+	 * <p>This does not always signify that the key is now absent from the cache,
+	 * as it may have already been re-added.
+	 */
+	// Technically should accept RemovalNotification<? extends K, ? extends V>, but because
+	// RemovalNotification is guaranteed covariant, let's make users' lives simpler.
+	void onRemoval(RemovalNotification<K, V> notification);
 }

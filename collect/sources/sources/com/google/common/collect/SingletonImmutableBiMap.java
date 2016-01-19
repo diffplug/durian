@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import static com.google.common.collect.CollectPreconditions.checkEntryNotNull;
 
-import com.google.common.annotations.GwtCompatible;
-
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Implementation of {@link ImmutableMap} with exactly one entry.
@@ -32,66 +32,66 @@ import javax.annotation.Nullable;
 @SuppressWarnings("serial") // uses writeReplace(), not default serialization
 final class SingletonImmutableBiMap<K, V> extends ImmutableBiMap<K, V> {
 
-  final transient K singleKey;
-  final transient V singleValue;
+	final transient K singleKey;
+	final transient V singleValue;
 
-  SingletonImmutableBiMap(K singleKey, V singleValue) {
-    checkEntryNotNull(singleKey, singleValue);
-    this.singleKey = singleKey;
-    this.singleValue = singleValue;
-  }
+	SingletonImmutableBiMap(K singleKey, V singleValue) {
+		checkEntryNotNull(singleKey, singleValue);
+		this.singleKey = singleKey;
+		this.singleValue = singleValue;
+	}
 
-  private SingletonImmutableBiMap(K singleKey, V singleValue, ImmutableBiMap<V, K> inverse) {
-    this.singleKey = singleKey;
-    this.singleValue = singleValue;
-    this.inverse = inverse;
-  }
+	private SingletonImmutableBiMap(K singleKey, V singleValue, ImmutableBiMap<V, K> inverse) {
+		this.singleKey = singleKey;
+		this.singleValue = singleValue;
+		this.inverse = inverse;
+	}
 
-  @Override
-  public V get(@Nullable Object key) {
-    return singleKey.equals(key) ? singleValue : null;
-  }
+	@Override
+	public V get(@Nullable Object key) {
+		return singleKey.equals(key) ? singleValue : null;
+	}
 
-  @Override
-  public int size() {
-    return 1;
-  }
+	@Override
+	public int size() {
+		return 1;
+	}
 
-  @Override
-  public boolean containsKey(@Nullable Object key) {
-    return singleKey.equals(key);
-  }
+	@Override
+	public boolean containsKey(@Nullable Object key) {
+		return singleKey.equals(key);
+	}
 
-  @Override
-  public boolean containsValue(@Nullable Object value) {
-    return singleValue.equals(value);
-  }
+	@Override
+	public boolean containsValue(@Nullable Object value) {
+		return singleValue.equals(value);
+	}
 
-  @Override
-  boolean isPartialView() {
-    return false;
-  }
+	@Override
+	boolean isPartialView() {
+		return false;
+	}
 
-  @Override
-  ImmutableSet<Entry<K, V>> createEntrySet() {
-    return ImmutableSet.of(Maps.immutableEntry(singleKey, singleValue));
-  }
+	@Override
+	ImmutableSet<Entry<K, V>> createEntrySet() {
+		return ImmutableSet.of(Maps.immutableEntry(singleKey, singleValue));
+	}
 
-  @Override
-  ImmutableSet<K> createKeySet() {
-    return ImmutableSet.of(singleKey);
-  }
+	@Override
+	ImmutableSet<K> createKeySet() {
+		return ImmutableSet.of(singleKey);
+	}
 
-  transient ImmutableBiMap<V, K> inverse;
+	transient ImmutableBiMap<V, K> inverse;
 
-  @Override
-  public ImmutableBiMap<V, K> inverse() {
-    // racy single-check idiom
-    ImmutableBiMap<V, K> result = inverse;
-    if (result == null) {
-      return inverse = new SingletonImmutableBiMap<V, K>(singleValue, singleKey, this);
-    } else {
-      return result;
-    }
-  }
+	@Override
+	public ImmutableBiMap<V, K> inverse() {
+		// racy single-check idiom
+		ImmutableBiMap<V, K> result = inverse;
+		if (result == null) {
+			return inverse = new SingletonImmutableBiMap<V, K>(singleValue, singleKey, this);
+		} else {
+			return result;
+		}
+	}
 }

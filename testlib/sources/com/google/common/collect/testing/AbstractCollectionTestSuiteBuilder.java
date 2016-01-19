@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import junit.framework.TestSuite;
 
 import com.google.common.collect.testing.testers.CollectionAddAllTester;
 import com.google.common.collect.testing.testers.CollectionAddTester;
@@ -33,56 +40,44 @@ import com.google.common.collect.testing.testers.CollectionSizeTester;
 import com.google.common.collect.testing.testers.CollectionToArrayTester;
 import com.google.common.collect.testing.testers.CollectionToStringTester;
 
-import junit.framework.TestSuite;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Abstract superclass of all test-suite builders for collection interfaces.
  *
  * @author George van den Driessche
  */
-public abstract class AbstractCollectionTestSuiteBuilder<
-    B extends AbstractCollectionTestSuiteBuilder<B, E>, E>
-    extends PerCollectionSizeTestSuiteBuilder<
-        B, TestCollectionGenerator<E>, Collection<E>, E> {
-  // Class parameters must be raw.
-  @SuppressWarnings("unchecked")
-  @Override protected List<Class<? extends AbstractTester>> getTesters() {
-    return Arrays.<Class<? extends AbstractTester>>asList(
-        CollectionAddAllTester.class,
-        CollectionAddTester.class,
-        CollectionClearTester.class,
-        CollectionContainsAllTester.class,
-        CollectionContainsTester.class,
-        CollectionCreationTester.class,
-        CollectionEqualsTester.class,
-        CollectionIsEmptyTester.class,
-        CollectionIteratorTester.class,
-        CollectionRemoveAllTester.class,
-        CollectionRemoveTester.class,
-        CollectionRetainAllTester.class,
-        CollectionSerializationTester.class,
-        CollectionSizeTester.class,
-        CollectionToArrayTester.class,
-        CollectionToStringTester.class
-    );
-  }
+public abstract class AbstractCollectionTestSuiteBuilder<B extends AbstractCollectionTestSuiteBuilder<B, E>, E>
+		extends PerCollectionSizeTestSuiteBuilder<B, TestCollectionGenerator<E>, Collection<E>, E> {
+	// Class parameters must be raw.
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<Class<? extends AbstractTester>> getTesters() {
+		return Arrays.<Class<? extends AbstractTester>> asList(
+				CollectionAddAllTester.class,
+				CollectionAddTester.class,
+				CollectionClearTester.class,
+				CollectionContainsAllTester.class,
+				CollectionContainsTester.class,
+				CollectionCreationTester.class,
+				CollectionEqualsTester.class,
+				CollectionIsEmptyTester.class,
+				CollectionIteratorTester.class,
+				CollectionRemoveAllTester.class,
+				CollectionRemoveTester.class,
+				CollectionRetainAllTester.class,
+				CollectionSerializationTester.class,
+				CollectionSizeTester.class,
+				CollectionToArrayTester.class,
+				CollectionToStringTester.class);
+	}
 
-  @Override
-  protected List<TestSuite> createDerivedSuites(FeatureSpecificTestSuiteBuilder<
-      ?, ? extends OneSizeTestContainerGenerator<Collection<E>, E>>
-          parentBuilder) {
-    DerivedIteratorTestSuiteBuilder<?> iteratorTestSuiteBuilder =
-        new DerivedIteratorTestSuiteBuilder<E>()
-            .named(parentBuilder.getName())
-            .usingGenerator(parentBuilder.getSubjectGenerator())
-            .withFeatures(parentBuilder.getFeatures());
+	@Override
+	protected List<TestSuite> createDerivedSuites(FeatureSpecificTestSuiteBuilder<?, ? extends OneSizeTestContainerGenerator<Collection<E>, E>> parentBuilder) {
+		DerivedIteratorTestSuiteBuilder<?> iteratorTestSuiteBuilder = new DerivedIteratorTestSuiteBuilder<E>()
+				.named(parentBuilder.getName())
+				.usingGenerator(parentBuilder.getSubjectGenerator())
+				.withFeatures(parentBuilder.getFeatures());
 
-    return Collections.singletonList(
-        iteratorTestSuiteBuilder.createTestSuite());
-  }
+		return Collections.singletonList(
+				iteratorTestSuiteBuilder.createTestSuite());
+	}
 }

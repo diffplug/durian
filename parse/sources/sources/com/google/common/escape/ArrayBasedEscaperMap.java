@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.escape;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collections;
+import java.util.Map;
+
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
-
-import java.util.Collections;
-import java.util.Map;
 
 /**
  * An implementation-specific parameter class suitable for initializing
@@ -45,47 +45,47 @@ import java.util.Map;
 @Beta
 @GwtCompatible
 public final class ArrayBasedEscaperMap {
-  /**
-   * Returns a new ArrayBasedEscaperMap for creating ArrayBasedCharEscaper or
-   * ArrayBasedUnicodeEscaper instances.
-   *
-   * @param replacements a map of characters to their escaped representations
-   */
-  public static ArrayBasedEscaperMap create(
-      Map<Character, String> replacements) {
-    return new ArrayBasedEscaperMap(createReplacementArray(replacements));
-  }
+	/**
+	 * Returns a new ArrayBasedEscaperMap for creating ArrayBasedCharEscaper or
+	 * ArrayBasedUnicodeEscaper instances.
+	 *
+	 * @param replacements a map of characters to their escaped representations
+	 */
+	public static ArrayBasedEscaperMap create(
+			Map<Character, String> replacements) {
+		return new ArrayBasedEscaperMap(createReplacementArray(replacements));
+	}
 
-  // The underlying replacement array we can share between multiple escaper
-  // instances.
-  private final char[][] replacementArray;
+	// The underlying replacement array we can share between multiple escaper
+	// instances.
+	private final char[][] replacementArray;
 
-  private ArrayBasedEscaperMap(char[][] replacementArray) {
-    this.replacementArray = replacementArray;
-  }
+	private ArrayBasedEscaperMap(char[][] replacementArray) {
+		this.replacementArray = replacementArray;
+	}
 
-  // Returns the non-null array of replacements for fast lookup.
-  char[][] getReplacementArray() {
-    return replacementArray;
-  }
+	// Returns the non-null array of replacements for fast lookup.
+	char[][] getReplacementArray() {
+		return replacementArray;
+	}
 
-  // Creates a replacement array from the given map. The returned array is a
-  // linear lookup table of replacement character sequences indexed by the
-  // original character value.
-  @VisibleForTesting
-  static char[][] createReplacementArray(Map<Character, String> map) {
-    checkNotNull(map);  // GWT specific check (do not optimize)
-    if (map.isEmpty()) {
-      return EMPTY_REPLACEMENT_ARRAY;
-    }
-    char max = Collections.max(map.keySet());
-    char[][] replacements = new char[max + 1][];
-    for (char c : map.keySet()) {
-      replacements[c] = map.get(c).toCharArray();
-    }
-    return replacements;
-  }
+	// Creates a replacement array from the given map. The returned array is a
+	// linear lookup table of replacement character sequences indexed by the
+	// original character value.
+	@VisibleForTesting
+	static char[][] createReplacementArray(Map<Character, String> map) {
+		checkNotNull(map); // GWT specific check (do not optimize)
+		if (map.isEmpty()) {
+			return EMPTY_REPLACEMENT_ARRAY;
+		}
+		char max = Collections.max(map.keySet());
+		char[][] replacements = new char[max + 1][];
+		for (char c : map.keySet()) {
+			replacements[c] = map.get(c).toCharArray();
+		}
+		return replacements;
+	}
 
-  // Immutable empty array for when there are no replacements.
-  private static final char[][] EMPTY_REPLACEMENT_ARRAY = new char[0][0];
+	// Immutable empty array for when there are no replacements.
+	private static final char[][] EMPTY_REPLACEMENT_ARRAY = new char[0][0];
 }

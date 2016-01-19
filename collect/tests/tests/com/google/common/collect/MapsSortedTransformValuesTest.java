@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
+
+import java.util.Map;
+import java.util.SortedMap;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-
-import java.util.Map;
-import java.util.SortedMap;
 
 /**
  * Tests for {@link Maps#transformValues(SortedMap, Function)}.
@@ -31,24 +31,23 @@ import java.util.SortedMap;
 @GwtCompatible
 public class MapsSortedTransformValuesTest extends MapsTransformValuesTest {
 
-  @Override
-  protected SortedMap<String, String> makeEmptyMap() {
-    return Maps.transformValues(Maps.<String, String>newTreeMap(),
-        Functions.<String>identity());
-  }
+	@Override
+	protected SortedMap<String, String> makeEmptyMap() {
+		return Maps.transformValues(Maps.<String, String> newTreeMap(),
+				Functions.<String> identity());
+	}
 
-  @Override
-  protected SortedMap<String, String> makePopulatedMap() {
-    SortedMap<String, Integer> underlying = Maps.newTreeMap();
-    underlying.put("a", 1);
-    underlying.put("b", 2);
-    underlying.put("c", 3);
-    return Maps.transformValues(underlying, Functions.toStringFunction());
-  }
+	@Override
+	protected SortedMap<String, String> makePopulatedMap() {
+		SortedMap<String, Integer> underlying = Maps.newTreeMap();
+		underlying.put("a", 1);
+		underlying.put("b", 2);
+		underlying.put("c", 3);
+		return Maps.transformValues(underlying, Functions.toStringFunction());
+	}
 
-  public void testTransformValuesSecretlySortedMap() {
-    Map<String, String> sortedMap = Maps.newTreeMap();
-    assertTrue(Maps.transformValues(sortedMap, Functions.<String>identity())
-        instanceof SortedMap);
-  }
+	public void testTransformValuesSecretlySortedMap() {
+		Map<String, String> sortedMap = Maps.newTreeMap();
+		assertTrue(Maps.transformValues(sortedMap, Functions.<String> identity()) instanceof SortedMap);
+	}
 }

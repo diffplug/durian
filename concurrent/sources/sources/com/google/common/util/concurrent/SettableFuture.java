@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
+
+import javax.annotation.Nullable;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
-
-import javax.annotation.Nullable;
 
 /**
  * A {@link ListenableFuture} whose result may be set by a {@link #set(Object)},
@@ -32,30 +32,32 @@ import javax.annotation.Nullable;
 @GwtCompatible
 public final class SettableFuture<V> extends AbstractFuture.TrustedFuture<V> {
 
-  /**
-   * Creates a new {@code SettableFuture} in the default state.
-   */
-  public static <V> SettableFuture<V> create() {
-    return new SettableFuture<V>();
-  }
+	/**
+	 * Creates a new {@code SettableFuture} in the default state.
+	 */
+	public static <V> SettableFuture<V> create() {
+		return new SettableFuture<V>();
+	}
 
-  /**
-   * Explicit private constructor, use the {@link #create} factory method to
-   * create instances of {@code SettableFuture}.
-   */
-  private SettableFuture() {}
+	/**
+	 * Explicit private constructor, use the {@link #create} factory method to
+	 * create instances of {@code SettableFuture}.
+	 */
+	private SettableFuture() {}
 
-  @Override public boolean set(@Nullable V value) {
-    return super.set(value);
-  }
+	@Override
+	public boolean set(@Nullable V value) {
+		return super.set(value);
+	}
 
-  @Override public boolean setException(Throwable throwable) {
-    return super.setException(throwable);
-  }
+	@Override
+	public boolean setException(Throwable throwable) {
+		return super.setException(throwable);
+	}
 
-  @Beta
-  @Override
-  public boolean setFuture(ListenableFuture<? extends V> future) {
-    return super.setFuture(future);
-  }
+	@Beta
+	@Override
+	public boolean setFuture(ListenableFuture<? extends V> future) {
+		return super.setFuture(future);
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.reflect;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -28,11 +28,11 @@ import java.lang.reflect.Type;
  */
 abstract class TypeCapture<T> {
 
-  /** Returns the captured type. */
-  final Type capture() {
-    Type superclass = getClass().getGenericSuperclass();
-    checkArgument(superclass instanceof ParameterizedType,
-        "%s isn't parameterized", superclass);
-    return ((ParameterizedType) superclass).getActualTypeArguments()[0];
-  }
+	/** Returns the captured type. */
+	final Type capture() {
+		Type superclass = getClass().getGenericSuperclass();
+		checkArgument(superclass instanceof ParameterizedType,
+				"%s isn't parameterized", superclass);
+		return ((ParameterizedType) superclass).getActualTypeArguments()[0];
+	}
 }

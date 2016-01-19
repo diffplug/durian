@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.RejectedExecutionException;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * A {@link Future} that accepts completion listeners.  Each listener has an
@@ -88,53 +88,53 @@ import java.util.concurrent.RejectedExecutionException;
  */
 @GwtCompatible
 public interface ListenableFuture<V> extends Future<V> {
-  /**
-   * Registers a listener to be {@linkplain Executor#execute(Runnable) run} on
-   * the given executor.  The listener will run when the {@code Future}'s
-   * computation is {@linkplain Future#isDone() complete} or, if the computation
-   * is already complete, immediately.
-   *
-   * <p>There is no guaranteed ordering of execution of listeners, but any
-   * listener added through this method is guaranteed to be called once the
-   * computation is complete.
-   *
-   * <p>Exceptions thrown by a listener will be propagated up to the executor.
-   * Any exception thrown during {@code Executor.execute} (e.g., a {@code
-   * RejectedExecutionException} or an exception thrown by {@linkplain
-   * MoreExecutors#directExecutor direct execution}) will be caught and
-   * logged.
-   *
-   * <p>Note: For fast, lightweight listeners that would be safe to execute in
-   * any thread, consider {@link MoreExecutors#directExecutor}. Otherwise, avoid
-   * it. Heavyweight {@code directExecutor} listeners can cause problems, and
-   * these problems can be difficult to reproduce because they depend on timing.
-   * For example:
-   *
-   * <ul>
-   * <li>The listener may be executed by the caller of {@code addListener}. That
-   * caller may be a UI thread or other latency-sensitive thread. This can harm
-   * UI responsiveness.
-   * <li>The listener may be executed by the thread that completes this {@code
-   * Future}. That thread may be an internal system thread such as an RPC
-   * network thread. Blocking that thread may stall progress of the whole
-   * system. It may even cause a deadlock.
-   * <li>The listener may delay other listeners, even listeners that are not
-   * themselves {@code directExecutor} listeners.
-   * </ul>
-   *
-   * <p>This is the most general listener interface. For common operations
-   * performed using listeners, see {@link Futures}. For a simplified but
-   * general listener interface, see {@link Futures#addCallback addCallback()}.
-   *
-   * <p>Memory consistency effects: Actions in a thread prior to adding a listener
-   * <a href="https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4.5">
-   * <i>happen-before</i></a> its execution begins, perhaps in another thread.
-   *
-   * @param listener the listener to run when the computation is complete
-   * @param executor the executor to run the listener in
-   * @throws NullPointerException if the executor or listener was null
-   * @throws RejectedExecutionException if we tried to execute the listener
-   *         immediately but the executor rejected it.
-   */
-  void addListener(Runnable listener, Executor executor);
+	/**
+	 * Registers a listener to be {@linkplain Executor#execute(Runnable) run} on
+	 * the given executor.  The listener will run when the {@code Future}'s
+	 * computation is {@linkplain Future#isDone() complete} or, if the computation
+	 * is already complete, immediately.
+	 *
+	 * <p>There is no guaranteed ordering of execution of listeners, but any
+	 * listener added through this method is guaranteed to be called once the
+	 * computation is complete.
+	 *
+	 * <p>Exceptions thrown by a listener will be propagated up to the executor.
+	 * Any exception thrown during {@code Executor.execute} (e.g., a {@code
+	 * RejectedExecutionException} or an exception thrown by {@linkplain
+	 * MoreExecutors#directExecutor direct execution}) will be caught and
+	 * logged.
+	 *
+	 * <p>Note: For fast, lightweight listeners that would be safe to execute in
+	 * any thread, consider {@link MoreExecutors#directExecutor}. Otherwise, avoid
+	 * it. Heavyweight {@code directExecutor} listeners can cause problems, and
+	 * these problems can be difficult to reproduce because they depend on timing.
+	 * For example:
+	 *
+	 * <ul>
+	 * <li>The listener may be executed by the caller of {@code addListener}. That
+	 * caller may be a UI thread or other latency-sensitive thread. This can harm
+	 * UI responsiveness.
+	 * <li>The listener may be executed by the thread that completes this {@code
+	 * Future}. That thread may be an internal system thread such as an RPC
+	 * network thread. Blocking that thread may stall progress of the whole
+	 * system. It may even cause a deadlock.
+	 * <li>The listener may delay other listeners, even listeners that are not
+	 * themselves {@code directExecutor} listeners.
+	 * </ul>
+	 *
+	 * <p>This is the most general listener interface. For common operations
+	 * performed using listeners, see {@link Futures}. For a simplified but
+	 * general listener interface, see {@link Futures#addCallback addCallback()}.
+	 *
+	 * <p>Memory consistency effects: Actions in a thread prior to adding a listener
+	 * <a href="https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html#jls-17.4.5">
+	 * <i>happen-before</i></a> its execution begins, perhaps in another thread.
+	 *
+	 * @param listener the listener to run when the computation is complete
+	 * @param executor the executor to run the listener in
+	 * @throws NullPointerException if the executor or listener was null
+	 * @throws RejectedExecutionException if we tried to execute the listener
+	 *         immediately but the executor rejected it.
+	 */
+	void addListener(Runnable listener, Executor executor);
 }

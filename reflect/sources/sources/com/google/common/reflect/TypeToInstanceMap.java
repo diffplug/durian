@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.reflect;
-
-import com.google.common.annotations.Beta;
 
 import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.Beta;
 
 /**
  * A map, each entry of which maps a {@link TypeToken} to an instance of that type.
@@ -45,48 +45,48 @@ import javax.annotation.Nullable;
  * @since 13.0
  */
 @Beta
-public interface TypeToInstanceMap<B> extends Map<TypeToken<? extends B>, B>  {
+public interface TypeToInstanceMap<B> extends Map<TypeToken<? extends B>, B> {
 
-  /**
-   * Returns the value the specified class is mapped to, or {@code null} if no
-   * entry for this class is present. This will only return a value that was
-   * bound to this specific class, not a value that may have been bound to a
-   * subtype.
-   * 
-   * <p>{@code getInstance(Foo.class)} is equivalent to
-   * {@code getInstance(TypeToken.of(Foo.class))}.
-   */
-  @Nullable
-  <T extends B> T getInstance(Class<T> type);
+	/**
+	 * Returns the value the specified class is mapped to, or {@code null} if no
+	 * entry for this class is present. This will only return a value that was
+	 * bound to this specific class, not a value that may have been bound to a
+	 * subtype.
+	 * 
+	 * <p>{@code getInstance(Foo.class)} is equivalent to
+	 * {@code getInstance(TypeToken.of(Foo.class))}.
+	 */
+	@Nullable
+	<T extends B> T getInstance(Class<T> type);
 
-  /**
-   * Maps the specified class to the specified value. Does <i>not</i> associate
-   * this value with any of the class's supertypes.
-   * 
-   * <p>{@code putInstance(Foo.class, foo)} is equivalent to
-   * {@code putInstance(TypeToken.of(Foo.class), foo)}.
-   *
-   * @return the value previously associated with this class (possibly {@code null}),
-   *         or {@code null} if there was no previous entry.
-   */
-  @Nullable
-  <T extends B> T putInstance(Class<T> type, @Nullable T value);
+	/**
+	 * Maps the specified class to the specified value. Does <i>not</i> associate
+	 * this value with any of the class's supertypes.
+	 * 
+	 * <p>{@code putInstance(Foo.class, foo)} is equivalent to
+	 * {@code putInstance(TypeToken.of(Foo.class), foo)}.
+	 *
+	 * @return the value previously associated with this class (possibly {@code null}),
+	 *         or {@code null} if there was no previous entry.
+	 */
+	@Nullable
+	<T extends B> T putInstance(Class<T> type, @Nullable T value);
 
-  /**
-   * Returns the value the specified type is mapped to, or {@code null} if no
-   * entry for this type is present. This will only return a value that was
-   * bound to this specific type, not a value that may have been bound to a subtype.
-   */
-  @Nullable
-  <T extends B> T getInstance(TypeToken<T> type);
+	/**
+	 * Returns the value the specified type is mapped to, or {@code null} if no
+	 * entry for this type is present. This will only return a value that was
+	 * bound to this specific type, not a value that may have been bound to a subtype.
+	 */
+	@Nullable
+	<T extends B> T getInstance(TypeToken<T> type);
 
-  /**
-   * Maps the specified type to the specified value. Does <i>not</i> associate
-   * this value with any of the type's supertypes.
-   *
-   * @return the value previously associated with this type (possibly {@code null}),
-   *         or {@code null} if there was no previous entry.
-   */
-  @Nullable
-  <T extends B> T putInstance(TypeToken<T> type, @Nullable T value);
+	/**
+	 * Maps the specified type to the specified value. Does <i>not</i> associate
+	 * this value with any of the type's supertypes.
+	 *
+	 * @return the value previously associated with this type (possibly {@code null}),
+	 *         or {@code null} if there was no previous entry.
+	 */
+	@Nullable
+	<T extends B> T putInstance(TypeToken<T> type, @Nullable T value);
 }

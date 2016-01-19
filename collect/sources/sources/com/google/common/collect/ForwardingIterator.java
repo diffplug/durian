@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.util.Iterator;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * An iterator which forwards all its method calls to another iterator.
@@ -32,24 +32,24 @@ import java.util.Iterator;
 @GwtCompatible
 public abstract class ForwardingIterator<T> extends ForwardingObject implements Iterator<T> {
 
-  /** Constructor for use by subclasses. */
-  protected ForwardingIterator() {}
+	/** Constructor for use by subclasses. */
+	protected ForwardingIterator() {}
 
-  @Override
-  protected abstract Iterator<T> delegate();
+	@Override
+	protected abstract Iterator<T> delegate();
 
-  @Override
-  public boolean hasNext() {
-    return delegate().hasNext();
-  }
+	@Override
+	public boolean hasNext() {
+		return delegate().hasNext();
+	}
 
-  @Override
-  public T next() {
-    return delegate().next();
-  }
+	@Override
+	public T next() {
+		return delegate().next();
+	}
 
-  @Override
-  public void remove() {
-    delegate().remove();
-  }
+	@Override
+	public void remove() {
+		delegate().remove();
+	}
 }

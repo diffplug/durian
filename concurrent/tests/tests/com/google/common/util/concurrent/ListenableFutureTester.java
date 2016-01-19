@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -39,73 +39,74 @@ import javax.annotation.Nullable;
  */
 public class ListenableFutureTester {
 
-  private final ExecutorService exec;
-  private final ListenableFuture<?> future;
-  private final CountDownLatch latch;
+	private final ExecutorService exec;
+	private final ListenableFuture<?> future;
+	private final CountDownLatch latch;
 
-  public ListenableFutureTester(ListenableFuture<?> future) {
-    this.exec = Executors.newCachedThreadPool();
-    this.future = checkNotNull(future);
-    this.latch = new CountDownLatch(1);
-  }
+	public ListenableFutureTester(ListenableFuture<?> future) {
+		this.exec = Executors.newCachedThreadPool();
+		this.future = checkNotNull(future);
+		this.latch = new CountDownLatch(1);
+	}
 
-  public void setUp() {
-    future.addListener(new Runnable() {
-      @Override public void run() {
-        latch.countDown();
-      }
-    }, exec);
+	public void setUp() {
+		future.addListener(new Runnable() {
+			@Override
+			public void run() {
+				latch.countDown();
+			}
+		}, exec);
 
-    assertEquals(1, latch.getCount());
-    assertFalse(future.isDone());
-    assertFalse(future.isCancelled());
-  }
+		assertEquals(1, latch.getCount());
+		assertFalse(future.isDone());
+		assertFalse(future.isCancelled());
+	}
 
-  public void tearDown() {
-    exec.shutdown();
-  }
+	public void tearDown() {
+		exec.shutdown();
+	}
 
-  public void testCompletedFuture(@Nullable Object expectedValue)
-      throws InterruptedException, ExecutionException {
-    assertTrue(future.isDone());
-    assertFalse(future.isCancelled());
+	public void testCompletedFuture(@Nullable Object expectedValue)
+			throws InterruptedException, ExecutionException {
+		assertTrue(future.isDone());
+		assertFalse(future.isCancelled());
 
-    assertTrue(latch.await(5, TimeUnit.SECONDS));
-    assertTrue(future.isDone());
-    assertFalse(future.isCancelled());
+		assertTrue(latch.await(5, TimeUnit.SECONDS));
+		assertTrue(future.isDone());
+		assertFalse(future.isCancelled());
 
-    assertEquals(expectedValue, future.get());
-  }
+		assertEquals(expectedValue, future.get());
+	}
 
-  public void testCancelledFuture()
-      throws InterruptedException, ExecutionException {
-    assertTrue(future.isDone());
-    assertTrue(future.isCancelled());
+	public void testCancelledFuture()
+			throws InterruptedException, ExecutionException {
+		assertTrue(future.isDone());
+		assertTrue(future.isCancelled());
 
-    assertTrue(latch.await(5, TimeUnit.SECONDS));
-    assertTrue(future.isDone());
-    assertTrue(future.isCancelled());
+		assertTrue(latch.await(5, TimeUnit.SECONDS));
+		assertTrue(future.isDone());
+		assertTrue(future.isCancelled());
 
-    try {
-      future.get();
-      fail("Future should throw CancellationException on cancel.");
-    } catch (CancellationException expected) {}
-  }
+		try {
+			future.get();
+			fail("Future should throw CancellationException on cancel.");
+		} catch (CancellationException expected) {}
+	}
 
-  public void testFailedFuture(@Nullable String message)
-      throws InterruptedException {
-    assertTrue(future.isDone());
-    assertFalse(future.isCancelled());
+	public void testFailedFuture(@Nullable String message)
+			throws InterruptedException {
+		assertTrue(future.isDone());
+		assertFalse(future.isCancelled());
 
-    assertTrue(latch.await(5, TimeUnit.SECONDS));
-    assertTrue(future.isDone());
-    assertFalse(future.isCancelled());
+		assertTrue(latch.await(5, TimeUnit.SECONDS));
+		assertTrue(future.isDone());
+		assertFalse(future.isCancelled());
 
-    try {
-      future.get();
-      fail("Future should rethrow the exception.");
-    } catch (ExecutionException e) {
-      assertThat(e.getCause()).hasMessage(message);
-    }
-  }
+		try {
+			future.get();
+			fail("Future should rethrow the exception.");
+		} catch (ExecutionException e) {
+			assertThat(e.getCause()).hasMessage(message);
+		}
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.util.Collection;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Base class for collection testers.
@@ -29,53 +29,55 @@ import java.util.Collection;
  */
 @GwtCompatible
 public abstract class AbstractCollectionTester<E>
-    extends AbstractContainerTester<Collection<E>, E> {
+		extends AbstractContainerTester<Collection<E>, E> {
 
-  // TODO: replace this with an accessor.
-  protected Collection<E> collection;
+	// TODO: replace this with an accessor.
+	protected Collection<E> collection;
 
-  @Override protected Collection<E> actualContents() {
-    return collection;
-  }
+	@Override
+	protected Collection<E> actualContents() {
+		return collection;
+	}
 
-  // TODO: dispose of this once collection is encapsulated.
-  @Override protected Collection<E> resetContainer(Collection<E> newContents) {
-    collection = super.resetContainer(newContents);
-    return collection;
-  }
+	// TODO: dispose of this once collection is encapsulated.
+	@Override
+	protected Collection<E> resetContainer(Collection<E> newContents) {
+		collection = super.resetContainer(newContents);
+		return collection;
+	}
 
-  /** @see AbstractContainerTester#resetContainer() */
-  protected void resetCollection() {
-    resetContainer();
-  }
+	/** @see AbstractContainerTester#resetContainer() */
+	protected void resetCollection() {
+		resetContainer();
+	}
 
-  /**
-   * @return an array of the proper size with {@code null} inserted into the
-   * middle element.
-   */
-  protected E[] createArrayWithNullElement() {
-    E[] array = createSamplesArray();
-    array[getNullLocation()] = null;
-    return array;
-  }
+	/**
+	 * @return an array of the proper size with {@code null} inserted into the
+	 * middle element.
+	 */
+	protected E[] createArrayWithNullElement() {
+		E[] array = createSamplesArray();
+		array[getNullLocation()] = null;
+		return array;
+	}
 
-  protected void initCollectionWithNullElement() {
-    E[] array = createArrayWithNullElement();
-    resetContainer(getSubjectGenerator().create(array));
-  }
+	protected void initCollectionWithNullElement() {
+		E[] array = createArrayWithNullElement();
+		resetContainer(getSubjectGenerator().create(array));
+	}
 
-  /**
-   * Equivalent to {@link #expectMissing(Object[]) expectMissing}{@code (null)}
-   * except that the call to {@code contains(null)} is permitted to throw a
-   * {@code NullPointerException}.
-   *
-   * @param message message to use upon assertion failure
-   */
-  protected void expectNullMissingWhenNullUnsupported(String message) {
-    try {
-      assertFalse(message, actualContents().contains(null));
-    } catch (NullPointerException tolerated) {
-      // Tolerated
-    }
-  }
+	/**
+	 * Equivalent to {@link #expectMissing(Object[]) expectMissing}{@code (null)}
+	 * except that the call to {@code contains(null)} is permitted to throw a
+	 * {@code NullPointerException}.
+	 *
+	 * @param message message to use upon assertion failure
+	 */
+	protected void expectNullMissingWhenNullUnsupported(String message) {
+		try {
+			assertFalse(message, actualContents().contains(null));
+		} catch (NullPointerException tolerated) {
+			// Tolerated
+		}
+	}
 }

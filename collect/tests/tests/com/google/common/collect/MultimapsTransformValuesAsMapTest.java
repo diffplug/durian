@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.base.Functions;
 
 import java.util.Collection;
 import java.util.Map;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.base.Functions;
 
 /**
  * Tests for Multimaps.transformValues().asMap().
@@ -29,22 +29,24 @@ import java.util.Map;
  */
 @GwtCompatible
 public class MultimapsTransformValuesAsMapTest
-    extends AbstractMultimapAsMapImplementsMapTest {
+		extends AbstractMultimapAsMapImplementsMapTest {
 
-  public MultimapsTransformValuesAsMapTest() {
-    super(true, true, true);
-  }
+	public MultimapsTransformValuesAsMapTest() {
+		super(true, true, true);
+	}
 
-  @Override protected Map<String, Collection<Integer>> makeEmptyMap() {
-    return Multimaps.transformValues(
-        ArrayListMultimap.<String, Integer> create(),
-        Functions.<Integer> identity()).asMap();
-  }
+	@Override
+	protected Map<String, Collection<Integer>> makeEmptyMap() {
+		return Multimaps.transformValues(
+				ArrayListMultimap.<String, Integer> create(),
+				Functions.<Integer> identity()).asMap();
+	}
 
-  @Override protected Map<String, Collection<Integer>> makePopulatedMap() {
-    ListMultimap<String, Integer> delegate = ArrayListMultimap.create();
-    populate(delegate);
-    return Multimaps
-        .transformValues(delegate, Functions.<Integer> identity()).asMap();
-  }
+	@Override
+	protected Map<String, Collection<Integer>> makePopulatedMap() {
+		ListMultimap<String, Integer> delegate = ArrayListMultimap.create();
+		populate(delegate);
+		return Multimaps
+				.transformValues(delegate, Functions.<Integer> identity()).asMap();
+	}
 }

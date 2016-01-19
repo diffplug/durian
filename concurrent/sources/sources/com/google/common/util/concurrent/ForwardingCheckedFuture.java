@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
-
-import com.google.common.annotations.Beta;
-import com.google.common.base.Preconditions;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
 
 /**
  * A future which forwards all its method calls to another future. Subclasses
@@ -38,41 +38,40 @@ import java.util.concurrent.TimeoutException;
  * @since 9.0
  */
 @Beta
-public abstract class ForwardingCheckedFuture<V, X extends Exception> 
-    extends ForwardingListenableFuture<V> implements CheckedFuture<V, X> {
+public abstract class ForwardingCheckedFuture<V, X extends Exception>
+		extends ForwardingListenableFuture<V>implements CheckedFuture<V, X> {
 
-  @Override
-  public V checkedGet() throws X {
-    return delegate().checkedGet();
-  }
+	@Override
+	public V checkedGet() throws X {
+		return delegate().checkedGet();
+	}
 
-  @Override
-  public V checkedGet(long timeout, TimeUnit unit) throws TimeoutException, X {
-    return delegate().checkedGet(timeout, unit);
-  }
+	@Override
+	public V checkedGet(long timeout, TimeUnit unit) throws TimeoutException, X {
+		return delegate().checkedGet(timeout, unit);
+	}
 
-  @Override
-  protected abstract CheckedFuture<V, X> delegate();
+	@Override
+	protected abstract CheckedFuture<V, X> delegate();
 
-  // TODO(cpovirk): Use Standard Javadoc form for SimpleForwarding*
-  /**
-   * A simplified version of {@link ForwardingCheckedFuture} where subclasses
-   * can pass in an already constructed {@link CheckedFuture} as the delegate.
-   * 
-   * @since 9.0
-   */
-  @Beta
-  public abstract static class SimpleForwardingCheckedFuture<
-      V, X extends Exception> extends ForwardingCheckedFuture<V, X> {
-    private final CheckedFuture<V, X> delegate;
+	// TODO(cpovirk): Use Standard Javadoc form for SimpleForwarding*
+	/**
+	 * A simplified version of {@link ForwardingCheckedFuture} where subclasses
+	 * can pass in an already constructed {@link CheckedFuture} as the delegate.
+	 * 
+	 * @since 9.0
+	 */
+	@Beta
+	public abstract static class SimpleForwardingCheckedFuture<V, X extends Exception> extends ForwardingCheckedFuture<V, X> {
+		private final CheckedFuture<V, X> delegate;
 
-    protected SimpleForwardingCheckedFuture(CheckedFuture<V, X> delegate) {
-      this.delegate = Preconditions.checkNotNull(delegate);
-    }
+		protected SimpleForwardingCheckedFuture(CheckedFuture<V, X> delegate) {
+			this.delegate = Preconditions.checkNotNull(delegate);
+		}
 
-    @Override
-    protected final CheckedFuture<V, X> delegate() {
-      return delegate;
-    }
-  }
+		@Override
+		protected final CheckedFuture<V, X> delegate() {
+			return delegate;
+		}
+	}
 }

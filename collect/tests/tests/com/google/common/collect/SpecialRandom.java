@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import java.util.Random;
@@ -27,29 +27,30 @@ import java.util.Random;
  * @author Nicholaus Shupe
  */
 public final class SpecialRandom extends Random {
-  public static SpecialRandom valueOf(String s) {
-    return (s.length() == 0)
-        ? new SpecialRandom()
-        : new SpecialRandom(Long.parseLong(s));
-  }
+	public static SpecialRandom valueOf(String s) {
+		return (s.length() == 0)
+				? new SpecialRandom()
+				: new SpecialRandom(Long.parseLong(s));
+	}
 
-  private final boolean hasSeed;
-  private final long seed;
+	private final boolean hasSeed;
+	private final long seed;
 
-  public SpecialRandom() {
-    this.hasSeed = false;
-    this.seed = 0;
-  }
+	public SpecialRandom() {
+		this.hasSeed = false;
+		this.seed = 0;
+	}
 
-  public SpecialRandom(long seed) {
-    super(seed);
-    this.hasSeed = true;
-    this.seed = seed;
-  }
+	public SpecialRandom(long seed) {
+		super(seed);
+		this.hasSeed = true;
+		this.seed = seed;
+	}
 
-  @Override public String toString() {
-    return hasSeed ? "(seed:" + seed : "(default seed)";
-  }
+	@Override
+	public String toString() {
+		return hasSeed ? "(seed:" + seed : "(default seed)";
+	}
 
-  private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 0;
 }

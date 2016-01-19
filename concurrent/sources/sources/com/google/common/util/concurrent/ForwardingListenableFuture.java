@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
 
-import com.google.common.base.Preconditions;
-
 import java.util.concurrent.Executor;
+
+import com.google.common.base.Preconditions;
 
 /**
  * A {@link ListenableFuture} which forwards all its method calls to another
@@ -34,41 +34,41 @@ import java.util.concurrent.Executor;
  * @since 4.0
  */
 public abstract class ForwardingListenableFuture<V> extends ForwardingFuture<V>
-    implements ListenableFuture<V> {
+		implements ListenableFuture<V> {
 
-  /** Constructor for use by subclasses. */
-  protected ForwardingListenableFuture() {}
+	/** Constructor for use by subclasses. */
+	protected ForwardingListenableFuture() {}
 
-  @Override
-  protected abstract ListenableFuture<V> delegate();
+	@Override
+	protected abstract ListenableFuture<V> delegate();
 
-  @Override
-  public void addListener(Runnable listener, Executor exec) {
-    delegate().addListener(listener, exec);
-  }
+	@Override
+	public void addListener(Runnable listener, Executor exec) {
+		delegate().addListener(listener, exec);
+	}
 
-  /*
-   * TODO(cpovirk): Use standard Javadoc form for SimpleForwarding* class and
-   * constructor
-   */
-  /**
-   * A simplified version of {@link ForwardingListenableFuture} where subclasses
-   * can pass in an already constructed {@link ListenableFuture} 
-   * as the delegate.
-   * 
-   * @since 9.0
-   */
-  public abstract static class SimpleForwardingListenableFuture<V>
-      extends ForwardingListenableFuture<V> {
-    private final ListenableFuture<V> delegate;
+	/*
+	 * TODO(cpovirk): Use standard Javadoc form for SimpleForwarding* class and
+	 * constructor
+	 */
+	/**
+	 * A simplified version of {@link ForwardingListenableFuture} where subclasses
+	 * can pass in an already constructed {@link ListenableFuture} 
+	 * as the delegate.
+	 * 
+	 * @since 9.0
+	 */
+	public abstract static class SimpleForwardingListenableFuture<V>
+			extends ForwardingListenableFuture<V> {
+		private final ListenableFuture<V> delegate;
 
-    protected SimpleForwardingListenableFuture(ListenableFuture<V> delegate) {
-      this.delegate = Preconditions.checkNotNull(delegate);
-    }
+		protected SimpleForwardingListenableFuture(ListenableFuture<V> delegate) {
+			this.delegate = Preconditions.checkNotNull(delegate);
+		}
 
-    @Override
-    protected final ListenableFuture<V> delegate() {
-      return delegate;
-    }
-  }
+		@Override
+		protected final ListenableFuture<V> delegate() {
+			return delegate;
+		}
+	}
 }

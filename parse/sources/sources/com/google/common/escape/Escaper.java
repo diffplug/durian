@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.escape;
 
 import com.google.common.annotations.Beta;
@@ -59,45 +59,44 @@ import com.google.common.base.Function;
 @Beta
 @GwtCompatible
 public abstract class Escaper {
-  // TODO(user): evaluate custom implementations, considering package private constructor.
-  /** Constructor for use by subclasses. */
-  protected Escaper() {}
+	// TODO(user): evaluate custom implementations, considering package private constructor.
+	/** Constructor for use by subclasses. */
+	protected Escaper() {}
 
-  /**
-   * Returns the escaped form of a given literal string.
-   *
-   * <p>Note that this method may treat input characters differently depending on the specific
-   * escaper implementation.
-   *
-   * <ul>
-   * <li>{@link UnicodeEscaper} handles <a href="http://en.wikipedia.org/wiki/UTF-16">UTF-16</a>
-   *     correctly, including surrogate character pairs. If the input is badly formed the escaper
-   *     should throw {@link IllegalArgumentException}.
-   * <li>{@link CharEscaper} handles Java characters independently and does not verify the input for
-   *     well formed characters. A {@code CharEscaper} should not be used in situations where input
-   *     is not guaranteed to be restricted to the Basic Multilingual Plane (BMP).
-   * </ul>
-   *
-   * @param string the literal string to be escaped
-   * @return the escaped form of {@code string}
-   * @throws NullPointerException if {@code string} is null
-   * @throws IllegalArgumentException if {@code string} contains badly formed UTF-16 or cannot be
-   *         escaped for any other reason
-   */
-  public abstract String escape(String string);
+	/**
+	 * Returns the escaped form of a given literal string.
+	 *
+	 * <p>Note that this method may treat input characters differently depending on the specific
+	 * escaper implementation.
+	 *
+	 * <ul>
+	 * <li>{@link UnicodeEscaper} handles <a href="http://en.wikipedia.org/wiki/UTF-16">UTF-16</a>
+	 *     correctly, including surrogate character pairs. If the input is badly formed the escaper
+	 *     should throw {@link IllegalArgumentException}.
+	 * <li>{@link CharEscaper} handles Java characters independently and does not verify the input for
+	 *     well formed characters. A {@code CharEscaper} should not be used in situations where input
+	 *     is not guaranteed to be restricted to the Basic Multilingual Plane (BMP).
+	 * </ul>
+	 *
+	 * @param string the literal string to be escaped
+	 * @return the escaped form of {@code string}
+	 * @throws NullPointerException if {@code string} is null
+	 * @throws IllegalArgumentException if {@code string} contains badly formed UTF-16 or cannot be
+	 *         escaped for any other reason
+	 */
+	public abstract String escape(String string);
 
-  private final Function<String, String> asFunction =
-      new Function<String, String>() {
-        @Override
-        public String apply(String from) {
-          return escape(from);
-        }
-      };
+	private final Function<String, String> asFunction = new Function<String, String>() {
+		@Override
+		public String apply(String from) {
+			return escape(from);
+		}
+	};
 
-  /**
-   * Returns a {@link Function} that invokes {@link #escape(String)} on this escaper.
-   */
-  public final Function<String, String> asFunction() {
-    return asFunction;
-  }
+	/**
+	 * Returns a {@link Function} that invokes {@link #escape(String)} on this escaper.
+	 */
+	public final Function<String, String> asFunction() {
+		return asFunction;
+	}
 }

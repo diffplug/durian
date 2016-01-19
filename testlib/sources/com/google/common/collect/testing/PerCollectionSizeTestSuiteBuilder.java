@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
-
-import com.google.common.collect.testing.features.CollectionSize;
-import com.google.common.collect.testing.features.Feature;
-import com.google.common.collect.testing.features.FeatureUtil;
-
-import junit.framework.TestSuite;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -28,6 +22,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import junit.framework.TestSuite;
+
+import com.google.common.collect.testing.features.CollectionSize;
+import com.google.common.collect.testing.features.Feature;
+import com.google.common.collect.testing.features.FeatureUtil;
 
 /**
  * This builder creates a composite test suite, containing a separate test suite
@@ -47,92 +47,86 @@ import java.util.logging.Logger;
  *
  * @author George van den Driessche
  */
-public abstract class PerCollectionSizeTestSuiteBuilder<
-    B extends PerCollectionSizeTestSuiteBuilder<B, G, T, E>,
-    G extends TestContainerGenerator<T, E>,
-    T,
-    E>
-    extends FeatureSpecificTestSuiteBuilder<B, G> {
-  private static final Logger logger = Logger.getLogger(
-      PerCollectionSizeTestSuiteBuilder.class.getName());
+public abstract class PerCollectionSizeTestSuiteBuilder<B extends PerCollectionSizeTestSuiteBuilder<B, G, T, E>, G extends TestContainerGenerator<T, E>, T, E>
+		extends FeatureSpecificTestSuiteBuilder<B, G> {
+	private static final Logger logger = Logger.getLogger(
+			PerCollectionSizeTestSuiteBuilder.class.getName());
 
-  /**
-   * Creates a runnable JUnit test suite based on the criteria already given.
-   */
-  @Override public TestSuite createTestSuite() {
-    checkCanCreate();
+	/**
+	 * Creates a runnable JUnit test suite based on the criteria already given.
+	 */
+	@Override
+	public TestSuite createTestSuite() {
+		checkCanCreate();
 
-    String name = getName();
-    // Copy this set, so we can modify it.
-    Set<Feature<?>> features = Helpers.copyToSet(getFeatures());
-    List<Class<? extends AbstractTester>> testers = getTesters();
+		String name = getName();
+		// Copy this set, so we can modify it.
+		Set<Feature<?>> features = Helpers.copyToSet(getFeatures());
+		List<Class<? extends AbstractTester>> testers = getTesters();
 
-    logger.fine(" Testing: " + name);
+		logger.fine(" Testing: " + name);
 
-    // Split out all the specified sizes.
-    Set<Feature<?>> sizesToTest =
-        Helpers.<Feature<?>>copyToSet(CollectionSize.values());
-    sizesToTest.retainAll(features);
-    features.removeAll(sizesToTest);
+		// Split out all the specified sizes.
+		Set<Feature<?>> sizesToTest = Helpers.<Feature<?>> copyToSet(CollectionSize.values());
+		sizesToTest.retainAll(features);
+		features.removeAll(sizesToTest);
 
-    FeatureUtil.addImpliedFeatures(sizesToTest);
-    sizesToTest.retainAll(Arrays.asList(
-        CollectionSize.ZERO, CollectionSize.ONE, CollectionSize.SEVERAL));
+		FeatureUtil.addImpliedFeatures(sizesToTest);
+		sizesToTest.retainAll(Arrays.asList(
+				CollectionSize.ZERO, CollectionSize.ONE, CollectionSize.SEVERAL));
 
-    logger.fine("   Sizes: " + formatFeatureSet(sizesToTest));
+		logger.fine("   Sizes: " + formatFeatureSet(sizesToTest));
 
-    if (sizesToTest.isEmpty()) {
-      throw new IllegalStateException(name
-          + ": no CollectionSizes specified (check the argument to "
-          + "FeatureSpecificTestSuiteBuilder.withFeatures().)");
-    }
+		if (sizesToTest.isEmpty()) {
+			throw new IllegalStateException(name
+					+ ": no CollectionSizes specified (check the argument to "
+					+ "FeatureSpecificTestSuiteBuilder.withFeatures().)");
+		}
 
-    TestSuite suite = new TestSuite(name);
-    for (Feature<?> collectionSize : sizesToTest) {
-      String oneSizeName = Platform.format("%s [collection size: %s]",
-          name, collectionSize.toString().toLowerCase());
-      OneSizeGenerator<T, E> oneSizeGenerator = new OneSizeGenerator<T, E>(
-          getSubjectGenerator(), (CollectionSize) collectionSize);
-      Set<Feature<?>> oneSizeFeatures = Helpers.copyToSet(features);
-      oneSizeFeatures.add(collectionSize);
-      Set<Method> oneSizeSuppressedTests = getSuppressedTests();
+		TestSuite suite = new TestSuite(name);
+		for (Feature<?> collectionSize : sizesToTest) {
+			String oneSizeName = Platform.format("%s [collection size: %s]",
+					name, collectionSize.toString().toLowerCase());
+			OneSizeGenerator<T, E> oneSizeGenerator = new OneSizeGenerator<T, E>(
+					getSubjectGenerator(), (CollectionSize) collectionSize);
+			Set<Feature<?>> oneSizeFeatures = Helpers.copyToSet(features);
+			oneSizeFeatures.add(collectionSize);
+			Set<Method> oneSizeSuppressedTests = getSuppressedTests();
 
-      OneSizeTestSuiteBuilder<T, E> oneSizeBuilder =
-          new OneSizeTestSuiteBuilder<T, E>(testers)
-              .named(oneSizeName)
-              .usingGenerator(oneSizeGenerator)
-              .withFeatures(oneSizeFeatures)
-              .withSetUp(getSetUp())
-              .withTearDown(getTearDown())
-              .suppressing(oneSizeSuppressedTests);
-      TestSuite oneSizeSuite = oneSizeBuilder.createTestSuite();
-      suite.addTest(oneSizeSuite);
+			OneSizeTestSuiteBuilder<T, E> oneSizeBuilder = new OneSizeTestSuiteBuilder<T, E>(testers)
+					.named(oneSizeName)
+					.usingGenerator(oneSizeGenerator)
+					.withFeatures(oneSizeFeatures)
+					.withSetUp(getSetUp())
+					.withTearDown(getTearDown())
+					.suppressing(oneSizeSuppressedTests);
+			TestSuite oneSizeSuite = oneSizeBuilder.createTestSuite();
+			suite.addTest(oneSizeSuite);
 
-      for (TestSuite derivedSuite : createDerivedSuites(oneSizeBuilder)) {
-        oneSizeSuite.addTest(derivedSuite);
-      }
-    }
-    return suite;
-  }
+			for (TestSuite derivedSuite : createDerivedSuites(oneSizeBuilder)) {
+				oneSizeSuite.addTest(derivedSuite);
+			}
+		}
+		return suite;
+	}
 
-  protected List<TestSuite> createDerivedSuites(FeatureSpecificTestSuiteBuilder<
-      ?, ? extends OneSizeTestContainerGenerator<T, E>> parentBuilder) {
-    return new ArrayList<TestSuite>();
-  }
+	protected List<TestSuite> createDerivedSuites(FeatureSpecificTestSuiteBuilder<?, ? extends OneSizeTestContainerGenerator<T, E>> parentBuilder) {
+		return new ArrayList<TestSuite>();
+	}
 
-  /** Builds a test suite for one particular {@link CollectionSize}. */
-  private static final class OneSizeTestSuiteBuilder<T, E> extends
-      FeatureSpecificTestSuiteBuilder<
-          OneSizeTestSuiteBuilder<T, E>, OneSizeGenerator<T, E>> {
-    private final List<Class<? extends AbstractTester>> testers;
+	/** Builds a test suite for one particular {@link CollectionSize}. */
+	private static final class OneSizeTestSuiteBuilder<T, E> extends
+			FeatureSpecificTestSuiteBuilder<OneSizeTestSuiteBuilder<T, E>, OneSizeGenerator<T, E>> {
+		private final List<Class<? extends AbstractTester>> testers;
 
-    public OneSizeTestSuiteBuilder(
-        List<Class<? extends AbstractTester>> testers) {
-      this.testers = testers;
-    }
+		public OneSizeTestSuiteBuilder(
+				List<Class<? extends AbstractTester>> testers) {
+			this.testers = testers;
+		}
 
-    @Override protected List<Class<? extends AbstractTester>> getTesters() {
-      return testers;
-    }
-  }
+		@Override
+		protected List<Class<? extends AbstractTester>> getTesters() {
+			return testers;
+		}
+	}
 }

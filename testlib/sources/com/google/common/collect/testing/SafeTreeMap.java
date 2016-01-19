@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
 import java.io.Serializable;
@@ -36,257 +36,297 @@ import java.util.TreeMap;
  * @author Louis Wasserman
  */
 public final class SafeTreeMap<K, V>
-    implements Serializable, NavigableMap<K, V> {
-  @SuppressWarnings("unchecked")
-  private static final Comparator<Object> NATURAL_ORDER = new Comparator<Object>() {
-    @Override public int compare(Object o1, Object o2) {
-      return ((Comparable<Object>) o1).compareTo(o2);
-    }
-  };
-  private final NavigableMap<K, V> delegate;
+		implements Serializable, NavigableMap<K, V> {
+	@SuppressWarnings("unchecked")
+	private static final Comparator<Object> NATURAL_ORDER = new Comparator<Object>() {
+		@Override
+		public int compare(Object o1, Object o2) {
+			return ((Comparable<Object>) o1).compareTo(o2);
+		}
+	};
+	private final NavigableMap<K, V> delegate;
 
-  public SafeTreeMap() {
-    this(new TreeMap<K, V>());
-  }
+	public SafeTreeMap() {
+		this(new TreeMap<K, V>());
+	}
 
-  public SafeTreeMap(Comparator<? super K> comparator) {
-    this(new TreeMap<K, V>(comparator));
-  }
+	public SafeTreeMap(Comparator<? super K> comparator) {
+		this(new TreeMap<K, V>(comparator));
+	}
 
-  public SafeTreeMap(Map<? extends K, ? extends V> map) {
-    this(new TreeMap<K, V>(map));
-  }
+	public SafeTreeMap(Map<? extends K, ? extends V> map) {
+		this(new TreeMap<K, V>(map));
+	}
 
-  public SafeTreeMap(SortedMap<K, ? extends V> map) {
-    this(new TreeMap<K, V>(map));
-  }
+	public SafeTreeMap(SortedMap<K, ? extends V> map) {
+		this(new TreeMap<K, V>(map));
+	}
 
-  private SafeTreeMap(NavigableMap<K, V> delegate) {
-    this.delegate = delegate;
-    if (delegate == null) {
-      throw new NullPointerException();
-    }
-    for (K k : keySet()) {
-      checkValid(k);
-    }
-  }
+	private SafeTreeMap(NavigableMap<K, V> delegate) {
+		this.delegate = delegate;
+		if (delegate == null) {
+			throw new NullPointerException();
+		}
+		for (K k : keySet()) {
+			checkValid(k);
+		}
+	}
 
-  @Override public Entry<K, V> ceilingEntry(K key) {
-    return delegate.ceilingEntry(checkValid(key));
-  }
+	@Override
+	public Entry<K, V> ceilingEntry(K key) {
+		return delegate.ceilingEntry(checkValid(key));
+	}
 
-  @Override public K ceilingKey(K key) {
-    return delegate.ceilingKey(checkValid(key));
-  }
+	@Override
+	public K ceilingKey(K key) {
+		return delegate.ceilingKey(checkValid(key));
+	}
 
-  @Override public void clear() {
-    delegate.clear();
-  }
+	@Override
+	public void clear() {
+		delegate.clear();
+	}
 
-  @SuppressWarnings("unchecked")
-  @Override public Comparator<? super K> comparator() {
-    Comparator<? super K> comparator = delegate.comparator();
-    if (comparator == null) {
-      comparator = (Comparator<? super K>) NATURAL_ORDER;
-    }
-    return comparator;
-  }
+	@SuppressWarnings("unchecked")
+	@Override
+	public Comparator<? super K> comparator() {
+		Comparator<? super K> comparator = delegate.comparator();
+		if (comparator == null) {
+			comparator = (Comparator<? super K>) NATURAL_ORDER;
+		}
+		return comparator;
+	}
 
-  @Override public boolean containsKey(Object key) {
-    try {
-      return delegate.containsKey(checkValid(key));
-    } catch (NullPointerException e) {
-      return false;
-    } catch (ClassCastException e) {
-      return false;
-    }
-  }
+	@Override
+	public boolean containsKey(Object key) {
+		try {
+			return delegate.containsKey(checkValid(key));
+		} catch (NullPointerException e) {
+			return false;
+		} catch (ClassCastException e) {
+			return false;
+		}
+	}
 
-  @Override public boolean containsValue(Object value) {
-    return delegate.containsValue(value);
-  }
+	@Override
+	public boolean containsValue(Object value) {
+		return delegate.containsValue(value);
+	}
 
-  @Override public NavigableSet<K> descendingKeySet() {
-    return delegate.descendingKeySet();
-  }
+	@Override
+	public NavigableSet<K> descendingKeySet() {
+		return delegate.descendingKeySet();
+	}
 
-  @Override public NavigableMap<K, V> descendingMap() {
-    return new SafeTreeMap<K, V>(delegate.descendingMap());
-  }
+	@Override
+	public NavigableMap<K, V> descendingMap() {
+		return new SafeTreeMap<K, V>(delegate.descendingMap());
+	}
 
-  @Override public Set<Entry<K, V>> entrySet() {
-    return new AbstractSet<Entry<K, V>>() {
-      private Set<Entry<K, V>> delegate() {
-        return delegate.entrySet();
-      }
+	@Override
+	public Set<Entry<K, V>> entrySet() {
+		return new AbstractSet<Entry<K, V>>() {
+			private Set<Entry<K, V>> delegate() {
+				return delegate.entrySet();
+			}
 
-      @Override
-      public boolean contains(Object object) {
-        try {
-          return delegate().contains(object);
-        } catch (NullPointerException e) {
-          return false;
-        } catch (ClassCastException e) {
-          return false;
-        }
-      }
+			@Override
+			public boolean contains(Object object) {
+				try {
+					return delegate().contains(object);
+				} catch (NullPointerException e) {
+					return false;
+				} catch (ClassCastException e) {
+					return false;
+				}
+			}
 
-      @Override
-      public Iterator<Entry<K, V>> iterator() {
-        return delegate().iterator();
-      }
+			@Override
+			public Iterator<Entry<K, V>> iterator() {
+				return delegate().iterator();
+			}
 
-      @Override
-      public int size() {
-        return delegate().size();
-      }
+			@Override
+			public int size() {
+				return delegate().size();
+			}
 
-      @Override
-      public boolean remove(Object o) {
-        return delegate().remove(o);
-      }
+			@Override
+			public boolean remove(Object o) {
+				return delegate().remove(o);
+			}
 
-      @Override
-      public void clear() {
-        delegate().clear();
-      }
-    };
-  }
+			@Override
+			public void clear() {
+				delegate().clear();
+			}
+		};
+	}
 
-  @Override public Entry<K, V> firstEntry() {
-    return delegate.firstEntry();
-  }
+	@Override
+	public Entry<K, V> firstEntry() {
+		return delegate.firstEntry();
+	}
 
-  @Override public K firstKey() {
-    return delegate.firstKey();
-  }
+	@Override
+	public K firstKey() {
+		return delegate.firstKey();
+	}
 
-  @Override public Entry<K, V> floorEntry(K key) {
-    return delegate.floorEntry(checkValid(key));
-  }
+	@Override
+	public Entry<K, V> floorEntry(K key) {
+		return delegate.floorEntry(checkValid(key));
+	}
 
-  @Override public K floorKey(K key) {
-    return delegate.floorKey(checkValid(key));
-  }
+	@Override
+	public K floorKey(K key) {
+		return delegate.floorKey(checkValid(key));
+	}
 
-  @Override public V get(Object key) {
-    return delegate.get(checkValid(key));
-  }
+	@Override
+	public V get(Object key) {
+		return delegate.get(checkValid(key));
+	}
 
-  @Override public SortedMap<K, V> headMap(K toKey) {
-    return headMap(toKey, false);
-  }
+	@Override
+	public SortedMap<K, V> headMap(K toKey) {
+		return headMap(toKey, false);
+	}
 
-  @Override public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
-    return new SafeTreeMap<K, V>(
-        delegate.headMap(checkValid(toKey), inclusive));
-  }
+	@Override
+	public NavigableMap<K, V> headMap(K toKey, boolean inclusive) {
+		return new SafeTreeMap<K, V>(
+				delegate.headMap(checkValid(toKey), inclusive));
+	}
 
-  @Override public Entry<K, V> higherEntry(K key) {
-    return delegate.higherEntry(checkValid(key));
-  }
+	@Override
+	public Entry<K, V> higherEntry(K key) {
+		return delegate.higherEntry(checkValid(key));
+	}
 
-  @Override public K higherKey(K key) {
-    return delegate.higherKey(checkValid(key));
-  }
+	@Override
+	public K higherKey(K key) {
+		return delegate.higherKey(checkValid(key));
+	}
 
-  @Override public boolean isEmpty() {
-    return delegate.isEmpty();
-  }
+	@Override
+	public boolean isEmpty() {
+		return delegate.isEmpty();
+	}
 
-  @Override public NavigableSet<K> keySet() {
-    return navigableKeySet();
-  }
+	@Override
+	public NavigableSet<K> keySet() {
+		return navigableKeySet();
+	}
 
-  @Override public Entry<K, V> lastEntry() {
-    return delegate.lastEntry();
-  }
+	@Override
+	public Entry<K, V> lastEntry() {
+		return delegate.lastEntry();
+	}
 
-  @Override public K lastKey() {
-    return delegate.lastKey();
-  }
+	@Override
+	public K lastKey() {
+		return delegate.lastKey();
+	}
 
-  @Override public Entry<K, V> lowerEntry(K key) {
-    return delegate.lowerEntry(checkValid(key));
-  }
+	@Override
+	public Entry<K, V> lowerEntry(K key) {
+		return delegate.lowerEntry(checkValid(key));
+	}
 
-  @Override public K lowerKey(K key) {
-    return delegate.lowerKey(checkValid(key));
-  }
+	@Override
+	public K lowerKey(K key) {
+		return delegate.lowerKey(checkValid(key));
+	}
 
-  @Override public NavigableSet<K> navigableKeySet() {
-    return delegate.navigableKeySet();
-  }
+	@Override
+	public NavigableSet<K> navigableKeySet() {
+		return delegate.navigableKeySet();
+	}
 
-  @Override public Entry<K, V> pollFirstEntry() {
-    return delegate.pollFirstEntry();
-  }
+	@Override
+	public Entry<K, V> pollFirstEntry() {
+		return delegate.pollFirstEntry();
+	}
 
-  @Override public Entry<K, V> pollLastEntry() {
-    return delegate.pollLastEntry();
-  }
+	@Override
+	public Entry<K, V> pollLastEntry() {
+		return delegate.pollLastEntry();
+	}
 
-  @Override public V put(K key, V value) {
-    return delegate.put(checkValid(key), value);
-  }
+	@Override
+	public V put(K key, V value) {
+		return delegate.put(checkValid(key), value);
+	}
 
-  @Override public void putAll(Map<? extends K, ? extends V> map) {
-    for (K key : map.keySet()) {
-      checkValid(key);
-    }
-    delegate.putAll(map);
-  }
+	@Override
+	public void putAll(Map<? extends K, ? extends V> map) {
+		for (K key : map.keySet()) {
+			checkValid(key);
+		}
+		delegate.putAll(map);
+	}
 
-  @Override public V remove(Object key) {
-    return delegate.remove(checkValid(key));
-  }
+	@Override
+	public V remove(Object key) {
+		return delegate.remove(checkValid(key));
+	}
 
-  @Override public int size() {
-    return delegate.size();
-  }
+	@Override
+	public int size() {
+		return delegate.size();
+	}
 
-  @Override public NavigableMap<K, V> subMap(
-      K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
-    return new SafeTreeMap<K, V>(delegate.subMap(
-        checkValid(fromKey), fromInclusive, checkValid(toKey), toInclusive));
-  }
+	@Override
+	public NavigableMap<K, V> subMap(
+			K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) {
+		return new SafeTreeMap<K, V>(delegate.subMap(
+				checkValid(fromKey), fromInclusive, checkValid(toKey), toInclusive));
+	}
 
-  @Override public SortedMap<K, V> subMap(K fromKey, K toKey) {
-    return subMap(fromKey, true, toKey, false);
-  }
+	@Override
+	public SortedMap<K, V> subMap(K fromKey, K toKey) {
+		return subMap(fromKey, true, toKey, false);
+	}
 
-  @Override public SortedMap<K, V> tailMap(K fromKey) {
-    return tailMap(fromKey, true);
-  }
+	@Override
+	public SortedMap<K, V> tailMap(K fromKey) {
+		return tailMap(fromKey, true);
+	}
 
-  @Override public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
-    return new SafeTreeMap<K, V>(
-        delegate.tailMap(checkValid(fromKey), inclusive));
-  }
+	@Override
+	public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive) {
+		return new SafeTreeMap<K, V>(
+				delegate.tailMap(checkValid(fromKey), inclusive));
+	}
 
-  @Override public Collection<V> values() {
-    return delegate.values();
-  }
+	@Override
+	public Collection<V> values() {
+		return delegate.values();
+	}
 
-  private <T> T checkValid(T t) {
-    // a ClassCastException is what's supposed to happen!
-    @SuppressWarnings("unchecked")
-    K k = (K) t;
-    comparator().compare(k, k);
-    return t;
-  }
+	private <T> T checkValid(T t) {
+		// a ClassCastException is what's supposed to happen!
+		@SuppressWarnings("unchecked")
+		K k = (K) t;
+		comparator().compare(k, k);
+		return t;
+	}
 
-  @Override public boolean equals(Object obj) {
-    return delegate.equals(obj);
-  }
+	@Override
+	public boolean equals(Object obj) {
+		return delegate.equals(obj);
+	}
 
-  @Override public int hashCode() {
-    return delegate.hashCode();
-  }
+	@Override
+	public int hashCode() {
+		return delegate.hashCode();
+	}
 
-  @Override public String toString() {
-    return delegate.toString();
-  }
+	@Override
+	public String toString() {
+		return delegate.toString();
+	}
 
-  private static final long serialVersionUID = 0L;
+	private static final long serialVersionUID = 0L;
 }

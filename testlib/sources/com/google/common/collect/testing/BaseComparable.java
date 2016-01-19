@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.io.Serializable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Simple base class to verify that we handle generics correctly.
@@ -27,30 +27,32 @@ import java.io.Serializable;
  */
 @GwtCompatible
 public class BaseComparable implements Comparable<BaseComparable>, Serializable {
-  private final String s;
+	private final String s;
 
-  public BaseComparable(String s) {
-    this.s = s;
-  }
+	public BaseComparable(String s) {
+		this.s = s;
+	}
 
-  @Override public int hashCode() { // delegate to 's'
-    return s.hashCode();
-  }
+	@Override
+	public int hashCode() { // delegate to 's'
+		return s.hashCode();
+	}
 
-  @Override public boolean equals(Object other) {
-    if (other == null) {
-      return false;
-    } else if (other instanceof BaseComparable) {
-      return s.equals(((BaseComparable) other).s);
-    } else {
-      return false;
-    }
-  }
+	@Override
+	public boolean equals(Object other) {
+		if (other == null) {
+			return false;
+		} else if (other instanceof BaseComparable) {
+			return s.equals(((BaseComparable) other).s);
+		} else {
+			return false;
+		}
+	}
 
-  @Override
-  public int compareTo(BaseComparable o) {
-    return s.compareTo(o.s);
-  }
+	@Override
+	public int compareTo(BaseComparable o) {
+		return s.compareTo(o.s);
+	}
 
-  private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 0;
 }

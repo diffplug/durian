@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +30,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
 
 /**
  * Implementation of {@code Multimap} whose keys and values are ordered by
@@ -77,186 +77,186 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible(serializable = true, emulated = true)
 public class TreeMultimap<K, V> extends AbstractSortedKeySortedSetMultimap<K, V> {
-  private transient Comparator<? super K> keyComparator;
-  private transient Comparator<? super V> valueComparator;
+	private transient Comparator<? super K> keyComparator;
+	private transient Comparator<? super V> valueComparator;
 
-  /**
-   * Creates an empty {@code TreeMultimap} ordered by the natural ordering of
-   * its keys and values.
-   */
-  public static <K extends Comparable, V extends Comparable> TreeMultimap<K, V> create() {
-    return new TreeMultimap<K, V>(Ordering.natural(), Ordering.natural());
-  }
+	/**
+	 * Creates an empty {@code TreeMultimap} ordered by the natural ordering of
+	 * its keys and values.
+	 */
+	public static <K extends Comparable, V extends Comparable> TreeMultimap<K, V> create() {
+		return new TreeMultimap<K, V>(Ordering.natural(), Ordering.natural());
+	}
 
-  /**
-   * Creates an empty {@code TreeMultimap} instance using explicit comparators.
-   * Neither comparator may be null; use {@link Ordering#natural()} to specify
-   * natural order.
-   *
-   * @param keyComparator the comparator that determines the key ordering
-   * @param valueComparator the comparator that determines the value ordering
-   */
-  public static <K, V> TreeMultimap<K, V> create(
-      Comparator<? super K> keyComparator, Comparator<? super V> valueComparator) {
-    return new TreeMultimap<K, V>(checkNotNull(keyComparator), checkNotNull(valueComparator));
-  }
+	/**
+	 * Creates an empty {@code TreeMultimap} instance using explicit comparators.
+	 * Neither comparator may be null; use {@link Ordering#natural()} to specify
+	 * natural order.
+	 *
+	 * @param keyComparator the comparator that determines the key ordering
+	 * @param valueComparator the comparator that determines the value ordering
+	 */
+	public static <K, V> TreeMultimap<K, V> create(
+			Comparator<? super K> keyComparator, Comparator<? super V> valueComparator) {
+		return new TreeMultimap<K, V>(checkNotNull(keyComparator), checkNotNull(valueComparator));
+	}
 
-  /**
-   * Constructs a {@code TreeMultimap}, ordered by the natural ordering of its
-   * keys and values, with the same mappings as the specified multimap.
-   *
-   * @param multimap the multimap whose contents are copied to this multimap
-   */
-  public static <K extends Comparable, V extends Comparable> TreeMultimap<K, V> create(
-      Multimap<? extends K, ? extends V> multimap) {
-    return new TreeMultimap<K, V>(Ordering.natural(), Ordering.natural(), multimap);
-  }
+	/**
+	 * Constructs a {@code TreeMultimap}, ordered by the natural ordering of its
+	 * keys and values, with the same mappings as the specified multimap.
+	 *
+	 * @param multimap the multimap whose contents are copied to this multimap
+	 */
+	public static <K extends Comparable, V extends Comparable> TreeMultimap<K, V> create(
+			Multimap<? extends K, ? extends V> multimap) {
+		return new TreeMultimap<K, V>(Ordering.natural(), Ordering.natural(), multimap);
+	}
 
-  TreeMultimap(Comparator<? super K> keyComparator, Comparator<? super V> valueComparator) {
-    super(new TreeMap<K, Collection<V>>(keyComparator));
-    this.keyComparator = keyComparator;
-    this.valueComparator = valueComparator;
-  }
+	TreeMultimap(Comparator<? super K> keyComparator, Comparator<? super V> valueComparator) {
+		super(new TreeMap<K, Collection<V>>(keyComparator));
+		this.keyComparator = keyComparator;
+		this.valueComparator = valueComparator;
+	}
 
-  private TreeMultimap(
-      Comparator<? super K> keyComparator,
-      Comparator<? super V> valueComparator,
-      Multimap<? extends K, ? extends V> multimap) {
-    this(keyComparator, valueComparator);
-    putAll(multimap);
-  }
+	private TreeMultimap(
+			Comparator<? super K> keyComparator,
+			Comparator<? super V> valueComparator,
+			Multimap<? extends K, ? extends V> multimap) {
+		this(keyComparator, valueComparator);
+		putAll(multimap);
+	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * <p>Creates an empty {@code TreeSet} for a collection of values for one key.
-   *
-   * @return a new {@code TreeSet} containing a collection of values for one
-   *     key
-   */
-  @Override
-  SortedSet<V> createCollection() {
-    return new TreeSet<V>(valueComparator);
-  }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>Creates an empty {@code TreeSet} for a collection of values for one key.
+	 *
+	 * @return a new {@code TreeSet} containing a collection of values for one
+	 *     key
+	 */
+	@Override
+	SortedSet<V> createCollection() {
+		return new TreeSet<V>(valueComparator);
+	}
 
-  @Override
-  Collection<V> createCollection(@Nullable K key) {
-    if (key == null) {
-      keyComparator().compare(key, key);
-    }
-    return super.createCollection(key);
-  }
+	@Override
+	Collection<V> createCollection(@Nullable K key) {
+		if (key == null) {
+			keyComparator().compare(key, key);
+		}
+		return super.createCollection(key);
+	}
 
-  /**
-   * Returns the comparator that orders the multimap keys.
-   */
-  public Comparator<? super K> keyComparator() {
-    return keyComparator;
-  }
+	/**
+	 * Returns the comparator that orders the multimap keys.
+	 */
+	public Comparator<? super K> keyComparator() {
+		return keyComparator;
+	}
 
-  @Override
-  public Comparator<? super V> valueComparator() {
-    return valueComparator;
-  }
+	@Override
+	public Comparator<? super V> valueComparator() {
+		return valueComparator;
+	}
 
-  /*
-   * The following @GwtIncompatible methods override the methods in
-   * AbstractSortedKeySortedSetMultimap, so GWT will fall back to the ASKSSM implementations,
-   * which return SortedSets and SortedMaps.
-   */
+	/*
+	 * The following @GwtIncompatible methods override the methods in
+	 * AbstractSortedKeySortedSetMultimap, so GWT will fall back to the ASKSSM implementations,
+	 * which return SortedSets and SortedMaps.
+	 */
 
-  @Override
-  @GwtIncompatible("NavigableMap")
-  NavigableMap<K, Collection<V>> backingMap() {
-    return (NavigableMap<K, Collection<V>>) super.backingMap();
-  }
+	@Override
+	@GwtIncompatible("NavigableMap")
+	NavigableMap<K, Collection<V>> backingMap() {
+		return (NavigableMap<K, Collection<V>>) super.backingMap();
+	}
 
-  /**
-   * @since 14.0 (present with return type {@code SortedSet} since 2.0)
-   */
-  @Override
-  @GwtIncompatible("NavigableSet")
-  public NavigableSet<V> get(@Nullable K key) {
-    return (NavigableSet<V>) super.get(key);
-  }
+	/**
+	 * @since 14.0 (present with return type {@code SortedSet} since 2.0)
+	 */
+	@Override
+	@GwtIncompatible("NavigableSet")
+	public NavigableSet<V> get(@Nullable K key) {
+		return (NavigableSet<V>) super.get(key);
+	}
 
-  @Override
-  @GwtIncompatible("NavigableSet")
-  Collection<V> unmodifiableCollectionSubclass(Collection<V> collection) {
-    return Sets.unmodifiableNavigableSet((NavigableSet<V>) collection);
-  }
+	@Override
+	@GwtIncompatible("NavigableSet")
+	Collection<V> unmodifiableCollectionSubclass(Collection<V> collection) {
+		return Sets.unmodifiableNavigableSet((NavigableSet<V>) collection);
+	}
 
-  @Override
-  @GwtIncompatible("NavigableSet")
-  Collection<V> wrapCollection(K key, Collection<V> collection) {
-    return new WrappedNavigableSet(key, (NavigableSet<V>) collection, null);
-  }
+	@Override
+	@GwtIncompatible("NavigableSet")
+	Collection<V> wrapCollection(K key, Collection<V> collection) {
+		return new WrappedNavigableSet(key, (NavigableSet<V>) collection, null);
+	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * <p>Because a {@code TreeMultimap} has unique sorted keys, this method
-   * returns a {@link NavigableSet}, instead of the {@link java.util.Set} specified
-   * in the {@link Multimap} interface.
-   *
-   * @since 14.0 (present with return type {@code SortedSet} since 2.0)
-   */
-  @Override
-  @GwtIncompatible("NavigableSet")
-  public NavigableSet<K> keySet() {
-    return (NavigableSet<K>) super.keySet();
-  }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>Because a {@code TreeMultimap} has unique sorted keys, this method
+	 * returns a {@link NavigableSet}, instead of the {@link java.util.Set} specified
+	 * in the {@link Multimap} interface.
+	 *
+	 * @since 14.0 (present with return type {@code SortedSet} since 2.0)
+	 */
+	@Override
+	@GwtIncompatible("NavigableSet")
+	public NavigableSet<K> keySet() {
+		return (NavigableSet<K>) super.keySet();
+	}
 
-  @Override
-  @GwtIncompatible("NavigableSet")
-  NavigableSet<K> createKeySet() {
-    return new NavigableKeySet(backingMap());
-  }
+	@Override
+	@GwtIncompatible("NavigableSet")
+	NavigableSet<K> createKeySet() {
+		return new NavigableKeySet(backingMap());
+	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * <p>Because a {@code TreeMultimap} has unique sorted keys, this method
-   * returns a {@link NavigableMap}, instead of the {@link java.util.Map} specified
-   * in the {@link Multimap} interface.
-   *
-   * @since 14.0 (present with return type {@code SortedMap} since 2.0)
-   */
-  @Override
-  @GwtIncompatible("NavigableMap")
-  public NavigableMap<K, Collection<V>> asMap() {
-    return (NavigableMap<K, Collection<V>>) super.asMap();
-  }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>Because a {@code TreeMultimap} has unique sorted keys, this method
+	 * returns a {@link NavigableMap}, instead of the {@link java.util.Map} specified
+	 * in the {@link Multimap} interface.
+	 *
+	 * @since 14.0 (present with return type {@code SortedMap} since 2.0)
+	 */
+	@Override
+	@GwtIncompatible("NavigableMap")
+	public NavigableMap<K, Collection<V>> asMap() {
+		return (NavigableMap<K, Collection<V>>) super.asMap();
+	}
 
-  @Override
-  @GwtIncompatible("NavigableMap")
-  NavigableMap<K, Collection<V>> createAsMap() {
-    return new NavigableAsMap(backingMap());
-  }
+	@Override
+	@GwtIncompatible("NavigableMap")
+	NavigableMap<K, Collection<V>> createAsMap() {
+		return new NavigableAsMap(backingMap());
+	}
 
-  /**
-   * @serialData key comparator, value comparator, number of distinct keys, and
-   *     then for each distinct key: the key, number of values for that key, and
-   *     key values
-   */
-  @GwtIncompatible("java.io.ObjectOutputStream")
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.defaultWriteObject();
-    stream.writeObject(keyComparator());
-    stream.writeObject(valueComparator());
-    Serialization.writeMultimap(this, stream);
-  }
+	/**
+	 * @serialData key comparator, value comparator, number of distinct keys, and
+	 *     then for each distinct key: the key, number of values for that key, and
+	 *     key values
+	 */
+	@GwtIncompatible("java.io.ObjectOutputStream")
+	private void writeObject(ObjectOutputStream stream) throws IOException {
+		stream.defaultWriteObject();
+		stream.writeObject(keyComparator());
+		stream.writeObject(valueComparator());
+		Serialization.writeMultimap(this, stream);
+	}
 
-  @GwtIncompatible("java.io.ObjectInputStream")
-  @SuppressWarnings("unchecked") // reading data stored by writeObject
-  private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-    stream.defaultReadObject();
-    keyComparator = checkNotNull((Comparator<? super K>) stream.readObject());
-    valueComparator = checkNotNull((Comparator<? super V>) stream.readObject());
-    setMap(new TreeMap<K, Collection<V>>(keyComparator));
-    Serialization.populateMultimap(this, stream);
-  }
+	@GwtIncompatible("java.io.ObjectInputStream")
+	@SuppressWarnings("unchecked") // reading data stored by writeObject
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject();
+		keyComparator = checkNotNull((Comparator<? super K>) stream.readObject());
+		valueComparator = checkNotNull((Comparator<? super V>) stream.readObject());
+		setMap(new TreeMap<K, Collection<V>>(keyComparator));
+		Serialization.populateMultimap(this, stream);
+	}
 
-  @GwtIncompatible("not needed in emulated source")
-  private static final long serialVersionUID = 0;
+	@GwtIncompatible("not needed in emulated source")
+	private static final long serialVersionUID = 0;
 }

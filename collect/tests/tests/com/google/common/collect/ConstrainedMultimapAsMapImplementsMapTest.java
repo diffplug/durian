@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.collect.testing.MapInterfaceTest;
 
 import java.util.Collection;
 import java.util.Map;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.collect.testing.MapInterfaceTest;
 
 /**
  * Test {@link Multimap#asMap()} for a constrained multimap with
@@ -30,24 +30,26 @@ import java.util.Map;
  */
 @GwtCompatible
 public class ConstrainedMultimapAsMapImplementsMapTest
-    extends AbstractMultimapAsMapImplementsMapTest {
+		extends AbstractMultimapAsMapImplementsMapTest {
 
-  public ConstrainedMultimapAsMapImplementsMapTest() {
-    super(true, true, true);
-  }
+	public ConstrainedMultimapAsMapImplementsMapTest() {
+		super(true, true, true);
+	}
 
-  @Override protected Map<String, Collection<Integer>> makeEmptyMap() {
-    return MapConstraints.constrainedMultimap(
-        ArrayListMultimap.<String, Integer>create(),
-        MapConstraintsTest.TEST_CONSTRAINT)
-        .asMap();
-  }
+	@Override
+	protected Map<String, Collection<Integer>> makeEmptyMap() {
+		return MapConstraints.constrainedMultimap(
+				ArrayListMultimap.<String, Integer> create(),
+				MapConstraintsTest.TEST_CONSTRAINT)
+				.asMap();
+	}
 
-  @Override protected Map<String, Collection<Integer>> makePopulatedMap() {
-    Multimap<String, Integer> delegate = ArrayListMultimap.create();
-    populate(delegate);
-    return MapConstraints.constrainedMultimap(
-            delegate, MapConstraintsTest.TEST_CONSTRAINT)
-        .asMap();
-  }
+	@Override
+	protected Map<String, Collection<Integer>> makePopulatedMap() {
+		Multimap<String, Integer> delegate = ArrayListMultimap.create();
+		populate(delegate);
+		return MapConstraints.constrainedMultimap(
+				delegate, MapConstraintsTest.TEST_CONSTRAINT)
+				.asMap();
+	}
 }

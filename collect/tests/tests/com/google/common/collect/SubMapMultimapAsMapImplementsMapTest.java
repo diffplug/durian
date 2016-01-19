@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.collect.testing.MapInterfaceTest;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.collect.testing.MapInterfaceTest;
 
 /**
  * Test {@code TreeMultimap.asMap().subMap()} with {@link MapInterfaceTest}.
@@ -30,88 +30,97 @@ import java.util.Map;
  */
 @GwtCompatible
 public class SubMapMultimapAsMapImplementsMapTest
-    extends AbstractMultimapAsMapImplementsMapTest {
+		extends AbstractMultimapAsMapImplementsMapTest {
 
-  public SubMapMultimapAsMapImplementsMapTest() {
-    super(true, true, true);
-  }
+	public SubMapMultimapAsMapImplementsMapTest() {
+		super(true, true, true);
+	}
 
-  private TreeMultimap<String, Integer> createMultimap() {
-    TreeMultimap<String, Integer> multimap
-        = TreeMultimap.create(Ordering.<String>natural().nullsFirst(),
-            Ordering.<Integer>natural().nullsFirst());
-    multimap.put("a", -1);
-    multimap.put("a", -3);
-    multimap.put("z", -2);
-    return multimap;
-  }
+	private TreeMultimap<String, Integer> createMultimap() {
+		TreeMultimap<String, Integer> multimap = TreeMultimap.create(Ordering.<String> natural().nullsFirst(),
+				Ordering.<Integer> natural().nullsFirst());
+		multimap.put("a", -1);
+		multimap.put("a", -3);
+		multimap.put("z", -2);
+		return multimap;
+	}
 
-  @Override protected Map<String, Collection<Integer>> makeEmptyMap() {
-    return createMultimap().asMap().subMap("e", "p");
-  }
+	@Override
+	protected Map<String, Collection<Integer>> makeEmptyMap() {
+		return createMultimap().asMap().subMap("e", "p");
+	}
 
-  @Override protected Map<String, Collection<Integer>> makePopulatedMap() {
-    TreeMultimap<String, Integer> multimap = createMultimap();
-    multimap.put("f", 1);
-    multimap.put("f", 2);
-    multimap.put("g", 3);
-    multimap.put("h", 4);
-    return multimap.asMap().subMap("e", "p");
-  }
+	@Override
+	protected Map<String, Collection<Integer>> makePopulatedMap() {
+		TreeMultimap<String, Integer> multimap = createMultimap();
+		multimap.put("f", 1);
+		multimap.put("f", 2);
+		multimap.put("g", 3);
+		multimap.put("h", 4);
+		return multimap.asMap().subMap("e", "p");
+	}
 
-  @Override protected String getKeyNotInPopulatedMap() {
-    return "a";
-  }
+	@Override
+	protected String getKeyNotInPopulatedMap() {
+		return "a";
+	}
 
-  @Override protected Collection<Integer> getValueNotInPopulatedMap() {
-    return Collections.singleton(-2);
-  }
+	@Override
+	protected Collection<Integer> getValueNotInPopulatedMap() {
+		return Collections.singleton(-2);
+	}
 
-  @Override public void testEntrySetRemoveAllNullFromEmpty() {
-    try {
-      super.testEntrySetRemoveAllNullFromEmpty();
-    } catch (RuntimeException tolerated) {
-      // GWT's TreeMap.entrySet().removeAll(null) doesn't throws NPE.
-    }
-  }
+	@Override
+	public void testEntrySetRemoveAllNullFromEmpty() {
+		try {
+			super.testEntrySetRemoveAllNullFromEmpty();
+		} catch (RuntimeException tolerated) {
+			// GWT's TreeMap.entrySet().removeAll(null) doesn't throws NPE.
+		}
+	}
 
-  @Override public void testEntrySetRetainAllNullFromEmpty() {
-    try {
-      super.testEntrySetRetainAllNullFromEmpty();
-    } catch (RuntimeException tolerated) {
-      // GWT's TreeMap.entrySet().retainAll(null) doesn't throws NPE.
-    }
-  }
+	@Override
+	public void testEntrySetRetainAllNullFromEmpty() {
+		try {
+			super.testEntrySetRetainAllNullFromEmpty();
+		} catch (RuntimeException tolerated) {
+			// GWT's TreeMap.entrySet().retainAll(null) doesn't throws NPE.
+		}
+	}
 
-  @Override public void testKeySetRemoveAllNullFromEmpty() {
-    try {
-      super.testKeySetRemoveAllNullFromEmpty();
-    } catch (RuntimeException tolerated) {
-      // GWT's TreeMap.keySet().removeAll(null) doesn't throws NPE.
-    }
-  }
+	@Override
+	public void testKeySetRemoveAllNullFromEmpty() {
+		try {
+			super.testKeySetRemoveAllNullFromEmpty();
+		} catch (RuntimeException tolerated) {
+			// GWT's TreeMap.keySet().removeAll(null) doesn't throws NPE.
+		}
+	}
 
-  @Override public void testKeySetRetainAllNullFromEmpty() {
-    try {
-      super.testKeySetRetainAllNullFromEmpty();
-    } catch (RuntimeException tolerated) {
-      // GWT's TreeMap.keySet().retainAll(null) doesn't throws NPE.
-    }
-  }
+	@Override
+	public void testKeySetRetainAllNullFromEmpty() {
+		try {
+			super.testKeySetRetainAllNullFromEmpty();
+		} catch (RuntimeException tolerated) {
+			// GWT's TreeMap.keySet().retainAll(null) doesn't throws NPE.
+		}
+	}
 
-  @Override public void testValuesRemoveAllNullFromEmpty() {
-    try {
-      super.testValuesRemoveAllNullFromEmpty();
-    } catch (RuntimeException tolerated) {
-      // GWT's TreeMap.values().removeAll(null) doesn't throws NPE.
-    }
-  }
+	@Override
+	public void testValuesRemoveAllNullFromEmpty() {
+		try {
+			super.testValuesRemoveAllNullFromEmpty();
+		} catch (RuntimeException tolerated) {
+			// GWT's TreeMap.values().removeAll(null) doesn't throws NPE.
+		}
+	}
 
-  @Override public void testValuesRetainAllNullFromEmpty() {
-    try {
-      super.testValuesRemoveAllNullFromEmpty();
-    } catch (RuntimeException tolerated) {
-      // GWT's TreeMap.values().retainAll(null) doesn't throws NPE.
-    }
-  }
+	@Override
+	public void testValuesRetainAllNullFromEmpty() {
+		try {
+			super.testValuesRemoveAllNullFromEmpty();
+		} catch (RuntimeException tolerated) {
+			// GWT's TreeMap.values().retainAll(null) doesn't throws NPE.
+		}
+	}
 }

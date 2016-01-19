@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import com.google.common.annotations.GwtCompatible;
@@ -26,21 +26,21 @@ import com.google.common.collect.testing.AbstractCollectionTester;
  */
 @GwtCompatible
 public class CollectionEqualsTester<E> extends AbstractCollectionTester<E> {
-  public void testEquals_self() {
-    assertTrue("An Object should be equal to itself.",
-        collection.equals(collection));
-  }
+	public void testEquals_self() {
+		assertTrue("An Object should be equal to itself.",
+				collection.equals(collection));
+	}
 
-  public void testEquals_null() {
-    //noinspection ObjectEqualsNull
-    assertFalse("An object should not be equal to null.",
-        collection.equals(null));
-  }
+	public void testEquals_null() {
+		//noinspection ObjectEqualsNull
+		assertFalse("An object should not be equal to null.",
+				collection.equals(null));
+	}
 
-  public void testEquals_notACollection() {
-    //noinspection EqualsBetweenInconvertibleTypes
-    assertFalse("A Collection should never equal an "
-        + "object that is not a Collection.",
-        collection.equals("huh?"));
-  }
+	public void testEquals_notACollection() {
+		//noinspection EqualsBetweenInconvertibleTypes
+		assertFalse("A Collection should never equal an "
+				+ "object that is not a Collection.",
+				collection.equals("huh?"));
+	}
 }

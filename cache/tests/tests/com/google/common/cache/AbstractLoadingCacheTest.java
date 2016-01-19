@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.cache;
-
-import com.google.common.util.concurrent.ExecutionError;
-import com.google.common.util.concurrent.UncheckedExecutionException;
-
-import junit.framework.TestCase;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
+
+import junit.framework.TestCase;
+
+import com.google.common.util.concurrent.ExecutionError;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 
 /**
  * Unit test for {@link AbstractLoadingCache}.
@@ -31,127 +31,127 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class AbstractLoadingCacheTest extends TestCase {
 
-  public void testGetUnchecked_checked() {
-    final Exception cause = new Exception();
-    final AtomicReference<Object> valueRef = new AtomicReference<Object>();
-    LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
-      @Override
-      public Object get(Object key) throws ExecutionException {
-        Object v = valueRef.get();
-        if (v == null) {
-          throw new ExecutionException(cause);
-        }
-        return v;
-      }
+	public void testGetUnchecked_checked() {
+		final Exception cause = new Exception();
+		final AtomicReference<Object> valueRef = new AtomicReference<Object>();
+		LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
+			@Override
+			public Object get(Object key) throws ExecutionException {
+				Object v = valueRef.get();
+				if (v == null) {
+					throw new ExecutionException(cause);
+				}
+				return v;
+			}
 
-      @Override
-      public Object getIfPresent(Object key) {
-        return valueRef.get();
-      }
-    };
+			@Override
+			public Object getIfPresent(Object key) {
+				return valueRef.get();
+			}
+		};
 
-    try {
-      cache.getUnchecked(new Object());
-      fail();
-    } catch (UncheckedExecutionException expected) {
-      assertEquals(cause, expected.getCause());
-    }
+		try {
+			cache.getUnchecked(new Object());
+			fail();
+		} catch (UncheckedExecutionException expected) {
+			assertEquals(cause, expected.getCause());
+		}
 
-    Object newValue = new Object();
-    valueRef.set(newValue);
-    assertSame(newValue, cache.getUnchecked(new Object()));
-  }
+		Object newValue = new Object();
+		valueRef.set(newValue);
+		assertSame(newValue, cache.getUnchecked(new Object()));
+	}
 
-  public void testGetUnchecked_unchecked() {
-    final RuntimeException cause = new RuntimeException();
-    final AtomicReference<Object> valueRef = new AtomicReference<Object>();
-    LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
-      @Override
-      public Object get(Object key) throws ExecutionException {
-        Object v = valueRef.get();
-        if (v == null) {
-          throw new ExecutionException(cause);
-        }
-        return v;
-      }
+	public void testGetUnchecked_unchecked() {
+		final RuntimeException cause = new RuntimeException();
+		final AtomicReference<Object> valueRef = new AtomicReference<Object>();
+		LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
+			@Override
+			public Object get(Object key) throws ExecutionException {
+				Object v = valueRef.get();
+				if (v == null) {
+					throw new ExecutionException(cause);
+				}
+				return v;
+			}
 
-      @Override
-      public Object getIfPresent(Object key) {
-        return valueRef.get();
-      }
-    };
+			@Override
+			public Object getIfPresent(Object key) {
+				return valueRef.get();
+			}
+		};
 
-    try {
-      cache.getUnchecked(new Object());
-      fail();
-    } catch (UncheckedExecutionException expected) {
-      assertEquals(cause, expected.getCause());
-    }
+		try {
+			cache.getUnchecked(new Object());
+			fail();
+		} catch (UncheckedExecutionException expected) {
+			assertEquals(cause, expected.getCause());
+		}
 
-    Object newValue = new Object();
-    valueRef.set(newValue);
-    assertSame(newValue, cache.getUnchecked(new Object()));
-  }
+		Object newValue = new Object();
+		valueRef.set(newValue);
+		assertSame(newValue, cache.getUnchecked(new Object()));
+	}
 
-  public void testGetUnchecked_error() {
-    final Error cause = new Error();
-    final AtomicReference<Object> valueRef = new AtomicReference<Object>();
-    LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
-      @Override
-      public Object get(Object key) throws ExecutionException {
-        Object v = valueRef.get();
-        if (v == null) {
-          throw new ExecutionError(cause);
-        }
-        return v;
-      }
+	public void testGetUnchecked_error() {
+		final Error cause = new Error();
+		final AtomicReference<Object> valueRef = new AtomicReference<Object>();
+		LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
+			@Override
+			public Object get(Object key) throws ExecutionException {
+				Object v = valueRef.get();
+				if (v == null) {
+					throw new ExecutionError(cause);
+				}
+				return v;
+			}
 
-      @Override
-      public Object getIfPresent(Object key) {
-        return valueRef.get();
-      }
-    };
+			@Override
+			public Object getIfPresent(Object key) {
+				return valueRef.get();
+			}
+		};
 
-    try {
-      cache.getUnchecked(new Object());
-      fail();
-    } catch (ExecutionError expected) {
-      assertEquals(cause, expected.getCause());
-    }
+		try {
+			cache.getUnchecked(new Object());
+			fail();
+		} catch (ExecutionError expected) {
+			assertEquals(cause, expected.getCause());
+		}
 
-    Object newValue = new Object();
-    valueRef.set(newValue);
-    assertSame(newValue, cache.getUnchecked(new Object()));
-  }
+		Object newValue = new Object();
+		valueRef.set(newValue);
+		assertSame(newValue, cache.getUnchecked(new Object()));
+	}
 
-  public void testGetUnchecked_otherThrowable() {
-    final Throwable cause = new Throwable();
-    final AtomicReference<Object> valueRef = new AtomicReference<Object>();
-    LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
-      @Override
-      public Object get(Object key) throws ExecutionException {
-        Object v = valueRef.get();
-        if (v == null) {
-          throw new ExecutionException(cause);
-        }
-        return v;
-      }
+	public void testGetUnchecked_otherThrowable() {
+		final Throwable cause = new Throwable();
+		final AtomicReference<Object> valueRef = new AtomicReference<Object>();
+		LoadingCache<Object, Object> cache = new AbstractLoadingCache<Object, Object>() {
+			@Override
+			public Object get(Object key) throws ExecutionException {
+				Object v = valueRef.get();
+				if (v == null) {
+					throw new ExecutionException(cause);
+				}
+				return v;
+			}
 
-      @Override
-      public Object getIfPresent(Object key) {
-        return valueRef.get();
-      }
-    };
+			@Override
+			public Object getIfPresent(Object key) {
+				return valueRef.get();
+			}
+		};
 
-    try {
-      cache.getUnchecked(new Object());
-      fail();
-    } catch (UncheckedExecutionException expected) {
-      assertEquals(cause, expected.getCause());
-    }
+		try {
+			cache.getUnchecked(new Object());
+			fail();
+		} catch (UncheckedExecutionException expected) {
+			assertEquals(cause, expected.getCause());
+		}
 
-    Object newValue = new Object();
-    valueRef.set(newValue);
-    assertSame(newValue, cache.getUnchecked(new Object()));
-  }
+		Object newValue = new Object();
+		valueRef.set(newValue);
+		assertSame(newValue, cache.getUnchecked(new Object()));
+	}
 }

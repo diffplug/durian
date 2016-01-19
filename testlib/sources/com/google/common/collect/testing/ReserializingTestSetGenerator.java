@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
 import java.util.Set;
@@ -26,19 +26,20 @@ import java.util.Set;
  * @author Jesse Wilson
  */
 public class ReserializingTestSetGenerator<E>
-    extends ReserializingTestCollectionGenerator<E>
-    implements TestSetGenerator<E> {
+		extends ReserializingTestCollectionGenerator<E>
+		implements TestSetGenerator<E> {
 
-  ReserializingTestSetGenerator(TestSetGenerator<E> delegate) {
-    super(delegate);
-  }
+	ReserializingTestSetGenerator(TestSetGenerator<E> delegate) {
+		super(delegate);
+	}
 
-  public static <E> TestSetGenerator<E> newInstance(
-      TestSetGenerator<E> delegate) {
-    return new ReserializingTestSetGenerator<E>(delegate);
-  }
+	public static <E> TestSetGenerator<E> newInstance(
+			TestSetGenerator<E> delegate) {
+		return new ReserializingTestSetGenerator<E>(delegate);
+	}
 
-  @Override public Set<E> create(Object... elements) {
-    return (Set<E>) super.create(elements);
-  }
+	@Override
+	public Set<E> create(Object... elements) {
+		return (Set<E>) super.create(elements);
+	}
 }

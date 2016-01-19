@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.Collection;
 import java.util.SortedMap;
 import java.util.SortedSet;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Basic implementation of a {@link SortedSetMultimap} with a sorted key set.
@@ -34,22 +34,22 @@ import java.util.SortedSet;
 @GwtCompatible
 abstract class AbstractSortedKeySortedSetMultimap<K, V> extends AbstractSortedSetMultimap<K, V> {
 
-  AbstractSortedKeySortedSetMultimap(SortedMap<K, Collection<V>> map) {
-    super(map);
-  }
+	AbstractSortedKeySortedSetMultimap(SortedMap<K, Collection<V>> map) {
+		super(map);
+	}
 
-  @Override
-  public SortedMap<K, Collection<V>> asMap() {
-    return (SortedMap<K, Collection<V>>) super.asMap();
-  }
+	@Override
+	public SortedMap<K, Collection<V>> asMap() {
+		return (SortedMap<K, Collection<V>>) super.asMap();
+	}
 
-  @Override
-  SortedMap<K, Collection<V>> backingMap() {
-    return (SortedMap<K, Collection<V>>) super.backingMap();
-  }
+	@Override
+	SortedMap<K, Collection<V>> backingMap() {
+		return (SortedMap<K, Collection<V>>) super.backingMap();
+	}
 
-  @Override
-  public SortedSet<K> keySet() {
-    return (SortedSet<K>) super.keySet();
-  }
+	@Override
+	public SortedSet<K> keySet() {
+		return (SortedSet<K>) super.keySet();
+	}
 }

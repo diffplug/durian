@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import java.util.Collections;
@@ -25,201 +25,203 @@ import java.util.Deque;
  * @author Kurt Alfred Kluever
  */
 public class ForwardingDequeTest extends ForwardingTestCase {
-  private Deque<String> forward;
-  
-  /*
-   * Class parameters must be raw, so we can't create a proxy with generic
-   * type arguments. The created proxy only records calls and returns null, so
-   * the type is irrelevant at runtime.
-   */
-  @SuppressWarnings("unchecked")
-  @Override protected void setUp() throws Exception {
-    super.setUp();
-    final Deque<String> deque = createProxyInstance(Deque.class);
-    forward = new ForwardingDeque<String>() {
-      @Override protected Deque<String> delegate() {
-        return deque;
-      }
-    };
-  }
+	private Deque<String> forward;
 
-  public void testAdd_T() {
-    forward.add("asdf");
-    assertEquals("[add(Object)]", getCalls());
-  }
+	/*
+	 * Class parameters must be raw, so we can't create a proxy with generic
+	 * type arguments. The created proxy only records calls and returns null, so
+	 * the type is irrelevant at runtime.
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		final Deque<String> deque = createProxyInstance(Deque.class);
+		forward = new ForwardingDeque<String>() {
+			@Override
+			protected Deque<String> delegate() {
+				return deque;
+			}
+		};
+	}
 
-  public void testAddFirst_T() {
-    forward.addFirst("asdf");
-    assertEquals("[addFirst(Object)]", getCalls());
-  }
+	public void testAdd_T() {
+		forward.add("asdf");
+		assertEquals("[add(Object)]", getCalls());
+	}
 
-  public void testAddLast_T() {
-    forward.addLast("asdf");
-    assertEquals("[addLast(Object)]", getCalls());
-  }
+	public void testAddFirst_T() {
+		forward.addFirst("asdf");
+		assertEquals("[addFirst(Object)]", getCalls());
+	}
 
-  public void testAddAll_Collection() {
-    forward.addAll(Collections.singleton("asdf"));
-    assertEquals("[addAll(Collection)]", getCalls());
-  }
+	public void testAddLast_T() {
+		forward.addLast("asdf");
+		assertEquals("[addLast(Object)]", getCalls());
+	}
 
-  public void testClear() {
-    forward.clear();
-    assertEquals("[clear]", getCalls());
-  }
+	public void testAddAll_Collection() {
+		forward.addAll(Collections.singleton("asdf"));
+		assertEquals("[addAll(Collection)]", getCalls());
+	}
 
-  public void testContains_T() {
-    forward.contains("asdf");
-    assertEquals("[contains(Object)]", getCalls());
-  }
+	public void testClear() {
+		forward.clear();
+		assertEquals("[clear]", getCalls());
+	}
 
-  public void testContainsAll_Collection() {
-    forward.containsAll(Collections.singleton("asdf"));
-    assertEquals("[containsAll(Collection)]", getCalls());
-  }
+	public void testContains_T() {
+		forward.contains("asdf");
+		assertEquals("[contains(Object)]", getCalls());
+	}
 
-  public void testDescendingIterator() {
-    forward.descendingIterator();
-    assertEquals("[descendingIterator]", getCalls());
-  }
+	public void testContainsAll_Collection() {
+		forward.containsAll(Collections.singleton("asdf"));
+		assertEquals("[containsAll(Collection)]", getCalls());
+	}
 
-  public void testElement() {
-    forward.element();
-    assertEquals("[element]", getCalls());
-  }
+	public void testDescendingIterator() {
+		forward.descendingIterator();
+		assertEquals("[descendingIterator]", getCalls());
+	}
 
-  public void testGetFirst() {
-    forward.getFirst();
-    assertEquals("[getFirst]", getCalls());
-  }
+	public void testElement() {
+		forward.element();
+		assertEquals("[element]", getCalls());
+	}
 
-  public void testGetLast() {
-    forward.getLast();
-    assertEquals("[getLast]", getCalls());
-  }
+	public void testGetFirst() {
+		forward.getFirst();
+		assertEquals("[getFirst]", getCalls());
+	}
 
-  public void testIterator() {
-    forward.iterator();
-    assertEquals("[iterator]", getCalls());
-  }
+	public void testGetLast() {
+		forward.getLast();
+		assertEquals("[getLast]", getCalls());
+	}
 
-  public void testIsEmpty() {
-    forward.isEmpty();
-    assertEquals("[isEmpty]", getCalls());
-  }
+	public void testIterator() {
+		forward.iterator();
+		assertEquals("[iterator]", getCalls());
+	}
 
-  public void testOffer_T() {
-    forward.offer("asdf");
-    assertEquals("[offer(Object)]", getCalls());
-  }
+	public void testIsEmpty() {
+		forward.isEmpty();
+		assertEquals("[isEmpty]", getCalls());
+	}
 
-  public void testOfferFirst_T() {
-    forward.offerFirst("asdf");
-    assertEquals("[offerFirst(Object)]", getCalls());
-  }
+	public void testOffer_T() {
+		forward.offer("asdf");
+		assertEquals("[offer(Object)]", getCalls());
+	}
 
-  public void testOfferLast_T() {
-    forward.offerLast("asdf");
-    assertEquals("[offerLast(Object)]", getCalls());
-  }
+	public void testOfferFirst_T() {
+		forward.offerFirst("asdf");
+		assertEquals("[offerFirst(Object)]", getCalls());
+	}
 
-  public void testPeek() {
-    forward.peek();
-    assertEquals("[peek]", getCalls());
-  }
+	public void testOfferLast_T() {
+		forward.offerLast("asdf");
+		assertEquals("[offerLast(Object)]", getCalls());
+	}
 
-  public void testPeekFirst() {
-    forward.peekFirst();
-    assertEquals("[peekFirst]", getCalls());
-  }
+	public void testPeek() {
+		forward.peek();
+		assertEquals("[peek]", getCalls());
+	}
 
-  public void testPeekLast() {
-    forward.peekLast();
-    assertEquals("[peekLast]", getCalls());
-  }
+	public void testPeekFirst() {
+		forward.peekFirst();
+		assertEquals("[peekFirst]", getCalls());
+	}
 
-  public void testPoll() {
-    forward.poll();
-    assertEquals("[poll]", getCalls());
-  }
+	public void testPeekLast() {
+		forward.peekLast();
+		assertEquals("[peekLast]", getCalls());
+	}
 
-  public void testPollFirst() {
-    forward.pollFirst();
-    assertEquals("[pollFirst]", getCalls());
-  }
+	public void testPoll() {
+		forward.poll();
+		assertEquals("[poll]", getCalls());
+	}
 
-  public void testPollLast() {
-    forward.pollLast();
-    assertEquals("[pollLast]", getCalls());
-  }
+	public void testPollFirst() {
+		forward.pollFirst();
+		assertEquals("[pollFirst]", getCalls());
+	}
 
-  public void testPop() {
-    forward.pop();
-    assertEquals("[pop]", getCalls());
-  }
+	public void testPollLast() {
+		forward.pollLast();
+		assertEquals("[pollLast]", getCalls());
+	}
 
-  public void testPush_Object() {
-    forward.push("asdf");
-    assertEquals("[push(Object)]", getCalls());
-  }
+	public void testPop() {
+		forward.pop();
+		assertEquals("[pop]", getCalls());
+	}
 
-  public void testRemove() {
-    forward.remove();
-    assertEquals("[remove]", getCalls());
-  }
+	public void testPush_Object() {
+		forward.push("asdf");
+		assertEquals("[push(Object)]", getCalls());
+	}
 
-  public void testRemoveFirst() {
-    forward.removeFirst();
-    assertEquals("[removeFirst]", getCalls());
-  }
+	public void testRemove() {
+		forward.remove();
+		assertEquals("[remove]", getCalls());
+	}
 
-  public void testRemoveLast() {
-    forward.removeLast();
-    assertEquals("[removeLast]", getCalls());
-  }
+	public void testRemoveFirst() {
+		forward.removeFirst();
+		assertEquals("[removeFirst]", getCalls());
+	}
 
-  public void testRemove_Object() {
-    forward.remove(Object.class);
-    assertEquals("[remove(Object)]", getCalls());
-  }
+	public void testRemoveLast() {
+		forward.removeLast();
+		assertEquals("[removeLast]", getCalls());
+	}
 
-  public void testRemoveFirstOccurrence_Object() {
-    forward.removeFirstOccurrence(Object.class);
-    assertEquals("[removeFirstOccurrence(Object)]", getCalls());
-  }
+	public void testRemove_Object() {
+		forward.remove(Object.class);
+		assertEquals("[remove(Object)]", getCalls());
+	}
 
-  public void testRemoveLastOccurrence_Object() {
-    forward.removeLastOccurrence(Object.class);
-    assertEquals("[removeLastOccurrence(Object)]", getCalls());
-  }
+	public void testRemoveFirstOccurrence_Object() {
+		forward.removeFirstOccurrence(Object.class);
+		assertEquals("[removeFirstOccurrence(Object)]", getCalls());
+	}
 
-  public void testRemoveAll_Collection() {
-    forward.removeAll(Collections.singleton("asdf"));
-    assertEquals("[removeAll(Collection)]", getCalls());
-  }
+	public void testRemoveLastOccurrence_Object() {
+		forward.removeLastOccurrence(Object.class);
+		assertEquals("[removeLastOccurrence(Object)]", getCalls());
+	}
 
-  public void testRetainAll_Collection() {
-    forward.retainAll(Collections.singleton("asdf"));
-    assertEquals("[retainAll(Collection)]", getCalls());
-  }
+	public void testRemoveAll_Collection() {
+		forward.removeAll(Collections.singleton("asdf"));
+		assertEquals("[removeAll(Collection)]", getCalls());
+	}
 
-  public void testSize() {
-    forward.size();
-    assertEquals("[size]", getCalls());
-  }
+	public void testRetainAll_Collection() {
+		forward.retainAll(Collections.singleton("asdf"));
+		assertEquals("[retainAll(Collection)]", getCalls());
+	}
 
-  public void testToArray() {
-    forward.toArray();
-    assertEquals("[toArray]", getCalls());
-  }
+	public void testSize() {
+		forward.size();
+		assertEquals("[size]", getCalls());
+	}
 
-  public void testToArray_TArray() {
-    forward.toArray(new String[0]);
-    assertEquals("[toArray(Object[])]", getCalls());
-  }
-      
-  public void testToString() {
-    forward.toString();
-    assertEquals("[toString]", getCalls());
-  }
+	public void testToArray() {
+		forward.toArray();
+		assertEquals("[toArray]", getCalls());
+	}
+
+	public void testToArray_TArray() {
+		forward.toArray(new String[0]);
+		assertEquals("[toArray(Object[])]", getCalls());
+	}
+
+	public void testToString() {
+		forward.toString();
+		assertEquals("[toString]", getCalls());
+	}
 }

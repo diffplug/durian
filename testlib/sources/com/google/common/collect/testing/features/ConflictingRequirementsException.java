@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.features;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.util.Set;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Thrown when requirements on a tester method or class conflict with
@@ -28,27 +28,28 @@ import java.util.Set;
  */
 @GwtCompatible
 public class ConflictingRequirementsException extends Exception {
-  private Set<Feature<?>> conflicts;
-  private Object source;
+	private Set<Feature<?>> conflicts;
+	private Object source;
 
-  public ConflictingRequirementsException(
-      String message, Set<Feature<?>> conflicts, Object source) {
-    super(message);
-    this.conflicts = conflicts;
-    this.source = source;
-  }
+	public ConflictingRequirementsException(
+			String message, Set<Feature<?>> conflicts, Object source) {
+		super(message);
+		this.conflicts = conflicts;
+		this.source = source;
+	}
 
-  public Set<Feature<?>> getConflicts() {
-    return conflicts;
-  }
+	public Set<Feature<?>> getConflicts() {
+		return conflicts;
+	}
 
-  public Object getSource() {
-    return source;
-  }
+	public Object getSource() {
+		return source;
+	}
 
-  @Override public String getMessage() {
-    return super.getMessage() + " (source: " + source + ")";
-  }
+	@Override
+	public String getMessage() {
+		return super.getMessage() + " (source: " + source + ")";
+	}
 
-  private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 0;
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.base;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
-import com.google.common.testing.GcFinalization;
-
-import junit.framework.TestCase;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import junit.framework.TestCase;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.testing.GcFinalization;
 
 /**
  * Unit test for {@code AbstractIterator}.
@@ -35,177 +35,180 @@ import java.util.NoSuchElementException;
 // TODO(cpovirk): why is this slow (>1m/test) under GWT when fully optimized?
 public class AbstractIteratorTest extends TestCase {
 
-  public void testDefaultBehaviorOfNextAndHasNext() {
+	public void testDefaultBehaviorOfNextAndHasNext() {
 
-    // This sample AbstractIterator returns 0 on the first call, 1 on the
-    // second, then signals that it's reached the end of the data
-    Iterator<Integer> iter = new AbstractIterator<Integer>() {
-      private int rep;
-      @Override public Integer computeNext() {
-        switch (rep++) {
-          case 0:
-            return 0;
-          case 1:
-            return 1;
-          case 2:
-            return endOfData();
-          default:
-            fail("Should not have been invoked again");
-            return null;
-        }
-      }
-    };
+		// This sample AbstractIterator returns 0 on the first call, 1 on the
+		// second, then signals that it's reached the end of the data
+		Iterator<Integer> iter = new AbstractIterator<Integer>() {
+			private int rep;
 
-    assertTrue(iter.hasNext());
-    assertEquals(0, (int) iter.next());
+			@Override
+			public Integer computeNext() {
+				switch (rep++) {
+				case 0:
+					return 0;
+				case 1:
+					return 1;
+				case 2:
+					return endOfData();
+				default:
+					fail("Should not have been invoked again");
+					return null;
+				}
+			}
+		};
 
-    // verify idempotence of hasNext()
-    assertTrue(iter.hasNext());
-    assertTrue(iter.hasNext());
-    assertTrue(iter.hasNext());
-    assertEquals(1, (int) iter.next());
+		assertTrue(iter.hasNext());
+		assertEquals(0, (int) iter.next());
 
-    assertFalse(iter.hasNext());
+		// verify idempotence of hasNext()
+		assertTrue(iter.hasNext());
+		assertTrue(iter.hasNext());
+		assertTrue(iter.hasNext());
+		assertEquals(1, (int) iter.next());
 
-    // Make sure computeNext() doesn't get invoked again
-    assertFalse(iter.hasNext());
+		assertFalse(iter.hasNext());
 
-    try {
-      iter.next();
-      fail("no exception thrown");
-    } catch (NoSuchElementException expected) {
-    }
-  }
+		// Make sure computeNext() doesn't get invoked again
+		assertFalse(iter.hasNext());
 
-  public void testSneakyThrow() throws Exception {
-    Iterator<Integer> iter = new AbstractIterator<Integer>() {
-      boolean haveBeenCalled;
-      @Override public Integer computeNext() {
-        if (haveBeenCalled) {
-          fail("Should not have been called again");
-        } else {
-          haveBeenCalled = true;
-          sneakyThrow(new SomeCheckedException());
-        }
-        return null; // never reached
-      }
-    };
+		try {
+			iter.next();
+			fail("no exception thrown");
+		} catch (NoSuchElementException expected) {}
+	}
 
-    // The first time, the sneakily-thrown exception comes out
-    try {
-      iter.hasNext();
-      fail("No exception thrown");
-    } catch (Exception e) {
-      if (!(e instanceof SomeCheckedException)) {
-        throw e;
-      }
-    }
+	public void testSneakyThrow() throws Exception {
+		Iterator<Integer> iter = new AbstractIterator<Integer>() {
+			boolean haveBeenCalled;
 
-    // But the second time, AbstractIterator itself throws an ISE
-    try {
-      iter.hasNext();
-      fail("No exception thrown");
-    } catch (IllegalStateException expected) {
-    }
-  }
+			@Override
+			public Integer computeNext() {
+				if (haveBeenCalled) {
+					fail("Should not have been called again");
+				} else {
+					haveBeenCalled = true;
+					sneakyThrow(new SomeCheckedException());
+				}
+				return null; // never reached
+			}
+		};
 
-  public void testException() {
-    final SomeUncheckedException exception = new SomeUncheckedException();
-    Iterator<Integer> iter = new AbstractIterator<Integer>() {
-      @Override public Integer computeNext() {
-        throw exception;
-      }
-    };
+		// The first time, the sneakily-thrown exception comes out
+		try {
+			iter.hasNext();
+			fail("No exception thrown");
+		} catch (Exception e) {
+			if (!(e instanceof SomeCheckedException)) {
+				throw e;
+			}
+		}
 
-    // It should pass through untouched
-    try {
-      iter.hasNext();
-      fail("No exception thrown");
-    } catch (SomeUncheckedException e) {
-      assertSame(exception, e);
-    }
-  }
+		// But the second time, AbstractIterator itself throws an ISE
+		try {
+			iter.hasNext();
+			fail("No exception thrown");
+		} catch (IllegalStateException expected) {}
+	}
 
-  public void testExceptionAfterEndOfData() {
-    Iterator<Integer> iter = new AbstractIterator<Integer>() {
-      @Override public Integer computeNext() {
-        endOfData();
-        throw new SomeUncheckedException();
-      }
-    };
-    try {
-      iter.hasNext();
-      fail("No exception thrown");
-    } catch (SomeUncheckedException expected) {
-    }
-  }
+	public void testException() {
+		final SomeUncheckedException exception = new SomeUncheckedException();
+		Iterator<Integer> iter = new AbstractIterator<Integer>() {
+			@Override
+			public Integer computeNext() {
+				throw exception;
+			}
+		};
 
-  public void testCantRemove() {
-    Iterator<Integer> iter = new AbstractIterator<Integer>() {
-      boolean haveBeenCalled;
-      @Override public Integer computeNext() {
-        if (haveBeenCalled) {
-          endOfData();
-        }
-        haveBeenCalled = true;
-        return 0;
-      }
-    };
+		// It should pass through untouched
+		try {
+			iter.hasNext();
+			fail("No exception thrown");
+		} catch (SomeUncheckedException e) {
+			assertSame(exception, e);
+		}
+	}
 
-    assertEquals(0, (int) iter.next());
+	public void testExceptionAfterEndOfData() {
+		Iterator<Integer> iter = new AbstractIterator<Integer>() {
+			@Override
+			public Integer computeNext() {
+				endOfData();
+				throw new SomeUncheckedException();
+			}
+		};
+		try {
+			iter.hasNext();
+			fail("No exception thrown");
+		} catch (SomeUncheckedException expected) {}
+	}
 
-    try {
-      iter.remove();
-      fail("No exception thrown");
-    } catch (UnsupportedOperationException expected) {
-    }
-  }
+	public void testCantRemove() {
+		Iterator<Integer> iter = new AbstractIterator<Integer>() {
+			boolean haveBeenCalled;
 
-  @GwtIncompatible("weak references")
-  public void testFreesNextReference() {
-    Iterator<Object> itr = new AbstractIterator<Object>() {
-      @Override public Object computeNext() {
-        return new Object();
-      }
-    };
-    WeakReference<Object> ref = new WeakReference<Object>(itr.next());
-    GcFinalization.awaitClear(ref);
-  }
+			@Override
+			public Integer computeNext() {
+				if (haveBeenCalled) {
+					endOfData();
+				}
+				haveBeenCalled = true;
+				return 0;
+			}
+		};
 
-  public void testReentrantHasNext() {
-    Iterator<Integer> iter = new AbstractIterator<Integer>() {
-      @Override protected Integer computeNext() {
-        hasNext();
-        return null;
-      }
-    };
-    try {
-      iter.hasNext();
-      fail();
-    } catch (IllegalStateException expected) {
-    }
-  }
+		assertEquals(0, (int) iter.next());
 
-  // Technically we should test other reentrant scenarios (4 combinations of
-  // hasNext/next), but we'll cop out for now, knowing that
-  // next() both start by invoking hasNext() anyway.
+		try {
+			iter.remove();
+			fail("No exception thrown");
+		} catch (UnsupportedOperationException expected) {}
+	}
 
-  /**
-   * Throws a undeclared checked exception.
-   */
-  private static void sneakyThrow(Throwable t) {
-    class SneakyThrower<T extends Throwable> {
-      @SuppressWarnings("unchecked") // intentionally unsafe for test
-      void throwIt(Throwable t) throws T {
-        throw (T) t;
-      }
-    }
-    new SneakyThrower<Error>().throwIt(t);
-  }
+	@GwtIncompatible("weak references")
+	public void testFreesNextReference() {
+		Iterator<Object> itr = new AbstractIterator<Object>() {
+			@Override
+			public Object computeNext() {
+				return new Object();
+			}
+		};
+		WeakReference<Object> ref = new WeakReference<Object>(itr.next());
+		GcFinalization.awaitClear(ref);
+	}
 
-  private static class SomeCheckedException extends Exception {
-  }
+	public void testReentrantHasNext() {
+		Iterator<Integer> iter = new AbstractIterator<Integer>() {
+			@Override
+			protected Integer computeNext() {
+				hasNext();
+				return null;
+			}
+		};
+		try {
+			iter.hasNext();
+			fail();
+		} catch (IllegalStateException expected) {}
+	}
 
-  private static class SomeUncheckedException extends RuntimeException {
-  }
+	// Technically we should test other reentrant scenarios (4 combinations of
+	// hasNext/next), but we'll cop out for now, knowing that
+	// next() both start by invoking hasNext() anyway.
+
+	/**
+	 * Throws a undeclared checked exception.
+	 */
+	private static void sneakyThrow(Throwable t) {
+		class SneakyThrower<T extends Throwable> {
+			@SuppressWarnings("unchecked") // intentionally unsafe for test
+			void throwIt(Throwable t) throws T {
+				throw (T) t;
+			}
+		}
+		new SneakyThrower<Error>().throwIt(t);
+	}
+
+	private static class SomeCheckedException extends Exception {}
+
+	private static class SomeUncheckedException extends RuntimeException {}
 }

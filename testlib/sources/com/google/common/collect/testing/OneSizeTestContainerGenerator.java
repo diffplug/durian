@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
+
+import java.util.Collection;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.collect.testing.features.CollectionSize;
-
-import java.util.Collection;
 
 /**
  * The subject-generator interface accepted by Collection testers, for testing
@@ -33,10 +33,10 @@ import java.util.Collection;
  */
 @GwtCompatible
 public interface OneSizeTestContainerGenerator<T, E>
-    extends TestSubjectGenerator<T>, TestContainerGenerator<T, E> {
-  TestContainerGenerator<T, E> getInnerGenerator();
+		extends TestSubjectGenerator<T>, TestContainerGenerator<T, E> {
+	TestContainerGenerator<T, E> getInnerGenerator();
 
-  Collection<E> getSampleElements(int howMany);
+	Collection<E> getSampleElements(int howMany);
 
-  CollectionSize getCollectionSize();
+	CollectionSize getCollectionSize();
 }

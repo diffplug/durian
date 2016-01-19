@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import com.google.common.annotations.GwtCompatible;
@@ -27,24 +27,22 @@ import com.google.common.annotations.GwtCompatible;
  */
 @GwtCompatible
 public class ListGetTester<E> extends AbstractListTester<E> {
-  public void testGet_valid() {
-    // This calls get() on each index and checks the result:
-    expectContents(createOrderedArray());
-  }
+	public void testGet_valid() {
+		// This calls get() on each index and checks the result:
+		expectContents(createOrderedArray());
+	}
 
-  public void testGet_negative() {
-    try {
-      getList().get(-1);
-      fail("get(-1) should throw");
-    } catch (IndexOutOfBoundsException expected) {
-    }
-  }
+	public void testGet_negative() {
+		try {
+			getList().get(-1);
+			fail("get(-1) should throw");
+		} catch (IndexOutOfBoundsException expected) {}
+	}
 
-  public void testGet_tooLarge() {
-    try {
-      getList().get(getNumElements());
-      fail("get(size) should throw");
-    } catch (IndexOutOfBoundsException expected) {
-    }
-  }
+	public void testGet_tooLarge() {
+		try {
+			getList().get(getNumElements());
+			fail("get(size) should throw");
+		} catch (IndexOutOfBoundsException expected) {}
+	}
 }

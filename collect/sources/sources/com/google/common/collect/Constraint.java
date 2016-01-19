@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
@@ -42,21 +42,21 @@ import com.google.common.annotations.GwtCompatible;
  */
 @GwtCompatible
 interface Constraint<E> {
-  /**
-   * Throws a suitable {@code RuntimeException} if the specified element is
-   * illegal. Typically this is either a {@link NullPointerException}, an
-   * {@link IllegalArgumentException}, or a {@link ClassCastException}, though
-   * an application-specific exception class may be used if appropriate.
-   *
-   * @param element the element to check
-   * @return the provided element
-   */
-  E checkElement(E element);
+	/**
+	 * Throws a suitable {@code RuntimeException} if the specified element is
+	 * illegal. Typically this is either a {@link NullPointerException}, an
+	 * {@link IllegalArgumentException}, or a {@link ClassCastException}, though
+	 * an application-specific exception class may be used if appropriate.
+	 *
+	 * @param element the element to check
+	 * @return the provided element
+	 */
+	E checkElement(E element);
 
-  /**
-   * Returns a brief human readable description of this constraint, such as
-   * "Not null" or "Positive number".
-   */
-  @Override
-  String toString();
+	/**
+	 * Returns a brief human readable description of this constraint, such as
+	 * "Not null" or "Positive number".
+	 */
+	@Override
+	String toString();
 }

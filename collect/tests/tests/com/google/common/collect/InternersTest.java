@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
+
+import java.lang.ref.WeakReference;
+
+import junit.framework.TestCase;
 
 import com.google.common.base.Function;
 import com.google.common.testing.GcFinalization;
 import com.google.common.testing.NullPointerTester;
-
-import junit.framework.TestCase;
-
-import java.lang.ref.WeakReference;
 
 /**
  * Unit test for {@link Interners}.
@@ -31,66 +31,65 @@ import java.lang.ref.WeakReference;
  */
 public class InternersTest extends TestCase {
 
-  public void testStrong_simplistic() {
-    String canonical = "a";
-    String not = new String("a");
+	public void testStrong_simplistic() {
+		String canonical = "a";
+		String not = new String("a");
 
-    Interner<String> pool = Interners.newStrongInterner();
-    assertSame(canonical, pool.intern(canonical));
-    assertSame(canonical, pool.intern(not));
-  }
+		Interner<String> pool = Interners.newStrongInterner();
+		assertSame(canonical, pool.intern(canonical));
+		assertSame(canonical, pool.intern(not));
+	}
 
-  public void testStrong_null() {
-    Interner<String> pool = Interners.newStrongInterner();
-    try {
-      pool.intern(null);
-      fail();
-    } catch (NullPointerException ok) {}
-  }
+	public void testStrong_null() {
+		Interner<String> pool = Interners.newStrongInterner();
+		try {
+			pool.intern(null);
+			fail();
+		} catch (NullPointerException ok) {}
+	}
 
-  public void testWeak_simplistic() {
-    String canonical = "a";
-    String not = new String("a");
+	public void testWeak_simplistic() {
+		String canonical = "a";
+		String not = new String("a");
 
-    Interner<String> pool = Interners.newWeakInterner();
-    assertSame(canonical, pool.intern(canonical));
-    assertSame(canonical, pool.intern(not));
-  }
+		Interner<String> pool = Interners.newWeakInterner();
+		assertSame(canonical, pool.intern(canonical));
+		assertSame(canonical, pool.intern(not));
+	}
 
-  public void testWeak_null() {
-    Interner<String> pool = Interners.newWeakInterner();
-    try {
-      pool.intern(null);
-      fail();
-    } catch (NullPointerException ok) {}
-  }
+	public void testWeak_null() {
+		Interner<String> pool = Interners.newWeakInterner();
+		try {
+			pool.intern(null);
+			fail();
+		} catch (NullPointerException ok) {}
+	}
 
-  public void testWeak_afterGC() throws InterruptedException {
-    Integer canonical = new Integer(5);
-    Integer not = new Integer(5);
+	public void testWeak_afterGC() throws InterruptedException {
+		Integer canonical = new Integer(5);
+		Integer not = new Integer(5);
 
-    Interner<Integer> pool = Interners.newWeakInterner();
-    assertSame(canonical, pool.intern(canonical));
+		Interner<Integer> pool = Interners.newWeakInterner();
+		assertSame(canonical, pool.intern(canonical));
 
-    WeakReference<Integer> signal = new WeakReference<Integer>(canonical);
-    canonical = null;  // Hint to the JIT that canonical is unreachable
+		WeakReference<Integer> signal = new WeakReference<Integer>(canonical);
+		canonical = null; // Hint to the JIT that canonical is unreachable
 
-    GcFinalization.awaitClear(signal);
-    assertSame(not, pool.intern(not));
-  }
+		GcFinalization.awaitClear(signal);
+		assertSame(not, pool.intern(not));
+	}
 
-  public void testAsFunction_simplistic() {
-    String canonical = "a";
-    String not = new String("a");
+	public void testAsFunction_simplistic() {
+		String canonical = "a";
+		String not = new String("a");
 
-    Function<String, String> internerFunction =
-        Interners.asFunction(Interners.<String>newStrongInterner());
+		Function<String, String> internerFunction = Interners.asFunction(Interners.<String> newStrongInterner());
 
-    assertSame(canonical, internerFunction.apply(canonical));
-    assertSame(canonical, internerFunction.apply(not));
-  }
+		assertSame(canonical, internerFunction.apply(canonical));
+		assertSame(canonical, internerFunction.apply(not));
+	}
 
-  public void testNullPointerExceptions() {
-    new NullPointerTester().testAllPublicStaticMethods(Interners.class);
-  }
+	public void testNullPointerExceptions() {
+		new NullPointerTester().testAllPublicStaticMethods(Interners.class);
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +16,9 @@
  */
 package com.google.common.collect.testing;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.util.SortedSet;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Creates sorted sets, containing sample elements, to be tested.
@@ -26,30 +27,30 @@ import java.util.SortedSet;
  */
 @GwtCompatible
 public interface TestSortedSetGenerator<E> extends TestSetGenerator<E> {
-  @Override
-  SortedSet<E> create(Object... elements);
+	@Override
+	SortedSet<E> create(Object... elements);
 
-  /**
-   * Returns an element less than the {@link #samples()} and less than
-   * {@link #belowSamplesGreater()}.
-   */
-  E belowSamplesLesser();
+	/**
+	 * Returns an element less than the {@link #samples()} and less than
+	 * {@link #belowSamplesGreater()}.
+	 */
+	E belowSamplesLesser();
 
-  /**
-   * Returns an element less than the {@link #samples()} but greater than
-   * {@link #belowSamplesLesser()}.
-   */
-  E belowSamplesGreater();
+	/**
+	 * Returns an element less than the {@link #samples()} but greater than
+	 * {@link #belowSamplesLesser()}.
+	 */
+	E belowSamplesGreater();
 
-  /**
-   * Returns an element greater than the {@link #samples()} but less than
-   * {@link #aboveSamplesGreater()}.
-   */
-  E aboveSamplesLesser();
+	/**
+	 * Returns an element greater than the {@link #samples()} but less than
+	 * {@link #aboveSamplesGreater()}.
+	 */
+	E aboveSamplesLesser();
 
-  /**
-   * Returns an element greater than the {@link #samples()} and greater than
-   * {@link #aboveSamplesLesser()}.
-   */
-  E aboveSamplesGreater();
+	/**
+	 * Returns an element greater than the {@link #samples()} and greater than
+	 * {@link #aboveSamplesLesser()}.
+	 */
+	E aboveSamplesGreater();
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.base;
+
+import javax.annotation.CheckReturnValue;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
-
-import javax.annotation.CheckReturnValue;
 
 /**
  * A time source; returns a time value representing the number of nanoseconds elapsed since some
@@ -36,32 +36,31 @@ import javax.annotation.CheckReturnValue;
 @Beta
 @GwtCompatible
 public abstract class Ticker {
-  /**
-   * Constructor for use by subclasses.
-   */
-  protected Ticker() {}
+	/**
+	 * Constructor for use by subclasses.
+	 */
+	protected Ticker() {}
 
-  /**
-   * Returns the number of nanoseconds elapsed since this ticker's fixed
-   * point of reference.
-   */
-  public abstract long read();
+	/**
+	 * Returns the number of nanoseconds elapsed since this ticker's fixed
+	 * point of reference.
+	 */
+	public abstract long read();
 
-  /**
-   * A ticker that reads the current time using {@link System#nanoTime}.
-   *
-   * @since 10.0
-   */
-  @CheckReturnValue
-  public static Ticker systemTicker() {
-    return SYSTEM_TICKER;
-  }
+	/**
+	 * A ticker that reads the current time using {@link System#nanoTime}.
+	 *
+	 * @since 10.0
+	 */
+	@CheckReturnValue
+	public static Ticker systemTicker() {
+		return SYSTEM_TICKER;
+	}
 
-  private static final Ticker SYSTEM_TICKER =
-      new Ticker() {
-        @Override
-        public long read() {
-          return Platform.systemNanoTime();
-        }
-      };
+	private static final Ticker SYSTEM_TICKER = new Ticker() {
+		@Override
+		public long read() {
+			return Platform.systemNanoTime();
+		}
+	};
 }

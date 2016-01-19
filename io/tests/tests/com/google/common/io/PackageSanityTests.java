@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
-
-import com.google.common.testing.AbstractPackageSanityTests;
 
 import java.lang.reflect.Method;
 import java.nio.channels.FileChannel.MapMode;
+
+import com.google.common.testing.AbstractPackageSanityTests;
 
 /**
  * Basic sanity tests for the entire package.
@@ -28,11 +28,11 @@ import java.nio.channels.FileChannel.MapMode;
  */
 
 public class PackageSanityTests extends AbstractPackageSanityTests {
-  public PackageSanityTests() {
-    setDefault(BaseEncoding.class, BaseEncoding.base64());
-    setDefault(int.class, 32);
-    setDefault(String.class, "abcd");
-    setDefault(Method.class, AbstractPackageSanityTests.class.getDeclaredMethods()[0]);
-    setDefault(MapMode.class, MapMode.READ_ONLY);
-  }
+	public PackageSanityTests() {
+		setDefault(BaseEncoding.class, BaseEncoding.base64());
+		setDefault(int.class, 32);
+		setDefault(String.class, "abcd");
+		setDefault(Method.class, AbstractPackageSanityTests.class.getDeclaredMethods()[0]);
+		setDefault(MapMode.class, MapMode.READ_ONLY);
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.hash;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
@@ -23,10 +23,10 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Signifies that a test should not be run under Android. This annotation is respected only by our

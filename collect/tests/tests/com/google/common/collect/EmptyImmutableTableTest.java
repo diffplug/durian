@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import com.google.common.annotations.GwtCompatible;
@@ -27,95 +27,96 @@ import com.google.common.testing.EqualsTester;
  */
 @GwtCompatible(emulated = true)
 public class EmptyImmutableTableTest extends AbstractImmutableTableTest {
-  private static final ImmutableTable<Character, Integer, String> INSTANCE = ImmutableTable.of();
+	private static final ImmutableTable<Character, Integer, String> INSTANCE = ImmutableTable.of();
 
-  @Override Iterable<ImmutableTable<Character, Integer, String>> getTestInstances() {
-    return ImmutableSet.of(INSTANCE);
-  }
+	@Override
+	Iterable<ImmutableTable<Character, Integer, String>> getTestInstances() {
+		return ImmutableSet.of(INSTANCE);
+	}
 
-  public void testHashCode() {
-    assertEquals(0, INSTANCE.hashCode());
-  }
+	public void testHashCode() {
+		assertEquals(0, INSTANCE.hashCode());
+	}
 
-  public void testEqualsObject() {
-    Table<Character, Integer, String> nonEmptyTable = HashBasedTable.create();
-    nonEmptyTable.put('A', 1, "blah");
+	public void testEqualsObject() {
+		Table<Character, Integer, String> nonEmptyTable = HashBasedTable.create();
+		nonEmptyTable.put('A', 1, "blah");
 
-    new EqualsTester()
-        .addEqualityGroup(INSTANCE, HashBasedTable.create(), TreeBasedTable.create())
-        .addEqualityGroup(nonEmptyTable)
-        .testEquals();
-  }
+		new EqualsTester()
+				.addEqualityGroup(INSTANCE, HashBasedTable.create(), TreeBasedTable.create())
+				.addEqualityGroup(nonEmptyTable)
+				.testEquals();
+	}
 
-  @GwtIncompatible("ArrayTable")
-  public void testEqualsObjectNullValues() {
-    new EqualsTester()
-        .addEqualityGroup(INSTANCE)
-        .addEqualityGroup(ArrayTable.create(ImmutableSet.of('A'), ImmutableSet.of(1)))
-        .testEquals();
-  }
+	@GwtIncompatible("ArrayTable")
+	public void testEqualsObjectNullValues() {
+		new EqualsTester()
+				.addEqualityGroup(INSTANCE)
+				.addEqualityGroup(ArrayTable.create(ImmutableSet.of('A'), ImmutableSet.of(1)))
+				.testEquals();
+	}
 
-  public void testToString() {
-    assertEquals("{}", INSTANCE.toString());
-  }
+	public void testToString() {
+		assertEquals("{}", INSTANCE.toString());
+	}
 
-  public void testSize() {
-    assertEquals(0, INSTANCE.size());
-  }
+	public void testSize() {
+		assertEquals(0, INSTANCE.size());
+	}
 
-  public void testGet() {
-    assertNull(INSTANCE.get('a', 1));
-  }
+	public void testGet() {
+		assertNull(INSTANCE.get('a', 1));
+	}
 
-  public void testIsEmpty() {
-    assertTrue(INSTANCE.isEmpty());
-  }
+	public void testIsEmpty() {
+		assertTrue(INSTANCE.isEmpty());
+	}
 
-  public void testCellSet() {
-    assertEquals(ImmutableSet.of(), INSTANCE.cellSet());
-  }
+	public void testCellSet() {
+		assertEquals(ImmutableSet.of(), INSTANCE.cellSet());
+	}
 
-  public void testColumn() {
-    assertEquals(ImmutableMap.of(), INSTANCE.column(1));
-  }
+	public void testColumn() {
+		assertEquals(ImmutableMap.of(), INSTANCE.column(1));
+	}
 
-  public void testColumnKeySet() {
-    assertEquals(ImmutableSet.of(), INSTANCE.columnKeySet());
-  }
+	public void testColumnKeySet() {
+		assertEquals(ImmutableSet.of(), INSTANCE.columnKeySet());
+	}
 
-  public void testColumnMap() {
-    assertEquals(ImmutableMap.of(), INSTANCE.columnMap());
-  }
+	public void testColumnMap() {
+		assertEquals(ImmutableMap.of(), INSTANCE.columnMap());
+	}
 
-  public void testContains() {
-    assertFalse(INSTANCE.contains('a', 1));
-  }
+	public void testContains() {
+		assertFalse(INSTANCE.contains('a', 1));
+	}
 
-  public void testContainsColumn() {
-    assertFalse(INSTANCE.containsColumn(1));
-  }
+	public void testContainsColumn() {
+		assertFalse(INSTANCE.containsColumn(1));
+	}
 
-  public void testContainsRow() {
-    assertFalse(INSTANCE.containsRow('a'));
-  }
+	public void testContainsRow() {
+		assertFalse(INSTANCE.containsRow('a'));
+	}
 
-  public void testContainsValue() {
-    assertFalse(INSTANCE.containsValue("blah"));
-  }
+	public void testContainsValue() {
+		assertFalse(INSTANCE.containsValue("blah"));
+	}
 
-  public void testRow() {
-    assertEquals(ImmutableMap.of(), INSTANCE.row('a'));
-  }
+	public void testRow() {
+		assertEquals(ImmutableMap.of(), INSTANCE.row('a'));
+	}
 
-  public void testRowKeySet() {
-    assertEquals(ImmutableSet.of(), INSTANCE.rowKeySet());
-  }
+	public void testRowKeySet() {
+		assertEquals(ImmutableSet.of(), INSTANCE.rowKeySet());
+	}
 
-  public void testRowMap() {
-    assertEquals(ImmutableMap.of(), INSTANCE.rowMap());
-  }
+	public void testRowMap() {
+		assertEquals(ImmutableMap.of(), INSTANCE.rowMap());
+	}
 
-  public void testValues() {
-    assertTrue(INSTANCE.values().isEmpty());
-  }
+	public void testValues() {
+		assertTrue(INSTANCE.values().isEmpty());
+	}
 }

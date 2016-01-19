@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.base;
 
 import junit.framework.TestCase;
@@ -25,33 +25,33 @@ import junit.framework.TestCase;
  */
 public class StandardSystemPropertyTest extends TestCase {
 
-  public void testGetKeyMatchesString() {
-    for (StandardSystemProperty property : StandardSystemProperty.values()) {
-      String fieldName = property.name();
-      String expected = Ascii.toLowerCase(fieldName).replaceAll("_", ".");
-      assertEquals(expected, property.key());
-    }
-  }
+	public void testGetKeyMatchesString() {
+		for (StandardSystemProperty property : StandardSystemProperty.values()) {
+			String fieldName = property.name();
+			String expected = Ascii.toLowerCase(fieldName).replaceAll("_", ".");
+			assertEquals(expected, property.key());
+		}
+	}
 
-  public void testGetValue() {
-    for (StandardSystemProperty property : StandardSystemProperty.values()) {
-      assertEquals(System.getProperty(property.key()), property.value());
-    }
-  }
+	public void testGetValue() {
+		for (StandardSystemProperty property : StandardSystemProperty.values()) {
+			assertEquals(System.getProperty(property.key()), property.value());
+		}
+	}
 
-  public void testToString() {
-    for (StandardSystemProperty property : StandardSystemProperty.values()) {
-      assertEquals(property.key() + "=" + property.value(), property.toString());
-    }
-  }
+	public void testToString() {
+		for (StandardSystemProperty property : StandardSystemProperty.values()) {
+			assertEquals(property.key() + "=" + property.value(), property.toString());
+		}
+	}
 
-  public void testNoNullValues() {
-    for (StandardSystemProperty property : StandardSystemProperty.values()) {
-      // Even though the contract in System.getProperties() specifies that a value will exist for
-      // all of the listed keys, for some reason the "java.compiler" key returns null in some JVMs.
-      if (property != StandardSystemProperty.JAVA_COMPILER) {
-        assertNotNull(property.value());
-      }
-    }
-  }
+	public void testNoNullValues() {
+		for (StandardSystemProperty property : StandardSystemProperty.values()) {
+			// Even though the contract in System.getProperties() specifies that a value will exist for
+			// all of the listed keys, for some reason the "java.compiler" key returns null in some JVMs.
+			if (property != StandardSystemProperty.JAVA_COMPILER) {
+				assertNotNull(property.value());
+			}
+		}
+	}
 }

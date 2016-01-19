@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.util.Iterator;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * An iterator that does not support {@link #remove}.
@@ -32,18 +32,18 @@ import java.util.Iterator;
  */
 @GwtCompatible
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
-  /** Constructor for use by subclasses. */
-  protected UnmodifiableIterator() {}
+	/** Constructor for use by subclasses. */
+	protected UnmodifiableIterator() {}
 
-  /**
-   * Guaranteed to throw an exception and leave the underlying data unmodified.
-   *
-   * @throws UnsupportedOperationException always
-   * @deprecated Unsupported operation.
-   */
-  @Deprecated
-  @Override
-  public final void remove() {
-    throw new UnsupportedOperationException();
-  }
+	/**
+	 * Guaranteed to throw an exception and leave the underlying data unmodified.
+	 *
+	 * @throws UnsupportedOperationException always
+	 * @deprecated Unsupported operation.
+	 */
+	@Deprecated
+	@Override
+	public final void remove() {
+		throw new UnsupportedOperationException();
+	}
 }

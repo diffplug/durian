@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
-import com.google.common.testing.NullPointerTester;
-
 import junit.framework.TestCase;
+
+import com.google.common.testing.NullPointerTester;
 
 /**
  * Test cases for {@link Range} which cannot run as GWT tests.
@@ -28,14 +28,14 @@ import junit.framework.TestCase;
  */
 public class RangeNonGwtTest extends TestCase {
 
-  public void testNullPointers() {
-    NullPointerTester tester = new NullPointerTester();
+	public void testNullPointers() {
+		NullPointerTester tester = new NullPointerTester();
 
-    tester.testAllPublicStaticMethods(Range.class);
-    tester.testAllPublicStaticMethods(Range.class);
+		tester.testAllPublicStaticMethods(Range.class);
+		tester.testAllPublicStaticMethods(Range.class);
 
-    tester.testAllPublicInstanceMethods(Range.all());
-    tester.testAllPublicInstanceMethods(Range.open(1, 3));
-  }
+		tester.testAllPublicInstanceMethods(Range.all());
+		tester.testAllPublicInstanceMethods(Range.open(1, 3));
+	}
 
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.testing;
-
-import com.google.common.annotations.Beta;
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.google.common.annotations.Beta;
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Simple utility for when you want to create a {@link TearDown} that may throw
@@ -35,19 +35,18 @@ import java.util.logging.Logger;
 @Beta
 @GwtCompatible
 public abstract class SloppyTearDown implements TearDown {
-  public static final Logger logger =
-      Logger.getLogger(SloppyTearDown.class.getName());
+	public static final Logger logger = Logger.getLogger(SloppyTearDown.class.getName());
 
-  @Override
-  public final void tearDown() {
-    try {
-      sloppyTearDown();
-    } catch (Throwable t) {
-      logger.log(Level.INFO,
-          "exception thrown during tearDown: " + t.getMessage(), t);
-    }
-  }
+	@Override
+	public final void tearDown() {
+		try {
+			sloppyTearDown();
+		} catch (Throwable t) {
+			logger.log(Level.INFO,
+					"exception thrown during tearDown: " + t.getMessage(), t);
+		}
+	}
 
-  public abstract void sloppyTearDown() throws Exception;
+	public abstract void sloppyTearDown() throws Exception;
 
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,33 +30,33 @@ import java.util.concurrent.TimeUnit;
  * @author Luke Sandberg
  */
 abstract class WrappingScheduledExecutorService extends WrappingExecutorService
-    implements ScheduledExecutorService {
-  final ScheduledExecutorService delegate;
+		implements ScheduledExecutorService {
+	final ScheduledExecutorService delegate;
 
-  protected WrappingScheduledExecutorService(ScheduledExecutorService delegate) {
-    super(delegate);
-    this.delegate = delegate;
-  }
+	protected WrappingScheduledExecutorService(ScheduledExecutorService delegate) {
+		super(delegate);
+		this.delegate = delegate;
+	}
 
-  @Override
-  public final ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
-    return delegate.schedule(wrapTask(command), delay, unit);
-  }
+	@Override
+	public final ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit) {
+		return delegate.schedule(wrapTask(command), delay, unit);
+	}
 
-  @Override
-  public final <V> ScheduledFuture<V> schedule(Callable<V> task, long delay, TimeUnit unit) {
-    return delegate.schedule(wrapTask(task), delay, unit);
-  }
+	@Override
+	public final <V> ScheduledFuture<V> schedule(Callable<V> task, long delay, TimeUnit unit) {
+		return delegate.schedule(wrapTask(task), delay, unit);
+	}
 
-  @Override
-  public final ScheduledFuture<?> scheduleAtFixedRate(
-      Runnable command, long initialDelay, long period, TimeUnit unit) {
-    return delegate.scheduleAtFixedRate(wrapTask(command), initialDelay, period, unit);
-  }
+	@Override
+	public final ScheduledFuture<?> scheduleAtFixedRate(
+			Runnable command, long initialDelay, long period, TimeUnit unit) {
+		return delegate.scheduleAtFixedRate(wrapTask(command), initialDelay, period, unit);
+	}
 
-  @Override
-  public final ScheduledFuture<?> scheduleWithFixedDelay(
-      Runnable command, long initialDelay, long delay, TimeUnit unit) {
-    return delegate.scheduleWithFixedDelay(wrapTask(command), initialDelay, delay, unit);
-  }
+	@Override
+	public final ScheduledFuture<?> scheduleWithFixedDelay(
+			Runnable command, long initialDelay, long delay, TimeUnit unit) {
+		return delegate.scheduleWithFixedDelay(wrapTask(command), initialDelay, delay, unit);
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.eventbus;
-
-import com.google.common.collect.Lists;
-
-import junit.framework.Assert;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+import junit.framework.Assert;
+
+import com.google.common.collect.Lists;
 
 /**
  * A simple EventSubscriber mock that records Strings.
@@ -33,18 +33,18 @@ import javax.annotation.Nullable;
  * @author Cliff Biffle
  */
 public class StringCatcher {
-  private List<String> events = Lists.newArrayList();
+	private List<String> events = Lists.newArrayList();
 
-  @Subscribe
-  public void hereHaveAString(@Nullable String string) {
-    events.add(string);
-  }
+	@Subscribe
+	public void hereHaveAString(@Nullable String string) {
+		events.add(string);
+	}
 
-  public void methodWithoutAnnotation(@Nullable String string) {
-    Assert.fail("Event bus must not call methods without @Subscribe!");
-  }
+	public void methodWithoutAnnotation(@Nullable String string) {
+		Assert.fail("Event bus must not call methods without @Subscribe!");
+	}
 
-  public List<String> getEvents() {
-    return events;
-  }
+	public List<String> getEvents() {
+		return events;
+	}
 }

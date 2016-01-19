@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
 import java.io.ByteArrayInputStream;
@@ -32,52 +32,52 @@ import java.util.List;
  * @author Jesse Wilson
  */
 public class ReserializingTestCollectionGenerator<E>
-    implements TestCollectionGenerator<E> {
-  private final TestCollectionGenerator<E> delegate;
+		implements TestCollectionGenerator<E> {
+	private final TestCollectionGenerator<E> delegate;
 
-  ReserializingTestCollectionGenerator(TestCollectionGenerator<E> delegate) {
-    this.delegate = delegate;
-  }
+	ReserializingTestCollectionGenerator(TestCollectionGenerator<E> delegate) {
+		this.delegate = delegate;
+	}
 
-  public static <E> ReserializingTestCollectionGenerator<E> newInstance(
-      TestCollectionGenerator<E> delegate) {
-    return new ReserializingTestCollectionGenerator<E>(delegate);
-  }
+	public static <E> ReserializingTestCollectionGenerator<E> newInstance(
+			TestCollectionGenerator<E> delegate) {
+		return new ReserializingTestCollectionGenerator<E>(delegate);
+	}
 
-  @Override
-  public Collection<E> create(Object... elements) {
-    return reserialize(delegate.create(elements));
-  }
+	@Override
+	public Collection<E> create(Object... elements) {
+		return reserialize(delegate.create(elements));
+	}
 
-  @SuppressWarnings("unchecked")
-  static <T> T reserialize(T object) {
-    try {
-      ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-      ObjectOutputStream out = new ObjectOutputStream(bytes);
-      out.writeObject(object);
-      ObjectInputStream in = new ObjectInputStream(
-          new ByteArrayInputStream(bytes.toByteArray()));
-      return (T) in.readObject();
-    } catch (IOException e) {
-      Helpers.fail(e, e.getMessage());
-    } catch (ClassNotFoundException e) {
-      Helpers.fail(e, e.getMessage());
-    }
-    throw new AssertionError("not reachable");
-  }
+	@SuppressWarnings("unchecked")
+	static <T> T reserialize(T object) {
+		try {
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(bytes);
+			out.writeObject(object);
+			ObjectInputStream in = new ObjectInputStream(
+					new ByteArrayInputStream(bytes.toByteArray()));
+			return (T) in.readObject();
+		} catch (IOException e) {
+			Helpers.fail(e, e.getMessage());
+		} catch (ClassNotFoundException e) {
+			Helpers.fail(e, e.getMessage());
+		}
+		throw new AssertionError("not reachable");
+	}
 
-  @Override
-  public SampleElements<E> samples() {
-    return delegate.samples();
-  }
+	@Override
+	public SampleElements<E> samples() {
+		return delegate.samples();
+	}
 
-  @Override
-  public E[] createArray(int length) {
-    return delegate.createArray(length);
-  }
+	@Override
+	public E[] createArray(int length) {
+		return delegate.createArray(length);
+	}
 
-  @Override
-  public Iterable<E> order(List<E> insertionOrder) {
-    return delegate.order(insertionOrder);
-  }
+	@Override
+	public Iterable<E> order(List<E> insertionOrder) {
+		return delegate.order(insertionOrder);
+	}
 }

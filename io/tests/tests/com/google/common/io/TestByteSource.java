@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.collect.ImmutableSet;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * A byte source for testing that has configurable behavior.
@@ -32,43 +32,43 @@ import java.util.Random;
  */
 public final class TestByteSource extends ByteSource implements TestStreamSupplier {
 
-  private final byte[] bytes;
-  private final ImmutableSet<TestOption> options;
+	private final byte[] bytes;
+	private final ImmutableSet<TestOption> options;
 
-  private boolean inputStreamOpened;
-  private boolean inputStreamClosed;
+	private boolean inputStreamOpened;
+	private boolean inputStreamClosed;
 
-  TestByteSource(byte[] bytes, TestOption... options) {
-    this.bytes = checkNotNull(bytes);
-    this.options = ImmutableSet.copyOf(options);
-  }
+	TestByteSource(byte[] bytes, TestOption... options) {
+		this.bytes = checkNotNull(bytes);
+		this.options = ImmutableSet.copyOf(options);
+	}
 
-  @Override
-  public boolean wasStreamOpened() {
-    return inputStreamOpened;
-  }
+	@Override
+	public boolean wasStreamOpened() {
+		return inputStreamOpened;
+	}
 
-  @Override
-  public boolean wasStreamClosed() {
-    return inputStreamClosed;
-  }
+	@Override
+	public boolean wasStreamClosed() {
+		return inputStreamClosed;
+	}
 
-  @Override
-  public InputStream openStream() throws IOException {
-    inputStreamOpened = true;
-    return new RandomAmountInputStream(new In(), new Random());
-  }
+	@Override
+	public InputStream openStream() throws IOException {
+		inputStreamOpened = true;
+		return new RandomAmountInputStream(new In(), new Random());
+	}
 
-  private final class In extends TestInputStream {
+	private final class In extends TestInputStream {
 
-    public In() throws IOException {
-      super(new ByteArrayInputStream(bytes), options);
-    }
+		public In() throws IOException {
+			super(new ByteArrayInputStream(bytes), options);
+		}
 
-    @Override
-    public void close() throws IOException {
-      inputStreamClosed = true;
-      super.close();
-    }
-  }
+		@Override
+		public void close() throws IOException {
+			inputStreamClosed = true;
+			super.close();
+		}
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.concurrent.Future;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Transforms a value, possibly asynchronously. For an example usage and more
@@ -32,13 +32,13 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 public interface AsyncFunction<I, O> {
-  /**
-   * Returns an output {@code Future} to use in place of the given {@code
-   * input}. The output {@code Future} need not be {@linkplain Future#isDone
-   * done}, making {@code AsyncFunction} suitable for asynchronous derivations.
-   *
-   * <p>Throwing an exception from this method is equivalent to returning a
-   * failing {@code Future}.
-   */
-  ListenableFuture<O> apply(@Nullable I input) throws Exception;
+	/**
+	 * Returns an output {@code Future} to use in place of the given {@code
+	 * input}. The output {@code Future} need not be {@linkplain Future#isDone
+	 * done}, making {@code AsyncFunction} suitable for asynchronous derivations.
+	 *
+	 * <p>Throwing an exception from this method is equivalent to returning a
+	 * failing {@code Future}.
+	 */
+	ListenableFuture<O> apply(@Nullable I input) throws Exception;
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
+
+import java.util.ListIterator;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Function;
-
-import java.util.ListIterator;
 
 /**
  * An iterator that transforms a backing list iterator; for internal use. This
@@ -30,42 +30,42 @@ import java.util.ListIterator;
  */
 @GwtCompatible
 abstract class TransformedListIterator<F, T> extends TransformedIterator<F, T>
-    implements ListIterator<T> {
-  TransformedListIterator(ListIterator<? extends F> backingIterator) {
-    super(backingIterator);
-  }
+		implements ListIterator<T> {
+	TransformedListIterator(ListIterator<? extends F> backingIterator) {
+		super(backingIterator);
+	}
 
-  private ListIterator<? extends F> backingIterator() {
-    return Iterators.cast(backingIterator);
-  }
+	private ListIterator<? extends F> backingIterator() {
+		return Iterators.cast(backingIterator);
+	}
 
-  @Override
-  public final boolean hasPrevious() {
-    return backingIterator().hasPrevious();
-  }
+	@Override
+	public final boolean hasPrevious() {
+		return backingIterator().hasPrevious();
+	}
 
-  @Override
-  public final T previous() {
-    return transform(backingIterator().previous());
-  }
+	@Override
+	public final T previous() {
+		return transform(backingIterator().previous());
+	}
 
-  @Override
-  public final int nextIndex() {
-    return backingIterator().nextIndex();
-  }
+	@Override
+	public final int nextIndex() {
+		return backingIterator().nextIndex();
+	}
 
-  @Override
-  public final int previousIndex() {
-    return backingIterator().previousIndex();
-  }
+	@Override
+	public final int previousIndex() {
+		return backingIterator().previousIndex();
+	}
 
-  @Override
-  public void set(T element) {
-    throw new UnsupportedOperationException();
-  }
+	@Override
+	public void set(T element) {
+		throw new UnsupportedOperationException();
+	}
 
-  @Override
-  public void add(T element) {
-    throw new UnsupportedOperationException();
-  }
+	@Override
+	public void add(T element) {
+		throw new UnsupportedOperationException();
+	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.net;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.testing.EqualsTester;
-import com.google.common.testing.NullPointerTester;
+import java.text.ParseException;
+import java.util.List;
 
 import junit.framework.TestCase;
 
-import java.text.ParseException;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
+import com.google.common.testing.EqualsTester;
+import com.google.common.testing.NullPointerTester;
 
 /**
  * {@link TestCase} for {@link HostSpecifier}.  This is a relatively
@@ -38,86 +38,86 @@ import java.util.List;
  */
 public final class HostSpecifierTest extends TestCase {
 
-  private static final List<String> GOOD_IPS = ImmutableList.of(
-      "1.2.3.4", "2001:db8::1", "[2001:db8::1]");
+	private static final List<String> GOOD_IPS = ImmutableList.of(
+			"1.2.3.4", "2001:db8::1", "[2001:db8::1]");
 
-  private static final List<String> BAD_IPS = ImmutableList.of(
-      "1.2.3", "2001:db8::1::::::0", "[2001:db8::1", "[::]:80");
+	private static final List<String> BAD_IPS = ImmutableList.of(
+			"1.2.3", "2001:db8::1::::::0", "[2001:db8::1", "[::]:80");
 
-  private static final List<String> GOOD_DOMAINS = ImmutableList.of(
-      "com", "google.com", "foo.co.uk");
+	private static final List<String> GOOD_DOMAINS = ImmutableList.of(
+			"com", "google.com", "foo.co.uk");
 
-  private static final List<String> BAD_DOMAINS = ImmutableList.of(
-      "foo.blah", "", "[google.com]");
+	private static final List<String> BAD_DOMAINS = ImmutableList.of(
+			"foo.blah", "", "[google.com]");
 
-  public void testGoodIpAddresses() throws ParseException {
-    for (String spec : GOOD_IPS) {
-      assertGood(spec);
-    }
-  }
+	public void testGoodIpAddresses() throws ParseException {
+		for (String spec : GOOD_IPS) {
+			assertGood(spec);
+		}
+	}
 
-  public void testBadIpAddresses() {
-    for (String spec : BAD_IPS) {
-      assertBad(spec);
-    }
-  }
+	public void testBadIpAddresses() {
+		for (String spec : BAD_IPS) {
+			assertBad(spec);
+		}
+	}
 
-  public void testGoodDomains() throws ParseException {
-    for (String spec : GOOD_DOMAINS) {
-      assertGood(spec);
-    }
-  }
+	public void testGoodDomains() throws ParseException {
+		for (String spec : GOOD_DOMAINS) {
+			assertGood(spec);
+		}
+	}
 
-  public void testBadDomains() {
-    for (String spec : BAD_DOMAINS) {
-      assertBad(spec);
-    }
-  }
+	public void testBadDomains() {
+		for (String spec : BAD_DOMAINS) {
+			assertBad(spec);
+		}
+	}
 
-  public void testEquality() {
-    new EqualsTester()
-        .addEqualityGroup(spec("1.2.3.4"), spec("1.2.3.4"))
-        .addEqualityGroup(
-            spec("2001:db8::1"), spec("2001:db8::1"), spec("[2001:db8::1]"))
-        .addEqualityGroup(spec("2001:db8::2"))
-        .addEqualityGroup(spec("google.com"), spec("google.com"))
-        .addEqualityGroup(spec("www.google.com"))
-        .testEquals();
-  }
+	public void testEquality() {
+		new EqualsTester()
+				.addEqualityGroup(spec("1.2.3.4"), spec("1.2.3.4"))
+				.addEqualityGroup(
+						spec("2001:db8::1"), spec("2001:db8::1"), spec("[2001:db8::1]"))
+				.addEqualityGroup(spec("2001:db8::2"))
+				.addEqualityGroup(spec("google.com"), spec("google.com"))
+				.addEqualityGroup(spec("www.google.com"))
+				.testEquals();
+	}
 
-  private static HostSpecifier spec(String specifier) {
-    return HostSpecifier.fromValid(specifier);
-  }
+	private static HostSpecifier spec(String specifier) {
+		return HostSpecifier.fromValid(specifier);
+	}
 
-  public void testNulls() {
-    final NullPointerTester tester = new NullPointerTester();
+	public void testNulls() {
+		final NullPointerTester tester = new NullPointerTester();
 
-    tester.testAllPublicStaticMethods(HostSpecifier.class);
-    tester.testAllPublicInstanceMethods(HostSpecifier.fromValid("google.com"));
-  }
+		tester.testAllPublicStaticMethods(HostSpecifier.class);
+		tester.testAllPublicInstanceMethods(HostSpecifier.fromValid("google.com"));
+	}
 
-  private void assertGood(String spec) throws ParseException {
-    HostSpecifier.fromValid(spec);  // Throws exception if not working correctly
-    HostSpecifier.from(spec);
-    assertTrue(HostSpecifier.isValid(spec));
-  }
+	private void assertGood(String spec) throws ParseException {
+		HostSpecifier.fromValid(spec); // Throws exception if not working correctly
+		HostSpecifier.from(spec);
+		assertTrue(HostSpecifier.isValid(spec));
+	}
 
-  private void assertBad(String spec) {
-    try {
-      HostSpecifier.fromValid(spec);
-      fail("Should have thrown IllegalArgumentException: " + spec);
-    } catch (IllegalArgumentException expected) {
-      // Expected outcome
-    }
+	private void assertBad(String spec) {
+		try {
+			HostSpecifier.fromValid(spec);
+			fail("Should have thrown IllegalArgumentException: " + spec);
+		} catch (IllegalArgumentException expected) {
+			// Expected outcome
+		}
 
-    try {
-      HostSpecifier.from(spec);
-      fail("Should have thrown ParseException: " + spec);
-    } catch (ParseException expected) {
-      assertThat(expected.getCause()).isInstanceOf(IllegalArgumentException.class);
-    }
+		try {
+			HostSpecifier.from(spec);
+			fail("Should have thrown ParseException: " + spec);
+		} catch (ParseException expected) {
+			assertThat(expected.getCause()).isInstanceOf(IllegalArgumentException.class);
+		}
 
-    assertFalse(HostSpecifier.isValid(spec));
-  }
+		assertFalse(HostSpecifier.isValid(spec));
+	}
 
 }

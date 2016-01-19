@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.cache;
+
+import java.util.concurrent.ExecutionException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * A cache which forwards all its method calls to another cache. Subclasses should override one or
@@ -33,56 +33,56 @@ import java.util.concurrent.ExecutionException;
  * @since 11.0
  */
 public abstract class ForwardingLoadingCache<K, V>
-    extends ForwardingCache<K, V> implements LoadingCache<K, V> {
+		extends ForwardingCache<K, V>implements LoadingCache<K, V> {
 
-  /** Constructor for use by subclasses. */
-  protected ForwardingLoadingCache() {}
+	/** Constructor for use by subclasses. */
+	protected ForwardingLoadingCache() {}
 
-  @Override
-  protected abstract LoadingCache<K, V> delegate();
+	@Override
+	protected abstract LoadingCache<K, V> delegate();
 
-  @Override
-  public V get(K key) throws ExecutionException {
-    return delegate().get(key);
-  }
+	@Override
+	public V get(K key) throws ExecutionException {
+		return delegate().get(key);
+	}
 
-  @Override
-  public V getUnchecked(K key) {
-    return delegate().getUnchecked(key);
-  }
+	@Override
+	public V getUnchecked(K key) {
+		return delegate().getUnchecked(key);
+	}
 
-  @Override
-  public ImmutableMap<K, V> getAll(Iterable<? extends K> keys) throws ExecutionException {
-    return delegate().getAll(keys);
-  }
+	@Override
+	public ImmutableMap<K, V> getAll(Iterable<? extends K> keys) throws ExecutionException {
+		return delegate().getAll(keys);
+	}
 
-  @Override
-  public V apply(K key) {
-    return delegate().apply(key);
-  }
+	@Override
+	public V apply(K key) {
+		return delegate().apply(key);
+	}
 
-  @Override
-  public void refresh(K key) {
-    delegate().refresh(key);
-  }
+	@Override
+	public void refresh(K key) {
+		delegate().refresh(key);
+	}
 
-  /**
-   * A simplified version of {@link ForwardingLoadingCache} where subclasses can pass in an already
-   * constructed {@link LoadingCache} as the delegate.
-   *
-   * @since 10.0
-   */
-  public abstract static class SimpleForwardingLoadingCache<K, V>
-      extends ForwardingLoadingCache<K, V> {
-    private final LoadingCache<K, V> delegate;
+	/**
+	 * A simplified version of {@link ForwardingLoadingCache} where subclasses can pass in an already
+	 * constructed {@link LoadingCache} as the delegate.
+	 *
+	 * @since 10.0
+	 */
+	public abstract static class SimpleForwardingLoadingCache<K, V>
+			extends ForwardingLoadingCache<K, V> {
+		private final LoadingCache<K, V> delegate;
 
-    protected SimpleForwardingLoadingCache(LoadingCache<K, V> delegate) {
-      this.delegate = Preconditions.checkNotNull(delegate);
-    }
+		protected SimpleForwardingLoadingCache(LoadingCache<K, V> delegate) {
+			this.delegate = Preconditions.checkNotNull(delegate);
+		}
 
-    @Override
-    protected final LoadingCache<K, V> delegate() {
-      return delegate;
-    }
-  }
+		@Override
+		protected final LoadingCache<K, V> delegate() {
+			return delegate;
+		}
+	}
 }

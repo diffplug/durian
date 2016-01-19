@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2006 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.base;
+
+import junit.framework.TestCase;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.testing.NullPointerTester;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for {@link Objects}.
@@ -30,58 +30,57 @@ import junit.framework.TestCase;
 @GwtCompatible(emulated = true)
 public class ObjectsTest extends TestCase {
 
-  public void testEqual() throws Exception {
-    assertTrue(Objects.equal(1, 1));
-    assertTrue(Objects.equal(null, null));
+	public void testEqual() throws Exception {
+		assertTrue(Objects.equal(1, 1));
+		assertTrue(Objects.equal(null, null));
 
-    // test distinct string objects
-    String s1 = "foobar";
-    String s2 = new String(s1);
-    assertTrue(Objects.equal(s1, s2));
+		// test distinct string objects
+		String s1 = "foobar";
+		String s2 = new String(s1);
+		assertTrue(Objects.equal(s1, s2));
 
-    assertFalse(Objects.equal(s1, null));
-    assertFalse(Objects.equal(null, s1));
-    assertFalse(Objects.equal("foo", "bar"));
-    assertFalse(Objects.equal("1", 1));
-  }
+		assertFalse(Objects.equal(s1, null));
+		assertFalse(Objects.equal(null, s1));
+		assertFalse(Objects.equal("foo", "bar"));
+		assertFalse(Objects.equal("1", 1));
+	}
 
-  public void testHashCode() throws Exception {
-    int h1 = Objects.hashCode(1, "two", 3.0);
-    int h2 = Objects.hashCode(
-        new Integer(1), new String("two"), new Double(3.0));
-    // repeatable
-    assertEquals(h1, h2);
+	public void testHashCode() throws Exception {
+		int h1 = Objects.hashCode(1, "two", 3.0);
+		int h2 = Objects.hashCode(
+				new Integer(1), new String("two"), new Double(3.0));
+		// repeatable
+		assertEquals(h1, h2);
 
-    // These don't strictly need to be true, but they're nice properties.
-    assertTrue(Objects.hashCode(1, 2, null) != Objects.hashCode(1, 2));
-    assertTrue(Objects.hashCode(1, 2, null) != Objects.hashCode(1, null, 2));
-    assertTrue(Objects.hashCode(1, null, 2) != Objects.hashCode(1, 2));
-    assertTrue(Objects.hashCode(1, 2, 3) != Objects.hashCode(3, 2, 1));
-    assertTrue(Objects.hashCode(1, 2, 3) != Objects.hashCode(2, 3, 1));
-  }
+		// These don't strictly need to be true, but they're nice properties.
+		assertTrue(Objects.hashCode(1, 2, null) != Objects.hashCode(1, 2));
+		assertTrue(Objects.hashCode(1, 2, null) != Objects.hashCode(1, null, 2));
+		assertTrue(Objects.hashCode(1, null, 2) != Objects.hashCode(1, 2));
+		assertTrue(Objects.hashCode(1, 2, 3) != Objects.hashCode(3, 2, 1));
+		assertTrue(Objects.hashCode(1, 2, 3) != Objects.hashCode(2, 3, 1));
+	}
 
-  public void testFirstNonNull_withNonNull() throws Exception {
-    String s1 = "foo";
-    String s2 = Objects.firstNonNull(s1, "bar");
-    assertSame(s1, s2);
+	public void testFirstNonNull_withNonNull() throws Exception {
+		String s1 = "foo";
+		String s2 = Objects.firstNonNull(s1, "bar");
+		assertSame(s1, s2);
 
-    Long n1 = new Long(42);
-    Long n2 = Objects.firstNonNull(null, n1);
-    assertSame(n1, n2);
-  }
+		Long n1 = new Long(42);
+		Long n2 = Objects.firstNonNull(null, n1);
+		assertSame(n1, n2);
+	}
 
-  @SuppressWarnings("CheckReturnValue")
-  public void testFirstNonNull_throwsNullPointerException() throws Exception {
-    try {
-      Objects.firstNonNull(null, null);
-      fail("expected NullPointerException");
-    } catch (NullPointerException expected) {
-    }
-  }
+	@SuppressWarnings("CheckReturnValue")
+	public void testFirstNonNull_throwsNullPointerException() throws Exception {
+		try {
+			Objects.firstNonNull(null, null);
+			fail("expected NullPointerException");
+		} catch (NullPointerException expected) {}
+	}
 
-  @GwtIncompatible("NullPointerTester")
-  public void testNullPointers() {
-    NullPointerTester tester = new NullPointerTester();
-    tester.testAllPublicStaticMethods(Objects.class);
-  }
+	@GwtIncompatible("NullPointerTester")
+	public void testNullPointers() {
+		NullPointerTester tester = new NullPointerTester();
+		tester.testAllPublicStaticMethods(Objects.class);
+	}
 }

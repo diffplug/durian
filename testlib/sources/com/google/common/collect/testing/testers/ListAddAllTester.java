@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.SUPPORTS_ADD;
@@ -34,31 +34,29 @@ import com.google.common.collect.testing.features.CollectionSize;
 @SuppressWarnings("unchecked") // too many "unchecked generic array creations"
 @GwtCompatible
 public class ListAddAllTester<E> extends AbstractListTester<E> {
-  @CollectionFeature.Require(SUPPORTS_ADD)
-  @CollectionSize.Require(absent = ZERO)
-  public void testAddAll_supportedAllPresent() {
-    assertTrue("addAll(allPresent) should return true",
-        getList().addAll(MinimalCollection.of(e0())));
-    expectAdded(e0());
-  }
+	@CollectionFeature.Require(SUPPORTS_ADD)
+	@CollectionSize.Require(absent = ZERO)
+	public void testAddAll_supportedAllPresent() {
+		assertTrue("addAll(allPresent) should return true",
+				getList().addAll(MinimalCollection.of(e0())));
+		expectAdded(e0());
+	}
 
-  @CollectionFeature.Require(absent = SUPPORTS_ADD)
-  @CollectionSize.Require(absent = ZERO)
-  public void testAddAll_unsupportedAllPresent() {
-    try {
-      getList().addAll(MinimalCollection.of(e0()));
-      fail("addAll(allPresent) should throw");
-    } catch (UnsupportedOperationException expected) {
-    }
-    expectUnchanged();
-  }
+	@CollectionFeature.Require(absent = SUPPORTS_ADD)
+	@CollectionSize.Require(absent = ZERO)
+	public void testAddAll_unsupportedAllPresent() {
+		try {
+			getList().addAll(MinimalCollection.of(e0()));
+			fail("addAll(allPresent) should throw");
+		} catch (UnsupportedOperationException expected) {}
+		expectUnchanged();
+	}
 
-  @CollectionFeature.Require(SUPPORTS_ADD)
-  public void testAddAll_withDuplicates() {
-    MinimalCollection<E> elementsToAdd
-        = MinimalCollection.of(e0(), e1(), e0(), e1());
-    assertTrue("addAll(hasDuplicates) should return true",
-        getList().addAll(elementsToAdd));
-    expectAdded(e0(), e1(), e0(), e1());
-  }
+	@CollectionFeature.Require(SUPPORTS_ADD)
+	public void testAddAll_withDuplicates() {
+		MinimalCollection<E> elementsToAdd = MinimalCollection.of(e0(), e1(), e0(), e1());
+		assertTrue("addAll(hasDuplicates) should return true",
+				getList().addAll(elementsToAdd));
+		expectAdded(e0(), e1(), e0(), e1());
+	}
 }

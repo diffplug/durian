@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.eventbus;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 import junit.framework.TestCase;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * Validate that {@link EventBus} behaves carefully when listeners publish
@@ -30,66 +30,69 @@ import java.util.List;
  */
 public class ReentrantEventsTest extends TestCase {
 
-  static final String FIRST = "one";
-  static final Double SECOND = 2.0d;
+	static final String FIRST = "one";
+	static final Double SECOND = 2.0d;
 
-  final EventBus bus = new EventBus();
+	final EventBus bus = new EventBus();
 
-  public void testNoReentrantEvents() {
-    ReentrantEventsHater hater = new ReentrantEventsHater();
-    bus.register(hater);
+	public void testNoReentrantEvents() {
+		ReentrantEventsHater hater = new ReentrantEventsHater();
+		bus.register(hater);
 
-    bus.post(FIRST);
+		bus.post(FIRST);
 
-    assertEquals("ReentrantEventHater expected 2 events",
-        Lists.<Object>newArrayList(FIRST, SECOND), hater.eventsReceived);
-  }
+		assertEquals("ReentrantEventHater expected 2 events",
+				Lists.<Object> newArrayList(FIRST, SECOND), hater.eventsReceived);
+	}
 
-  public class ReentrantEventsHater {
-    boolean ready = true;
-    List<Object> eventsReceived = Lists.newArrayList();
+	public class ReentrantEventsHater {
+		boolean ready = true;
+		List<Object> eventsReceived = Lists.newArrayList();
 
-    @Subscribe
-    public void listenForStrings(String event) {
-      eventsReceived.add(event);
-      ready = false;
-      try {
-        bus.post(SECOND);
-      } finally {
-        ready = true;
-      }
-    }
+		@Subscribe
+		public void listenForStrings(String event) {
+			eventsReceived.add(event);
+			ready = false;
+			try {
+				bus.post(SECOND);
+			} finally {
+				ready = true;
+			}
+		}
 
-    @Subscribe
-    public void listenForDoubles(Double event) {
-      assertTrue("I received an event when I wasn't ready!", ready);
-      eventsReceived.add(event);
-    }
-  }
+		@Subscribe
+		public void listenForDoubles(Double event) {
+			assertTrue("I received an event when I wasn't ready!", ready);
+			eventsReceived.add(event);
+		}
+	}
 
-  public void testEventOrderingIsPredictable() {
-    EventProcessor processor = new EventProcessor();
-    bus.register(processor);
+	public void testEventOrderingIsPredictable() {
+		EventProcessor processor = new EventProcessor();
+		bus.register(processor);
 
-    EventRecorder recorder = new EventRecorder();
-    bus.register(recorder);
+		EventRecorder recorder = new EventRecorder();
+		bus.register(recorder);
 
-    bus.post(FIRST);
+		bus.post(FIRST);
 
-    assertEquals("EventRecorder expected events in order",
-        Lists.<Object>newArrayList(FIRST, SECOND), recorder.eventsReceived);
-  }
+		assertEquals("EventRecorder expected events in order",
+				Lists.<Object> newArrayList(FIRST, SECOND), recorder.eventsReceived);
+	}
 
-  public class EventProcessor {
-    @Subscribe public void listenForStrings(String event) {
-      bus.post(SECOND);
-    }
-  }
+	public class EventProcessor {
+		@Subscribe
+		public void listenForStrings(String event) {
+			bus.post(SECOND);
+		}
+	}
 
-  public class EventRecorder {
-    List<Object> eventsReceived = Lists.newArrayList();
-    @Subscribe public void listenForEverything(Object event) {
-      eventsReceived.add(event);
-    }
-  }
+	public class EventRecorder {
+		List<Object> eventsReceived = Lists.newArrayList();
+
+		@Subscribe
+		public void listenForEverything(Object event) {
+			eventsReceived.add(event);
+		}
+	}
 }

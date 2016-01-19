@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.math;
 
 import static com.google.common.math.MathTesting.ALL_BIGINTEGER_CANDIDATES;
 import static com.google.common.math.MathTesting.FINITE_DOUBLE_CANDIDATES;
 import static com.google.common.math.MathTesting.POSITIVE_FINITE_DOUBLE_CANDIDATES;
 
-import junit.framework.TestCase;
-
-import sun.misc.FpUtils;
-
 import java.math.BigInteger;
+
+import junit.framework.TestCase;
+import sun.misc.FpUtils;
 
 /**
  * Tests for {@link DoubleUtils}.
@@ -32,42 +31,41 @@ import java.math.BigInteger;
  * @author Louis Wasserman
  */
 public class DoubleUtilsTest extends TestCase {
-  @SuppressUnderAndroid // no FpUtils
-  public void testNextDown() {
-    for (double d : FINITE_DOUBLE_CANDIDATES) {
-      assertEquals(FpUtils.nextDown(d), DoubleUtils.nextDown(d));
-    }
-  }
-  
-  @SuppressUnderAndroid // TODO(cpovirk): File bug for BigDecimal.doubleValue().
-  public void testBigToDouble() {
-    for (BigInteger b : ALL_BIGINTEGER_CANDIDATES) {
-      if (b.doubleValue() != DoubleUtils.bigToDouble(b)) {
-        failFormat(
-            "Converting %s to double: expected doubleValue %s but got bigToDouble %s",
-            b,
-            b.doubleValue(),
-            DoubleUtils.bigToDouble(b));
-      }
-    }
-  }
+	@SuppressUnderAndroid // no FpUtils
+	public void testNextDown() {
+		for (double d : FINITE_DOUBLE_CANDIDATES) {
+			assertEquals(FpUtils.nextDown(d), DoubleUtils.nextDown(d));
+		}
+	}
 
-  public void testEnsureNonNegative() {
-    assertEquals(0.0, DoubleUtils.ensureNonNegative(0.0));
-    for (double positiveValue : POSITIVE_FINITE_DOUBLE_CANDIDATES) {
-      assertEquals(positiveValue, DoubleUtils.ensureNonNegative(positiveValue));
-      assertEquals(0.0, DoubleUtils.ensureNonNegative(-positiveValue));
-    }
-    assertEquals(Double.POSITIVE_INFINITY, DoubleUtils.ensureNonNegative(Double.POSITIVE_INFINITY));
-    assertEquals(0.0, DoubleUtils.ensureNonNegative(Double.NEGATIVE_INFINITY));
-    try {
-      DoubleUtils.ensureNonNegative(Double.NaN);
-      fail("Expected IllegalArgumentException from ensureNonNegative(Double.NaN)");
-    } catch (IllegalArgumentException expected) {
-    }
-  }
+	@SuppressUnderAndroid // TODO(cpovirk): File bug for BigDecimal.doubleValue().
+	public void testBigToDouble() {
+		for (BigInteger b : ALL_BIGINTEGER_CANDIDATES) {
+			if (b.doubleValue() != DoubleUtils.bigToDouble(b)) {
+				failFormat(
+						"Converting %s to double: expected doubleValue %s but got bigToDouble %s",
+						b,
+						b.doubleValue(),
+						DoubleUtils.bigToDouble(b));
+			}
+		}
+	}
 
-  private static void failFormat(String template, Object... args) {
-    fail(String.format(template, args));
-  }
+	public void testEnsureNonNegative() {
+		assertEquals(0.0, DoubleUtils.ensureNonNegative(0.0));
+		for (double positiveValue : POSITIVE_FINITE_DOUBLE_CANDIDATES) {
+			assertEquals(positiveValue, DoubleUtils.ensureNonNegative(positiveValue));
+			assertEquals(0.0, DoubleUtils.ensureNonNegative(-positiveValue));
+		}
+		assertEquals(Double.POSITIVE_INFINITY, DoubleUtils.ensureNonNegative(Double.POSITIVE_INFINITY));
+		assertEquals(0.0, DoubleUtils.ensureNonNegative(Double.NEGATIVE_INFINITY));
+		try {
+			DoubleUtils.ensureNonNegative(Double.NaN);
+			fail("Expected IllegalArgumentException from ensureNonNegative(Double.NaN)");
+		} catch (IllegalArgumentException expected) {}
+	}
+
+	private static void failFormat(String template, Object... args) {
+		fail(String.format(template, args));
+	}
 }

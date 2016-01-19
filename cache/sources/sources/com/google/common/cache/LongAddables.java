@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.cache;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Supplier;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Source of {@link LongAddable} objects that deals with GWT, Unsafe, and all
@@ -29,47 +29,47 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @GwtCompatible(emulated = true)
 final class LongAddables {
-  private static final Supplier<LongAddable> SUPPLIER;
-  
-  static {
-    Supplier<LongAddable> supplier;
-    try {
-      new LongAdder(); // trigger static initialization of the LongAdder class, which may fail
-      supplier = new Supplier<LongAddable>() {
-        @Override
-        public LongAddable get() {
-          return new LongAdder();
-        }
-      };
-    } catch (Throwable t) { // we really want to catch *everything*
-      supplier = new Supplier<LongAddable>() {
-        @Override
-        public LongAddable get() {
-          return new PureJavaLongAddable();
-        }
-      };
-    }
-    SUPPLIER = supplier;
-  }
-  
-  public static LongAddable create() {
-    return SUPPLIER.get();
-  }
-  
-  private static final class PureJavaLongAddable extends AtomicLong implements LongAddable {
-    @Override
-    public void increment() {
-      getAndIncrement();
-    }
+	private static final Supplier<LongAddable> SUPPLIER;
 
-    @Override
-    public void add(long x) {
-      getAndAdd(x);
-    }
+	static {
+		Supplier<LongAddable> supplier;
+		try {
+			new LongAdder(); // trigger static initialization of the LongAdder class, which may fail
+			supplier = new Supplier<LongAddable>() {
+				@Override
+				public LongAddable get() {
+					return new LongAdder();
+				}
+			};
+		} catch (Throwable t) { // we really want to catch *everything*
+			supplier = new Supplier<LongAddable>() {
+				@Override
+				public LongAddable get() {
+					return new PureJavaLongAddable();
+				}
+			};
+		}
+		SUPPLIER = supplier;
+	}
 
-    @Override
-    public long sum() {
-      return get();
-    }
-  }
+	public static LongAddable create() {
+		return SUPPLIER.get();
+	}
+
+	private static final class PureJavaLongAddable extends AtomicLong implements LongAddable {
+		@Override
+		public void increment() {
+			getAndIncrement();
+		}
+
+		@Override
+		public void add(long x) {
+			getAndAdd(x);
+		}
+
+		@Override
+		public long sum() {
+			return get();
+		}
+	}
 }

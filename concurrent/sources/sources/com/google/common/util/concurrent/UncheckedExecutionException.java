@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
 
-import com.google.common.annotations.GwtCompatible;
-
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Unchecked variant of {@link java.util.concurrent.ExecutionException}. As with
@@ -39,31 +39,31 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 public class UncheckedExecutionException extends RuntimeException {
-  /**
-   * Creates a new instance with {@code null} as its detail message.
-   */
-  protected UncheckedExecutionException() {}
+	/**
+	 * Creates a new instance with {@code null} as its detail message.
+	 */
+	protected UncheckedExecutionException() {}
 
-  /**
-   * Creates a new instance with the given detail message.
-   */
-  protected UncheckedExecutionException(@Nullable String message) {
-    super(message);
-  }
+	/**
+	 * Creates a new instance with the given detail message.
+	 */
+	protected UncheckedExecutionException(@Nullable String message) {
+		super(message);
+	}
 
-  /**
-   * Creates a new instance with the given detail message and cause.
-   */
-  public UncheckedExecutionException(@Nullable String message, @Nullable Throwable cause) {
-    super(message, cause);
-  }
+	/**
+	 * Creates a new instance with the given detail message and cause.
+	 */
+	public UncheckedExecutionException(@Nullable String message, @Nullable Throwable cause) {
+		super(message, cause);
+	}
 
-  /**
-   * Creates a new instance with the given cause.
-   */
-  public UncheckedExecutionException(@Nullable Throwable cause) {
-    super(cause);
-  }
+	/**
+	 * Creates a new instance with the given cause.
+	 */
+	public UncheckedExecutionException(@Nullable Throwable cause) {
+		super(cause);
+	}
 
-  private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 0;
 }

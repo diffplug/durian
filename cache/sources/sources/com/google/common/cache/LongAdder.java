@@ -1,23 +1,28 @@
 /*
- * Written by Doug Lea with assistance from members of JCP JSR-166
- * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/publicdomain/zero/1.0/
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-/*
- * Source:
- * http://gee.cs.oswego.edu/cgi-bin/viewcvs.cgi/jsr166/src/jsr166e/LongAdder.java?revision=1.17
- */
-
 package com.google.common.cache;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * One or more variables that together maintain an initially zero
@@ -48,163 +53,168 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @GwtCompatible(emulated = true)
 final class LongAdder extends Striped64 implements Serializable, LongAddable {
-    private static final long serialVersionUID = 7249069246863182397L;
+	private static final long serialVersionUID = 7249069246863182397L;
 
-    /**
-     * Version of plus for use in retryUpdate
-     */
-    final long fn(long v, long x) { return v + x; }
+	/**
+	 * Version of plus for use in retryUpdate
+	 */
+	final long fn(long v, long x) {
+		return v + x;
+	}
 
-    /**
-     * Creates a new adder with initial sum of zero.
-     */
-    public LongAdder() {
-    }
+	/**
+	 * Creates a new adder with initial sum of zero.
+	 */
+	public LongAdder() {}
 
-    /**
-     * Adds the given value.
-     *
-     * @param x the value to add
-     */
-    public void add(long x) {
-        Cell[] as; long b, v; int[] hc; Cell a; int n;
-        if ((as = cells) != null || !casBase(b = base, b + x)) {
-            boolean uncontended = true;
-            if ((hc = threadHashCode.get()) == null ||
-                as == null || (n = as.length) < 1 ||
-                (a = as[(n - 1) & hc[0]]) == null ||
-                !(uncontended = a.cas(v = a.value, v + x)))
-                retryUpdate(x, hc, uncontended);
-        }
-    }
+	/**
+	 * Adds the given value.
+	 *
+	 * @param x the value to add
+	 */
+	public void add(long x) {
+		Cell[] as;
+		long b, v;
+		int[] hc;
+		Cell a;
+		int n;
+		if ((as = cells) != null || !casBase(b = base, b + x)) {
+			boolean uncontended = true;
+			if ((hc = threadHashCode.get()) == null ||
+					as == null || (n = as.length) < 1 ||
+					(a = as[(n - 1) & hc[0]]) == null ||
+					!(uncontended = a.cas(v = a.value, v + x)))
+				retryUpdate(x, hc, uncontended);
+		}
+	}
 
-    /**
-     * Equivalent to {@code add(1)}.
-     */
-    public void increment() {
-        add(1L);
-    }
+	/**
+	 * Equivalent to {@code add(1)}.
+	 */
+	public void increment() {
+		add(1L);
+	}
 
-    /**
-     * Equivalent to {@code add(-1)}.
-     */
-    public void decrement() {
-        add(-1L);
-    }
+	/**
+	 * Equivalent to {@code add(-1)}.
+	 */
+	public void decrement() {
+		add(-1L);
+	}
 
-    /**
-     * Returns the current sum.  The returned value is <em>NOT</em> an
-     * atomic snapshot; invocation in the absence of concurrent
-     * updates returns an accurate result, but concurrent updates that
-     * occur while the sum is being calculated might not be
-     * incorporated.
-     *
-     * @return the sum
-     */
-    public long sum() {
-        long sum = base;
-        Cell[] as = cells;
-        if (as != null) {
-            int n = as.length;
-            for (int i = 0; i < n; ++i) {
-                Cell a = as[i];
-                if (a != null)
-                    sum += a.value;
-            }
-        }
-        return sum;
-    }
+	/**
+	 * Returns the current sum.  The returned value is <em>NOT</em> an
+	 * atomic snapshot; invocation in the absence of concurrent
+	 * updates returns an accurate result, but concurrent updates that
+	 * occur while the sum is being calculated might not be
+	 * incorporated.
+	 *
+	 * @return the sum
+	 */
+	public long sum() {
+		long sum = base;
+		Cell[] as = cells;
+		if (as != null) {
+			int n = as.length;
+			for (int i = 0; i < n; ++i) {
+				Cell a = as[i];
+				if (a != null)
+					sum += a.value;
+			}
+		}
+		return sum;
+	}
 
-    /**
-     * Resets variables maintaining the sum to zero.  This method may
-     * be a useful alternative to creating a new adder, but is only
-     * effective if there are no concurrent updates.  Because this
-     * method is intrinsically racy, it should only be used when it is
-     * known that no threads are concurrently updating.
-     */
-    public void reset() {
-        internalReset(0L);
-    }
+	/**
+	 * Resets variables maintaining the sum to zero.  This method may
+	 * be a useful alternative to creating a new adder, but is only
+	 * effective if there are no concurrent updates.  Because this
+	 * method is intrinsically racy, it should only be used when it is
+	 * known that no threads are concurrently updating.
+	 */
+	public void reset() {
+		internalReset(0L);
+	}
 
-    /**
-     * Equivalent in effect to {@link #sum} followed by {@link
-     * #reset}. This method may apply for example during quiescent
-     * points between multithreaded computations.  If there are
-     * updates concurrent with this method, the returned value is
-     * <em>not</em> guaranteed to be the final value occurring before
-     * the reset.
-     *
-     * @return the sum
-     */
-    public long sumThenReset() {
-        long sum = base;
-        Cell[] as = cells;
-        base = 0L;
-        if (as != null) {
-            int n = as.length;
-            for (int i = 0; i < n; ++i) {
-                Cell a = as[i];
-                if (a != null) {
-                    sum += a.value;
-                    a.value = 0L;
-                }
-            }
-        }
-        return sum;
-    }
+	/**
+	 * Equivalent in effect to {@link #sum} followed by {@link
+	 * #reset}. This method may apply for example during quiescent
+	 * points between multithreaded computations.  If there are
+	 * updates concurrent with this method, the returned value is
+	 * <em>not</em> guaranteed to be the final value occurring before
+	 * the reset.
+	 *
+	 * @return the sum
+	 */
+	public long sumThenReset() {
+		long sum = base;
+		Cell[] as = cells;
+		base = 0L;
+		if (as != null) {
+			int n = as.length;
+			for (int i = 0; i < n; ++i) {
+				Cell a = as[i];
+				if (a != null) {
+					sum += a.value;
+					a.value = 0L;
+				}
+			}
+		}
+		return sum;
+	}
 
-    /**
-     * Returns the String representation of the {@link #sum}.
-     * @return the String representation of the {@link #sum}
-     */
-    public String toString() {
-        return Long.toString(sum());
-    }
+	/**
+	 * Returns the String representation of the {@link #sum}.
+	 * @return the String representation of the {@link #sum}
+	 */
+	public String toString() {
+		return Long.toString(sum());
+	}
 
-    /**
-     * Equivalent to {@link #sum}.
-     *
-     * @return the sum
-     */
-    public long longValue() {
-        return sum();
-    }
+	/**
+	 * Equivalent to {@link #sum}.
+	 *
+	 * @return the sum
+	 */
+	public long longValue() {
+		return sum();
+	}
 
-    /**
-     * Returns the {@link #sum} as an {@code int} after a narrowing
-     * primitive conversion.
-     */
-    public int intValue() {
-        return (int)sum();
-    }
+	/**
+	 * Returns the {@link #sum} as an {@code int} after a narrowing
+	 * primitive conversion.
+	 */
+	public int intValue() {
+		return (int) sum();
+	}
 
-    /**
-     * Returns the {@link #sum} as a {@code float}
-     * after a widening primitive conversion.
-     */
-    public float floatValue() {
-        return (float)sum();
-    }
+	/**
+	 * Returns the {@link #sum} as a {@code float}
+	 * after a widening primitive conversion.
+	 */
+	public float floatValue() {
+		return (float) sum();
+	}
 
-    /**
-     * Returns the {@link #sum} as a {@code double} after a widening
-     * primitive conversion.
-     */
-    public double doubleValue() {
-        return (double)sum();
-    }
+	/**
+	 * Returns the {@link #sum} as a {@code double} after a widening
+	 * primitive conversion.
+	 */
+	public double doubleValue() {
+		return (double) sum();
+	}
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        s.writeLong(sum());
-    }
+	private void writeObject(ObjectOutputStream s) throws IOException {
+		s.defaultWriteObject();
+		s.writeLong(sum());
+	}
 
-    private void readObject(ObjectInputStream s)
-            throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-        busy = 0;
-        cells = null;
-        base = s.readLong();
-    }
+	private void readObject(ObjectInputStream s)
+			throws IOException, ClassNotFoundException {
+		s.defaultReadObject();
+		busy = 0;
+		cells = null;
+		base = s.readLong();
+	}
 
 }

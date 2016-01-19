@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
-import com.google.common.annotations.Beta;
-
 import java.io.IOException;
+
+import com.google.common.annotations.Beta;
 
 /**
  * A callback to be used with the streaming {@code readLines} methods.
@@ -32,14 +32,14 @@ import java.io.IOException;
 @Beta
 public interface LineProcessor<T> {
 
-  /**
-   * This method will be called once for each line.
-   *
-   * @param line the line read from the input, without delimiter
-   * @return true to continue processing, false to stop
-   */
-  boolean processLine(String line) throws IOException;
+	/**
+	 * This method will be called once for each line.
+	 *
+	 * @param line the line read from the input, without delimiter
+	 * @return true to continue processing, false to stop
+	 */
+	boolean processLine(String line) throws IOException;
 
-  /** Return the result of processing all the lines. */
-  T getResult();
+	/** Return the result of processing all the lines. */
+	T getResult();
 }

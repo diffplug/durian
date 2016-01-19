@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 import static com.google.common.io.TestOption.CLOSE_THROWS;
@@ -34,84 +34,82 @@ import java.util.EnumSet;
  */
 public class ByteSinkTest extends IoTestCase {
 
-  private final byte[] bytes = newPreFilledByteArray(10000);
+	private final byte[] bytes = newPreFilledByteArray(10000);
 
-  private TestByteSink sink;
+	private TestByteSink sink;
 
-  @Override
-  protected void setUp() throws Exception {
-    sink = new TestByteSink();
-  }
+	@Override
+	protected void setUp() throws Exception {
+		sink = new TestByteSink();
+	}
 
-  public void testOpenBufferedStream() throws IOException {
-    OutputStream out = sink.openBufferedStream();
-    assertTrue(sink.wasStreamOpened());
-    assertFalse(sink.wasStreamClosed());
+	public void testOpenBufferedStream() throws IOException {
+		OutputStream out = sink.openBufferedStream();
+		assertTrue(sink.wasStreamOpened());
+		assertFalse(sink.wasStreamClosed());
 
-    out.write(new byte[] {1, 2, 3, 4});
-    out.close();
+		out.write(new byte[]{1, 2, 3, 4});
+		out.close();
 
-    assertTrue(sink.wasStreamClosed());
-    assertArrayEquals(new byte[] {1, 2, 3, 4}, sink.getBytes());
-  }
+		assertTrue(sink.wasStreamClosed());
+		assertArrayEquals(new byte[]{1, 2, 3, 4}, sink.getBytes());
+	}
 
-  public void testWrite_bytes() throws IOException {
-    assertArrayEquals(new byte[0], sink.getBytes());
-    sink.write(bytes);
+	public void testWrite_bytes() throws IOException {
+		assertArrayEquals(new byte[0], sink.getBytes());
+		sink.write(bytes);
 
-    assertTrue(sink.wasStreamOpened() && sink.wasStreamClosed());
-    assertArrayEquals(bytes, sink.getBytes());
-  }
+		assertTrue(sink.wasStreamOpened() && sink.wasStreamClosed());
+		assertArrayEquals(bytes, sink.getBytes());
+	}
 
-  public void testWriteFrom_inputStream() throws IOException {
-    ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-    sink.writeFrom(in);
+	public void testWriteFrom_inputStream() throws IOException {
+		ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+		sink.writeFrom(in);
 
-    assertTrue(sink.wasStreamOpened() && sink.wasStreamClosed());
-    assertArrayEquals(bytes, sink.getBytes());
-  }
+		assertTrue(sink.wasStreamOpened() && sink.wasStreamClosed());
+		assertArrayEquals(bytes, sink.getBytes());
+	}
 
-  public void testWriteFromStream_doesNotCloseThatStream() throws IOException {
-    TestInputStream in = new TestInputStream(new ByteArrayInputStream(new byte[10]));
-    assertFalse(in.closed());
-    sink.writeFrom(in);
-    assertFalse(in.closed());
-  }
+	public void testWriteFromStream_doesNotCloseThatStream() throws IOException {
+		TestInputStream in = new TestInputStream(new ByteArrayInputStream(new byte[10]));
+		assertFalse(in.closed());
+		sink.writeFrom(in);
+		assertFalse(in.closed());
+	}
 
-  public void testClosesOnErrors_copyingFromByteSourceThatThrows() {
-    for (TestOption option : EnumSet.of(OPEN_THROWS, READ_THROWS, CLOSE_THROWS)) {
-      TestByteSource failSource = new TestByteSource(new byte[10], option);
-      TestByteSink okSink = new TestByteSink();
-      try {
-        failSource.copyTo(okSink);
-        fail();
-      } catch (IOException expected) {}
-      // ensure stream was closed IF it was opened (depends on implementation whether or not it's
-      // opened at all if source.newInputStream() throws).
-      assertTrue("stream not closed when copying from source with option: " + option,
-          !okSink.wasStreamOpened() || okSink.wasStreamClosed());
-    }
-  }
+	public void testClosesOnErrors_copyingFromByteSourceThatThrows() {
+		for (TestOption option : EnumSet.of(OPEN_THROWS, READ_THROWS, CLOSE_THROWS)) {
+			TestByteSource failSource = new TestByteSource(new byte[10], option);
+			TestByteSink okSink = new TestByteSink();
+			try {
+				failSource.copyTo(okSink);
+				fail();
+			} catch (IOException expected) {}
+			// ensure stream was closed IF it was opened (depends on implementation whether or not it's
+			// opened at all if source.newInputStream() throws).
+			assertTrue("stream not closed when copying from source with option: " + option,
+					!okSink.wasStreamOpened() || okSink.wasStreamClosed());
+		}
+	}
 
-  public void testClosesOnErrors_whenWriteThrows() {
-    TestByteSink failSink = new TestByteSink(WRITE_THROWS);
-    try {
-      new TestByteSource(new byte[10]).copyTo(failSink);
-      fail();
-    } catch (IOException expected) {
-    }
-    assertTrue(failSink.wasStreamClosed());
-  }
+	public void testClosesOnErrors_whenWriteThrows() {
+		TestByteSink failSink = new TestByteSink(WRITE_THROWS);
+		try {
+			new TestByteSource(new byte[10]).copyTo(failSink);
+			fail();
+		} catch (IOException expected) {}
+		assertTrue(failSink.wasStreamClosed());
+	}
 
-  public void testClosesOnErrors_writingFromInputStreamThatThrows() {
-    TestByteSink okSink = new TestByteSink();
-    try {
-      TestInputStream in = new TestInputStream(
-          new ByteArrayInputStream(new byte[10]), READ_THROWS);
-      okSink.writeFrom(in);
-      fail();
-    } catch (IOException expected) {
-    }
-    assertTrue(okSink.wasStreamClosed());
-  }
+	public void testClosesOnErrors_writingFromInputStreamThatThrows() {
+		TestByteSink okSink = new TestByteSink();
+		try {
+			TestInputStream in = new TestInputStream(
+					new ByteArrayInputStream(new byte[10]), READ_THROWS);
+			okSink.writeFrom(in);
+			fail();
+		} catch (IOException expected) {}
+		assertTrue(okSink.wasStreamClosed());
+	}
 }

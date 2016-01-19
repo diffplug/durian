@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * This class provides a skeletal implementation of the {@code Iterator}
@@ -42,38 +42,38 @@ import javax.annotation.Nullable;
  */
 @GwtCompatible
 public abstract class AbstractSequentialIterator<T> extends UnmodifiableIterator<T> {
-  private T nextOrNull;
+	private T nextOrNull;
 
-  /**
-   * Creates a new iterator with the given first element, or, if {@code
-   * firstOrNull} is null, creates a new empty iterator.
-   */
-  protected AbstractSequentialIterator(@Nullable T firstOrNull) {
-    this.nextOrNull = firstOrNull;
-  }
+	/**
+	 * Creates a new iterator with the given first element, or, if {@code
+	 * firstOrNull} is null, creates a new empty iterator.
+	 */
+	protected AbstractSequentialIterator(@Nullable T firstOrNull) {
+		this.nextOrNull = firstOrNull;
+	}
 
-  /**
-   * Returns the element that follows {@code previous}, or returns {@code null}
-   * if no elements remain. This method is invoked during each call to
-   * {@link #next()} in order to compute the result of a <i>future</i> call to
-   * {@code next()}.
-   */
-  protected abstract T computeNext(T previous);
+	/**
+	 * Returns the element that follows {@code previous}, or returns {@code null}
+	 * if no elements remain. This method is invoked during each call to
+	 * {@link #next()} in order to compute the result of a <i>future</i> call to
+	 * {@code next()}.
+	 */
+	protected abstract T computeNext(T previous);
 
-  @Override
-  public final boolean hasNext() {
-    return nextOrNull != null;
-  }
+	@Override
+	public final boolean hasNext() {
+		return nextOrNull != null;
+	}
 
-  @Override
-  public final T next() {
-    if (!hasNext()) {
-      throw new NoSuchElementException();
-    }
-    try {
-      return nextOrNull;
-    } finally {
-      nextOrNull = computeNext(nextOrNull);
-    }
-  }
+	@Override
+	public final T next() {
+		if (!hasNext()) {
+			throw new NoSuchElementException();
+		}
+		try {
+			return nextOrNull;
+		} finally {
+			nextOrNull = computeNext(nextOrNull);
+		}
+	}
 }

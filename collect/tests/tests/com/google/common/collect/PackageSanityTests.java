@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import com.google.common.testing.AbstractPackageSanityTests;
@@ -25,8 +25,8 @@ import com.google.common.testing.AbstractPackageSanityTests;
  */
 
 public class PackageSanityTests extends AbstractPackageSanityTests {
-  public PackageSanityTests() {
-    publicApiOnly(); // Many package-private classes are tested through the public API.
-    setDefault(DiscreteDomain.class, DiscreteDomain.integers());
-  }
+	public PackageSanityTests() {
+		publicApiOnly(); // Many package-private classes are tested through the public API.
+		setDefault(DiscreteDomain.class, DiscreteDomain.integers());
+	}
 }

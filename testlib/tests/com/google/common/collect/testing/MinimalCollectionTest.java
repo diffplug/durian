@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
-import com.google.common.collect.testing.features.CollectionFeature;
-import com.google.common.collect.testing.features.CollectionSize;
+import java.util.Collection;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-import java.util.Collection;
+import com.google.common.collect.testing.features.CollectionFeature;
+import com.google.common.collect.testing.features.CollectionSize;
 
 /**
  * Unit test for {@link MinimalCollection}.
@@ -30,23 +30,24 @@ import java.util.Collection;
  * @author Kevin Bourrillion
  */
 public class MinimalCollectionTest extends TestCase {
-  public static Test suite() {
-    return CollectionTestSuiteBuilder
-        .using(new TestStringCollectionGenerator() {
-            @Override public Collection<String> create(String[] elements) {
-              // TODO: MinimalCollection should perhaps throw
-              for (Object element : elements) {
-                if (element == null) {
-                  throw new NullPointerException();
-                }
-              }
-              return MinimalCollection.of(elements);
-            }
-          })
-        .named("MinimalCollection")
-        .withFeatures(
-            CollectionFeature.NONE,
-            CollectionSize.ANY)
-        .createTestSuite();
-  }
+	public static Test suite() {
+		return CollectionTestSuiteBuilder
+				.using(new TestStringCollectionGenerator() {
+					@Override
+					public Collection<String> create(String[] elements) {
+						// TODO: MinimalCollection should perhaps throw
+						for (Object element : elements) {
+							if (element == null) {
+								throw new NullPointerException();
+							}
+						}
+						return MinimalCollection.of(elements);
+					}
+				})
+				.named("MinimalCollection")
+				.withFeatures(
+						CollectionFeature.NONE,
+						CollectionSize.ANY)
+				.createTestSuite();
+	}
 }

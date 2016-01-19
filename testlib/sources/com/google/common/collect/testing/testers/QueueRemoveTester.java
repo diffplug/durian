@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.KNOWN_ORDER;
@@ -22,11 +22,11 @@ import static com.google.common.collect.testing.features.CollectionSize.ONE;
 import static com.google.common.collect.testing.features.CollectionSize.SEVERAL;
 import static com.google.common.collect.testing.features.CollectionSize.ZERO;
 
+import java.util.NoSuchElementException;
+
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.collect.testing.features.CollectionFeature;
 import com.google.common.collect.testing.features.CollectionSize;
-
-import java.util.NoSuchElementException;
 
 /**
  * A generic JUnit test which tests {@code remove()} operations on a queue.
@@ -38,29 +38,29 @@ import java.util.NoSuchElementException;
 @SuppressWarnings("unchecked") // too many "unchecked generic array creations"
 @GwtCompatible
 public class QueueRemoveTester<E> extends AbstractQueueTester<E> {
-  @CollectionFeature.Require(SUPPORTS_REMOVE)
-  @CollectionSize.Require(ZERO)
-  public void testRemove_empty() {
-    try {
-      getQueue().remove();
-      fail("emptyQueue.remove() should throw");
-    } catch (NoSuchElementException expected) {}
-    expectUnchanged();
-  }
+	@CollectionFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(ZERO)
+	public void testRemove_empty() {
+		try {
+			getQueue().remove();
+			fail("emptyQueue.remove() should throw");
+		} catch (NoSuchElementException expected) {}
+		expectUnchanged();
+	}
 
-  @CollectionFeature.Require(SUPPORTS_REMOVE)
-  @CollectionSize.Require(ONE)
-  public void testRemove_size1() {
-    assertEquals("size1Queue.remove() should return first element",
-        e0(), getQueue().remove());
-    expectMissing(e0());
-  }
+	@CollectionFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(ONE)
+	public void testRemove_size1() {
+		assertEquals("size1Queue.remove() should return first element",
+				e0(), getQueue().remove());
+		expectMissing(e0());
+	}
 
-  @CollectionFeature.Require({KNOWN_ORDER, SUPPORTS_REMOVE})
-  @CollectionSize.Require(SEVERAL)
-  public void testRemove_sizeMany() {
-    assertEquals("sizeManyQueue.remove() should return first element",
-        e0(), getQueue().remove());
-    expectMissing(e0());
-  }
+	@CollectionFeature.Require({KNOWN_ORDER, SUPPORTS_REMOVE})
+	@CollectionSize.Require(SEVERAL)
+	public void testRemove_sizeMany() {
+		assertEquals("sizeManyQueue.remove() should return first element",
+				e0(), getQueue().remove());
+		expectMissing(e0());
+	}
 }

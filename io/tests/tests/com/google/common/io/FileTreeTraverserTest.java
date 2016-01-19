@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
-
-import com.google.common.collect.ImmutableSet;
-
-import junit.framework.TestCase;
 
 import java.io.File;
 import java.io.IOException;
+
+import junit.framework.TestCase;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Tests for {@link Files#fileTreeViewer}.
@@ -31,64 +31,64 @@ import java.io.IOException;
 
 public class FileTreeTraverserTest extends TestCase {
 
-  private File dir;
+	private File dir;
 
-  @Override
-  public void setUp() throws IOException {
-    dir = Files.createTempDir();
-  }
+	@Override
+	public void setUp() throws IOException {
+		dir = Files.createTempDir();
+	}
 
-  @Override
-  public void tearDown() throws IOException {
-    File[] files = dir.listFiles();
-    if (files == null) {
-      return;
-    }
+	@Override
+	public void tearDown() throws IOException {
+		File[] files = dir.listFiles();
+		if (files == null) {
+			return;
+		}
 
-    // we aren't creating any files in subdirs
-    for (File file : files) {
-      file.delete();
-    }
+		// we aren't creating any files in subdirs
+		for (File file : files) {
+			file.delete();
+		}
 
-    dir.delete();
-  }
+		dir.delete();
+	}
 
-  public void testFileTreeViewer_emptyDir() throws IOException {
-    assertDirChildren();
-  }
+	public void testFileTreeViewer_emptyDir() throws IOException {
+		assertDirChildren();
+	}
 
-  public void testFileTreeViewer_singleFile() throws IOException {
-    File file = newFile("test");
-    assertDirChildren(file);
-  }
+	public void testFileTreeViewer_singleFile() throws IOException {
+		File file = newFile("test");
+		assertDirChildren(file);
+	}
 
-  public void testFileTreeViewer_singleDir() throws IOException {
-    File file = newDir("test");
-    assertDirChildren(file);
-  }
+	public void testFileTreeViewer_singleDir() throws IOException {
+		File file = newDir("test");
+		assertDirChildren(file);
+	}
 
-  public void testFileTreeViewer_multipleFiles() throws IOException {
-    File a = newFile("a");
-    File b = newDir("b");
-    File c = newFile("c");
-    File d = newDir("d");
-    assertDirChildren(a, b, c, d);
-  }
+	public void testFileTreeViewer_multipleFiles() throws IOException {
+		File a = newFile("a");
+		File b = newDir("b");
+		File c = newFile("c");
+		File d = newDir("d");
+		assertDirChildren(a, b, c, d);
+	}
 
-  private File newDir(String name) throws IOException {
-    File file = new File(dir, name);
-    file.mkdir();
-    return file;
-  }
+	private File newDir(String name) throws IOException {
+		File file = new File(dir, name);
+		file.mkdir();
+		return file;
+	}
 
-  private File newFile(String name) throws IOException {
-    File file = new File(dir, name);
-    file.createNewFile();
-    return file;
-  }
+	private File newFile(String name) throws IOException {
+		File file = new File(dir, name);
+		file.createNewFile();
+		return file;
+	}
 
-  private void assertDirChildren(File... files) {
-    assertEquals(ImmutableSet.copyOf(files),
-        ImmutableSet.copyOf(Files.fileTreeTraverser().children(dir)));
-  }
+	private void assertDirChildren(File... files) {
+		assertEquals(ImmutableSet.copyOf(files),
+				ImmutableSet.copyOf(Files.fileTreeTraverser().children(dir)));
+	}
 }

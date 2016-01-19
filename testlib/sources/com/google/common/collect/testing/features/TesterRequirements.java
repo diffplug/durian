@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.features;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.collect.testing.Helpers;
 
 import java.util.Collections;
 import java.util.Set;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.collect.testing.Helpers;
 
 /**
  * Encapsulates the constraints that a class under test must satisfy in order
@@ -30,52 +30,55 @@ import java.util.Set;
  */
 @GwtCompatible
 public final class TesterRequirements {
-  private final Set<Feature<?>> presentFeatures;
-  private final Set<Feature<?>> absentFeatures;
+	private final Set<Feature<?>> presentFeatures;
+	private final Set<Feature<?>> absentFeatures;
 
-  public TesterRequirements(
-      Set<Feature<?>> presentFeatures, Set<Feature<?>> absentFeatures) {
-    this.presentFeatures = Helpers.copyToSet(presentFeatures);
-    this.absentFeatures = Helpers.copyToSet(absentFeatures);
-  }
+	public TesterRequirements(
+			Set<Feature<?>> presentFeatures, Set<Feature<?>> absentFeatures) {
+		this.presentFeatures = Helpers.copyToSet(presentFeatures);
+		this.absentFeatures = Helpers.copyToSet(absentFeatures);
+	}
 
-  public TesterRequirements(TesterRequirements tr) {
-    this(tr.getPresentFeatures(), tr.getAbsentFeatures());
-  }
+	public TesterRequirements(TesterRequirements tr) {
+		this(tr.getPresentFeatures(), tr.getAbsentFeatures());
+	}
 
-  public TesterRequirements() {
-    this(Collections.<Feature<?>>emptySet(),
-        Collections.<Feature<?>>emptySet());
-  }
+	public TesterRequirements() {
+		this(Collections.<Feature<?>> emptySet(),
+				Collections.<Feature<?>> emptySet());
+	}
 
-  public final Set<Feature<?>> getPresentFeatures() {
-    return presentFeatures;
-  }
+	public final Set<Feature<?>> getPresentFeatures() {
+		return presentFeatures;
+	}
 
-  public final Set<Feature<?>> getAbsentFeatures() {
-    return absentFeatures;
-  }
+	public final Set<Feature<?>> getAbsentFeatures() {
+		return absentFeatures;
+	}
 
-  @Override public boolean equals(Object object) {
-    if (object == this) {
-      return true;
-    }
-    if (object instanceof TesterRequirements) {
-      TesterRequirements that = (TesterRequirements) object;
-      return this.presentFeatures.equals(that.presentFeatures)
-          && this.absentFeatures.equals(that.absentFeatures);
-    }
-    return false;
-  }
+	@Override
+	public boolean equals(Object object) {
+		if (object == this) {
+			return true;
+		}
+		if (object instanceof TesterRequirements) {
+			TesterRequirements that = (TesterRequirements) object;
+			return this.presentFeatures.equals(that.presentFeatures)
+					&& this.absentFeatures.equals(that.absentFeatures);
+		}
+		return false;
+	}
 
-  @Override public int hashCode() {
-    return presentFeatures.hashCode() * 31 + absentFeatures.hashCode();
-  }
+	@Override
+	public int hashCode() {
+		return presentFeatures.hashCode() * 31 + absentFeatures.hashCode();
+	}
 
-  @Override public String toString() {
-    return "{TesterRequirements: present="
-        + presentFeatures + ", absent=" + absentFeatures + "}";
-  }
+	@Override
+	public String toString() {
+		return "{TesterRequirements: present="
+				+ presentFeatures + ", absent=" + absentFeatures + "}";
+	}
 
-  private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 0;
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 import java.io.File;
@@ -34,68 +34,64 @@ import java.io.IOException;
  */
 public interface SourceSinkFactory<S, T> {
 
-  /**
-   * Returns the data to expect the source or sink to contain given the data that was used to create
-   * the source or written to the sink. Typically, this will just return the input directly, but in
-   * some cases it may alter the input. For example, if the factory returns a sliced view of a
-   * source created with some given bytes, this method would return a subsequence of the given
-   * (byte[]) data.
-   */
-  T getExpected(T data);
+	/**
+	 * Returns the data to expect the source or sink to contain given the data that was used to create
+	 * the source or written to the sink. Typically, this will just return the input directly, but in
+	 * some cases it may alter the input. For example, if the factory returns a sliced view of a
+	 * source created with some given bytes, this method would return a subsequence of the given
+	 * (byte[]) data.
+	 */
+	T getExpected(T data);
 
-  /**
-   * Cleans up anything created when creating the source or sink.
-   */
-  public abstract void tearDown() throws IOException;
+	/**
+	 * Cleans up anything created when creating the source or sink.
+	 */
+	public abstract void tearDown() throws IOException;
 
-  /**
-   * Factory for byte or char sources.
-   */
-  public interface SourceFactory<S, T> extends SourceSinkFactory<S, T> {
+	/**
+	 * Factory for byte or char sources.
+	 */
+	public interface SourceFactory<S, T> extends SourceSinkFactory<S, T> {
 
-    /**
-     * Creates a new source containing some or all of the given data.
-     */
-    S createSource(T data) throws IOException;
-  }
+		/**
+		 * Creates a new source containing some or all of the given data.
+		 */
+		S createSource(T data) throws IOException;
+	}
 
-  /**
-   * Factory for byte or char sinks.
-   */
-  public interface SinkFactory<S, T> extends SourceSinkFactory<S, T> {
+	/**
+	 * Factory for byte or char sinks.
+	 */
+	public interface SinkFactory<S, T> extends SourceSinkFactory<S, T> {
 
-    /**
-     * Creates a new sink.
-     */
-    S createSink() throws IOException;
+		/**
+		 * Creates a new sink.
+		 */
+		S createSink() throws IOException;
 
-    /**
-     * Gets the current content of the created sink.
-     */
-    T getSinkContents() throws IOException;
-  }
+		/**
+		 * Gets the current content of the created sink.
+		 */
+		T getSinkContents() throws IOException;
+	}
 
-  /**
-   * Factory for {@link ByteSource} instances.
-   */
-  public interface ByteSourceFactory extends SourceFactory<ByteSource, byte[]> {
-  }
+	/**
+	 * Factory for {@link ByteSource} instances.
+	 */
+	public interface ByteSourceFactory extends SourceFactory<ByteSource, byte[]> {}
 
-  /**
-   * Factory for {@link ByteSink} instances.
-   */
-  public interface ByteSinkFactory extends SinkFactory<ByteSink, byte[]> {
-  }
+	/**
+	 * Factory for {@link ByteSink} instances.
+	 */
+	public interface ByteSinkFactory extends SinkFactory<ByteSink, byte[]> {}
 
-  /**
-   * Factory for {@link CharSource} instances.
-   */
-  public interface CharSourceFactory extends SourceFactory<CharSource, String> {
-  }
+	/**
+	 * Factory for {@link CharSource} instances.
+	 */
+	public interface CharSourceFactory extends SourceFactory<CharSource, String> {}
 
-  /**
-   * Factory for {@link CharSink} instances.
-   */
-  public interface CharSinkFactory extends SinkFactory<CharSink, String> {
-  }
+	/**
+	 * Factory for {@link CharSink} instances.
+	 */
+	public interface CharSinkFactory extends SinkFactory<CharSink, String> {}
 }

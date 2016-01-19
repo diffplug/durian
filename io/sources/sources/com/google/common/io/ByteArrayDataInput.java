@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 import java.io.DataInput;
@@ -33,33 +33,48 @@ import java.io.IOException;
  * @since 1.0
  */
 public interface ByteArrayDataInput extends DataInput {
-  @Override void readFully(byte b[]);
+	@Override
+	void readFully(byte b[]);
 
-  @Override void readFully(byte b[], int off, int len);
+	@Override
+	void readFully(byte b[], int off, int len);
 
-  @Override int skipBytes(int n);
+	@Override
+	int skipBytes(int n);
 
-  @Override boolean readBoolean();
+	@Override
+	boolean readBoolean();
 
-  @Override byte readByte();
+	@Override
+	byte readByte();
 
-  @Override int readUnsignedByte();
+	@Override
+	int readUnsignedByte();
 
-  @Override short readShort();
+	@Override
+	short readShort();
 
-  @Override int readUnsignedShort();
+	@Override
+	int readUnsignedShort();
 
-  @Override char readChar();
+	@Override
+	char readChar();
 
-  @Override int readInt();
+	@Override
+	int readInt();
 
-  @Override long readLong();
+	@Override
+	long readLong();
 
-  @Override float readFloat();
+	@Override
+	float readFloat();
 
-  @Override double readDouble();
+	@Override
+	double readDouble();
 
-  @Override String readLine();
+	@Override
+	String readLine();
 
-  @Override String readUTF();
+	@Override
+	String readUTF();
 }

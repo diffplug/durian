@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.annotations.GwtIncompatible;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,6 +23,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.annotations.GwtIncompatible;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 
 /**
  * Implementation of {@link Multimap} using hash tables.
@@ -48,90 +48,91 @@ import java.util.Set;
  */
 @GwtCompatible(serializable = true, emulated = true)
 public final class HashMultimap<K, V> extends AbstractSetMultimap<K, V> {
-  private static final int DEFAULT_VALUES_PER_KEY = 2;
+	private static final int DEFAULT_VALUES_PER_KEY = 2;
 
-  @VisibleForTesting transient int expectedValuesPerKey = DEFAULT_VALUES_PER_KEY;
+	@VisibleForTesting
+	transient int expectedValuesPerKey = DEFAULT_VALUES_PER_KEY;
 
-  /**
-   * Creates a new, empty {@code HashMultimap} with the default initial
-   * capacities.
-   */
-  public static <K, V> HashMultimap<K, V> create() {
-    return new HashMultimap<K, V>();
-  }
+	/**
+	 * Creates a new, empty {@code HashMultimap} with the default initial
+	 * capacities.
+	 */
+	public static <K, V> HashMultimap<K, V> create() {
+		return new HashMultimap<K, V>();
+	}
 
-  /**
-   * Constructs an empty {@code HashMultimap} with enough capacity to hold the
-   * specified numbers of keys and values without rehashing.
-   *
-   * @param expectedKeys the expected number of distinct keys
-   * @param expectedValuesPerKey the expected average number of values per key
-   * @throws IllegalArgumentException if {@code expectedKeys} or {@code
-   *      expectedValuesPerKey} is negative
-   */
-  public static <K, V> HashMultimap<K, V> create(int expectedKeys, int expectedValuesPerKey) {
-    return new HashMultimap<K, V>(expectedKeys, expectedValuesPerKey);
-  }
+	/**
+	 * Constructs an empty {@code HashMultimap} with enough capacity to hold the
+	 * specified numbers of keys and values without rehashing.
+	 *
+	 * @param expectedKeys the expected number of distinct keys
+	 * @param expectedValuesPerKey the expected average number of values per key
+	 * @throws IllegalArgumentException if {@code expectedKeys} or {@code
+	 *      expectedValuesPerKey} is negative
+	 */
+	public static <K, V> HashMultimap<K, V> create(int expectedKeys, int expectedValuesPerKey) {
+		return new HashMultimap<K, V>(expectedKeys, expectedValuesPerKey);
+	}
 
-  /**
-   * Constructs a {@code HashMultimap} with the same mappings as the specified
-   * multimap. If a key-value mapping appears multiple times in the input
-   * multimap, it only appears once in the constructed multimap.
-   *
-   * @param multimap the multimap whose contents are copied to this multimap
-   */
-  public static <K, V> HashMultimap<K, V> create(Multimap<? extends K, ? extends V> multimap) {
-    return new HashMultimap<K, V>(multimap);
-  }
+	/**
+	 * Constructs a {@code HashMultimap} with the same mappings as the specified
+	 * multimap. If a key-value mapping appears multiple times in the input
+	 * multimap, it only appears once in the constructed multimap.
+	 *
+	 * @param multimap the multimap whose contents are copied to this multimap
+	 */
+	public static <K, V> HashMultimap<K, V> create(Multimap<? extends K, ? extends V> multimap) {
+		return new HashMultimap<K, V>(multimap);
+	}
 
-  private HashMultimap() {
-    super(new HashMap<K, Collection<V>>());
-  }
+	private HashMultimap() {
+		super(new HashMap<K, Collection<V>>());
+	}
 
-  private HashMultimap(int expectedKeys, int expectedValuesPerKey) {
-    super(Maps.<K, Collection<V>>newHashMapWithExpectedSize(expectedKeys));
-    Preconditions.checkArgument(expectedValuesPerKey >= 0);
-    this.expectedValuesPerKey = expectedValuesPerKey;
-  }
+	private HashMultimap(int expectedKeys, int expectedValuesPerKey) {
+		super(Maps.<K, Collection<V>> newHashMapWithExpectedSize(expectedKeys));
+		Preconditions.checkArgument(expectedValuesPerKey >= 0);
+		this.expectedValuesPerKey = expectedValuesPerKey;
+	}
 
-  private HashMultimap(Multimap<? extends K, ? extends V> multimap) {
-    super(Maps.<K, Collection<V>>newHashMapWithExpectedSize(multimap.keySet().size()));
-    putAll(multimap);
-  }
+	private HashMultimap(Multimap<? extends K, ? extends V> multimap) {
+		super(Maps.<K, Collection<V>> newHashMapWithExpectedSize(multimap.keySet().size()));
+		putAll(multimap);
+	}
 
-  /**
-   * {@inheritDoc}
-   *
-   * <p>Creates an empty {@code HashSet} for a collection of values for one key.
-   *
-   * @return a new {@code HashSet} containing a collection of values for one key
-   */
-  @Override
-  Set<V> createCollection() {
-    return Sets.<V>newHashSetWithExpectedSize(expectedValuesPerKey);
-  }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>Creates an empty {@code HashSet} for a collection of values for one key.
+	 *
+	 * @return a new {@code HashSet} containing a collection of values for one key
+	 */
+	@Override
+	Set<V> createCollection() {
+		return Sets.<V> newHashSetWithExpectedSize(expectedValuesPerKey);
+	}
 
-  /**
-   * @serialData expectedValuesPerKey, number of distinct keys, and then for
-   *     each distinct key: the key, number of values for that key, and the
-   *     key's values
-   */
-  @GwtIncompatible("java.io.ObjectOutputStream")
-  private void writeObject(ObjectOutputStream stream) throws IOException {
-    stream.defaultWriteObject();
-    Serialization.writeMultimap(this, stream);
-  }
+	/**
+	 * @serialData expectedValuesPerKey, number of distinct keys, and then for
+	 *     each distinct key: the key, number of values for that key, and the
+	 *     key's values
+	 */
+	@GwtIncompatible("java.io.ObjectOutputStream")
+	private void writeObject(ObjectOutputStream stream) throws IOException {
+		stream.defaultWriteObject();
+		Serialization.writeMultimap(this, stream);
+	}
 
-  @GwtIncompatible("java.io.ObjectInputStream")
-  private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-    stream.defaultReadObject();
-    expectedValuesPerKey = DEFAULT_VALUES_PER_KEY;
-    int distinctKeys = Serialization.readCount(stream);
-    Map<K, Collection<V>> map = Maps.newHashMap();
-    setMap(map);
-    Serialization.populateMultimap(this, stream, distinctKeys);
-  }
+	@GwtIncompatible("java.io.ObjectInputStream")
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		stream.defaultReadObject();
+		expectedValuesPerKey = DEFAULT_VALUES_PER_KEY;
+		int distinctKeys = Serialization.readCount(stream);
+		Map<K, Collection<V>> map = Maps.newHashMap();
+		setMap(map);
+		Serialization.populateMultimap(this, stream, distinctKeys);
+	}
 
-  @GwtIncompatible("Not needed in emulated source")
-  private static final long serialVersionUID = 0;
+	@GwtIncompatible("Not needed in emulated source")
+	private static final long serialVersionUID = 0;
 }

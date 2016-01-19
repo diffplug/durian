@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.SUPPORTS_REMOVE;
@@ -32,12 +32,12 @@ import com.google.common.collect.testing.features.CollectionSize;
  */
 @GwtCompatible
 public class SetRemoveTester<E> extends AbstractSetTester<E> {
-  @CollectionFeature.Require(SUPPORTS_REMOVE)
-  @CollectionSize.Require(absent = ZERO)
-  public void testRemove_present() {
-    getSet().remove(e0());
-    assertFalse("After remove(present) a set should not contain "
-        + "the removed element.",
-        getSet().contains(e0()));
-  }
+	@CollectionFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(absent = ZERO)
+	public void testRemove_present() {
+		getSet().remove(e0());
+		assertFalse("After remove(present) a set should not contain "
+				+ "the removed element.",
+				getSet().contains(e0()));
+	}
 }

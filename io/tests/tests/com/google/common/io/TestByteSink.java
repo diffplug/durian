@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
-
-import com.google.common.collect.ImmutableSet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * A byte sink for testing that has configurable behavior.
@@ -29,47 +29,47 @@ import java.io.OutputStream;
  */
 public class TestByteSink extends ByteSink implements TestStreamSupplier {
 
-  private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-  private final ImmutableSet<TestOption> options;
+	private final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+	private final ImmutableSet<TestOption> options;
 
-  private boolean outputStreamOpened;
-  private boolean outputStreamClosed;
+	private boolean outputStreamOpened;
+	private boolean outputStreamClosed;
 
-  public TestByteSink(TestOption... options) {
-    this.options = ImmutableSet.copyOf(options);
-  }
+	public TestByteSink(TestOption... options) {
+		this.options = ImmutableSet.copyOf(options);
+	}
 
-  byte[] getBytes() {
-    return bytes.toByteArray();
-  }
+	byte[] getBytes() {
+		return bytes.toByteArray();
+	}
 
-  @Override
-  public boolean wasStreamOpened() {
-    return outputStreamOpened;
-  }
+	@Override
+	public boolean wasStreamOpened() {
+		return outputStreamOpened;
+	}
 
-  @Override
-  public boolean wasStreamClosed() {
-    return outputStreamClosed;
-  }
+	@Override
+	public boolean wasStreamClosed() {
+		return outputStreamClosed;
+	}
 
-  @Override
-  public OutputStream openStream() throws IOException {
-    outputStreamOpened = true;
-    bytes.reset(); // truncate
-    return new Out();
-  }
+	@Override
+	public OutputStream openStream() throws IOException {
+		outputStreamOpened = true;
+		bytes.reset(); // truncate
+		return new Out();
+	}
 
-  private final class Out extends TestOutputStream {
+	private final class Out extends TestOutputStream {
 
-    public Out() throws IOException {
-      super(bytes, options);
-    }
+		public Out() throws IOException {
+			super(bytes, options);
+		}
 
-    @Override
-    public void close() throws IOException {
-      outputStreamClosed = true;
-      super.close();
-    }
-  }
+		@Override
+		public void close() throws IOException {
+			outputStreamClosed = true;
+			super.close();
+		}
+	}
 }

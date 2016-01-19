@@ -222,7 +222,7 @@
  * example, defining a subscriber method for a nonexistent event type.
  *
  * <h3>What Event Bus problems can be detected immediately at registration?</h3>
- * <p>Immediately upon invoking {@code register(Object)} , the listener being
+ * <p>Immediately upon invoking {@code register(Object)}, the listener being
  * registered is checked for the <i>well-formedness</i> of its subscriber methods.
  * Specifically, any methods marked with {@code @Subscribe} must take only a
  * single argument.

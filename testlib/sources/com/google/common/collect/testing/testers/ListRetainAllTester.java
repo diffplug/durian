@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.Helpers.assertContentsInOrder;
@@ -22,12 +22,12 @@ import static com.google.common.collect.testing.features.CollectionSize.ONE;
 import static com.google.common.collect.testing.features.CollectionSize.SEVERAL;
 import static com.google.common.collect.testing.features.CollectionSize.ZERO;
 
+import java.util.Arrays;
+
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.collect.testing.MinimalCollection;
 import com.google.common.collect.testing.features.CollectionFeature;
 import com.google.common.collect.testing.features.CollectionSize;
-
-import java.util.Arrays;
 
 /**
  * A generic JUnit test which tests {@code retainAll} operations on a list.
@@ -38,36 +38,36 @@ import java.util.Arrays;
  */
 @GwtCompatible
 public class ListRetainAllTester<E> extends AbstractListTester<E> {
-  @CollectionFeature.Require(SUPPORTS_REMOVE)
-  @CollectionSize.Require(absent = {ZERO, ONE})
-  public void testRetainAll_duplicatesKept() {
-    E[] array = createSamplesArray();
-    array[1] = e0();
-    collection = getSubjectGenerator().create(array);
-    assertFalse("containsDuplicates.retainAll(superset) should return false",
-        collection.retainAll(MinimalCollection.of(createSamplesArray())));
-    expectContents(array);
-  }
+	@CollectionFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(absent = {ZERO, ONE})
+	public void testRetainAll_duplicatesKept() {
+		E[] array = createSamplesArray();
+		array[1] = e0();
+		collection = getSubjectGenerator().create(array);
+		assertFalse("containsDuplicates.retainAll(superset) should return false",
+				collection.retainAll(MinimalCollection.of(createSamplesArray())));
+		expectContents(array);
+	}
 
-  @SuppressWarnings("unchecked")
-  @CollectionFeature.Require(SUPPORTS_REMOVE)
-  @CollectionSize.Require(SEVERAL)
-  public void testRetainAll_duplicatesRemoved() {
-    E[] array = createSamplesArray();
-    array[1] = e0();
-    collection = getSubjectGenerator().create(array);
-    assertTrue("containsDuplicates.retainAll(subset) should return true",
-        collection.retainAll(MinimalCollection.of(e2())));
-    expectContents(e2());
-  }
+	@SuppressWarnings("unchecked")
+	@CollectionFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(SEVERAL)
+	public void testRetainAll_duplicatesRemoved() {
+		E[] array = createSamplesArray();
+		array[1] = e0();
+		collection = getSubjectGenerator().create(array);
+		assertTrue("containsDuplicates.retainAll(subset) should return true",
+				collection.retainAll(MinimalCollection.of(e2())));
+		expectContents(e2());
+	}
 
-  @SuppressWarnings("unchecked")
-  @CollectionFeature.Require(SUPPORTS_REMOVE)
-  @CollectionSize.Require(SEVERAL)
-  public void testRetainAll_countIgnored() {
-    resetContainer(
-        getSubjectGenerator().create(e0(), e2(), e1(), e0()));
-    assertTrue(getList().retainAll(Arrays.asList(e0(), e1())));
-    assertContentsInOrder(getList(), e0(), e1(), e0());
-  }
+	@SuppressWarnings("unchecked")
+	@CollectionFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(SEVERAL)
+	public void testRetainAll_countIgnored() {
+		resetContainer(
+				getSubjectGenerator().create(e0(), e2(), e1(), e0()));
+		assertTrue(getList().retainAll(Arrays.asList(e0(), e1())));
+		assertContentsInOrder(getList(), e0(), e1(), e0());
+	}
 }

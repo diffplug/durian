@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.ALLOWS_NULL_VALUES;
@@ -32,28 +32,27 @@ import com.google.common.collect.testing.features.CollectionFeature;
 @SuppressWarnings("unchecked") // too many "unchecked generic array creations"
 @GwtCompatible
 public class QueueOfferTester<E> extends AbstractQueueTester<E> {
-  @CollectionFeature.Require(SUPPORTS_ADD)
-  public void testOffer_supportedNotPresent() {
-    assertTrue("offer(notPresent) should return true",
-        getQueue().offer(e3()));
-    expectAdded(e3());
-  }
+	@CollectionFeature.Require(SUPPORTS_ADD)
+	public void testOffer_supportedNotPresent() {
+		assertTrue("offer(notPresent) should return true",
+				getQueue().offer(e3()));
+		expectAdded(e3());
+	}
 
-  @CollectionFeature.Require({SUPPORTS_ADD, ALLOWS_NULL_VALUES})
-  public void testOffer_nullSupported() {
-    assertTrue("offer(null) should return true", getQueue().offer(null));
-    expectAdded((E) null);
-  }
+	@CollectionFeature.Require({SUPPORTS_ADD, ALLOWS_NULL_VALUES})
+	public void testOffer_nullSupported() {
+		assertTrue("offer(null) should return true", getQueue().offer(null));
+		expectAdded((E) null);
+	}
 
-  @CollectionFeature.Require(value = SUPPORTS_ADD, absent = ALLOWS_NULL_VALUES)
-  public void testOffer_nullUnsupported() {
-    try {
-      getQueue().offer(null);
-      fail("offer(null) should throw");
-    } catch (NullPointerException expected) {
-    }
-    expectUnchanged();
-    expectNullMissingWhenNullUnsupported(
-        "Should not contain null after unsupported offer(null)");
-  }
+	@CollectionFeature.Require(value = SUPPORTS_ADD, absent = ALLOWS_NULL_VALUES)
+	public void testOffer_nullUnsupported() {
+		try {
+			getQueue().offer(null);
+			fail("offer(null) should throw");
+		} catch (NullPointerException expected) {}
+		expectUnchanged();
+		expectNullMissingWhenNullUnsupported(
+				"Should not contain null after unsupported offer(null)");
+	}
 }

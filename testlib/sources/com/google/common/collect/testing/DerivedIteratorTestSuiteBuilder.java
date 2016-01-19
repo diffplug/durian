@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
-import junit.framework.TestSuite;
-
 import java.util.List;
+
+import junit.framework.TestSuite;
 
 /**
  * Given a test iterable generator, builds a test suite for the
@@ -27,26 +27,26 @@ import java.util.List;
  * @author George van den Driessche
  */
 public class DerivedIteratorTestSuiteBuilder<E>
-    extends FeatureSpecificTestSuiteBuilder<
-        DerivedIteratorTestSuiteBuilder<E>,
-        TestSubjectGenerator<? extends Iterable<E>>> {
-  /**
-   * We rely entirely on the delegate builder for test creation, so this
-   * just throws UnsupportedOperationException.
-   *
-   * @return never.
-   */
-  @Override protected List<Class<? extends AbstractTester>> getTesters() {
-    throw new UnsupportedOperationException();
-  }
+		extends FeatureSpecificTestSuiteBuilder<DerivedIteratorTestSuiteBuilder<E>, TestSubjectGenerator<? extends Iterable<E>>> {
+	/**
+	 * We rely entirely on the delegate builder for test creation, so this
+	 * just throws UnsupportedOperationException.
+	 *
+	 * @return never.
+	 */
+	@Override
+	protected List<Class<? extends AbstractTester>> getTesters() {
+		throw new UnsupportedOperationException();
+	}
 
-  @Override public TestSuite createTestSuite() {
-    checkCanCreate();
-    return new IteratorTestSuiteBuilder<E>()
-        .named(getName() + " iterator")
-        .usingGenerator(new DerivedTestIteratorGenerator<E>(
-            getSubjectGenerator()))
-        .withFeatures(getFeatures())
-        .createTestSuite();
-  }
+	@Override
+	public TestSuite createTestSuite() {
+		checkCanCreate();
+		return new IteratorTestSuiteBuilder<E>()
+				.named(getName() + " iterator")
+				.usingGenerator(new DerivedTestIteratorGenerator<E>(
+						getSubjectGenerator()))
+				.withFeatures(getFeatures())
+				.createTestSuite();
+	}
 }

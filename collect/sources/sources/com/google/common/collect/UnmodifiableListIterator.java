@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
-import com.google.common.annotations.GwtCompatible;
-
 import java.util.ListIterator;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * A list iterator that does not support {@link #remove}, {@link #add}, or
@@ -29,31 +29,31 @@ import java.util.ListIterator;
  */
 @GwtCompatible
 public abstract class UnmodifiableListIterator<E> extends UnmodifiableIterator<E>
-    implements ListIterator<E> {
-  /** Constructor for use by subclasses. */
-  protected UnmodifiableListIterator() {}
+		implements ListIterator<E> {
+	/** Constructor for use by subclasses. */
+	protected UnmodifiableListIterator() {}
 
-  /**
-   * Guaranteed to throw an exception and leave the underlying data unmodified.
-   *
-   * @throws UnsupportedOperationException always
-   * @deprecated Unsupported operation.
-   */
-  @Deprecated
-  @Override
-  public final void add(E e) {
-    throw new UnsupportedOperationException();
-  }
+	/**
+	 * Guaranteed to throw an exception and leave the underlying data unmodified.
+	 *
+	 * @throws UnsupportedOperationException always
+	 * @deprecated Unsupported operation.
+	 */
+	@Deprecated
+	@Override
+	public final void add(E e) {
+		throw new UnsupportedOperationException();
+	}
 
-  /**
-   * Guaranteed to throw an exception and leave the underlying data unmodified.
-   *
-   * @throws UnsupportedOperationException always
-   * @deprecated Unsupported operation.
-   */
-  @Deprecated
-  @Override
-  public final void set(E e) {
-    throw new UnsupportedOperationException();
-  }
+	/**
+	 * Guaranteed to throw an exception and leave the underlying data unmodified.
+	 *
+	 * @throws UnsupportedOperationException always
+	 * @deprecated Unsupported operation.
+	 */
+	@Deprecated
+	@Override
+	public final void set(E e) {
+		throw new UnsupportedOperationException();
+	}
 }

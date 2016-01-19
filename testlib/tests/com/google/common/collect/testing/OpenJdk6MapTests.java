@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
 import static com.google.common.collect.testing.testers.CollectionAddAllTester.getAddAllUnsupportedNonePresentMethod;
@@ -26,12 +26,12 @@ import static com.google.common.collect.testing.testers.MapEntrySetTester.getCon
 import static com.google.common.collect.testing.testers.MapPutAllTester.getPutAllNullKeyUnsupportedMethod;
 import static com.google.common.collect.testing.testers.MapPutTester.getPutNullKeyUnsupportedMethod;
 
-import junit.framework.Test;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+
+import junit.framework.Test;
 
 /**
  * Tests the {@link Map} implementations of {@link java.util}, suppressing
@@ -44,43 +44,44 @@ import java.util.Map;
  * under JDK7
  */
 public class OpenJdk6MapTests extends TestsForMapsInJavaUtil {
-  public static Test suite() {
-    return new OpenJdk6MapTests().allTests();
-  }
+	public static Test suite() {
+		return new OpenJdk6MapTests().allTests();
+	}
 
-  @Override protected Collection<Method> suppressForTreeMapNatural() {
-    return Arrays.asList(
-        getPutNullKeyUnsupportedMethod(),
-        getPutAllNullKeyUnsupportedMethod(),
-        getCreateWithNullKeyUnsupportedMethod(),
-        getCreateWithNullUnsupportedMethod(), // for keySet
-        getContainsEntryWithIncomparableKeyMethod(),
-        getContainsEntryWithIncomparableValueMethod()); 
-  }
+	@Override
+	protected Collection<Method> suppressForTreeMapNatural() {
+		return Arrays.asList(
+				getPutNullKeyUnsupportedMethod(),
+				getPutAllNullKeyUnsupportedMethod(),
+				getCreateWithNullKeyUnsupportedMethod(),
+				getCreateWithNullUnsupportedMethod(), // for keySet
+				getContainsEntryWithIncomparableKeyMethod(),
+				getContainsEntryWithIncomparableValueMethod());
+	}
 
-  @Override
-  protected Collection<Method> suppressForConcurrentHashMap() {
-    /*
-     * The entrySet() of ConcurrentHashMap, unlike that of other Map
-     * implementations, supports add() under JDK8. This seems problematic, but I
-     * didn't see that discussed in the review, which included many other
-     * changes: http://goo.gl/okTTdr
-     *
-     * TODO(cpovirk): decide what the best long-term action here is: force users
-     * to suppress (as we do now), stop testing entrySet().add() at all, make
-     * entrySet().add() tests tolerant of either behavior, introduce a map
-     * feature for entrySet() that supports add(), or something else
-     */
-    return Arrays.asList(
-        getAddUnsupportedNotPresentMethod(),
-        getAddAllUnsupportedNonePresentMethod(),
-        getAddAllUnsupportedSomePresentMethod());
-  }
+	@Override
+	protected Collection<Method> suppressForConcurrentHashMap() {
+		/*
+		 * The entrySet() of ConcurrentHashMap, unlike that of other Map
+		 * implementations, supports add() under JDK8. This seems problematic, but I
+		 * didn't see that discussed in the review, which included many other
+		 * changes: http://goo.gl/okTTdr
+		 *
+		 * TODO(cpovirk): decide what the best long-term action here is: force users
+		 * to suppress (as we do now), stop testing entrySet().add() at all, make
+		 * entrySet().add() tests tolerant of either behavior, introduce a map
+		 * feature for entrySet() that supports add(), or something else
+		 */
+		return Arrays.asList(
+				getAddUnsupportedNotPresentMethod(),
+				getAddAllUnsupportedNonePresentMethod(),
+				getAddAllUnsupportedSomePresentMethod());
+	}
 
-  @Override
-  protected Collection<Method> suppressForConcurrentSkipListMap() {
-    return Arrays.asList(
-        getContainsEntryWithIncomparableKeyMethod(),
-        getContainsEntryWithIncomparableValueMethod()); 
-  }
+	@Override
+	protected Collection<Method> suppressForConcurrentSkipListMap() {
+		return Arrays.asList(
+				getContainsEntryWithIncomparableKeyMethod(),
+				getContainsEntryWithIncomparableValueMethod());
+	}
 }

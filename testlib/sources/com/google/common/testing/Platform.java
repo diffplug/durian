@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.testing;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.annotations.GwtCompatible;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Methods factored out so that they can be emulated differently in GWT.
@@ -33,25 +33,25 @@ import java.io.ObjectOutputStream;
  */
 @GwtCompatible(emulated = true)
 final class Platform {
-  /**
-   * Serializes and deserializes the specified object.
-   */
-  @SuppressWarnings("unchecked")
-  static <T> T reserialize(T object) {
-    checkNotNull(object);
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    try {
-      ObjectOutputStream out = new ObjectOutputStream(bytes);
-      out.writeObject(object);
-      ObjectInputStream in = new ObjectInputStream(
-          new ByteArrayInputStream(bytes.toByteArray()));
-      return (T) in.readObject();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-  }
+	/**
+	 * Serializes and deserializes the specified object.
+	 */
+	@SuppressWarnings("unchecked")
+	static <T> T reserialize(T object) {
+		checkNotNull(object);
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(bytes);
+			out.writeObject(object);
+			ObjectInputStream in = new ObjectInputStream(
+					new ByteArrayInputStream(bytes.toByteArray()));
+			return (T) in.readObject();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-  private Platform() {}
+	private Platform() {}
 }

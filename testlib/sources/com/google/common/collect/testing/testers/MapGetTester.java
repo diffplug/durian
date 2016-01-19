@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionSize.ZERO;
@@ -36,49 +36,47 @@ import com.google.common.collect.testing.features.MapFeature;
  */
 @GwtCompatible
 public class MapGetTester<K, V> extends AbstractMapTester<K, V> {
-  @CollectionSize.Require(absent = ZERO)
-  public void testGet_yes() {
-    assertEquals("get(present) should return the associated value",
-        v0(), get(k0()));
-  }
+	@CollectionSize.Require(absent = ZERO)
+	public void testGet_yes() {
+		assertEquals("get(present) should return the associated value",
+				v0(), get(k0()));
+	}
 
-  public void testGet_no() {
-    assertNull("get(notPresent) should return null", get(k3()));
-  }
+	public void testGet_no() {
+		assertNull("get(notPresent) should return null", get(k3()));
+	}
 
-  @MapFeature.Require(ALLOWS_NULL_KEY_QUERIES)
-  public void testGet_nullNotContainedButAllowed() {
-    assertNull("get(null) should return null", get(null));
-  }
+	@MapFeature.Require(ALLOWS_NULL_KEY_QUERIES)
+	public void testGet_nullNotContainedButAllowed() {
+		assertNull("get(null) should return null", get(null));
+	}
 
-  @MapFeature.Require(absent = ALLOWS_NULL_KEY_QUERIES)
-  public void testGet_nullNotContainedAndUnsupported() {
-    try {
-      assertNull("get(null) should return null or throw", get(null));
-    } catch (NullPointerException tolerated) {
-    }
-  }
+	@MapFeature.Require(absent = ALLOWS_NULL_KEY_QUERIES)
+	public void testGet_nullNotContainedAndUnsupported() {
+		try {
+			assertNull("get(null) should return null or throw", get(null));
+		} catch (NullPointerException tolerated) {}
+	}
 
-  @MapFeature.Require(ALLOWS_NULL_KEYS)
-  @CollectionSize.Require(absent = ZERO)
-  public void testGet_nonNullWhenNullContained() {
-    initMapWithNullKey();
-    assertNull("get(notPresent) should return null", get(k3()));
-  }
+	@MapFeature.Require(ALLOWS_NULL_KEYS)
+	@CollectionSize.Require(absent = ZERO)
+	public void testGet_nonNullWhenNullContained() {
+		initMapWithNullKey();
+		assertNull("get(notPresent) should return null", get(k3()));
+	}
 
-  @MapFeature.Require(ALLOWS_NULL_KEYS)
-  @CollectionSize.Require(absent = ZERO)
-  public void testGet_nullContained() {
-    initMapWithNullKey();
-    assertEquals("get(null) should return the associated value",
-        getValueForNullKey(), get(null));
-  }
+	@MapFeature.Require(ALLOWS_NULL_KEYS)
+	@CollectionSize.Require(absent = ZERO)
+	public void testGet_nullContained() {
+		initMapWithNullKey();
+		assertEquals("get(null) should return the associated value",
+				getValueForNullKey(), get(null));
+	}
 
-  public void testGet_wrongType() {
-    try {
-      assertNull("get(wrongType) should return null or throw",
-          getMap().get(WrongType.VALUE));
-    } catch (ClassCastException tolerated) {
-    }
-  }
+	public void testGet_wrongType() {
+		try {
+			assertNull("get(wrongType) should return null or throw",
+					getMap().get(WrongType.VALUE));
+		} catch (ClassCastException tolerated) {}
+	}
 }

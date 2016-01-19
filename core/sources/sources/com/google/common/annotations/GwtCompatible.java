@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.annotations;
 
 import java.lang.annotation.Documented;
@@ -62,27 +62,27 @@ import java.lang.annotation.Target;
  * @author Hayward Chan
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
 @GwtCompatible
 public @interface GwtCompatible {
 
-  /**
-   * When {@code true}, the annotated type or the type of the method return
-   * value is GWT serializable.
-   *
-   * @see <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideServerCommunication.html#DevGuideSerializableTypes">
-   *     Documentation about GWT serialization</a>
-   */
-  boolean serializable() default false;
+	/**
+	 * When {@code true}, the annotated type or the type of the method return
+	 * value is GWT serializable.
+	 *
+	 * @see <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideServerCommunication.html#DevGuideSerializableTypes">
+	 *     Documentation about GWT serialization</a>
+	 */
+	boolean serializable() default false;
 
-  /**
-   * When {@code true}, the annotated type is emulated in GWT. The emulated
-   * source (also known as super-source) is different from the implementation
-   * used by the JVM.
-   *
-   * @see <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideOrganizingProjects.html#DevGuideModules">
-   *     Documentation about GWT emulated source</a>
-   */
-  boolean emulated() default false;
+	/**
+	 * When {@code true}, the annotated type is emulated in GWT. The emulated
+	 * source (also known as super-source) is different from the implementation
+	 * used by the JVM.
+	 *
+	 * @see <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideOrganizingProjects.html#DevGuideModules">
+	 *     Documentation about GWT emulated source</a>
+	 */
+	boolean emulated() default false;
 }

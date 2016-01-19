@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing;
 
 import static com.google.common.collect.testing.testers.CollectionAddAllTester.getAddAllNullUnsupportedMethod;
@@ -22,12 +22,12 @@ import static com.google.common.collect.testing.testers.CollectionAddTester.getA
 import static com.google.common.collect.testing.testers.CollectionCreationTester.getCreateWithNullUnsupportedMethod;
 import static com.google.common.collect.testing.testers.SetAddTester.getAddSupportedNullPresentMethod;
 
-import junit.framework.Test;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
+
+import junit.framework.Test;
 
 /**
  * Tests the {@link Set} implementations of {@link java.util}, suppressing
@@ -36,20 +36,22 @@ import java.util.Set;
  * @author Kevin Bourrillion
  */
 public class OpenJdk6SetTests extends TestsForSetsInJavaUtil {
-  public static Test suite() {
-    return new OpenJdk6SetTests().allTests();
-  }
+	public static Test suite() {
+		return new OpenJdk6SetTests().allTests();
+	}
 
-  @Override protected Collection<Method> suppressForTreeSetNatural() {
-    return Arrays.asList(
-        getAddNullUnsupportedMethod(),
-        getAddAllNullUnsupportedMethod(),
-        getCreateWithNullUnsupportedMethod());
-  }
+	@Override
+	protected Collection<Method> suppressForTreeSetNatural() {
+		return Arrays.asList(
+				getAddNullUnsupportedMethod(),
+				getAddAllNullUnsupportedMethod(),
+				getCreateWithNullUnsupportedMethod());
+	}
 
-  @Override protected Collection<Method> suppressForCheckedSet() {
-    return Arrays.asList(
-        getAddNullSupportedMethod(),
-        getAddSupportedNullPresentMethod());
-  }
+	@Override
+	protected Collection<Method> suppressForCheckedSet() {
+		return Arrays.asList(
+				getAddNullSupportedMethod(),
+				getAddSupportedNullPresentMethod());
+	}
 }

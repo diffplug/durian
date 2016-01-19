@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2007 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect.testing.testers;
 
 import static com.google.common.collect.testing.features.CollectionFeature.SUPPORTS_ADD;
@@ -34,28 +34,27 @@ import com.google.common.collect.testing.features.CollectionSize;
 @SuppressWarnings("unchecked") // too many "unchecked generic array creations"
 @GwtCompatible
 public class SetAddAllTester<E> extends AbstractSetTester<E> {
-  @CollectionFeature.Require(SUPPORTS_ADD)
-  @CollectionSize.Require(absent = ZERO)
-  public void testAddAll_supportedSomePresent() {
-    assertTrue("add(somePresent) should return true",
-        getSet().addAll(MinimalCollection.of(e3(), e0())));
-    expectAdded(e3());
-  }
+	@CollectionFeature.Require(SUPPORTS_ADD)
+	@CollectionSize.Require(absent = ZERO)
+	public void testAddAll_supportedSomePresent() {
+		assertTrue("add(somePresent) should return true",
+				getSet().addAll(MinimalCollection.of(e3(), e0())));
+		expectAdded(e3());
+	}
 
-  @CollectionFeature.Require(SUPPORTS_ADD)
-  public void testAddAll_withDuplicates() {
-    MinimalCollection<E> elementsToAdd
-        = MinimalCollection.of(e3(), e4(), e3(), e4());
-    assertTrue("add(hasDuplicates) should return true",
-        getSet().addAll(elementsToAdd));
-    expectAdded(e3(), e4());
-  }
+	@CollectionFeature.Require(SUPPORTS_ADD)
+	public void testAddAll_withDuplicates() {
+		MinimalCollection<E> elementsToAdd = MinimalCollection.of(e3(), e4(), e3(), e4());
+		assertTrue("add(hasDuplicates) should return true",
+				getSet().addAll(elementsToAdd));
+		expectAdded(e3(), e4());
+	}
 
-  @CollectionFeature.Require(SUPPORTS_ADD)
-  @CollectionSize.Require(absent = ZERO)
-  public void testAddAll_supportedAllPresent() {
-    assertFalse("add(allPresent) should return false",
-        getSet().addAll(MinimalCollection.of(e0())));
-    expectUnchanged();
-  }
+	@CollectionFeature.Require(SUPPORTS_ADD)
+	@CollectionSize.Require(absent = ZERO)
+	public void testAddAll_supportedAllPresent() {
+		assertFalse("add(allPresent) should return false",
+				getSet().addAll(MinimalCollection.of(e0())));
+		expectUnchanged();
+	}
 }

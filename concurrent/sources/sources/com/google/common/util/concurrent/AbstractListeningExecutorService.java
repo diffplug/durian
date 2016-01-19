@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.util.concurrent;
-
-import com.google.common.annotations.Beta;
 
 import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.Callable;
 import java.util.concurrent.RunnableFuture;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.Beta;
 
 /**
  * Abstract {@link ListeningExecutorService} implementation that creates {@link ListenableFuture}
@@ -37,27 +37,32 @@ import javax.annotation.Nullable;
  */
 @Beta
 public abstract class AbstractListeningExecutorService
-    extends AbstractExecutorService implements ListeningExecutorService {
+		extends AbstractExecutorService implements ListeningExecutorService {
 
-  /** @since 19.0 (present with return type {@code ListenableFutureTask} since 14.0) */
-  @Override protected final <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
-    return TrustedListenableFutureTask.create(runnable, value);
-  }
+	/** @since 19.0 (present with return type {@code ListenableFutureTask} since 14.0) */
+	@Override
+	protected final <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
+		return TrustedListenableFutureTask.create(runnable, value);
+	}
 
-  /** @since 19.0 (present with return type {@code ListenableFutureTask} since 14.0) */
-  @Override protected final <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
-    return TrustedListenableFutureTask.create(callable);
-  }
+	/** @since 19.0 (present with return type {@code ListenableFutureTask} since 14.0) */
+	@Override
+	protected final <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
+		return TrustedListenableFutureTask.create(callable);
+	}
 
-  @Override public ListenableFuture<?> submit(Runnable task) {
-    return (ListenableFuture<?>) super.submit(task);
-  }
+	@Override
+	public ListenableFuture<?> submit(Runnable task) {
+		return (ListenableFuture<?>) super.submit(task);
+	}
 
-  @Override public <T> ListenableFuture<T> submit(Runnable task, @Nullable T result) {
-    return (ListenableFuture<T>) super.submit(task, result);
-  }
+	@Override
+	public <T> ListenableFuture<T> submit(Runnable task, @Nullable T result) {
+		return (ListenableFuture<T>) super.submit(task, result);
+	}
 
-  @Override public <T> ListenableFuture<T> submit(Callable<T> task) {
-    return (ListenableFuture<T>) super.submit(task);
-  }
+	@Override
+	public <T> ListenableFuture<T> submit(Callable<T> task) {
+		return (ListenableFuture<T>) super.submit(task);
+	}
 }

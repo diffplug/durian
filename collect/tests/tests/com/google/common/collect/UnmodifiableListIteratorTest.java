@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-
-import junit.framework.TestCase;
 
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
+import junit.framework.TestCase;
+
+import com.google.common.annotations.GwtCompatible;
 
 /**
  * Tests for UnmodifiableListIterator.
@@ -31,74 +31,84 @@ import java.util.NoSuchElementException;
  */
 @GwtCompatible
 public class UnmodifiableListIteratorTest extends TestCase {
-  public void testRemove() {
-    Iterator<String> iterator = create();
+	public void testRemove() {
+		Iterator<String> iterator = create();
 
-    assertTrue(iterator.hasNext());
-    assertEquals("a", iterator.next());
-    try {
-      iterator.remove();
-      fail();
-    } catch (UnsupportedOperationException expected) {}
-  }
-  
-  public void testAdd() {
-    ListIterator<String> iterator = create();
+		assertTrue(iterator.hasNext());
+		assertEquals("a", iterator.next());
+		try {
+			iterator.remove();
+			fail();
+		} catch (UnsupportedOperationException expected) {}
+	}
 
-    assertTrue(iterator.hasNext());
-    assertEquals("a", iterator.next());
-    assertEquals("b", iterator.next());
-    assertEquals("b", iterator.previous());
-    try {
-      iterator.add("c");
-      fail();
-    } catch (UnsupportedOperationException expected) {}
-  }
-  
-  public void testSet() {
-    ListIterator<String> iterator = create();
+	public void testAdd() {
+		ListIterator<String> iterator = create();
 
-    assertTrue(iterator.hasNext());
-    assertEquals("a", iterator.next());
-    assertEquals("b", iterator.next());
-    assertEquals("b", iterator.previous());
-    try {
-      iterator.set("c");
-      fail();
-    } catch (UnsupportedOperationException expected) {}
-  }
+		assertTrue(iterator.hasNext());
+		assertEquals("a", iterator.next());
+		assertEquals("b", iterator.next());
+		assertEquals("b", iterator.previous());
+		try {
+			iterator.add("c");
+			fail();
+		} catch (UnsupportedOperationException expected) {}
+	}
 
-  UnmodifiableListIterator<String> create() {
-    final String[] array = {"a", "b", "c"};
+	public void testSet() {
+		ListIterator<String> iterator = create();
 
-    return new UnmodifiableListIterator<String>() {
-      int i;
-      @Override
-      public boolean hasNext() {
-        return i < array.length;
-      }
-      @Override
-      public String next() {
-        if (!hasNext()) {
-          throw new NoSuchElementException();
-        }
-        return array[i++];
-      }
-      @Override public boolean hasPrevious() {
-        return i > 0;
-      }
-      @Override public int nextIndex() {
-        return i;
-      }
-      @Override public String previous() {
-        if (!hasPrevious()) {
-          throw new NoSuchElementException();
-        }
-        return array[--i];
-      }
-      @Override public int previousIndex() {
-        return i-1;
-      }
-    };
-  }
+		assertTrue(iterator.hasNext());
+		assertEquals("a", iterator.next());
+		assertEquals("b", iterator.next());
+		assertEquals("b", iterator.previous());
+		try {
+			iterator.set("c");
+			fail();
+		} catch (UnsupportedOperationException expected) {}
+	}
+
+	UnmodifiableListIterator<String> create() {
+		final String[] array = {"a", "b", "c"};
+
+		return new UnmodifiableListIterator<String>() {
+			int i;
+
+			@Override
+			public boolean hasNext() {
+				return i < array.length;
+			}
+
+			@Override
+			public String next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				return array[i++];
+			}
+
+			@Override
+			public boolean hasPrevious() {
+				return i > 0;
+			}
+
+			@Override
+			public int nextIndex() {
+				return i;
+			}
+
+			@Override
+			public String previous() {
+				if (!hasPrevious()) {
+					throw new NoSuchElementException();
+				}
+				return array[--i];
+			}
+
+			@Override
+			public int previousIndex() {
+				return i - 1;
+			}
+		};
+	}
 }

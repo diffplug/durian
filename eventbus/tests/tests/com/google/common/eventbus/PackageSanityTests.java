@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2012 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.eventbus;
-
-import com.google.common.testing.AbstractPackageSanityTests;
 
 import java.lang.reflect.Method;
 
 import javax.annotation.Nullable;
+
+import com.google.common.testing.AbstractPackageSanityTests;
 
 /**
  * Basic sanity tests for the entire package.
@@ -30,36 +30,35 @@ import javax.annotation.Nullable;
 
 public class PackageSanityTests extends AbstractPackageSanityTests {
 
-  public PackageSanityTests() throws Exception {
-    DummySubscriber dummySubscriber = new DummySubscriber();
-    setDefault(Subscriber.class, dummySubscriber.toSubscriber());
-    setDefault(Method.class, DummySubscriber.subscriberMethod());
-    setDefault(SubscriberExceptionContext.class, dummySubscriber.toContext());
-    setDefault(Dispatcher.class, Dispatcher.immediate());
-  }
+	public PackageSanityTests() throws Exception {
+		DummySubscriber dummySubscriber = new DummySubscriber();
+		setDefault(Subscriber.class, dummySubscriber.toSubscriber());
+		setDefault(Method.class, DummySubscriber.subscriberMethod());
+		setDefault(SubscriberExceptionContext.class, dummySubscriber.toContext());
+		setDefault(Dispatcher.class, Dispatcher.immediate());
+	}
 
-  private static class DummySubscriber {
+	private static class DummySubscriber {
 
-    private final EventBus eventBus = new EventBus();
+		private final EventBus eventBus = new EventBus();
 
-    @Subscribe
-    public void handle(@Nullable Object anything) {
-    }
+		@Subscribe
+		public void handle(@Nullable Object anything) {}
 
-    Subscriber toSubscriber() throws Exception {
-      return Subscriber.create(eventBus, this, subscriberMethod());
-    }
+		Subscriber toSubscriber() throws Exception {
+			return Subscriber.create(eventBus, this, subscriberMethod());
+		}
 
-    SubscriberExceptionContext toContext() {
-      return new SubscriberExceptionContext(eventBus, new Object(), this, subscriberMethod());
-    }
+		SubscriberExceptionContext toContext() {
+			return new SubscriberExceptionContext(eventBus, new Object(), this, subscriberMethod());
+		}
 
-    private static Method subscriberMethod() {
-      try {
-        return DummySubscriber.class.getMethod("handle", Object.class);
-      } catch (NoSuchMethodException e) {
-        throw new AssertionError(e);
-      }
-    }
-  }
+		private static Method subscriberMethod() {
+			try {
+				return DummySubscriber.class.getMethod("handle", Object.class);
+			} catch (NoSuchMethodException e) {
+				throw new AssertionError(e);
+			}
+		}
+	}
 }

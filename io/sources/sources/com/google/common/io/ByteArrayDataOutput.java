@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2009 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.io;
 
 import java.io.DataOutput;
@@ -27,29 +27,56 @@ import java.io.IOException;
  * @since 1.0
  */
 public interface ByteArrayDataOutput extends DataOutput {
-  @Override void write(int b);
-  @Override void write(byte b[]);
-  @Override void write(byte b[], int off, int len);
-  @Override void writeBoolean(boolean v);
-  @Override void writeByte(int v);
-  @Override void writeShort(int v);
-  @Override void writeChar(int v);
-  @Override void writeInt(int v);
-  @Override void writeLong(long v);
-  @Override void writeFloat(float v);
-  @Override void writeDouble(double v);
-  @Override void writeChars(String s);
-  @Override void writeUTF(String s);
+	@Override
+	void write(int b);
 
-  /**
-   * @deprecated This method is dangerous as it discards the high byte of
-   * every character. For UTF-8, use {@code write(s.getBytes(Charsets.UTF_8))}.
-   */
-  @Deprecated @Override void writeBytes(String s);
+	@Override
+	void write(byte b[]);
 
-  /**
-   * Returns the contents that have been written to this instance,
-   * as a byte array.
-   */
-  byte[] toByteArray();
+	@Override
+	void write(byte b[], int off, int len);
+
+	@Override
+	void writeBoolean(boolean v);
+
+	@Override
+	void writeByte(int v);
+
+	@Override
+	void writeShort(int v);
+
+	@Override
+	void writeChar(int v);
+
+	@Override
+	void writeInt(int v);
+
+	@Override
+	void writeLong(long v);
+
+	@Override
+	void writeFloat(float v);
+
+	@Override
+	void writeDouble(double v);
+
+	@Override
+	void writeChars(String s);
+
+	@Override
+	void writeUTF(String s);
+
+	/**
+	 * @deprecated This method is dangerous as it discards the high byte of
+	 * every character. For UTF-8, use {@code write(s.getBytes(Charsets.UTF_8))}.
+	 */
+	@Deprecated
+	@Override
+	void writeBytes(String s);
+
+	/**
+	 * Returns the contents that have been written to this instance,
+	 * as a byte array.
+	 */
+	byte[] toByteArray();
 }

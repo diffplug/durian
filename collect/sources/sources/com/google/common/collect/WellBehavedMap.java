@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2011 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
-
-import com.google.common.annotations.GwtCompatible;
-import com.google.j2objc.annotations.WeakOuter;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.j2objc.annotations.WeakOuter;
 
 /**
  * Workaround for
@@ -36,67 +36,67 @@ import java.util.Set;
  */
 @GwtCompatible
 final class WellBehavedMap<K, V> extends ForwardingMap<K, V> {
-  private final Map<K, V> delegate;
-  private Set<Entry<K, V>> entrySet;
+	private final Map<K, V> delegate;
+	private Set<Entry<K, V>> entrySet;
 
-  private WellBehavedMap(Map<K, V> delegate) {
-    this.delegate = delegate;
-  }
+	private WellBehavedMap(Map<K, V> delegate) {
+		this.delegate = delegate;
+	}
 
-  /**
-   * Wraps the given map into a {@code WellBehavedEntriesMap}, which
-   * intercepts its {@code entrySet()} method by taking the
-   * {@code Set<K> keySet()} and transforming it to
-   * {@code Set<Entry<K, V>>}. All other invocations are delegated as-is.
-   */
-  static <K, V> WellBehavedMap<K, V> wrap(Map<K, V> delegate) {
-    return new WellBehavedMap<K, V>(delegate);
-  }
+	/**
+	 * Wraps the given map into a {@code WellBehavedEntriesMap}, which
+	 * intercepts its {@code entrySet()} method by taking the
+	 * {@code Set<K> keySet()} and transforming it to
+	 * {@code Set<Entry<K, V>>}. All other invocations are delegated as-is.
+	 */
+	static <K, V> WellBehavedMap<K, V> wrap(Map<K, V> delegate) {
+		return new WellBehavedMap<K, V>(delegate);
+	}
 
-  @Override
-  protected Map<K, V> delegate() {
-    return delegate;
-  }
+	@Override
+	protected Map<K, V> delegate() {
+		return delegate;
+	}
 
-  @Override
-  public Set<Entry<K, V>> entrySet() {
-    Set<Entry<K, V>> es = entrySet;
-    if (es != null) {
-      return es;
-    }
-    return entrySet = new EntrySet();
-  }
+	@Override
+	public Set<Entry<K, V>> entrySet() {
+		Set<Entry<K, V>> es = entrySet;
+		if (es != null) {
+			return es;
+		}
+		return entrySet = new EntrySet();
+	}
 
-  @WeakOuter
-  private final class EntrySet extends Maps.EntrySet<K, V> {
-    @Override
-    Map<K, V> map() {
-      return WellBehavedMap.this;
-    }
+	@WeakOuter
+	private final class EntrySet extends Maps.EntrySet<K, V> {
+		@Override
+		Map<K, V> map() {
+			return WellBehavedMap.this;
+		}
 
-    @Override
-    public Iterator<Entry<K, V>> iterator() {
-      return new TransformedIterator<K, Entry<K, V>>(keySet().iterator()) {
-        @Override
-        Entry<K, V> transform(final K key) {
-          return new AbstractMapEntry<K, V>() {
-            @Override
-            public K getKey() {
-              return key;
-            }
+		@Override
+		public Iterator<Entry<K, V>> iterator() {
+			return new TransformedIterator<K, Entry<K, V>>(keySet().iterator()) {
+				@Override
+				Entry<K, V> transform(final K key) {
+					return new AbstractMapEntry<K, V>() {
+						@Override
+						public K getKey() {
+							return key;
+						}
 
-            @Override
-            public V getValue() {
-              return get(key);
-            }
+						@Override
+						public V getValue() {
+							return get(key);
+						}
 
-            @Override
-            public V setValue(V value) {
-              return put(key, value);
-            }
-          };
-        }
-      };
-    }
-  }
+						@Override
+						public V setValue(V value) {
+							return put(key, value);
+						}
+					};
+				}
+			};
+		}
+	}
 }

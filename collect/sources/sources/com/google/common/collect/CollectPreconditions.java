@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008 The Guava Authors
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2015 DiffPlug.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.common.collect;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -26,32 +26,32 @@ import com.google.common.annotations.GwtCompatible;
 @GwtCompatible
 final class CollectPreconditions {
 
-  static void checkEntryNotNull(Object key, Object value) {
-    if (key == null) {
-      throw new NullPointerException("null key in entry: null=" + value);
-    } else if (value == null) {
-      throw new NullPointerException("null value in entry: " + key + "=null");
-    }
-  }
+	static void checkEntryNotNull(Object key, Object value) {
+		if (key == null) {
+			throw new NullPointerException("null key in entry: null=" + value);
+		} else if (value == null) {
+			throw new NullPointerException("null value in entry: " + key + "=null");
+		}
+	}
 
-  static int checkNonnegative(int value, String name) {
-    if (value < 0) {
-      throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
-    }
-    return value;
-  }
+	static int checkNonnegative(int value, String name) {
+		if (value < 0) {
+			throw new IllegalArgumentException(name + " cannot be negative but was: " + value);
+		}
+		return value;
+	}
 
-  static void checkPositive(int value, String name) {
-    if (value <= 0) {
-      throw new IllegalArgumentException(name + " must be positive but was: " + value);
-    }
-  }
+	static void checkPositive(int value, String name) {
+		if (value <= 0) {
+			throw new IllegalArgumentException(name + " must be positive but was: " + value);
+		}
+	}
 
-  /**
-   * Precondition tester for {@code Iterator.remove()} that throws an exception with a consistent
-   * error message.
-   */
-  static void checkRemove(boolean canRemove) {
-    checkState(canRemove, "no calls to next() since the last call to remove()");
-  }
+	/**
+	 * Precondition tester for {@code Iterator.remove()} that throws an exception with a consistent
+	 * error message.
+	 */
+	static void checkRemove(boolean canRemove) {
+		checkState(canRemove, "no calls to next() since the last call to remove()");
+	}
 }
