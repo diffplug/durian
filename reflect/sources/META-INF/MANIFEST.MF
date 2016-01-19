@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-Description: Durian - Guava's spikier (unofficial) cousin
+Bundle-DocURL: https://github.com/diffplug/durian
+Bundle-License: https://github.com/diffplug/durian/blob/v19.0.0/LICENS
+ E
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-SymbolicName: com.diffplug.guava.reflect
+Bundle-Vendor: DiffPlug
+Bundle-Version: 19.0.0
+Export-Package: com.google.common.reflect;uses:="com.google.common.col
+ lect,javax.annotation";version="19.0.0"
+Import-Package: javax.annotation;resolution:=optional,com.google.commo
+ n.base;version="[19.0,20)",com.google.common.collect;version="[19.0,2
+ 0)",com.google.common.primitives;version="[19.0,20)",sun.misc;resolut
+ ion:=optional
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
