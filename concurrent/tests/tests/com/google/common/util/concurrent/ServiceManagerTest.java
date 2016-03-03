@@ -40,7 +40,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.testing.NullPointerTester;
 import com.google.common.testing.TestLogHandler;
-import com.google.common.util.concurrent.Service.State;
 import com.google.common.util.concurrent.ServiceManager.Listener;
 
 /**
@@ -126,10 +125,8 @@ public class ServiceManagerTest extends TestCase {
 		serviceManager.startAsync().awaitHealthy();
 		ImmutableMap<Service, Long> startupTimes = serviceManager.startupTimes();
 		assertEquals(2, startupTimes.size());
-		// TODO(kak): Use assertThat(startupTimes.get(a)).isAtLeast(150);
-		assertTrue(startupTimes.get(a) >= 150);
-		// TODO(kak): Use assertThat(startupTimes.get(b)).isAtLeast(353);
-		assertTrue(startupTimes.get(b) >= 353);
+		assertThat(startupTimes.get(a)).isAtLeast(150L);
+		assertThat(startupTimes.get(b)).isAtLeast(353L);
 	}
 
 	public void testServiceStartupTimes_selfStartingServices() {
