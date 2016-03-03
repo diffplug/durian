@@ -35,6 +35,7 @@ import junit.framework.TestSuite;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
+import com.google.common.testing.OsCompat;
 
 /**
  * Unit test for {@link Resources}.
@@ -159,7 +160,7 @@ public class ResourcesTest extends IoTestCase {
 		try {
 			Thread.currentThread().setContextClassLoader(loader);
 			URL url = Resources.getResource(tempFile.getName());
-			String text = Resources.toString(url, Charsets.UTF_8);
+			String text = OsCompat.winToUnix(Resources.toString(url, Charsets.UTF_8));
 			assertEquals("rud a chur ar an méar fhada\n", text);
 		} finally {
 			Thread.currentThread().setContextClassLoader(oldContextLoader);

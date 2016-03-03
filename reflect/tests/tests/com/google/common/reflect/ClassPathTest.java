@@ -40,6 +40,7 @@ import java.util.zip.ZipEntry;
 
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
@@ -51,6 +52,7 @@ import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.common.reflect.ClassPath.ResourceInfo;
 import com.google.common.testing.EqualsTester;
 import com.google.common.testing.NullPointerTester;
+import com.google.common.testing.OsCompat;
 
 /**
  * Functional tests of {@link ClassPath}.
@@ -172,19 +174,26 @@ public class ClassPathTest extends TestCase {
 	}
 
 	public void testGetClassPathEntry() throws MalformedURLException, URISyntaxException {
-		assertEquals(new File("/usr/test/dep.jar").toURI(),
-				ClassPath.Scanner.getClassPathEntry(
-						new File("/home/build/outer.jar"), "file:/usr/test/dep.jar").toURI());
-		assertEquals(new File("/home/build/a.jar").toURI(),
-				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "a.jar").toURI());
-		assertEquals(new File("/home/build/x/y/z").toURI(),
+		assertClassPathEntryEquals(new File("/usr/test/dep.jar").toURI(),
+				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "file:/usr/test/dep.jar").toURI());
+		assertClassPathEntryEquals(new File("/home/build/a.jar").toURI(),
+
+		ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "a.jar").toURI());
+		assertClassPathEntryEquals(new File("/home/build/x/y/z").toURI(),
 				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "x/y/z").toURI());
-		assertEquals(new File("/home/build/x/y/z.jar").toURI(),
-				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "x/y/z.jar")
-						.toURI());
-		assertEquals("/home/build/x y.jar",
-				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "x y.jar")
-						.getFile());
+		assertClassPathEntryEquals(new File("/home/build/x/y/z.jar").toURI(),
+				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "x/y/z.jar").toURI());
+		assertClassPathEntryEquals("/home/build/x y.jar",
+				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "x y.jar").getFile());
+	}
+
+	private static void assertClassPathEntryEquals(Object expected, Object actual) {
+		Assert.assertEquals(sanitize(expected), sanitize(actual));
+	}
+
+	private static String sanitize(Object obj) {
+		String asString = obj.toString();
+		return OsCompat.isWin() ? asString.replace("/C:/", "/") : asString;
 	}
 
 	public void testGetClassPathFromManifest_nullManifest() {
@@ -245,14 +254,14 @@ public class ClassPathTest extends TestCase {
 		File jarFile = new File("base/some.jar");
 		Manifest manifest = manifestClasspath("file:/with/absolute/dir");
 		assertThat(ClassPath.Scanner.getClassPathFromManifest(jarFile, manifest))
-				.containsExactly(fullpath("/with/absolute/dir"));
+				.containsExactly(relpath("/with/absolute/dir"));
 	}
 
 	public void testGetClassPathFromManifest_absoluteJar() throws IOException {
 		File jarFile = new File("base/some.jar");
 		Manifest manifest = manifestClasspath("file:/with/absolute.jar");
 		assertThat(ClassPath.Scanner.getClassPathFromManifest(jarFile, manifest))
-				.containsExactly(fullpath("/with/absolute.jar"));
+				.containsExactly(relpath("/with/absolute.jar"));
 	}
 
 	public void testGetClassPathFromManifest_multiplePaths() throws IOException {
@@ -260,7 +269,7 @@ public class ClassPathTest extends TestCase {
 		Manifest manifest = manifestClasspath("file:/with/absolute.jar relative.jar  relative/dir");
 		assertThat(ClassPath.Scanner.getClassPathFromManifest(jarFile, manifest))
 				.containsExactly(
-						fullpath("/with/absolute.jar"),
+						relpath("/with/absolute.jar"),
 						fullpath("base/relative.jar"),
 						fullpath("base/relative/dir"))
 				.inOrder();
@@ -332,7 +341,11 @@ public class ClassPathTest extends TestCase {
 	public void testResourceScanner() throws IOException {
 		ResourceScanner scanner = new ResourceScanner();
 		scanner.scan(ClassLoader.getSystemClassLoader());
-		assertThat(scanner.resources).contains("com/google/common/reflect/ClassPathTest.class");
+		String classpath = "com/google/common/reflect/ClassPathTest.class";
+		if (OsCompat.isWin()) {
+			classpath = classpath.replace('/', '\\');
+		}
+		assertThat(scanner.resources).contains(classpath);
 	}
 
 	private static ClassPath.ClassInfo findClass(
@@ -396,6 +409,14 @@ public class ClassPathTest extends TestCase {
 
 	private static File fullpath(String path) {
 		return new File(new File(path).toURI());
+	}
+
+	private static File relpath(String path) {
+		if (OsCompat.isWin()) {
+			return new File(path);
+		} else {
+			return fullpath(path);
+		}
 	}
 
 	private static class ResourceScanner extends ClassPath.Scanner {

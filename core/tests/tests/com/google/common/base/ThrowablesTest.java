@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 
 import com.google.common.collect.Iterables;
 import com.google.common.testing.NullPointerTester;
+import com.google.common.testing.OsCompat;
 
 /**
  * Unit test for {@link Throwables}.
@@ -513,7 +514,7 @@ public class ThrowablesTest extends TestCase {
 		String secondLine = "\\s*at " + ThrowablesTest.class.getName() + "\\..*";
 		String moreLines = "(?:.*\n?)*";
 		String expected = firstLine + "\n" + secondLine + "\n" + moreLines;
-		assertThat(getStackTraceAsString(e)).matches(expected);
+		assertThat(OsCompat.winToUnix(getStackTraceAsString(e))).matches(expected);
 	}
 
 	public void testGetCausalChain() {
