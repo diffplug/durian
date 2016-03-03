@@ -89,6 +89,7 @@ configurations {
 ////////////////////
 test {
 	include '**/*Test.class'
+	include '**/*Tests.class'
 	maxParallelForks = Runtime.runtime.availableProcessors()
 }
 

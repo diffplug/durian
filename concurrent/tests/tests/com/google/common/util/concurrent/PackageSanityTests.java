@@ -17,6 +17,7 @@
 package com.google.common.util.concurrent;
 
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
 
 import com.google.common.testing.AbstractPackageSanityTests;
 import com.google.common.util.concurrent.RateLimiter.SleepingStopwatch;
@@ -43,5 +44,6 @@ public class PackageSanityTests extends AbstractPackageSanityTests {
 		setDefault(SleepingStopwatch.class, NO_OP_STOPWATCH);
 		setDefault(Class.class, IOException.class);
 		setDefault(long.class, 0L);
+		setDefault(Semaphore.class, new Semaphore(1));
 	}
 }
