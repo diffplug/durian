@@ -91,6 +91,11 @@ test {
 	include '**/*Test.class'
 	include '**/*Tests.class'
 	maxParallelForks = Runtime.runtime.availableProcessors()
+	// in concurrent-tests, we need to fork after every test
+	// or we get lots of phantom errors from interrupted tasks
+	if (project.name.equals('concurrent-tests')) {
+		forkEvery 1
+	}
 }
 
 //////////
