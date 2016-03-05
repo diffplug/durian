@@ -1,0 +1,136 @@
+/*
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2016 DiffPlug.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.diffplug.common.collect.testing.google;
+
+import static com.diffplug.common.collect.testing.Helpers.assertEmpty;
+import static com.diffplug.common.collect.testing.features.CollectionSize.ZERO;
+import static com.diffplug.common.collect.testing.features.MapFeature.SUPPORTS_REMOVE;
+import static com.diffplug.common.collect.testing.google.GoogleHelpers.assertEmpty;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.diffplug.common.annotations.GwtCompatible;
+import com.diffplug.common.collect.Multimap;
+import com.diffplug.common.collect.testing.features.CollectionSize;
+import com.diffplug.common.collect.testing.features.MapFeature;
+
+/**
+ * Tests for {@link Multimap#clear()}.
+ *
+ * @author Louis Wasserman
+ */
+@GwtCompatible
+public class MultimapClearTester<K, V> extends AbstractMultimapTester<K, V, Multimap<K, V>> {
+	@CollectionSize.Require(absent = ZERO)
+	@MapFeature.Require(absent = SUPPORTS_REMOVE)
+	public void testClearUnsupported() {
+		try {
+			multimap().clear();
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException expected) {}
+	}
+
+	private void assertCleared() {
+		assertEquals(0, multimap().size());
+		assertEmpty(multimap());
+		assertEquals(multimap(), getSubjectGenerator().create());
+		assertEmpty(multimap().entries());
+		assertEmpty(multimap().asMap());
+		assertEmpty(multimap().keySet());
+		assertEmpty(multimap().keys());
+		assertEmpty(multimap().values());
+		for (K key : sampleKeys()) {
+			assertGet(key);
+		}
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClear() {
+		multimap().clear();
+		assertCleared();
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearThroughEntries() {
+		multimap().entries().clear();
+		assertCleared();
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearThroughAsMap() {
+		multimap().asMap().clear();
+		assertCleared();
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearThroughKeySet() {
+		multimap().keySet().clear();
+		assertCleared();
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearThroughKeys() {
+		multimap().keys().clear();
+		assertCleared();
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearThroughValues() {
+		multimap().values().clear();
+		assertCleared();
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(absent = ZERO)
+	public void testClearPropagatesToGet() {
+		for (K key : sampleKeys()) {
+			resetContainer();
+			Collection<V> collection = multimap().get(key);
+			multimap().clear();
+			assertEmpty(collection);
+		}
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	@CollectionSize.Require(absent = ZERO)
+	public void testClearPropagatesToAsMapGet() {
+		for (K key : sampleKeys()) {
+			resetContainer();
+			Collection<V> collection = multimap().asMap().get(key);
+			if (collection != null) {
+				multimap().clear();
+				assertEmpty(collection);
+			}
+		}
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearPropagatesToAsMap() {
+		Map<K, Collection<V>> asMap = multimap().asMap();
+		multimap().clear();
+		assertEmpty(asMap);
+	}
+
+	@MapFeature.Require(SUPPORTS_REMOVE)
+	public void testClearPropagatesToEntries() {
+		Collection<Entry<K, V>> entries = multimap().entries();
+		multimap().clear();
+		assertEmpty(entries);
+	}
+}

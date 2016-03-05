@@ -1,17 +1,17 @@
 Manifest-Version: 1.0
 Bundle-Description: Durian - Guava's spikier (unofficial) cousin
 Bundle-DocURL: https://github.com/diffplug/durian
-Bundle-License: https://github.com/diffplug/durian/blob/v19.0.0/LICENS
- E
+Bundle-License: https://github.com/diffplug/durian/blob/v1.0.0-SNAPSHO
+ T/LICENSE
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-SymbolicName: com.diffplug.guava.eventbus
+Bundle-SymbolicName: com.diffplug.durian.eventbus
 Bundle-Vendor: DiffPlug
-Bundle-Version: 19.0.0
-Export-Package: com.google.common.eventbus;version="19.0.0"
-Import-Package: javax.annotation;resolution:=optional,com.google.commo
- n.base;version="[19.0,20)",com.google.common.cache;version="[19.0,20)
- ",com.google.common.collect;version="[19.0,20)",com.google.common.ref
- lect;version="[19.0,20)",com.google.common.util.concurrent;version="[
- 19.0,20)",sun.misc;resolution:=optional
+Bundle-Version: 1.0.0.SNAPSHOT
+Export-Package: com.diffplug.common.eventbus;version="1.0.0"
+Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
+ mon.base;version="[1.0,2)",com.diffplug.common.cache;version="[1.0,2)
+ ",com.diffplug.common.collect;version="[1.0,2)",com.diffplug.common.r
+ eflect;version="[1.0,2)",com.diffplug.common.util.concurrent;version=
+ "[1.0,2)",sun.misc;resolution:=optional
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"

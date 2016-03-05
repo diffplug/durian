@@ -1,0 +1,114 @@
+/*
+ * Original Guava code is copyright (C) 2015 The Guava Authors.
+ * Modifications from Guava are copyright (C) 2016 DiffPlug.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.diffplug.common.testing;
+
+import static com.diffplug.common.base.Preconditions.checkNotNull;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
+import com.diffplug.common.collect.ImmutableList;
+import com.diffplug.common.collect.Sets;
+import com.diffplug.common.reflect.AbstractInvocationHandler;
+import com.diffplug.common.reflect.Invokable;
+import com.diffplug.common.reflect.Parameter;
+import com.diffplug.common.reflect.TypeToken;
+
+/**
+ * Generates a dummy interface proxy that simply returns a dummy value for each method.
+ *
+ * @author Ben Yu
+ */
+abstract class DummyProxy {
+
+	/**
+	 * Returns a new proxy for {@code interfaceType}. Proxies of the same interface are equal to each
+	 * other if the {@link DummyProxy} instance that created the proxies are equal.
+	 */
+	final <T> T newProxy(TypeToken<T> interfaceType) {
+		Set<Class<?>> interfaceClasses = Sets.newLinkedHashSet();
+		interfaceClasses.addAll(interfaceType.getTypes().interfaces().rawTypes());
+		// Make the proxy serializable to work with SerializableTester
+		interfaceClasses.add(Serializable.class);
+		Object dummy = Proxy.newProxyInstance(
+				interfaceClasses.iterator().next().getClassLoader(),
+				interfaceClasses.toArray(new Class<?>[interfaceClasses.size()]),
+				new DummyHandler(interfaceType));
+		@SuppressWarnings("unchecked") // interfaceType is T
+		T result = (T) dummy;
+		return result;
+	}
+
+	/** Returns the dummy return value for {@code returnType}. */
+	abstract <R> R dummyReturnValue(TypeToken<R> returnType);
+
+	private class DummyHandler extends AbstractInvocationHandler implements Serializable {
+		private final TypeToken<?> interfaceType;
+
+		DummyHandler(TypeToken<?> interfaceType) {
+			this.interfaceType = interfaceType;
+		}
+
+		@Override
+		protected Object handleInvocation(
+				Object proxy, Method method, Object[] args) {
+			Invokable<?, ?> invokable = interfaceType.method(method);
+			ImmutableList<Parameter> params = invokable.getParameters();
+			for (int i = 0; i < args.length; i++) {
+				Parameter param = params.get(i);
+				if (!param.isAnnotationPresent(Nullable.class)) {
+					checkNotNull(args[i]);
+				}
+			}
+			return dummyReturnValue(interfaceType.resolveType(method.getGenericReturnType()));
+		}
+
+		@Override
+		public int hashCode() {
+			return identity().hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof DummyHandler) {
+				DummyHandler that = (DummyHandler) obj;
+				return identity().equals(that.identity());
+			} else {
+				return false;
+			}
+		}
+
+		private DummyProxy identity() {
+			return DummyProxy.this;
+		}
+
+		@Override
+		public String toString() {
+			return "Dummy proxy for " + interfaceType;
+		}
+
+		// Since type variables aren't serializable, reduce the type down to raw type before
+		// serialization.
+		private Object writeReplace() {
+			return new DummyHandler(TypeToken.of(interfaceType.getRawType()));
+		}
+	}
+}
