@@ -116,18 +116,18 @@ public class ResourcesTest extends IoTestCase {
 
 	public void testGetResource() {
 		assertNotNull(
-				Resources.getResource("com/google/common/io/testdata/i18n.txt"));
+				Resources.getResource("com/diffplug/common/io/testdata/i18n.txt"));
 	}
 
 	public void testGetResource_relativePath_notFound() {
 		try {
 			Resources.getResource(
-					getClass(), "com/google/common/io/testdata/i18n.txt");
+					getClass(), "com/diffplug/common/io/testdata/i18n.txt");
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertThat(e)
 					.hasMessage(
-							"resource com/google/common/io/testdata/i18n.txt"
+							"resource com/diffplug/common/io/testdata/i18n.txt"
 									+ " relative to com.diffplug.common.io.ResourcesTest not found.");
 		}
 	}
@@ -172,7 +172,7 @@ public class ResourcesTest extends IoTestCase {
 		try {
 			Thread.currentThread().setContextClassLoader(null);
 			assertNotNull(
-					Resources.getResource("com/google/common/io/testdata/i18n.txt"));
+					Resources.getResource("com/diffplug/common/io/testdata/i18n.txt"));
 			try {
 				Resources.getResource("no such resource");
 				fail("Should get IllegalArgumentException");

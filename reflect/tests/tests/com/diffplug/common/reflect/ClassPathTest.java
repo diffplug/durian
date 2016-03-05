@@ -341,7 +341,7 @@ public class ClassPathTest extends TestCase {
 	public void testResourceScanner() throws IOException {
 		ResourceScanner scanner = new ResourceScanner();
 		scanner.scan(ClassLoader.getSystemClassLoader());
-		String classpath = "com/google/common/reflect/ClassPathTest.class";
+		String classpath = "com/diffplug/common/reflect/ClassPathTest.class";
 		if (OsCompat.isWin()) {
 			classpath = classpath.replace('/', '\\');
 		}
