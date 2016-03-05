@@ -19,11 +19,10 @@ package com.diffplug.common.hash;
 import static com.diffplug.common.hash.Hashing.ChecksumType.ADLER_32;
 import static com.diffplug.common.hash.Hashing.ChecksumType.CRC_32;
 
+import java.util.function.Supplier;
 import java.util.zip.Checksum;
 
 import junit.framework.TestCase;
-
-import com.diffplug.common.base.Supplier;
 
 /**
  * Tests for ChecksumHashFunction.

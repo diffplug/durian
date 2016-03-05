@@ -19,12 +19,12 @@ package com.diffplug.common.util.concurrent;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Static utility methods pertaining to the {@link Callable} interface.

@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +36,6 @@ import junit.framework.TestCase;
 
 import com.diffplug.common.base.Converter;
 import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.collect.ImmutableMultimap;

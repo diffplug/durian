@@ -21,11 +21,11 @@ import static com.diffplug.common.collect.CollectPreconditions.checkNonnegative;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Implementation of {@link Table} using hash tables.

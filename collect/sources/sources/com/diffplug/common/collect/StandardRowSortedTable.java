@@ -23,11 +23,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Supplier;
 
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Implementation of {@code Table} whose iteration ordering across row keys is

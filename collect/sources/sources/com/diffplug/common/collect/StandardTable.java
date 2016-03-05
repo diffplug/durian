@@ -31,6 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -39,7 +40,6 @@ import com.google.j2objc.annotations.WeakOuter;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.collect.Maps.IteratorBasedAbstractMap;
 import com.diffplug.common.collect.Maps.ViewCachingAbstractMap;
 import com.diffplug.common.collect.Sets.ImprovedAbstractSet;

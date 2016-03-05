@@ -20,9 +20,8 @@ import static com.diffplug.common.base.Preconditions.checkArgument;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 import java.util.zip.Checksum;
-
-import com.diffplug.common.base.Supplier;
 
 /**
  * {@link HashFunction} adapter for {@link Checksum} instances.

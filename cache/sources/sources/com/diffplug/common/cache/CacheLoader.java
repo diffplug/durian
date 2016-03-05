@@ -22,11 +22,11 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.util.concurrent.Futures;
 import com.diffplug.common.util.concurrent.ListenableFuture;
 import com.diffplug.common.util.concurrent.ListenableFutureTask;

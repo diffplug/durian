@@ -18,6 +18,7 @@ package com.diffplug.common.base;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import junit.framework.TestCase;
 

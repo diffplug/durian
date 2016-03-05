@@ -29,6 +29,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +38,6 @@ import javax.annotation.concurrent.GuardedBy;
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Base class for services that can implement {@link #startUp} and {@link #shutDown} but while in 

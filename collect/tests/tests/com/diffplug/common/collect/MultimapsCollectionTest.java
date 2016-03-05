@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -44,7 +45,6 @@ import com.diffplug.common.base.Ascii;
 import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 import com.diffplug.common.collect.testing.SampleElements;
 import com.diffplug.common.collect.testing.SetTestSuiteBuilder;

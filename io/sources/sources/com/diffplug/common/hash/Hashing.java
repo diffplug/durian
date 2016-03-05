@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
@@ -32,7 +33,6 @@ import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Static methods to obtain {@link HashFunction} instances, and other static hashing-related

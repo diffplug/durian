@@ -22,6 +22,7 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;

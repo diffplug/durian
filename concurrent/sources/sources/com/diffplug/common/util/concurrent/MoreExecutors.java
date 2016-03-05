@@ -41,6 +41,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import javax.annotation.concurrent.GuardedBy;
 
@@ -48,7 +49,6 @@ import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.Lists;
 import com.diffplug.common.collect.Queues;

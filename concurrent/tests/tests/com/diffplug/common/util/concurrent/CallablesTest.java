@@ -18,12 +18,12 @@ package com.diffplug.common.util.concurrent;
 
 import java.security.Permission;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.base.Suppliers;
 
 /**

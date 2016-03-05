@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 import java.util.ConcurrentModificationException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +36,6 @@ import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Ascii;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.base.Suppliers;
 import com.diffplug.common.base.Ticker;
 import com.diffplug.common.cache.AbstractCache.SimpleStatsCounter;
