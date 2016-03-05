@@ -33,6 +33,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.RandomAccess;
 import java.util.Set;
@@ -46,7 +47,6 @@ import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorTester;
 import com.diffplug.common.testing.ClassSanityTester;
@@ -262,7 +262,7 @@ public class IterablesTest extends TestCase {
 		assertThat(Iterables.tryFind(list, Predicates.equalTo("cool"))).isEqualTo(Optional.of("cool"));
 		assertThat(Iterables.tryFind(list, Predicates.equalTo("pants"))).isEqualTo(Optional.of("pants"));
 		assertThat(Iterables.tryFind(list, Predicates.alwaysTrue())).isEqualTo(Optional.of("cool"));
-		assertThat(Iterables.tryFind(list, Predicates.alwaysFalse())).isEqualTo(Optional.absent());
+		assertThat(Iterables.tryFind(list, Predicates.alwaysFalse())).isEqualTo(Optional.empty());
 		assertCanIterateAgain(list);
 	}
 

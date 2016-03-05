@@ -40,12 +40,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Lists;
@@ -131,7 +131,7 @@ public final class Files {
 			if (file.isFile()) {
 				return Optional.of(file.length());
 			} else {
-				return Optional.absent();
+				return Optional.empty();
 			}
 		}
 

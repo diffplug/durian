@@ -19,13 +19,13 @@ package com.diffplug.common.util.concurrent;
 import static com.diffplug.common.base.Preconditions.checkState;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableCollection;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Lists;
@@ -59,7 +59,7 @@ abstract class CollectionFuture<V, C> extends AggregateFuture<V, C> {
 			List<Optional<V>> localValues = values;
 
 			if (localValues != null) {
-				localValues.set(index, Optional.fromNullable(returnValue));
+				localValues.set(index, Optional.ofNullable(returnValue));
 			} else {
 				// Some other future failed or has been cancelled, causing this one to
 				// also be cancelled or have an exception set. This should only happen

@@ -24,6 +24,7 @@ import static com.diffplug.common.util.concurrent.Uninterruptibles.getUninterrup
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
@@ -43,7 +44,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.ImmutableCollection;
 import com.diffplug.common.collect.ImmutableList;
@@ -2106,7 +2106,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
 			public List<V> combine(List<Optional<V>> values) {
 				List<V> result = Lists.newArrayList();
 				for (Optional<V> element : values) {
-					result.add(element != null ? element.orNull() : null);
+					result.add(element != null ? element.orElse(null) : null);
 				}
 				return Collections.unmodifiableList(result);
 			}

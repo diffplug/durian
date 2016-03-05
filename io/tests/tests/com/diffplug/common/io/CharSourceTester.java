@@ -25,10 +25,10 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import junit.framework.TestSuite;
 
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Lists;
 

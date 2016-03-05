@@ -52,6 +52,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -69,7 +70,6 @@ import junit.framework.TestCase;
 import com.diffplug.common.base.CharMatcher;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.base.Ticker;
 import com.diffplug.common.collect.ArrayListMultimap;
@@ -385,12 +385,12 @@ public class FreshValueGeneratorTest extends TestCase {
 
 	public void testOptional() {
 		FreshValueGenerator generator = new FreshValueGenerator();
-		assertEquals(Optional.absent(), generator.generateFresh(new TypeToken<Optional<String>>() {}));
+		assertEquals(Optional.empty(), generator.generateFresh(new TypeToken<Optional<String>>() {}));
 		assertEquals(Optional.of("2"), generator.generateFresh(new TypeToken<Optional<String>>() {}));
 		// Test that the first generated instance for different Optional<T> is always absent().
 		// Having generated Optional<String> instances doesn't prevent absent() from being generated for
 		// other Optional types.
-		assertEquals(Optional.absent(),
+		assertEquals(Optional.empty(),
 				generator.generateFresh(new TypeToken<Optional<OneConstantEnum>>() {}));
 		assertEquals(Optional.of(OneConstantEnum.CONSTANT1),
 				generator.generateFresh(new TypeToken<Optional<OneConstantEnum>>() {}));

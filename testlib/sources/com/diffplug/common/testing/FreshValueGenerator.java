@@ -58,6 +58,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -73,7 +74,6 @@ import com.diffplug.common.base.CharMatcher;
 import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.base.Ticker;
@@ -533,7 +533,7 @@ class FreshValueGenerator {
 	// common.base
 	@Empty
 	private <T> Optional<T> generateOptional() {
-		return Optional.absent();
+		return Optional.empty();
 	}
 
 	@Generates

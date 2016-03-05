@@ -62,6 +62,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
@@ -95,7 +96,6 @@ import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Defaults;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.base.Stopwatch;
@@ -210,7 +210,7 @@ public final class ArbitraryInstances {
 			.put(CharMatcher.class, CharMatcher.NONE)
 			.put(Joiner.class, Joiner.on(','))
 			.put(Splitter.class, Splitter.on(','))
-			.put(Optional.class, Optional.absent())
+			.put(Optional.class, Optional.empty())
 			.put(Predicate.class, Predicates.alwaysTrue())
 			.put(Equivalence.class, Equivalence.equals())
 			.put(Ticker.class, Ticker.systemTicker())

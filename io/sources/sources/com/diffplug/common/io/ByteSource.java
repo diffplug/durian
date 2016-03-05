@@ -31,10 +31,10 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.Ascii;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.hash.Funnels;
 import com.diffplug.common.hash.HashCode;
@@ -161,7 +161,7 @@ public abstract class ByteSource {
 	 */
 	@Beta
 	public Optional<Long> sizeIfKnown() {
-		return Optional.absent();
+		return Optional.empty();
 	}
 
 	/**
@@ -524,7 +524,7 @@ public abstract class ByteSource {
 				long off = Math.min(offset, unslicedSize);
 				return Optional.of(Math.min(length, unslicedSize - off));
 			}
-			return Optional.absent();
+			return Optional.empty();
 		}
 
 		@Override
@@ -669,7 +669,7 @@ public abstract class ByteSource {
 			for (ByteSource source : sources) {
 				Optional<Long> sizeIfKnown = source.sizeIfKnown();
 				if (!sizeIfKnown.isPresent()) {
-					return Optional.absent();
+					return Optional.empty();
 				}
 				result += sizeIfKnown.get();
 			}

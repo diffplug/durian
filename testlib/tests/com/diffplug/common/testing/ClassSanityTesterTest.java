@@ -25,6 +25,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +35,6 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.Functions;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.testing.ClassSanityTester.FactoryMethodReturnsNullException;
 import com.diffplug.common.testing.ClassSanityTester.ParameterHasNoDistinctValueException;

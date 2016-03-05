@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.net.URLClassLoader;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -60,13 +61,13 @@ public class EnumsTest extends TestCase {
 	}
 
 	public void testGetIfPresent_caseSensitive() {
-		assertThat(Enums.getIfPresent(TestEnum.class, "cHEETO")).isEqualTo(Optional.absent());
-		assertThat(Enums.getIfPresent(TestEnum.class, "Honda")).isEqualTo(Optional.absent());
-		assertThat(Enums.getIfPresent(TestEnum.class, "poodlE")).isEqualTo(Optional.absent());
+		assertThat(Enums.getIfPresent(TestEnum.class, "cHEETO")).isEqualTo(Optional.empty());
+		assertThat(Enums.getIfPresent(TestEnum.class, "Honda")).isEqualTo(Optional.empty());
+		assertThat(Enums.getIfPresent(TestEnum.class, "poodlE")).isEqualTo(Optional.empty());
 	}
 
 	public void testGetIfPresent_whenNoMatchingConstant() {
-		assertThat(Enums.getIfPresent(TestEnum.class, "WOMBAT")).isEqualTo(Optional.absent());
+		assertThat(Enums.getIfPresent(TestEnum.class, "WOMBAT")).isEqualTo(Optional.empty());
 	}
 
 	@GwtIncompatible("weak references")
@@ -95,7 +96,7 @@ public class EnumsTest extends TestCase {
 		}
 		assertEquals(ImmutableSet.copyOf(shadowTestEnum.getEnumConstants()), shadowConstants);
 		Optional<TestEnum> result = Enums.getIfPresent(shadowTestEnum, "blibby");
-		assertThat(result).isEqualTo(Optional.absent());
+		assertThat(result).isEqualTo(Optional.empty());
 		return new WeakReference<ClassLoader>(shadowLoader);
 	}
 

@@ -22,10 +22,10 @@ import java.util.ArrayDeque;
 import java.util.BitSet;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.Optional;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Optional;
 
 /**
  * A variant of {@link TreeTraverser} for binary trees, providing additional traversals specific to
@@ -40,13 +40,13 @@ public abstract class BinaryTreeTraverser<T> extends TreeTraverser<T> {
 	// TODO(lowasser): make this GWT-compatible when we've checked in ArrayDeque and BitSet emulation
 
 	/**
-	 * Returns the left child of the specified node, or {@link Optional#absent()} if the specified
+	 * Returns the left child of the specified node, or {@link Optional#empty()} if the specified
 	 * node has no left child.
 	 */
 	public abstract Optional<T> leftChild(T root);
 
 	/**
-	 * Returns the right child of the specified node, or {@link Optional#absent()} if the specified
+	 * Returns the right child of the specified node, or {@link Optional#empty()} if the specified
 	 * node has no right child.
 	 */
 	public abstract Optional<T> rightChild(T root);

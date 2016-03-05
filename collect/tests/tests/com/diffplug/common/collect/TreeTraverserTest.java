@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -27,7 +28,6 @@ import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.testing.NullPointerTester;
 
 /**
@@ -72,12 +72,12 @@ public class TreeTraverserTest extends TestCase {
 
 		@Override
 		public Optional<BinaryTree> leftChild(BinaryTree node) {
-			return Optional.fromNullable(node.left);
+			return Optional.ofNullable(node.left);
 		}
 
 		@Override
 		public Optional<BinaryTree> rightChild(BinaryTree node) {
-			return Optional.fromNullable(node.right);
+			return Optional.ofNullable(node.right);
 		}
 	};
 

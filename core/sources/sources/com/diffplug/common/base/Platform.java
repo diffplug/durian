@@ -17,6 +17,7 @@
 package com.diffplug.common.base;
 
 import java.lang.ref.WeakReference;
+import java.util.Optional;
 
 import com.diffplug.common.annotations.GwtCompatible;
 
@@ -41,7 +42,7 @@ final class Platform {
 	static <T extends Enum<T>> Optional<T> getEnumIfPresent(Class<T> enumClass, String value) {
 		WeakReference<? extends Enum<?>> ref = Enums.getEnumConstants(enumClass).get(value);
 		return ref == null
-				? Optional.<T> absent()
+				? Optional.<T> empty()
 				: Optional.of(enumClass.cast(ref.get()));
 	}
 }

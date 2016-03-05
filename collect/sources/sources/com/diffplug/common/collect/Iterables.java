@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.RandomAccess;
 import java.util.Set;
@@ -38,7 +39,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 
 /**
  * This class contains static utility methods that operate on or return objects

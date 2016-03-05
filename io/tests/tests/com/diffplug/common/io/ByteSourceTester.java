@@ -27,12 +27,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import junit.framework.TestSuite;
 
 import com.diffplug.common.base.Charsets;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.hash.HashCode;
 import com.diffplug.common.hash.Hashing;

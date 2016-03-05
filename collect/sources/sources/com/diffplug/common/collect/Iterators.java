@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.function.Function;
@@ -46,7 +47,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;
 
 /**
@@ -768,7 +768,7 @@ public final class Iterators {
 		UnmodifiableIterator<T> filteredIterator = filter(iterator, predicate);
 		return filteredIterator.hasNext()
 				? Optional.of(filteredIterator.next())
-				: Optional.<T> absent();
+				: Optional.<T> empty();
 	}
 
 	/**

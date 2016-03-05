@@ -111,7 +111,7 @@ public final class Parameter implements AnnotatedElement {
 		return FluentIterable.from(annotations)
 				.filter(annotationType)
 				.first()
-				.orNull();
+				.orElse(null);
 	}
 
 	/**

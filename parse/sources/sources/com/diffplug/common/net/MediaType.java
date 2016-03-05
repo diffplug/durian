@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -42,7 +43,6 @@ import com.diffplug.common.base.CharMatcher;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Joiner.MapJoiner;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableListMultimap;
 import com.diffplug.common.collect.ImmutableMultiset;
 import com.diffplug.common.collect.ImmutableSet;
@@ -420,7 +420,7 @@ public final class MediaType {
 		ImmutableSet<String> charsetValues = ImmutableSet.copyOf(parameters.get(CHARSET_ATTRIBUTE));
 		switch (charsetValues.size()) {
 		case 0:
-			return Optional.absent();
+			return Optional.empty();
 		case 1:
 			return Optional.of(Charset.forName(Iterables.getOnlyElement(charsetValues)));
 		default:

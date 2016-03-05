@@ -37,6 +37,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -44,7 +45,6 @@ import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.FluentIterable;
 import com.diffplug.common.collect.ImmutableListMultimap;
@@ -81,7 +81,7 @@ public class MediaTypeTest extends TestCase {
 			if (field.getName().endsWith("_UTF_8")) {
 				assertThat(charset).isEqualTo(Optional.of(UTF_8));
 			} else {
-				assertThat(charset).isEqualTo(Optional.absent());
+				assertThat(charset).isEqualTo(Optional.empty());
 			}
 		}
 	}
@@ -337,7 +337,7 @@ public class MediaTypeTest extends TestCase {
 	}
 
 	public void testGetCharset() {
-		assertThat(MediaType.parse("text/plain").charset()).isEqualTo(Optional.absent());
+		assertThat(MediaType.parse("text/plain").charset()).isEqualTo(Optional.empty());
 		assertThat(MediaType.parse("text/plain; charset=utf-8").charset()).isEqualTo(Optional.of(UTF_8));
 	}
 

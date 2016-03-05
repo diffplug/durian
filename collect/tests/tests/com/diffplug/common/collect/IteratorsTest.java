@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.Vector;
@@ -50,7 +51,6 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorFeature;
 import com.diffplug.common.collect.testing.IteratorTester;
@@ -435,14 +435,14 @@ public class IteratorsTest extends TestCase {
 		Iterable<String> list = Lists.newArrayList("cool", "pants");
 		Iterator<String> iterator = list.iterator();
 		assertEquals("woot",
-				Iterators.tryFind(iterator, Predicates.alwaysFalse()).or("woot"));
+				Iterators.tryFind(iterator, Predicates.alwaysFalse()).orElse("woot"));
 		assertFalse(iterator.hasNext());
 	}
 
 	public void testTryFind_alwaysFalse_isPresent() {
 		Iterable<String> list = Lists.newArrayList("cool", "pants");
 		Iterator<String> iterator = list.iterator();
-		assertThat(Iterators.tryFind(iterator, Predicates.alwaysFalse())).isEqualTo(Optional.absent());
+		assertThat(Iterators.tryFind(iterator, Predicates.alwaysFalse())).isEqualTo(Optional.empty());
 		assertFalse(iterator.hasNext());
 	}
 

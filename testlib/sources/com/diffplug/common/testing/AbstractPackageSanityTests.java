@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.logging.Level;
@@ -39,7 +40,6 @@ import com.google.j2objc.annotations.J2ObjCIncompatible;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.HashMultimap;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Iterables;
@@ -392,7 +392,13 @@ public abstract class AbstractPackageSanityTests extends TestCase {
 			return new Chopper() {
 				@Override
 				Optional<String> chop(String str) {
-					return i.chop(str).or(you.chop(str));
+					Optional<String> first = i.chop(str);
+					Optional<String> second = you.chop(str);
+					if (first.isPresent()) {
+						return first;
+					} else {
+						return second;
+					}
 				}
 			};
 		}
@@ -406,7 +412,7 @@ public abstract class AbstractPackageSanityTests extends TestCase {
 					if (str.endsWith(suffix)) {
 						return Optional.of(str.substring(0, str.length() - suffix.length()));
 					} else {
-						return Optional.absent();
+						return Optional.empty();
 					}
 				}
 			};

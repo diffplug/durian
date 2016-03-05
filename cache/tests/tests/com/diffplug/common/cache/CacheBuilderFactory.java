@@ -18,6 +18,7 @@ package com.diffplug.common.cache;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -25,7 +26,6 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.cache.LocalCache.Strength;
 import com.diffplug.common.collect.Iterables;
@@ -116,14 +116,14 @@ class CacheBuilderFactory {
 	private static final Function<Object, Optional<?>> NULLABLE_TO_OPTIONAL = new Function<Object, Optional<?>>() {
 		@Override
 		public Optional<?> apply(@Nullable Object obj) {
-			return Optional.fromNullable(obj);
+			return Optional.ofNullable(obj);
 		}
 	};
 
 	private static final Function<Optional<?>, Object> OPTIONAL_TO_NULLABLE = new Function<Optional<?>, Object>() {
 		@Override
 		public Object apply(Optional<?> optional) {
-			return optional.orNull();
+			return optional.orElse(null);
 		}
 	};
 

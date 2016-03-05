@@ -25,13 +25,13 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.Ascii;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.collect.AbstractIterator;
 import com.diffplug.common.collect.ImmutableList;
@@ -111,7 +111,7 @@ public abstract class CharSource {
 	 */
 	@Beta
 	public Optional<Long> lengthIfKnown() {
-		return Optional.absent();
+		return Optional.empty();
 	}
 
 	/**
@@ -531,7 +531,7 @@ public abstract class CharSource {
 			for (CharSource source : sources) {
 				Optional<Long> lengthIfKnown = source.lengthIfKnown();
 				if (!lengthIfKnown.isPresent()) {
-					return Optional.absent();
+					return Optional.empty();
 				}
 				result += lengthIfKnown.get();
 			}

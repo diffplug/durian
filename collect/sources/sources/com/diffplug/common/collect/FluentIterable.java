@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.SortedSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -34,7 +35,6 @@ import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Optional;
 
 /**
  * An expanded {@code Iterable} API, providing functionality similar to Java 8's powerful <a href=
@@ -361,7 +361,7 @@ public abstract class FluentIterable<E> implements Iterable<E> {
 
 	/**
 	 * Returns an {@link Optional} containing the first element in this fluent iterable.
-	 * If the iterable is empty, {@code Optional.absent()} is returned.
+	 * If the iterable is empty, {@code Optional.empty()} is returned.
 	 *
 	 * <p><b>{@code Stream} equivalent:</b> if the goal is to obtain any element, {@code
 	 * stream.findAny()}; if it must specifically be the <i>first</i> element, {@code
@@ -373,12 +373,12 @@ public abstract class FluentIterable<E> implements Iterable<E> {
 	@CheckReturnValue
 	public final Optional<E> first() {
 		Iterator<E> iterator = iterable.iterator();
-		return iterator.hasNext() ? Optional.of(iterator.next()) : Optional.<E> absent();
+		return iterator.hasNext() ? Optional.of(iterator.next()) : Optional.<E> empty();
 	}
 
 	/**
 	 * Returns an {@link Optional} containing the last element in this fluent iterable.
-	 * If the iterable is empty, {@code Optional.absent()} is returned.
+	 * If the iterable is empty, {@code Optional.empty()} is returned.
 	 *
 	 * <p><b>{@code Stream} equivalent:</b> {@code stream.reduce((a, b) -> b)}.
 	 *
@@ -393,13 +393,13 @@ public abstract class FluentIterable<E> implements Iterable<E> {
 		if (iterable instanceof List) {
 			List<E> list = (List<E>) iterable;
 			if (list.isEmpty()) {
-				return Optional.absent();
+				return Optional.empty();
 			}
 			return Optional.of(list.get(list.size() - 1));
 		}
 		Iterator<E> iterator = iterable.iterator();
 		if (!iterator.hasNext()) {
-			return Optional.absent();
+			return Optional.empty();
 		}
 
 		/*

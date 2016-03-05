@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.function.Function;
@@ -38,7 +39,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorFeature;
 import com.diffplug.common.collect.testing.IteratorTester;
@@ -251,7 +251,7 @@ public class FluentIterableTest extends TestCase {
 		FluentIterable<String> iterable = FluentIterable.from(Lists.newArrayList("cool", "pants"));
 		assertThat(iterable.firstMatch(Predicates.equalTo("cool"))).isEqualTo(Optional.of("cool"));
 		assertThat(iterable.firstMatch(Predicates.equalTo("pants"))).isEqualTo(Optional.of("pants"));
-		assertThat(iterable.firstMatch(Predicates.alwaysFalse())).isEqualTo(Optional.absent());
+		assertThat(iterable.firstMatch(Predicates.alwaysFalse())).isEqualTo(Optional.empty());
 		assertThat(iterable.firstMatch(Predicates.alwaysTrue())).isEqualTo(Optional.of("cool"));
 	}
 
@@ -342,7 +342,7 @@ public class FluentIterableTest extends TestCase {
 
 	public void testFirst_emptyList() {
 		List<String> list = Collections.emptyList();
-		assertThat(FluentIterable.from(list).first()).isEqualTo(Optional.absent());
+		assertThat(FluentIterable.from(list).first()).isEqualTo(Optional.empty());
 	}
 
 	public void testFirst_sortedSet() {
@@ -352,7 +352,7 @@ public class FluentIterableTest extends TestCase {
 
 	public void testFirst_emptySortedSet() {
 		SortedSet<String> sortedSet = ImmutableSortedSet.of();
-		assertThat(FluentIterable.from(sortedSet).first()).isEqualTo(Optional.absent());
+		assertThat(FluentIterable.from(sortedSet).first()).isEqualTo(Optional.empty());
 	}
 
 	public void testFirst_iterable() {
@@ -362,7 +362,7 @@ public class FluentIterableTest extends TestCase {
 
 	public void testFirst_emptyIterable() {
 		Set<String> set = Sets.newHashSet();
-		assertThat(FluentIterable.from(set).first()).isEqualTo(Optional.absent());
+		assertThat(FluentIterable.from(set).first()).isEqualTo(Optional.empty());
 	}
 
 	public void testLast_list() {
@@ -380,7 +380,7 @@ public class FluentIterableTest extends TestCase {
 
 	public void testLast_emptyList() {
 		List<String> list = Collections.emptyList();
-		assertThat(FluentIterable.from(list).last()).isEqualTo(Optional.absent());
+		assertThat(FluentIterable.from(list).last()).isEqualTo(Optional.empty());
 	}
 
 	public void testLast_sortedSet() {
@@ -390,7 +390,7 @@ public class FluentIterableTest extends TestCase {
 
 	public void testLast_emptySortedSet() {
 		SortedSet<String> sortedSet = ImmutableSortedSet.of();
-		assertThat(FluentIterable.from(sortedSet).last()).isEqualTo(Optional.absent());
+		assertThat(FluentIterable.from(sortedSet).last()).isEqualTo(Optional.empty());
 	}
 
 	public void testLast_iterable() {
@@ -400,7 +400,7 @@ public class FluentIterableTest extends TestCase {
 
 	public void testLast_emptyIterable() {
 		Set<String> set = Sets.newHashSet();
-		assertThat(FluentIterable.from(set).last()).isEqualTo(Optional.absent());
+		assertThat(FluentIterable.from(set).last()).isEqualTo(Optional.empty());
 	}
 
 	public void testSkip_simple() {
