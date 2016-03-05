@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -36,7 +37,6 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.testing.CollectionTestSuiteBuilder;
 import com.diffplug.common.collect.testing.TestStringCollectionGenerator;
 import com.diffplug.common.collect.testing.features.CollectionFeature;
@@ -66,21 +66,21 @@ public class Collections2Test extends TestCase {
 
 	static final Predicate<String> NOT_YYY_ZZZ = new Predicate<String>() {
 		@Override
-		public boolean apply(String input) {
+		public boolean test(String input) {
 			return !"yyy".equals(input) && !"zzz".equals(input);
 		}
 	};
 
 	static final Predicate<String> LENGTH_1 = new Predicate<String>() {
 		@Override
-		public boolean apply(String input) {
+		public boolean test(String input) {
 			return input.length() == 1;
 		}
 	};
 
 	static final Predicate<String> STARTS_WITH_VOWEL = new Predicate<String>() {
 		@Override
-		public boolean apply(String input) {
+		public boolean test(String input) {
 			return asList('a', 'e', 'i', 'o', 'u').contains(input.charAt(0));
 		}
 	};

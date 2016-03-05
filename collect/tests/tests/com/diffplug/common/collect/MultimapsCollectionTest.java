@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import junit.framework.Test;
@@ -43,7 +44,6 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Ascii;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 import com.diffplug.common.collect.testing.SampleElements;
@@ -224,14 +224,14 @@ public class MultimapsCollectionTest extends TestCase {
 
 	private static final Predicate<Map.Entry<Integer, String>> FILTER_GET_PREDICATE = new Predicate<Map.Entry<Integer, String>>() {
 		@Override
-		public boolean apply(Entry<Integer, String> entry) {
+		public boolean test(Entry<Integer, String> entry) {
 			return !"badvalue".equals(entry.getValue()) && 55556 != entry.getKey();
 		}
 	};
 
 	private static final Predicate<Map.Entry<String, Integer>> FILTER_KEYSET_PREDICATE = new Predicate<Map.Entry<String, Integer>>() {
 		@Override
-		public boolean apply(Entry<String, Integer> entry) {
+		public boolean test(Entry<String, Integer> entry) {
 			return !"badkey".equals(entry.getKey()) && 55556 != entry.getValue();
 		}
 	};

@@ -26,10 +26,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.testing.EqualsTester;
 
@@ -41,7 +41,7 @@ import com.diffplug.common.testing.EqualsTester;
 public class FilteredCollectionsTest extends TestCase {
 	private static final Predicate<Integer> EVEN = new Predicate<Integer>() {
 		@Override
-		public boolean apply(Integer input) {
+		public boolean test(Integer input) {
 			return input % 2 == 0;
 		}
 	};
@@ -76,7 +76,7 @@ public class FilteredCollectionsTest extends TestCase {
 
 				Iterator<Integer> filteredItr = filtered.iterator();
 				for (Integer i : unfiltered) {
-					if (EVEN.apply(i)) {
+					if (EVEN.test(i)) {
 						assertTrue(filteredItr.hasNext());
 						assertEquals(i, filteredItr.next());
 					}
@@ -111,9 +111,9 @@ public class FilteredCollectionsTest extends TestCase {
 					C filtered = filter(createUnfiltered(contents), EVEN);
 					try {
 						assertEquals(expectedResult, filtered.add(toAdd));
-						assertTrue(EVEN.apply(toAdd));
+						assertTrue(EVEN.test(toAdd));
 					} catch (IllegalArgumentException e) {
-						assertFalse(EVEN.apply(toAdd));
+						assertFalse(EVEN.test(toAdd));
 					}
 				}
 			}
@@ -122,7 +122,7 @@ public class FilteredCollectionsTest extends TestCase {
 		public void testRemove() {
 			for (List<Integer> contents : SAMPLE_INPUTS) {
 				for (int toRemove = 0; toRemove < 10; toRemove++) {
-					assertEquals(contents.contains(toRemove) && EVEN.apply(toRemove),
+					assertEquals(contents.contains(toRemove) && EVEN.test(toRemove),
 							filter(createUnfiltered(contents), EVEN).remove(toRemove));
 				}
 			}
@@ -131,7 +131,7 @@ public class FilteredCollectionsTest extends TestCase {
 		public void testContains() {
 			for (List<Integer> contents : SAMPLE_INPUTS) {
 				for (int i = 0; i < 10; i++) {
-					assertEquals(EVEN.apply(i) && contents.contains(i),
+					assertEquals(EVEN.test(i) && contents.contains(i),
 							filter(createUnfiltered(contents), EVEN).contains(i));
 				}
 			}
@@ -199,7 +199,7 @@ public class FilteredCollectionsTest extends TestCase {
 			for (List<Integer> contents : SAMPLE_INPUTS) {
 				Set<Integer> expected = Sets.newHashSet();
 				for (Integer i : contents) {
-					if (EVEN.apply(i)) {
+					if (EVEN.test(i)) {
 						expected.add(i);
 					}
 				}

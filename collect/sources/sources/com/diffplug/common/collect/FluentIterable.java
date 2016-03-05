@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -34,7 +35,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 
 /**
  * An expanded {@code Iterable} API, providing functionality similar to Java 8's powerful <a href=

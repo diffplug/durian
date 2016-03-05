@@ -17,9 +17,9 @@
 package com.diffplug.common.collect;
 
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Predicate;
 
 /**
  * An interface for all filtered multimap types.

@@ -28,10 +28,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Iterables;

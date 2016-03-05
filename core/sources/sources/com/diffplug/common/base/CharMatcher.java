@@ -22,6 +22,7 @@ import static com.diffplug.common.base.Preconditions.checkPositionIndex;
 
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 
@@ -919,7 +920,7 @@ public abstract class CharMatcher implements Predicate<Character> {
 	 */
 	@Deprecated
 	@Override
-	public boolean apply(Character character) {
+	public boolean test(Character character) {
 		return matches(character);
 	}
 
@@ -1802,13 +1803,13 @@ public abstract class CharMatcher implements Predicate<Character> {
 
 		@Override
 		public boolean matches(char c) {
-			return predicate.apply(c);
+			return predicate.test(c);
 		}
 
 		@SuppressWarnings("deprecation") // intentional; deprecation is for callers primarily
 		@Override
-		public boolean apply(Character character) {
-			return predicate.apply(checkNotNull(character));
+		public boolean test(Character character) {
+			return predicate.test(checkNotNull(character));
 		}
 
 		@Override

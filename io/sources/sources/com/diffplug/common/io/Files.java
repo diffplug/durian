@@ -40,12 +40,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Lists;
@@ -854,7 +854,7 @@ public final class Files {
 	private enum FilePredicate implements Predicate<File> {
 		IS_DIRECTORY {
 			@Override
-			public boolean apply(File file) {
+			public boolean test(File file) {
 				return file.isDirectory();
 			}
 
@@ -866,7 +866,7 @@ public final class Files {
 
 		IS_FILE {
 			@Override
-			public boolean apply(File file) {
+			public boolean test(File file) {
 				return file.isFile();
 			}
 

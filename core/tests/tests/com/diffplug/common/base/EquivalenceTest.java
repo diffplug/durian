@@ -17,6 +17,7 @@
 package com.diffplug.common.base;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
@@ -127,13 +128,13 @@ public class EquivalenceTest extends TestCase {
 
 	public void testEquivalentTo() {
 		Predicate<Object> equalTo1 = Equivalence.equals().equivalentTo("1");
-		assertTrue(equalTo1.apply("1"));
-		assertFalse(equalTo1.apply("2"));
-		assertFalse(equalTo1.apply(null));
+		assertTrue(equalTo1.test("1"));
+		assertFalse(equalTo1.test("2"));
+		assertFalse(equalTo1.test(null));
 		Predicate<Object> isNull = Equivalence.equals().equivalentTo(null);
-		assertFalse(isNull.apply("1"));
-		assertFalse(isNull.apply("2"));
-		assertTrue(isNull.apply(null));
+		assertFalse(isNull.test("1"));
+		assertFalse(isNull.test("2"));
+		assertTrue(isNull.test(null));
 
 		new EqualsTester()
 				.addEqualityGroup(equalTo1, Equivalence.equals().equivalentTo("1"))

@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -39,7 +40,6 @@ import javax.annotation.Nullable;
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Maps.IteratorBasedAbstractMap;
 import com.diffplug.common.collect.Maps.ViewCachingAbstractMap;
 import com.diffplug.common.collect.Sets.ImprovedAbstractSet;
@@ -437,7 +437,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V>implements Serializab
 				Entry<R, Map<C, V>> entry = iterator.next();
 				Map<C, V> map = entry.getValue();
 				V value = map.get(columnKey);
-				if (value != null && predicate.apply(Maps.immutableEntry(entry.getKey(), value))) {
+				if (value != null && predicate.test(Maps.immutableEntry(entry.getKey(), value))) {
 					map.remove(columnKey);
 					changed = true;
 					if (map.isEmpty()) {

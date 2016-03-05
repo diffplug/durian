@@ -41,6 +41,7 @@ import java.util.RandomAccess;
 import java.util.Set;
 import java.util.Vector;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -50,7 +51,6 @@ import junit.framework.TestSuite;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorFeature;
 import com.diffplug.common.collect.testing.IteratorTester;
@@ -292,7 +292,7 @@ public class IteratorsTest extends TestCase {
 		Iterator<String> filtered = Iterators.filter(unfiltered,
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						throw new AssertionFailedError("Should never be evaluated");
 					}
 				});
@@ -307,7 +307,7 @@ public class IteratorsTest extends TestCase {
 		final List<Integer> list = asList(1, 2, 3, 4, 5);
 		final Predicate<Integer> isEven = new Predicate<Integer>() {
 			@Override
-			public boolean apply(Integer integer) {
+			public boolean test(Integer integer) {
 				return integer % 2 == 0;
 			}
 		};
@@ -1502,7 +1502,7 @@ public class IteratorsTest extends TestCase {
 				list.iterator(),
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						return s.equals("b") || s.equals("d") || s.equals("f");
 					}
 				}));
@@ -1511,7 +1511,7 @@ public class IteratorsTest extends TestCase {
 				list.iterator(),
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						return s.equals("x") || s.equals("y") || s.equals("z");
 					}
 				}));

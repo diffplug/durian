@@ -26,11 +26,10 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import junit.framework.TestCase;
-
-import com.diffplug.common.base.Predicate;
 
 /**
  * Unit test for {@link TypeToken} and {@link TypeResolver}.

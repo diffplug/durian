@@ -60,6 +60,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
@@ -69,7 +70,6 @@ import com.diffplug.common.base.CharMatcher;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.base.Ticker;
 import com.diffplug.common.collect.ArrayListMultimap;

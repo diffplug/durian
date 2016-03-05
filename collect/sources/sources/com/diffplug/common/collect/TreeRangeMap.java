@@ -32,13 +32,13 @@ import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Maps.IteratorBasedAbstractMap;
 
 /**
@@ -533,7 +533,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
 			private boolean removeEntryIf(Predicate<? super Entry<Range<K>, V>> predicate) {
 				List<Range<K>> toRemove = Lists.newArrayList();
 				for (Entry<Range<K>, V> entry : entrySet()) {
-					if (predicate.apply(entry)) {
+					if (predicate.test(entry)) {
 						toRemove.add(entry.getKey());
 					}
 				}

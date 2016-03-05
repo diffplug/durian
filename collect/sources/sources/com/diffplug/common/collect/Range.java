@@ -24,12 +24,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Predicate;
 
 /**
  * A range (or "interval") defines the <i>boundaries</i> around a contiguous span of values of some
@@ -434,7 +434,7 @@ public final class Range<C extends Comparable> implements Predicate<C>, Serializ
 	 */
 	@Deprecated
 	@Override
-	public boolean apply(C input) {
+	public boolean test(C input) {
 		return contains(input);
 	}
 

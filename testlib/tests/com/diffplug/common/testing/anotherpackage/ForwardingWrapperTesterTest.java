@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
@@ -29,7 +30,6 @@ import junit.framework.TestCase;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Ordering;
 import com.diffplug.common.primitives.UnsignedInteger;
 import com.diffplug.common.primitives.UnsignedLong;

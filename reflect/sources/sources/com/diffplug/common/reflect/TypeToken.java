@@ -33,13 +33,13 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.FluentIterable;
 import com.diffplug.common.collect.ForwardingSet;
 import com.diffplug.common.collect.ImmutableList;
@@ -767,7 +767,7 @@ public abstract class TypeToken<T> extends TypeCapture<T>implements Serializable
 			return FluentIterable.from(collectedTypes)
 					.filter(new Predicate<Class<?>>() {
 						@Override
-						public boolean apply(Class<?> type) {
+						public boolean test(Class<?> type) {
 							return type.isInterface();
 						}
 					})
@@ -833,14 +833,14 @@ public abstract class TypeToken<T> extends TypeCapture<T>implements Serializable
 
 		IGNORE_TYPE_VARIABLE_OR_WILDCARD {
 			@Override
-			public boolean apply(TypeToken<?> type) {
+			public boolean test(TypeToken<?> type) {
 				return !(type.runtimeType instanceof TypeVariable
 						|| type.runtimeType instanceof WildcardType);
 			}
 		},
 		INTERFACE_ONLY {
 			@Override
-			public boolean apply(TypeToken<?> type) {
+			public boolean test(TypeToken<?> type) {
 				return type.getRawType().isInterface();
 			}
 		}

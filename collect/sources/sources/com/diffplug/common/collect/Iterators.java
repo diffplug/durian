@@ -38,6 +38,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -47,7 +48,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.base.Predicate;
 
 /**
  * This class contains static utility methods that operate on or return objects
@@ -237,7 +237,7 @@ public final class Iterators {
 		checkNotNull(predicate);
 		boolean modified = false;
 		while (removeFrom.hasNext()) {
-			if (predicate.apply(removeFrom.next())) {
+			if (predicate.test(removeFrom.next())) {
 				removeFrom.remove();
 				modified = true;
 			}
@@ -670,7 +670,7 @@ public final class Iterators {
 			protected T computeNext() {
 				while (unfiltered.hasNext()) {
 					T element = unfiltered.next();
-					if (predicate.apply(element)) {
+					if (predicate.test(element)) {
 						return element;
 					}
 				}
@@ -713,7 +713,7 @@ public final class Iterators {
 		checkNotNull(predicate);
 		while (iterator.hasNext()) {
 			T element = iterator.next();
-			if (!predicate.apply(element)) {
+			if (!predicate.test(element)) {
 				return false;
 			}
 		}
@@ -791,7 +791,7 @@ public final class Iterators {
 		checkNotNull(predicate, "predicate");
 		for (int i = 0; iterator.hasNext(); i++) {
 			T current = iterator.next();
-			if (predicate.apply(current)) {
+			if (predicate.test(current)) {
 				return i;
 			}
 		}

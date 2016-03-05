@@ -19,11 +19,11 @@ package com.diffplug.common.collect;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Predicate;
 
 /**
  * Unit tests for {@link Multimaps} filtering methods.
@@ -35,7 +35,7 @@ public class FilteredMultimapTest extends TestCase {
 
 	private static final Predicate<Map.Entry<String, Integer>> ENTRY_PREDICATE = new Predicate<Map.Entry<String, Integer>>() {
 		@Override
-		public boolean apply(Entry<String, Integer> entry) {
+		public boolean test(Entry<String, Integer> entry) {
 			return !"badkey".equals(entry.getKey()) && !((Integer) 55556).equals(entry.getValue());
 		}
 	};
@@ -49,7 +49,7 @@ public class FilteredMultimapTest extends TestCase {
 
 	private static final Predicate<String> KEY_PREDICATE = new Predicate<String>() {
 		@Override
-		public boolean apply(String key) {
+		public boolean test(String key) {
 			return !"badkey".equals(key);
 		}
 	};
@@ -65,7 +65,7 @@ public class FilteredMultimapTest extends TestCase {
 
 	private static final Predicate<Integer> VALUE_PREDICATE = new Predicate<Integer>() {
 		@Override
-		public boolean apply(Integer value) {
+		public boolean test(Integer value) {
 			return !((Integer) 55556).equals(value);
 		}
 	};

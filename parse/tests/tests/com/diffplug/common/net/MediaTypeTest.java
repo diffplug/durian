@@ -38,13 +38,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.FluentIterable;
 import com.diffplug.common.collect.ImmutableListMultimap;
@@ -91,7 +91,7 @@ public class MediaTypeTest extends TestCase {
 		return FluentIterable.from(asList(MediaType.class.getDeclaredFields()))
 				.filter(new Predicate<Field>() {
 					@Override
-					public boolean apply(Field input) {
+					public boolean test(Field input) {
 						int modifiers = input.getModifiers();
 						return isPublic(modifiers) && isStatic(modifiers) && isFinal(modifiers)
 								&& MediaType.class.equals(input.getType());

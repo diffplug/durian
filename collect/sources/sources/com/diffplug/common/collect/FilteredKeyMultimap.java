@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Predicate;
 
 /**
  * Implementation of {@link Multimaps#filterKeys(Multimap, Predicate)}.
@@ -73,7 +73,7 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V>implements Filtere
 		if (unfiltered.containsKey(key)) {
 			@SuppressWarnings("unchecked") // k is equal to a K, if not one itself
 			K k = (K) key;
-			return keyPredicate.apply(k);
+			return keyPredicate.test(k);
 		}
 		return false;
 	}
@@ -103,7 +103,7 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V>implements Filtere
 
 	@Override
 	public Collection<V> get(K key) {
-		if (keyPredicate.apply(key)) {
+		if (keyPredicate.test(key)) {
 			return unfiltered.get(key);
 		} else if (unfiltered instanceof SetMultimap) {
 			return new AddRejectingSet<K, V>(key);
@@ -198,7 +198,7 @@ class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V>implements Filtere
 				Entry<?, ?> entry = (Entry<?, ?>) o;
 				if (unfiltered.containsKey(entry.getKey())
 						// if this holds, then we know entry.getKey() is a K
-						&& keyPredicate.apply((K) entry.getKey())) {
+						&& keyPredicate.test((K) entry.getKey())) {
 					return unfiltered.remove(entry.getKey(), entry.getValue());
 				}
 			}

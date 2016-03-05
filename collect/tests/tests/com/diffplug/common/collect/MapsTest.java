@@ -48,6 +48,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
@@ -56,7 +57,6 @@ import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Converter;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Functions;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 import com.diffplug.common.collect.Maps.ValueDifferenceImpl;
@@ -1292,21 +1292,21 @@ public class MapsTest extends TestCase {
 
 	private static final Predicate<String> NOT_LENGTH_3 = new Predicate<String>() {
 		@Override
-		public boolean apply(String input) {
+		public boolean test(String input) {
 			return input == null || input.length() != 3;
 		}
 	};
 
 	private static final Predicate<Integer> EVEN = new Predicate<Integer>() {
 		@Override
-		public boolean apply(Integer input) {
+		public boolean test(Integer input) {
 			return input == null || input % 2 == 0;
 		}
 	};
 
 	private static final Predicate<Entry<String, Integer>> CORRECT_LENGTH = new Predicate<Entry<String, Integer>>() {
 		@Override
-		public boolean apply(Entry<String, Integer> input) {
+		public boolean test(Entry<String, Integer> input) {
 			return input.getKey().length() == input.getValue();
 		}
 	};
@@ -1484,7 +1484,7 @@ public class MapsTest extends TestCase {
 			unfiltered.put("horse", 5);
 			Predicate<Entry<?, ?>> predicate = new Predicate<Entry<?, ?>>() {
 				@Override
-				public boolean apply(Entry<?, ?> input) {
+				public boolean test(Entry<?, ?> input) {
 					return "cat".equals(input.getKey())
 							|| Integer.valueOf(2) == input.getValue();
 				}

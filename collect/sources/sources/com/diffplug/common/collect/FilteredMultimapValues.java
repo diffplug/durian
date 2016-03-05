@@ -24,13 +24,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
 import com.google.j2objc.annotations.Weak;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 
 /**
@@ -67,7 +67,7 @@ final class FilteredMultimapValues<K, V> extends AbstractCollection<V> {
 		Predicate<? super Entry<K, V>> entryPredicate = multimap.entryPredicate();
 		for (Iterator<Entry<K, V>> unfilteredItr = multimap.unfiltered().entries().iterator(); unfilteredItr.hasNext();) {
 			Map.Entry<K, V> entry = unfilteredItr.next();
-			if (entryPredicate.apply(entry) && Objects.equals(entry.getValue(), o)) {
+			if (entryPredicate.test(entry) && Objects.equals(entry.getValue(), o)) {
 				unfilteredItr.remove();
 				return true;
 			}
