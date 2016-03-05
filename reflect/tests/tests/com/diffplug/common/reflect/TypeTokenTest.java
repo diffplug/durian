@@ -1765,9 +1765,6 @@ public class TypeTokenTest extends TestCase {
 
 	private static void assertAssignable(TypeToken<?> from, TypeToken<?> to) {
 		assertTrue(
-				from.getType() + " is expected to be assignable to " + to.getType(),
-				to.isAssignableFrom(from));
-		assertTrue(
 				to.getType() + " is expected to be a supertype of " + from.getType(),
 				to.isSupertypeOf(from));
 		assertTrue(
@@ -1776,9 +1773,6 @@ public class TypeTokenTest extends TestCase {
 	}
 
 	private static void assertNotAssignable(TypeToken<?> from, TypeToken<?> to) {
-		assertFalse(
-				from.getType() + " shouldn't be assignable to " + to.getType(),
-				to.isAssignableFrom(from));
 		assertFalse(
 				to.getType() + " shouldn't be a supertype of " + from.getType(),
 				to.isSupertypeOf(from));
