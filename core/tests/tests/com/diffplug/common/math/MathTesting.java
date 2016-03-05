@@ -29,9 +29,9 @@ import static java.util.Arrays.asList;
 
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableSet;

@@ -37,12 +37,12 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Throwables;

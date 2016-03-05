@@ -22,6 +22,8 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.annotation.CheckReturnValue;
@@ -272,7 +274,7 @@ public final class Functions {
 
 		@Override
 		public Boolean apply(@Nullable T t) {
-			return predicate.apply(t);
+			return predicate.test(t);
 		}
 
 		@Override

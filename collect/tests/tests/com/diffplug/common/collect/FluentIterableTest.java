@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +35,6 @@ import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Optional;

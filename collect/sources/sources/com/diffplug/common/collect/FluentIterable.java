@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.function.Function;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -31,7 +32,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicate;

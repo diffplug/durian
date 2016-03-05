@@ -38,13 +38,13 @@ import java.util.RandomAccess;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;

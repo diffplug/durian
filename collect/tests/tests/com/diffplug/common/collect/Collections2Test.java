@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -35,7 +36,6 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.testing.CollectionTestSuiteBuilder;
 import com.diffplug.common.collect.testing.TestStringCollectionGenerator;

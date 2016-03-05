@@ -30,6 +30,7 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -38,7 +39,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.diffplug.common.base.Charsets;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 import com.diffplug.common.collect.testing.Helpers;

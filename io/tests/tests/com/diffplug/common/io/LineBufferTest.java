@@ -24,8 +24,8 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.Lists;
 
 /**

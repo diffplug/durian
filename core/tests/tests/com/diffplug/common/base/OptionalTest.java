@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import junit.framework.TestCase;

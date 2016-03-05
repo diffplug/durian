@@ -41,6 +41,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -49,7 +50,6 @@ import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.math.IntMath;
 import com.diffplug.common.primitives.Ints;
 

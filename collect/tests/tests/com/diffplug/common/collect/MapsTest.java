@@ -47,6 +47,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
@@ -54,7 +55,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Converter;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;

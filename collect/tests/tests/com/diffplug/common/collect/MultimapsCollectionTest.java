@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import junit.framework.Test;
@@ -42,7 +43,6 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Ascii;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.Maps.EntryTransformer;

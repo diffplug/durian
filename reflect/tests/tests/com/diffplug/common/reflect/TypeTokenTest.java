@@ -29,12 +29,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
 import com.google.common.truth.IterableSubject;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.collect.ImmutableSet;

@@ -28,10 +28,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
 
 /**

@@ -21,10 +21,10 @@ import static com.diffplug.common.collect.Maps.immutableEntry;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.lang.ref.WeakReference;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.cache.LocalCache.Strength;
 import com.diffplug.common.cache.TestingRemovalListeners.CountingRemovalListener;
 import com.diffplug.common.collect.ImmutableSet;

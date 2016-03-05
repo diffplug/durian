@@ -23,9 +23,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.Maps;
 
 /**

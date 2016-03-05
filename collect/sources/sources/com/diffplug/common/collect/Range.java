@@ -23,12 +23,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Predicate;
 
 /**

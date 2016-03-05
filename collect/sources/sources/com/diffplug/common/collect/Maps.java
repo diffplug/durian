@@ -47,6 +47,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -59,7 +60,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Converter;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner.MapJoiner;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.Predicate;

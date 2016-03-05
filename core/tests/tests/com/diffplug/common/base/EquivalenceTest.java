@@ -16,6 +16,8 @@
  */
 package com.diffplug.common.base;
 
+import java.util.function.Function;
+
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;

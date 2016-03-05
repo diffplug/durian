@@ -16,9 +16,10 @@
  */
 package com.diffplug.common.escape;
 
+import java.util.function.Function;
+
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 
 /**
  * An object that converts literal text into a format safe for inclusion in a particular context

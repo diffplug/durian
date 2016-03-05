@@ -21,6 +21,7 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.CheckReturnValue;

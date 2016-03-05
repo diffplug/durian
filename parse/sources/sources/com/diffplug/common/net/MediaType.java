@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -38,7 +39,6 @@ import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.Ascii;
 import com.diffplug.common.base.CharMatcher;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Joiner.MapJoiner;
 import com.diffplug.common.base.MoreObjects;

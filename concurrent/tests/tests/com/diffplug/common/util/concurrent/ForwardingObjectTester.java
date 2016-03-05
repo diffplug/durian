@@ -22,8 +22,8 @@ import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.function.Function;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.ForwardingObject;
 import com.diffplug.common.collect.Iterables;

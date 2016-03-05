@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -39,7 +40,6 @@ import org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement;
 import com.google.j2objc.annotations.J2ObjCIncompatible;
 
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.Ordering;
 
 /**

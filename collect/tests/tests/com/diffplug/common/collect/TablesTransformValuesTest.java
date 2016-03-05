@@ -18,9 +18,10 @@ package com.diffplug.common.collect;
 
 import static com.diffplug.common.base.Preconditions.checkArgument;
 
+import java.util.function.Function;
+
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 
 /**
  * Test cases for {@link Tables#transformValues}.

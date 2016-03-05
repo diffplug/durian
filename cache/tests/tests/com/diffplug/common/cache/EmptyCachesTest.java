@@ -26,10 +26,10 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.cache.CacheBuilderFactory.DurationSpec;
 import com.diffplug.common.cache.LocalCache.Strength;
 import com.diffplug.common.collect.ImmutableSet;

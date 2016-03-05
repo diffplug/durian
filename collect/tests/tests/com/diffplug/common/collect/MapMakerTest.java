@@ -27,12 +27,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.MapMaker.RemovalNotification;
 import com.diffplug.common.collect.MapMakerInternalMapTest.QueuingRemovalListener;
 import com.diffplug.common.testing.NullPointerTester;

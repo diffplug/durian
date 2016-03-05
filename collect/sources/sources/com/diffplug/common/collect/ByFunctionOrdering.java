@@ -20,11 +20,11 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 
 /**
  * An ordering that orders elements by applying an order to the result of a

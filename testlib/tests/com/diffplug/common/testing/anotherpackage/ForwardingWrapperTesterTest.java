@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Predicate;

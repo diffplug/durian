@@ -27,9 +27,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.Lists;
 import com.diffplug.common.reflect.AbstractInvocationHandler;
