@@ -394,7 +394,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
 	 * <p>Most implementations will have no reason to override the behavior of {@link Object#equals}.
 	 * However, an implementation may also choose to return {@code true} whenever {@code object} is a
 	 * {@link Converter} that it considers <i>interchangeable</i> with this one. "Interchangeable"
-	 * <i>typically</i> means that {@code Objects.equal(this.convert(a), that.convert(a))} is true for
+	 * <i>typically</i> means that {@code Objects.equals(this.convert(a), that.convert(a))} is true for
 	 * all {@code a} of type {@code A} (and similarly for {@code reverse}). Note that a {@code false}
 	 * result from this method does not imply that the converters are known <i>not</i> to be
 	 * interchangeable.

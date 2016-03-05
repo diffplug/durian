@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -35,7 +36,6 @@ import com.google.j2objc.annotations.Weak;
 
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.cache.CacheBuilder;
 import com.diffplug.common.cache.CacheLoader;
@@ -242,7 +242,7 @@ final class SubscriberRegistry {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(name, parameterTypes);
+			return Objects.hash(name, parameterTypes);
 		}
 
 		@Override

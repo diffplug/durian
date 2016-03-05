@@ -23,11 +23,11 @@ import static com.diffplug.common.collect.BoundType.OPEN;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A generalized interval on any ordering, for internal use. Supports {@code null}. Unlike
@@ -242,15 +242,15 @@ final class GeneralRange<T> implements Serializable {
 					&& hasUpperBound == r.hasUpperBound
 					&& getLowerBoundType().equals(r.getLowerBoundType())
 					&& getUpperBoundType().equals(r.getUpperBoundType())
-					&& Objects.equal(getLowerEndpoint(), r.getLowerEndpoint())
-					&& Objects.equal(getUpperEndpoint(), r.getUpperEndpoint());
+					&& Objects.equals(getLowerEndpoint(), r.getLowerEndpoint())
+					&& Objects.equals(getUpperEndpoint(), r.getUpperEndpoint());
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(
+		return Objects.hash(
 				comparator,
 				getLowerEndpoint(),
 				getLowerBoundType(),

@@ -21,10 +21,10 @@ import static java.util.Arrays.asList;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.collect.Table.Cell;
 import com.diffplug.common.testing.EqualsTester;
 import com.diffplug.common.testing.NullPointerTester;
@@ -146,10 +146,10 @@ public class ArrayTableTest extends AbstractTableTest {
 		table.put("foo", 1, 'a');
 		table.put("bar", 1, 'b');
 		table.put("foo", 3, 'c');
-		int expected = Objects.hashCode("foo", 1, 'a')
-				+ Objects.hashCode("bar", 1, 'b')
-				+ Objects.hashCode("foo", 3, 'c')
-				+ Objects.hashCode("bar", 3, 0);
+		int expected = Objects.hash("foo", 1, 'a')
+				+ Objects.hash("bar", 1, 'b')
+				+ Objects.hash("foo", 3, 'c')
+				+ Objects.hash("bar", 3, 0);
 		assertEquals(expected, table.hashCode());
 	}
 

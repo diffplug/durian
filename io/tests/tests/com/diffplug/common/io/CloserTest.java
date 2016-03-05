@@ -22,6 +22,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.LogRecord;
 
 import javax.annotation.Nullable;
@@ -29,7 +30,6 @@ import javax.annotation.Nullable;
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.ImmutableList;
@@ -421,7 +421,7 @@ public class CloserTest extends TestCase {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(closeable, thrown, suppressed);
+			return Objects.hash(closeable, thrown, suppressed);
 		}
 
 		@Override

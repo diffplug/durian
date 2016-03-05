@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -35,7 +36,6 @@ import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A general-purpose bimap implementation using any two backing {@code Map}
@@ -125,7 +125,7 @@ abstract class AbstractBiMap<K, V> extends ForwardingMap<K, V>
 		checkKey(key);
 		checkValue(value);
 		boolean containedKey = containsKey(key);
-		if (containedKey && Objects.equal(value, get(key))) {
+		if (containedKey && Objects.equals(value, get(key))) {
 			return value;
 		}
 		if (force) {
@@ -336,12 +336,12 @@ abstract class AbstractBiMap<K, V> extends ForwardingMap<K, V>
 							// Preconditions keep the map and inverse consistent.
 							checkState(contains(this), "entry no longer in map");
 							// similar to putInBothMaps, but set via entry
-							if (Objects.equal(value, getValue())) {
+							if (Objects.equals(value, getValue())) {
 								return value;
 							}
 							checkArgument(!containsValue(value), "value already present: %s", value);
 							V oldValue = finalEntry.setValue(value);
-							checkState(Objects.equal(value, get(getKey())), "entry no longer in map");
+							checkState(Objects.equals(value, get(getKey())), "entry no longer in map");
 							updateInverseMap(getKey(), true, oldValue, value);
 							return oldValue;
 						}

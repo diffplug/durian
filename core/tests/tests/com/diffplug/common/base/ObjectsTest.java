@@ -16,6 +16,8 @@
  */
 package com.diffplug.common.base;
 
+import java.util.Objects;
+
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
@@ -31,33 +33,33 @@ import com.diffplug.common.testing.NullPointerTester;
 public class ObjectsTest extends TestCase {
 
 	public void testEqual() throws Exception {
-		assertTrue(Objects.equal(1, 1));
-		assertTrue(Objects.equal(null, null));
+		assertTrue(Objects.equals(1, 1));
+		assertTrue(Objects.equals(null, null));
 
 		// test distinct string objects
 		String s1 = "foobar";
 		String s2 = new String(s1);
-		assertTrue(Objects.equal(s1, s2));
+		assertTrue(Objects.equals(s1, s2));
 
-		assertFalse(Objects.equal(s1, null));
-		assertFalse(Objects.equal(null, s1));
-		assertFalse(Objects.equal("foo", "bar"));
-		assertFalse(Objects.equal("1", 1));
+		assertFalse(Objects.equals(s1, null));
+		assertFalse(Objects.equals(null, s1));
+		assertFalse(Objects.equals("foo", "bar"));
+		assertFalse(Objects.equals("1", 1));
 	}
 
 	public void testHashCode() throws Exception {
-		int h1 = Objects.hashCode(1, "two", 3.0);
-		int h2 = Objects.hashCode(
+		int h1 = Objects.hash(1, "two", 3.0);
+		int h2 = Objects.hash(
 				new Integer(1), new String("two"), new Double(3.0));
 		// repeatable
 		assertEquals(h1, h2);
 
 		// These don't strictly need to be true, but they're nice properties.
-		assertTrue(Objects.hashCode(1, 2, null) != Objects.hashCode(1, 2));
-		assertTrue(Objects.hashCode(1, 2, null) != Objects.hashCode(1, null, 2));
-		assertTrue(Objects.hashCode(1, null, 2) != Objects.hashCode(1, 2));
-		assertTrue(Objects.hashCode(1, 2, 3) != Objects.hashCode(3, 2, 1));
-		assertTrue(Objects.hashCode(1, 2, 3) != Objects.hashCode(2, 3, 1));
+		assertTrue(Objects.hash(1, 2, null) != Objects.hash(1, 2));
+		assertTrue(Objects.hash(1, 2, null) != Objects.hash(1, null, 2));
+		assertTrue(Objects.hash(1, null, 2) != Objects.hash(1, 2));
+		assertTrue(Objects.hash(1, 2, 3) != Objects.hash(3, 2, 1));
+		assertTrue(Objects.hash(1, 2, 3) != Objects.hash(2, 3, 1));
 	}
 
 	public void testFirstNonNull_withNonNull() throws Exception {
@@ -76,11 +78,5 @@ public class ObjectsTest extends TestCase {
 			MoreObjects.firstNonNull(null, null);
 			fail("expected NullPointerException");
 		} catch (NullPointerException expected) {}
-	}
-
-	@GwtIncompatible("NullPointerTester")
-	public void testNullPointers() {
-		NullPointerTester tester = new NullPointerTester();
-		tester.testAllPublicStaticMethods(Objects.class);
 	}
 }

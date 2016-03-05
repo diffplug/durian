@@ -25,13 +25,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.hash.BloomFilterStrategies.BitArray;
 import com.diffplug.common.primitives.SignedBytes;
@@ -272,7 +272,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(numHashFunctions, funnel, strategy, bits);
+		return Objects.hash(numHashFunctions, funnel, strategy, bits);
 	}
 
 	/**

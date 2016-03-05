@@ -18,11 +18,11 @@ package com.diffplug.common.collect;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A collection which forwards all its method calls to another collection.
@@ -163,7 +163,7 @@ public abstract class ForwardingCollection<E> extends ForwardingObject implement
 	protected boolean standardRemove(@Nullable Object object) {
 		Iterator<E> iterator = iterator();
 		while (iterator.hasNext()) {
-			if (Objects.equal(iterator.next(), object)) {
+			if (Objects.equals(iterator.next(), object)) {
 				iterator.remove();
 				return true;
 			}

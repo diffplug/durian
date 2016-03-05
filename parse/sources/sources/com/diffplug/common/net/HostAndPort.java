@@ -21,13 +21,13 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 import static com.diffplug.common.base.Preconditions.checkState;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Strings;
 
 /**
@@ -279,7 +279,7 @@ public final class HostAndPort implements Serializable {
 		}
 		if (other instanceof HostAndPort) {
 			HostAndPort that = (HostAndPort) other;
-			return Objects.equal(this.host, that.host)
+			return Objects.equals(this.host, that.host)
 					&& this.port == that.port
 					&& this.hasBracketlessColons == that.hasBracketlessColons;
 		}
@@ -288,7 +288,7 @@ public final class HostAndPort implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(host, port, hasBracketlessColons);
+		return Objects.hash(host, port, hasBracketlessColons);
 	}
 
 	/** Rebuild the host:port string, including brackets if necessary. */

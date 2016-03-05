@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -36,7 +37,6 @@ import com.google.j2objc.annotations.WeakOuter;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.collect.Maps.IteratorBasedAbstractMap;
 
 /**
@@ -417,7 +417,7 @@ public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V>implements 
 	public boolean containsValue(@Nullable Object value) {
 		for (V[] row : array) {
 			for (V element : row) {
-				if (Objects.equal(value, element)) {
+				if (Objects.equals(value, element)) {
 					return true;
 				}
 			}

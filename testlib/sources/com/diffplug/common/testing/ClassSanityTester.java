@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -38,7 +39,6 @@ import junit.framework.AssertionFailedError;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Throwables;
 import com.diffplug.common.collect.ArrayListMultimap;
 import com.diffplug.common.collect.ImmutableList;
@@ -180,7 +180,7 @@ public final class ClassSanityTester {
 		checkNotNull(type);
 		checkNotNull(value1);
 		checkNotNull(value2);
-		checkArgument(!Objects.equal(value1, value2), "Duplicate value provided.");
+		checkArgument(!Objects.equals(value1, value2), "Duplicate value provided.");
 		distinctValues.replaceValues(type, ImmutableList.of(value1, value2));
 		setDefault(type, value1);
 		return this;
@@ -599,7 +599,7 @@ public final class ClassSanityTester {
 			List<Object> newArgs = Lists.newArrayList(args);
 			Object newArg = argGenerators.get(i).generateFresh(params.get(i).getType());
 
-			if (newArg == null || Objects.equal(args.get(i), newArg)) {
+			if (newArg == null || Objects.equals(args.get(i), newArg)) {
 				if (params.get(i).getType().getRawType().isEnum()) {
 					continue; // Nothing better we can do if it's single-value enum
 				}
@@ -628,7 +628,7 @@ public final class ClassSanityTester {
 			// Two newFreshValueGenerator() instances should normally generate equal value sequence.
 			Object shouldBeEqualArg = generateDummyArg(param, newFreshValueGenerator());
 			if (arg != shouldBeEqualArg
-					&& Objects.equal(arg, shouldBeEqualArg)
+					&& Objects.equals(arg, shouldBeEqualArg)
 					&& hashCodeInsensitiveToArgReference(factory, args, i, shouldBeEqualArg)
 					&& hashCodeInsensitiveToArgReference(
 							factory, args, i, generateDummyArg(param, newFreshValueGenerator()))) {

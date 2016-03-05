@@ -19,12 +19,12 @@ package com.diffplug.common.collect;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Objects;
 
 /**
  * An ordering that orders elements by applying an order to the result of a
@@ -59,7 +59,7 @@ final class ByFunctionOrdering<F, T> extends Ordering<F>implements Serializable 
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(function, ordering);
+		return Objects.hash(function, ordering);
 	}
 
 	@Override

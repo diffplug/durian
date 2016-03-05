@@ -19,6 +19,7 @@ package com.diffplug.common.base;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -69,7 +70,7 @@ final class FunctionalEquivalence<F, T> extends Equivalence<F>implements Seriali
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(function, resultEquivalence);
+		return Objects.hash(function, resultEquivalence);
 	}
 
 	@Override

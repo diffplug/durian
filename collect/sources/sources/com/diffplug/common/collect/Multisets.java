@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.CheckReturnValue;
@@ -34,7 +35,6 @@ import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.Multiset.Entry;
@@ -809,7 +809,7 @@ public final class Multisets {
 			if (object instanceof Multiset.Entry) {
 				Multiset.Entry<?> that = (Multiset.Entry<?>) object;
 				return this.getCount() == that.getCount()
-						&& Objects.equal(this.getElement(), that.getElement());
+						&& Objects.equals(this.getElement(), that.getElement());
 			}
 			return false;
 		}

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import javax.annotation.CheckReturnValue;
@@ -648,7 +649,7 @@ public final class Predicates {
 			// Pattern uses Object.hashCode, so we have to reach
 			// inside to build a hashCode consistent with equals.
 
-			return Objects.hashCode(pattern.pattern(), pattern.flags());
+			return Objects.hash(pattern.pattern(), pattern.flags());
 		}
 
 		@Override
@@ -658,8 +659,8 @@ public final class Predicates {
 
 				// Pattern uses Object (identity) equality, so we have to reach
 				// inside to compare individual fields.
-				return Objects.equal(pattern.pattern(), that.pattern.pattern())
-						&& Objects.equal(pattern.flags(), that.pattern.flags());
+				return Objects.equals(pattern.pattern(), that.pattern.pattern())
+						&& Objects.equals(pattern.flags(), that.pattern.flags());
 			}
 			return false;
 		}

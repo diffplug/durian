@@ -17,6 +17,7 @@
 package com.diffplug.common.cache;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +25,6 @@ import javax.annotation.Nullable;
 
 import com.diffplug.common.base.Function;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.cache.LocalCache.Strength;
@@ -198,7 +198,7 @@ class CacheBuilderFactory {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(duration, unit);
+			return Objects.hash(duration, unit);
 		}
 
 		@Override
