@@ -11,10 +11,10 @@ Bundle-Version: 1.0.0.SNAPSHOT
 Export-Package: com.diffplug.common.escape;uses:="javax.annotation";ve
  rsion="1.0.0",com.diffplug.common.html;uses:="com.diffplug.common.esc
  ape";version="1.0.0",com.diffplug.common.net;uses:="com.diffplug.comm
- on.base,com.diffplug.common.collect,com.diffplug.common.escape,javax.
- annotation";version="1.0.0",com.diffplug.common.xml;uses:="com.diffpl
- ug.common.escape";version="1.0.0",com.diffplug.thirdparty.publicsuffi
- x;uses:="com.diffplug.common.collect";version="1.0.0"
+ on.collect,com.diffplug.common.escape,javax.annotation";version="1.0.
+ 0",com.diffplug.common.xml;uses:="com.diffplug.common.escape";version
+ ="1.0.0",com.diffplug.thirdparty.publicsuffix;uses:="com.diffplug.com
+ mon.collect";version="1.0.0"
 Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
  mon.base;version="[1.0,2)",com.diffplug.common.collect;version="[1.0,
  2)",com.diffplug.common.escape,com.diffplug.common.hash;version="[1.0

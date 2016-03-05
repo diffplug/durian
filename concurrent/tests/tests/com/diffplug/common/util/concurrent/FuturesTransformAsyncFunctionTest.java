@@ -48,7 +48,7 @@ public class FuturesTransformAsyncFunctionTest
 		outputFuture = SettableFuture.create();
 		funcIsWaitingLatch = new CountDownLatch(1);
 		funcCompletionLatch = new CountDownLatch(1);
-		return Futures.transform(inputFuture, new ChainingFunction());
+		return Futures.transformAsync(inputFuture, new ChainingFunction());
 	}
 
 	@Override

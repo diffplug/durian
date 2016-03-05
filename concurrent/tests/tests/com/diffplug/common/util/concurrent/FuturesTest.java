@@ -291,7 +291,7 @@ public class FuturesTest extends TestCase {
 				throw new AssertionFailedError("Unexpeted call to apply.");
 			}
 		};
-		assertTrue(Futures.transform(input, function).cancel(false));
+		assertTrue(Futures.transformAsync(input, function).cancel(false));
 		assertTrue(input.isCancelled());
 		assertFalse(input.wasInterrupted());
 	}
@@ -304,7 +304,7 @@ public class FuturesTest extends TestCase {
 				throw new AssertionFailedError("Unexpeted call to apply.");
 			}
 		};
-		assertTrue(Futures.transform(input, function).cancel(true));
+		assertTrue(Futures.transformAsync(input, function).cancel(true));
 		assertTrue(input.isCancelled());
 		assertTrue(input.wasInterrupted());
 	}
@@ -318,7 +318,7 @@ public class FuturesTest extends TestCase {
 				return secondary;
 			}
 		};
-		assertTrue(Futures.transform(immediate, function).cancel(false));
+		assertTrue(Futures.transformAsync(immediate, function).cancel(false));
 		assertTrue(secondary.isCancelled());
 		assertFalse(secondary.wasInterrupted());
 	}
@@ -333,7 +333,7 @@ public class FuturesTest extends TestCase {
 				return secondary;
 			}
 		};
-		assertTrue(Futures.transform(immediate, function).cancel(true));
+		assertTrue(Futures.transformAsync(immediate, function).cancel(true));
 		assertTrue(secondary.isCancelled());
 		assertTrue(secondary.wasInterrupted());
 	}
@@ -679,39 +679,6 @@ public class FuturesTest extends TestCase {
 		};
 	}
 
-	private static class FutureFallbackSpy<V> implements FutureFallback<V> {
-
-		private int count;
-		private final FutureFallback<V> delegate;
-
-		public FutureFallbackSpy(FutureFallback<V> delegate) {
-			this.delegate = delegate;
-		}
-
-		@Override
-		public final ListenableFuture<V> create(Throwable t) throws Exception {
-			count++;
-			return delegate.create(t);
-		}
-
-		void verifyCallCount(int expected) {
-			assertThat(count).isEqualTo(expected);
-		}
-	}
-
-	private static <V> FutureFallbackSpy<V> spy(FutureFallback<V> delegate) {
-		return new FutureFallbackSpy<V>(delegate);
-	}
-
-	private static <V> FutureFallback<V> unexpectedFallback() {
-		return new FutureFallback<V>() {
-			@Override
-			public ListenableFuture<V> create(Throwable t) {
-				throw newAssertionError("Unexpected fallback", t);
-			}
-		};
-	}
-
 	private static class AsyncFunctionSpy<X extends Throwable, V> implements AsyncFunction<X, V> {
 		private int count;
 		private final AsyncFunction<X, V> delegate;
@@ -749,162 +716,6 @@ public class FuturesTest extends TestCase {
 		AssertionError e = new AssertionError(message);
 		e.initCause(cause);
 		return e;
-	}
-
-	public void testWithFallback_inputDoesNotRaiseException() throws Exception {
-		FutureFallback<Integer> fallback = unexpectedFallback();
-		ListenableFuture<Integer> originalFuture = Futures.immediateFuture(7);
-		ListenableFuture<Integer> faultToleranteFuture = Futures.withFallback(originalFuture, fallback);
-		assertEquals(7, faultToleranteFuture.get().intValue());
-	}
-
-	public void testWithFallback_inputRaisesException() throws Exception {
-		final RuntimeException raisedException = new RuntimeException();
-		FutureFallbackSpy<Integer> fallback = spy(new FutureFallback<Integer>() {
-			@Override
-			public ListenableFuture<Integer> create(Throwable t) throws Exception {
-				assertThat(t).isSameAs(raisedException);
-				return Futures.immediateFuture(20);
-			}
-		});
-		ListenableFuture<Integer> failingFuture = Futures.immediateFailedFuture(raisedException);
-		ListenableFuture<Integer> faultTolerantFuture = Futures.withFallback(failingFuture, fallback);
-		assertEquals(20, faultTolerantFuture.get().intValue());
-		fallback.verifyCallCount(1);
-	}
-
-	public void testWithFallback_fallbackGeneratesRuntimeException() throws Exception {
-		RuntimeException expectedException = new RuntimeException();
-		runExpectedExceptionFallbackTest(expectedException, false);
-	}
-
-	public void testWithFallback_fallbackGeneratesCheckedException() throws Exception {
-		Exception expectedException = new Exception() {};
-		runExpectedExceptionFallbackTest(expectedException, false);
-	}
-
-	public void testWithFallback_fallbackGeneratesError() throws Exception {
-		final Error error = new Error("deliberate");
-		FutureFallback<Integer> fallback = new FutureFallback<Integer>() {
-			@Override
-			public ListenableFuture<Integer> create(Throwable t) throws Exception {
-				throw error;
-			}
-		};
-		ListenableFuture<Integer> failingFuture = Futures.immediateFailedFuture(new RuntimeException());
-		try {
-			Futures.withFallback(failingFuture, fallback).get();
-			fail("An Exception should have been thrown!");
-		} catch (ExecutionException expected) {
-			assertSame(error, expected.getCause());
-		}
-	}
-
-	public void testWithFallback_fallbackReturnsRuntimeException() throws Exception {
-		RuntimeException expectedException = new RuntimeException();
-		runExpectedExceptionFallbackTest(expectedException, true);
-	}
-
-	public void testWithFallback_fallbackReturnsCheckedException() throws Exception {
-		Exception expectedException = new Exception() {};
-		runExpectedExceptionFallbackTest(expectedException, true);
-	}
-
-	private void runExpectedExceptionFallbackTest(
-			final Exception expectedException, final boolean wrapInFuture) throws Exception {
-		FutureFallbackSpy<Integer> fallback = spy(new FutureFallback<Integer>() {
-			@Override
-			public ListenableFuture<Integer> create(Throwable t) throws Exception {
-				if (!wrapInFuture) {
-					throw expectedException;
-				} else {
-					return Futures.immediateFailedFuture(expectedException);
-				}
-			}
-		});
-
-		ListenableFuture<Integer> failingFuture = Futures.immediateFailedFuture(new RuntimeException());
-
-		ListenableFuture<Integer> faultToleranteFuture = Futures.withFallback(failingFuture, fallback);
-		try {
-			faultToleranteFuture.get();
-			fail("An Exception should have been thrown!");
-		} catch (ExecutionException ee) {
-			assertSame(expectedException, ee.getCause());
-		}
-		fallback.verifyCallCount(1);
-	}
-
-	public void testWithFallback_fallbackNotReady() throws Exception {
-		ListenableFuture<Integer> primary = immediateFailedFuture(new Exception());
-		final SettableFuture<Integer> secondary = SettableFuture.create();
-		FutureFallback<Integer> fallback = new FutureFallback<Integer>() {
-			@Override
-			public ListenableFuture<Integer> create(Throwable t) {
-				return secondary;
-			}
-		};
-		ListenableFuture<Integer> derived = Futures.withFallback(primary, fallback);
-		secondary.set(1);
-		assertEquals(1, (int) derived.get());
-	}
-
-	public void testWithFallback_resultInterruptedBeforeFallback() throws Exception {
-		SettableFuture<Integer> primary = SettableFuture.create();
-		FutureFallback<Integer> fallback = unexpectedFallback();
-		ListenableFuture<Integer> derived = Futures.withFallback(primary, fallback);
-		derived.cancel(true);
-		assertTrue(primary.isCancelled());
-		assertTrue(primary.wasInterrupted());
-	}
-
-	public void testWithFallback_resultCancelledBeforeFallback() throws Exception {
-		SettableFuture<Integer> primary = SettableFuture.create();
-		FutureFallback<Integer> fallback = unexpectedFallback();
-		ListenableFuture<Integer> derived = Futures.withFallback(primary, fallback);
-		derived.cancel(false);
-		assertTrue(primary.isCancelled());
-		assertFalse(primary.wasInterrupted());
-	}
-
-	@GwtIncompatible("mocks")
-	@SuppressWarnings("unchecked")
-	public void testWithFallback_resultCancelledAfterFallback() throws Exception {
-		final SettableFuture<Integer> secondary = SettableFuture.create();
-		final RuntimeException raisedException = new RuntimeException();
-		FutureFallbackSpy<Integer> fallback = spy(new FutureFallback<Integer>() {
-			@Override
-			public ListenableFuture<Integer> create(Throwable t) throws Exception {
-				assertThat(t).isSameAs(raisedException);
-				return secondary;
-			}
-		});
-
-		ListenableFuture<Integer> failingFuture = Futures.immediateFailedFuture(raisedException);
-
-		ListenableFuture<Integer> derived = Futures.withFallback(failingFuture, fallback);
-		derived.cancel(false);
-		assertTrue(secondary.isCancelled());
-		assertFalse(secondary.wasInterrupted());
-		fallback.verifyCallCount(1);
-	}
-
-	public void testWithFallback_nullInsteadOfFuture() throws Exception {
-		ListenableFuture<Integer> inputFuture = immediateFailedFuture(new Exception());
-		ListenableFuture<?> chainedFuture = Futures.withFallback(inputFuture, new FutureFallback<Integer>() {
-			@Override
-			public ListenableFuture<Integer> create(Throwable t) {
-				return null;
-			}
-		});
-		try {
-			chainedFuture.get();
-			fail();
-		} catch (ExecutionException expected) {
-			NullPointerException cause = (NullPointerException) expected.getCause();
-			assertThat(cause).hasMessage("FutureFallback.create returned null instead of a Future. "
-					+ "Did you mean to return immediateFuture(null)?");
-		}
 	}
 
 	// catchingAsync tests cloned from the old withFallback tests:
@@ -1308,7 +1119,7 @@ public class FuturesTest extends TestCase {
 
 	public void testTransform_genericsWildcard_AsyncFunction() throws Exception {
 		ListenableFuture<?> nullFuture = immediateFuture(null);
-		ListenableFuture<?> chainedFuture = Futures.transform(nullFuture, constantAsyncFunction(nullFuture));
+		ListenableFuture<?> chainedFuture = Futures.transformAsync(nullFuture, constantAsyncFunction(nullFuture));
 		assertNull(chainedFuture.get());
 	}
 
@@ -1323,7 +1134,7 @@ public class FuturesTest extends TestCase {
 				return future;
 			}
 		};
-		Bar bar = Futures.transform(future, function).get();
+		Bar bar = Futures.transformAsync(future, function).get();
 		assertSame(barChild, bar);
 	}
 
@@ -1331,7 +1142,7 @@ public class FuturesTest extends TestCase {
 	public void testTransform_asyncFunction_timeout()
 			throws InterruptedException, ExecutionException {
 		AsyncFunction<String, Integer> function = constantAsyncFunction(Futures.immediateFuture(1));
-		ListenableFuture<Integer> future = Futures.transform(
+		ListenableFuture<Integer> future = Futures.transformAsync(
 				SettableFuture.<String> create(), function);
 		try {
 			future.get(1, TimeUnit.MILLISECONDS);
@@ -1348,7 +1159,7 @@ public class FuturesTest extends TestCase {
 			}
 		};
 		SettableFuture<String> inputFuture = SettableFuture.create();
-		ListenableFuture<Integer> outputFuture = Futures.transform(inputFuture, function);
+		ListenableFuture<Integer> outputFuture = Futures.transformAsync(inputFuture, function);
 		inputFuture.set("value");
 		try {
 			outputFuture.get();
@@ -1360,7 +1171,7 @@ public class FuturesTest extends TestCase {
 
 	public void testTransform_asyncFunction_nullInsteadOfFuture() throws Exception {
 		ListenableFuture<?> inputFuture = immediateFuture("a");
-		ListenableFuture<?> chainedFuture = Futures.transform(inputFuture, constantAsyncFunction(null));
+		ListenableFuture<?> chainedFuture = Futures.transformAsync(inputFuture, constantAsyncFunction(null));
 		try {
 			chainedFuture.get();
 			fail();
@@ -1387,7 +1198,7 @@ public class FuturesTest extends TestCase {
 			}
 		};
 		SettableFuture<String> inputFuture = SettableFuture.create();
-		ListenableFuture<Integer> future = Futures.transform(
+		ListenableFuture<Integer> future = Futures.transformAsync(
 				inputFuture, function, Executors.newSingleThreadExecutor());
 		inputFuture.set("value");
 		inFunction.await();
@@ -1417,7 +1228,7 @@ public class FuturesTest extends TestCase {
 		};
 		SettableFuture<String> inputFuture = SettableFuture.create();
 		ExecutorService executor = newSingleThreadExecutor();
-		ListenableFuture<Integer> future = Futures.transform(
+		ListenableFuture<Integer> future = Futures.transformAsync(
 				inputFuture, function, executor);
 
 		// Pause the executor.
