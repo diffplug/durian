@@ -62,18 +62,18 @@ public class ObjectsTest extends TestCase {
 
 	public void testFirstNonNull_withNonNull() throws Exception {
 		String s1 = "foo";
-		String s2 = Objects.firstNonNull(s1, "bar");
+		String s2 = MoreObjects.firstNonNull(s1, "bar");
 		assertSame(s1, s2);
 
 		Long n1 = new Long(42);
-		Long n2 = Objects.firstNonNull(null, n1);
+		Long n2 = MoreObjects.firstNonNull(null, n1);
 		assertSame(n1, n2);
 	}
 
 	@SuppressWarnings("CheckReturnValue")
 	public void testFirstNonNull_throwsNullPointerException() throws Exception {
 		try {
-			Objects.firstNonNull(null, null);
+			MoreObjects.firstNonNull(null, null);
 			fail("expected NullPointerException");
 		} catch (NullPointerException expected) {}
 	}
