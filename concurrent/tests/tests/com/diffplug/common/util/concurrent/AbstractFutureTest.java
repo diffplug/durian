@@ -405,7 +405,7 @@ public class AbstractFutureTest extends TestCase {
 				assertTrue(future.isCancelled());
 				if (future.wasInterrupted()) {
 					// We were cancelled, it is possible that setFuture could have succeeded to.
-					assertThat(numSuccessfulSetCalls.get()).isIn(Range.closed(1, 2));
+					assertTrue(Range.closed(1, 2).contains(numSuccessfulSetCalls.get()));
 				} else {
 					assertThat(numSuccessfulSetCalls.get()).isEqualTo(1);
 				}

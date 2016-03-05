@@ -50,27 +50,23 @@ public class EnumsTest extends TestCase {
 	private enum OtherEnum {}
 
 	public void testGetIfPresent() {
-		assertThat(Enums.getIfPresent(TestEnum.class, "CHEETO")).hasValue(TestEnum.CHEETO);
-		assertThat(Enums.getIfPresent(TestEnum.class, "HONDA")).hasValue(TestEnum.HONDA);
-		assertThat(Enums.getIfPresent(TestEnum.class, "POODLE")).hasValue(TestEnum.POODLE);
+		assertThat(Enums.getIfPresent(TestEnum.class, "CHEETO")).isEqualTo(Optional.of(TestEnum.CHEETO));
+		assertThat(Enums.getIfPresent(TestEnum.class, "HONDA")).isEqualTo(Optional.of(TestEnum.HONDA));
+		assertThat(Enums.getIfPresent(TestEnum.class, "POODLE")).isEqualTo(Optional.of(TestEnum.POODLE));
 
-		assertThat(Enums.getIfPresent(TestEnum.class, "CHEETO")).isPresent();
-		assertThat(Enums.getIfPresent(TestEnum.class, "HONDA")).isPresent();
-		assertThat(Enums.getIfPresent(TestEnum.class, "POODLE")).isPresent();
-
-		assertThat(Enums.getIfPresent(TestEnum.class, "CHEETO")).hasValue(TestEnum.CHEETO);
-		assertThat(Enums.getIfPresent(TestEnum.class, "HONDA")).hasValue(TestEnum.HONDA);
-		assertThat(Enums.getIfPresent(TestEnum.class, "POODLE")).hasValue(TestEnum.POODLE);
+		assertThat(Enums.getIfPresent(TestEnum.class, "CHEETO")).isEqualTo(Optional.of(TestEnum.CHEETO));
+		assertThat(Enums.getIfPresent(TestEnum.class, "HONDA")).isEqualTo(Optional.of(TestEnum.HONDA));
+		assertThat(Enums.getIfPresent(TestEnum.class, "POODLE")).isEqualTo(Optional.of(TestEnum.POODLE));
 	}
 
 	public void testGetIfPresent_caseSensitive() {
-		assertThat(Enums.getIfPresent(TestEnum.class, "cHEETO")).isAbsent();
-		assertThat(Enums.getIfPresent(TestEnum.class, "Honda")).isAbsent();
-		assertThat(Enums.getIfPresent(TestEnum.class, "poodlE")).isAbsent();
+		assertThat(Enums.getIfPresent(TestEnum.class, "cHEETO")).isEqualTo(Optional.absent());
+		assertThat(Enums.getIfPresent(TestEnum.class, "Honda")).isEqualTo(Optional.absent());
+		assertThat(Enums.getIfPresent(TestEnum.class, "poodlE")).isEqualTo(Optional.absent());
 	}
 
 	public void testGetIfPresent_whenNoMatchingConstant() {
-		assertThat(Enums.getIfPresent(TestEnum.class, "WOMBAT")).isAbsent();
+		assertThat(Enums.getIfPresent(TestEnum.class, "WOMBAT")).isEqualTo(Optional.absent());
 	}
 
 	@GwtIncompatible("weak references")
@@ -94,12 +90,12 @@ public class EnumsTest extends TestCase {
 		Set<TestEnum> shadowConstants = new HashSet<TestEnum>();
 		for (TestEnum constant : TestEnum.values()) {
 			Optional<TestEnum> result = Enums.getIfPresent(shadowTestEnum, constant.name());
-			assertThat(result).isPresent();
+			assertTrue(result.isPresent());
 			shadowConstants.add(result.get());
 		}
 		assertEquals(ImmutableSet.copyOf(shadowTestEnum.getEnumConstants()), shadowConstants);
 		Optional<TestEnum> result = Enums.getIfPresent(shadowTestEnum, "blibby");
-		assertThat(result).isAbsent();
+		assertThat(result).isEqualTo(Optional.absent());
 		return new WeakReference<ClassLoader>(shadowLoader);
 	}
 

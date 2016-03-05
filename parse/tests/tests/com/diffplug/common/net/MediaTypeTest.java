@@ -79,9 +79,9 @@ public class MediaTypeTest extends TestCase {
 		for (Field field : getConstantFields()) {
 			Optional<Charset> charset = ((MediaType) field.get(null)).charset();
 			if (field.getName().endsWith("_UTF_8")) {
-				assertThat(charset).hasValue(UTF_8);
+				assertThat(charset).isEqualTo(Optional.of(UTF_8));
 			} else {
-				assertThat(charset).isAbsent();
+				assertThat(charset).isEqualTo(Optional.absent());
 			}
 		}
 	}
@@ -337,13 +337,13 @@ public class MediaTypeTest extends TestCase {
 	}
 
 	public void testGetCharset() {
-		assertThat(MediaType.parse("text/plain").charset()).isAbsent();
-		assertThat(MediaType.parse("text/plain; charset=utf-8").charset()).hasValue(UTF_8);
+		assertThat(MediaType.parse("text/plain").charset()).isEqualTo(Optional.absent());
+		assertThat(MediaType.parse("text/plain; charset=utf-8").charset()).isEqualTo(Optional.of(UTF_8));
 	}
 
 	@GwtIncompatible("Non-UTF-8 Charset")
 	public void testGetCharset_utf16() {
-		assertThat(MediaType.parse("text/plain; charset=utf-16").charset()).hasValue(UTF_16);
+		assertThat(MediaType.parse("text/plain; charset=utf-16").charset()).isEqualTo(Optional.of(UTF_16));
 	}
 
 	public void testGetCharset_tooMany() {

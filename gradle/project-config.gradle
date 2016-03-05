@@ -79,11 +79,6 @@ dependencies {
 	}
 }
 
-// make sure that guava doesn't get sucked in as a transitive
-configurations {
-	all*.exclude group: 'com.google.guava'
-}
-
 ////////////////////
 // TEST BREAKDOWN //
 ////////////////////

@@ -45,6 +45,7 @@ import junit.framework.TestCase;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Function;
+import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorTester;
@@ -258,10 +259,10 @@ public class IterablesTest extends TestCase {
 
 	public void testTryFind() {
 		Iterable<String> list = newArrayList("cool", "pants");
-		assertThat(Iterables.tryFind(list, Predicates.equalTo("cool"))).hasValue("cool");
-		assertThat(Iterables.tryFind(list, Predicates.equalTo("pants"))).hasValue("pants");
-		assertThat(Iterables.tryFind(list, Predicates.alwaysTrue())).hasValue("cool");
-		assertThat(Iterables.tryFind(list, Predicates.alwaysFalse())).isAbsent();
+		assertThat(Iterables.tryFind(list, Predicates.equalTo("cool"))).isEqualTo(Optional.of("cool"));
+		assertThat(Iterables.tryFind(list, Predicates.equalTo("pants"))).isEqualTo(Optional.of("pants"));
+		assertThat(Iterables.tryFind(list, Predicates.alwaysTrue())).isEqualTo(Optional.of("cool"));
+		assertThat(Iterables.tryFind(list, Predicates.alwaysFalse())).isEqualTo(Optional.absent());
 		assertCanIterateAgain(list);
 	}
 

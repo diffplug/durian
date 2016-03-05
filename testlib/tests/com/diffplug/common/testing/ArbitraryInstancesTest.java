@@ -226,7 +226,7 @@ public class ArbitraryInstancesTest extends TestCase {
 		assertNotNull(ArbitraryInstances.get(Locale.class));
 		assertNotNull(ArbitraryInstances.get(Joiner.class).join(ImmutableList.of("a")));
 		assertNotNull(ArbitraryInstances.get(Splitter.class).split("a,b"));
-		assertThat(ArbitraryInstances.get(Optional.class)).isAbsent();
+		assertThat(ArbitraryInstances.get(Optional.class)).isEqualTo(Optional.absent());
 		ArbitraryInstances.get(Stopwatch.class).start();
 		assertNotNull(ArbitraryInstances.get(Ticker.class));
 		assertNotNull(ArbitraryInstances.get(MapConstraint.class));

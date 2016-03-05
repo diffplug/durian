@@ -49,6 +49,7 @@ import junit.framework.TestSuite;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Function;
+import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorFeature;
@@ -415,19 +416,19 @@ public class IteratorsTest extends TestCase {
 	public void testTryFind_firstElement() {
 		Iterable<String> list = Lists.newArrayList("cool", "pants");
 		Iterator<String> iterator = list.iterator();
-		assertThat(Iterators.tryFind(iterator, Predicates.equalTo("cool"))).hasValue("cool");
+		assertThat(Iterators.tryFind(iterator, Predicates.equalTo("cool"))).isEqualTo(Optional.of("cool"));
 	}
 
 	public void testTryFind_lastElement() {
 		Iterable<String> list = Lists.newArrayList("cool", "pants");
 		Iterator<String> iterator = list.iterator();
-		assertThat(Iterators.tryFind(iterator, Predicates.equalTo("pants"))).hasValue("pants");
+		assertThat(Iterators.tryFind(iterator, Predicates.equalTo("pants"))).isEqualTo(Optional.of("pants"));
 	}
 
 	public void testTryFind_alwaysTrue() {
 		Iterable<String> list = Lists.newArrayList("cool", "pants");
 		Iterator<String> iterator = list.iterator();
-		assertThat(Iterators.tryFind(iterator, Predicates.alwaysTrue())).hasValue("cool");
+		assertThat(Iterators.tryFind(iterator, Predicates.alwaysTrue())).isEqualTo(Optional.of("cool"));
 	}
 
 	public void testTryFind_alwaysFalse_orDefault() {
@@ -441,7 +442,7 @@ public class IteratorsTest extends TestCase {
 	public void testTryFind_alwaysFalse_isPresent() {
 		Iterable<String> list = Lists.newArrayList("cool", "pants");
 		Iterator<String> iterator = list.iterator();
-		assertThat(Iterators.tryFind(iterator, Predicates.alwaysFalse())).isAbsent();
+		assertThat(Iterators.tryFind(iterator, Predicates.alwaysFalse())).isEqualTo(Optional.absent());
 		assertFalse(iterator.hasNext());
 	}
 
