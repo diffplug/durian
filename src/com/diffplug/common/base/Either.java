@@ -86,6 +86,21 @@ public interface Either<L, R> {
 		right.accept(isRight() ? getRight() : defaultRight);
 	}
 
+	/** Creates a left or right, depending on which element is non-null.  Precisely one element should be non-null. */
+	public static <L, R> Either<L, R> create(L l, R r) {
+		if (l == null && r != null) {
+			return createRight(r);
+		} else if (l != null && r == null) {
+			return createLeft(l);
+		} else {
+			if (l == null) {
+				throw new IllegalArgumentException("Both arguments were null.");
+			} else {
+				throw new IllegalArgumentException("Both arguments were non-null: " + l + " " + r);
+			}
+		}
+	}
+
 	/** Creates an instance of Left. */
 	public static <L, R> Either<L, R> createLeft(L l) {
 		return new Left<L, R>(l);
