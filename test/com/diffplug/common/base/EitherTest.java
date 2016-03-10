@@ -64,4 +64,34 @@ public class EitherTest {
 		Assert.assertEquals(TimeUnit.HOURS, leftSide.get());
 		Assert.assertEquals("word", rightSide.get());
 	}
+
+	@Test
+	public void testMapForRight() {
+		Either<Double, Integer> source = Either.create(null, 42);
+		{
+			Either<String, Integer> mapLeft = source.mapLeft(Object::toString);
+			Assert.assertFalse(mapLeft.asOptionalLeft().isPresent());
+			Assert.assertEquals(new Integer(42), mapLeft.asOptionalRight().get());
+		}
+		{
+			Either<Double, String> mapRight = source.mapRight(Object::toString);
+			Assert.assertFalse(mapRight.asOptionalLeft().isPresent());
+			Assert.assertEquals("42", mapRight.asOptionalRight().get());
+		}
+	}
+
+	@Test
+	public void testMapForLeft() {
+		Either<Double, Integer> source = Either.create(3.14, null);
+		{
+			Either<String, Integer> mapLeft = source.mapLeft(Object::toString);
+			Assert.assertFalse(mapLeft.asOptionalRight().isPresent());
+			Assert.assertEquals("3.14", mapLeft.asOptionalLeft().get());
+		}
+		{
+			Either<Double, String> mapRight = source.mapRight(Object::toString);
+			Assert.assertFalse(mapRight.asOptionalRight().isPresent());
+			Assert.assertEquals(new Double(3.14), mapRight.asOptionalLeft().get());
+		}
+	}
 }

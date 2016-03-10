@@ -80,6 +80,24 @@ public interface Either<L, R> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	default <T> Either<T, R> mapLeft(Function<? super L, ? extends T> mapper) {
+		if (isLeft()) {
+			return Either.createLeft(mapper.apply(getLeft()));
+		} else {
+			return (Either<T, R>) this;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	default <T> Either<L, T> mapRight(Function<? super R, ? extends T> mapper) {
+		if (isLeft()) {
+			return (Either<L, T>) this;
+		} else {
+			return Either.createRight(mapper.apply(getRight()));
+		}
+	}
+
 	/** Accepts both the left and right consumers, using the default values to set the empty side. */
 	default void acceptBoth(Consumer<? super L> left, Consumer<? super R> right, L defaultLeft, R defaultRight) {
 		left.accept(isLeft() ? getLeft() : defaultLeft);
