@@ -70,7 +70,7 @@ public class DurianPlugins {
 	}
 
 	private <T> void registerInternal(Class<T> pluginClass, T pluginImpl) throws IllegalStateException {
-		assert(pluginClass.isInstance(pluginImpl));
+		assert (pluginClass.isInstance(pluginImpl));
 		Object existingValue = map.putIfAbsent(pluginClass, pluginImpl);
 		if (existingValue != null) {
 			throw new IllegalStateException("Another " + pluginClass + " was already registered: " + existingValue);
@@ -97,7 +97,7 @@ public class DurianPlugins {
 
 	@SuppressWarnings("unchecked")
 	private <T> T getInternal(Class<T> pluginClass, T defaultImpl) {
-		assert(pluginClass.isInstance(defaultImpl));
+		assert (pluginClass.isInstance(defaultImpl));
 		return (T) map.computeIfAbsent(pluginClass, clazz -> {
 			// check for an implementation from System.getProperty first
 			Object impl = getPluginImplementationViaProperty(clazz);
