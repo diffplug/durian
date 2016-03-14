@@ -63,7 +63,7 @@ public final class Suppliers {
 	 * memoize}, it is returned directly.
 	 */
 	public static <T> Supplier<T> memoize(Supplier<T> delegate) {
-		return (delegate instanceof MemoizingSupplier) ? delegate : new MemoizingSupplier<T>(Objects.requireNonNull(delegate));
+		return (delegate instanceof MemoizingSupplier) ? delegate : new MemoizingSupplier<>(Objects.requireNonNull(delegate));
 	}
 
 	@SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "It's a lightweight mechanism which ensures that delegate only gets called once.")
@@ -117,7 +117,7 @@ public final class Suppliers {
 	 * @since 2.0
 	 */
 	public static <T> Supplier<T> memoizeWithExpiration(Supplier<T> delegate, long duration, TimeUnit unit) {
-		return new ExpiringMemoizingSupplier<T>(delegate, duration, unit);
+		return new ExpiringMemoizingSupplier<>(delegate, duration, unit);
 	}
 
 	static class ExpiringMemoizingSupplier<T> implements Supplier<T> {
@@ -181,7 +181,7 @@ public final class Suppliers {
 	 * {@code delegate} before calling it, making it thread-safe.
 	 */
 	public static <T> Supplier<T> synchronizedSupplier(Supplier<T> delegate) {
-		return new ThreadSafeSupplier<T>(Objects.requireNonNull(delegate));
+		return new ThreadSafeSupplier<>(Objects.requireNonNull(delegate));
 	}
 
 	private static class ThreadSafeSupplier<T> implements Supplier<T> {

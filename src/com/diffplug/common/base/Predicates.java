@@ -90,7 +90,7 @@ public final class Predicates {
 	 * true}.
 	 */
 	public static <T> Predicate<T> and(Iterable<? extends Predicate<? super T>> components) {
-		return new AndPredicate<T>(defensiveCopy(components));
+		return new AndPredicate<>(defensiveCopy(components));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public final class Predicates {
 	 */
 	@SafeVarargs
 	public static <T> Predicate<T> and(Predicate<? super T>... components) {
-		return new AndPredicate<T>(defensiveCopy(components));
+		return new AndPredicate<>(defensiveCopy(components));
 	}
 
 	/**
@@ -114,7 +114,7 @@ public final class Predicates {
 	 * predicate is found.
 	 */
 	public static <T> Predicate<T> and(Predicate<? super T> first, Predicate<? super T> second) {
-		return new AndPredicate<T>(Predicates.<T> asList(Objects.requireNonNull(first), Objects.requireNonNull(second)));
+		return new AndPredicate<>(Predicates.<T> asList(Objects.requireNonNull(first), Objects.requireNonNull(second)));
 	}
 
 	/**
@@ -127,7 +127,7 @@ public final class Predicates {
 	 * false}.
 	 */
 	public static <T> Predicate<T> or(Iterable<? extends Predicate<? super T>> components) {
-		return new OrPredicate<T>(defensiveCopy(components));
+		return new OrPredicate<>(defensiveCopy(components));
 	}
 
 	/**
@@ -141,7 +141,7 @@ public final class Predicates {
 	 */
 	@SafeVarargs
 	public static <T> Predicate<T> or(Predicate<? super T>... components) {
-		return new OrPredicate<T>(defensiveCopy(components));
+		return new OrPredicate<>(defensiveCopy(components));
 	}
 
 	/**
@@ -151,7 +151,7 @@ public final class Predicates {
 	 * true predicate is found.
 	 */
 	public static <T> Predicate<T> or(Predicate<? super T> first, Predicate<? super T> second) {
-		return new OrPredicate<T>(Predicates.<T> asList(Objects.requireNonNull(first), Objects.requireNonNull(second)));
+		return new OrPredicate<>(Predicates.<T> asList(Objects.requireNonNull(first), Objects.requireNonNull(second)));
 	}
 
 	/**
@@ -290,7 +290,7 @@ public final class Predicates {
 	}
 
 	static <T> List<T> defensiveCopy(Iterable<T> iterable) {
-		ArrayList<T> list = new ArrayList<T>();
+		ArrayList<T> list = new ArrayList<>();
 		for (T element : iterable) {
 			list.add(Objects.requireNonNull(element));
 		}

@@ -141,7 +141,7 @@ public final class TreeComparison<E, A> {
 
 	/** Maps both sides of the comparison to the same type, for easier comparison and assertions. */
 	public <T> SameType<T> mapToSame(Function<? super E, ? extends T> mapExpected, Function<? super A, ? extends T> mapActual) {
-		return new SameTypeImp<E, A, T>(this, mapExpected, mapActual);
+		return new SameTypeImp<>(this, mapExpected, mapActual);
 	}
 
 	/** An API for comparing trees which have been mapped to the same type. */
@@ -194,13 +194,13 @@ public final class TreeComparison<E, A> {
 		/** Maps the variable on which the comparisons will take place. */
 		@Override
 		public <R> SameType<R> map(Function<? super T, ? extends R> mapper) {
-			return new SameTypeImp<E, A, R>(comparison, mapExpected.andThen(mapper), mapActual.andThen(mapper));
+			return new SameTypeImp<>(comparison, mapExpected.andThen(mapper), mapActual.andThen(mapper));
 		}
 	}
 
 	/** Creates a {@link TreeComparison} for comparing the two trees. */
 	public static <E, A> TreeComparison<E, A> of(TreeDef<E> expectedDef, E expectedRoot, TreeDef<A> actualDef, A actualRoot) {
-		return new TreeComparison<E, A>(expectedDef, expectedRoot, actualDef, actualRoot);
+		return new TreeComparison<>(expectedDef, expectedRoot, actualDef, actualRoot);
 	}
 
 	/** Creates a {@link SameType} for comparing two trees of the same type. */

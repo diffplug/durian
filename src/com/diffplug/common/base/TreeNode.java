@@ -203,7 +203,7 @@ public class TreeNode<T> {
 		assert (test.size() > 0);
 		assert (0 == TreeNode.leadingSpaces(test.get(0)));
 
-		TreeNode<String> rootNode = new TreeNode<String>(null, test.get(0));
+		TreeNode<String> rootNode = new TreeNode<>(null, test.get(0));
 		TreeNode<String> lastNode = rootNode;
 		int lastSpaces = 0;
 
@@ -212,7 +212,7 @@ public class TreeNode<T> {
 			String name = test.get(i).substring(newSpaces);
 			if (newSpaces == lastSpaces + 1) {
 				// one level deeper, so the last guy should be the parent
-				lastNode = new TreeNode<String>(lastNode, name);
+				lastNode = new TreeNode<>(lastNode, name);
 				lastSpaces = newSpaces;
 			} else if (newSpaces <= lastSpaces) {
 				// any level back up, or the same level
@@ -221,7 +221,7 @@ public class TreeNode<T> {
 				for (int j = 0; j < diff; ++j) {
 					properParent = properParent.getParent();
 				}
-				lastNode = new TreeNode<String>(properParent, name);
+				lastNode = new TreeNode<>(properParent, name);
 				lastSpaces = newSpaces;
 			} else {
 				throw new IllegalArgumentException("Last element \"" + test.get(i - 1) + "\""
