@@ -121,12 +121,12 @@ public interface Either<L, R> {
 
 	/** Creates an instance of Left. */
 	public static <L, R> Either<L, R> createLeft(L l) {
-		return new Left<L, R>(l);
+		return new Left<>(l);
 	}
 
 	/** Creates an instance of Right. */
 	public static <L, R> Either<L, R> createRight(R r) {
-		return new Right<L, R>(r);
+		return new Right<>(r);
 	}
 
 	/** Implementation of left. */

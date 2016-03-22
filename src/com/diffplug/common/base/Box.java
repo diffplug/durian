@@ -49,7 +49,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 	/** Creates a Box holding the given value. */
 	public static <T> Box<T> of(T value) {
-		return new Default<T>(value);
+		return new Default<>(value);
 	}
 
 	/** A simple implementation of Box. */
@@ -126,12 +126,12 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		/** Creates a Nullable of the given object. */
 		public static <T> Nullable<T> of(T init) {
-			return new Default<T>(init);
+			return new Default<>(init);
 		}
 
 		/** Creates an Nullable holding null. */
 		public static <T> Nullable<T> ofNull() {
-			return new Default<T>(null);
+			return new Default<>(null);
 		}
 
 		/** A simple implementation of Box.Nullable. */
