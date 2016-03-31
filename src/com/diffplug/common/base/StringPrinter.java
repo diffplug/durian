@@ -168,20 +168,39 @@ public class StringPrinter {
 
 			@Override
 			public Writer append(CharSequence csq) {
-				// Why the StringBuilder? BUGS, that's why: http://stackoverflow.com/a/15870428/1153071
-				StringBuilder sb = new StringBuilder(csq.length());
-				sb.append(csq);
-				consumer.accept(sb.toString());
+				if (csq instanceof String) {
+					consumer.accept((String) csq);
+				} else {
+					consumer.accept(toStringSafely(csq));
+				}
 				return this;
 			}
 
 			@Override
 			public Writer append(CharSequence csq, int start, int end) {
-				// Why the StringBuilder? BUGS, that's why: http://stackoverflow.com/a/15870428/1153071
-				StringBuilder sb = new StringBuilder(end - start);
-				sb.append(csq.subSequence(start, end));
-				consumer.accept(sb.toString());
+				if (csq instanceof String) {
+					consumer.accept(((String) csq).substring(start, end));
+				} else {
+					consumer.accept(toStringSafely(csq.subSequence(start, end)));
+				}
 				return this;
+			}
+
+			private String toStringSafely(CharSequence csq) {
+				String asString = csq.toString();
+				if (asString.length() == csq.length()) {
+					return asString;
+				} else {
+					// It's pretty easy to implement CharSequence.toString() incorrectly 
+					// http://stackoverflow.com/a/15870428/1153071
+					// but for String, we know we won't have them, thus the fast-path above
+					Errors.log().accept(new IllegalArgumentException(csq.getClass() + " did not implement toString() correctly."));
+					char[] chars = new char[csq.length()];
+					for (int i = 0; i < chars.length; ++i) {
+						chars[i] = csq.charAt(i);
+					}
+					return new String(chars);
+				}
 			}
 
 			@Override
