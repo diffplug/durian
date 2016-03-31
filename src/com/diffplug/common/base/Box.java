@@ -124,6 +124,11 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			return modified;
 		}
 
+		/** Maps one {@code Box.Nullable} to another {@code Box.Nullable}. */
+		default <R> Box.Nullable<R> map(Function<? super T, ? extends R> getMapper, Function<? super R, ? extends T> setMapper) {
+			return Box.Nullable.from(() -> getMapper.apply(get()), toSet -> set(setMapper.apply(toSet)));
+		}
+
 		/** Creates a Nullable of the given object. */
 		public static <T> Nullable<T> of(T init) {
 			return new Default<>(init);
