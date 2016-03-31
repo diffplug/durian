@@ -78,7 +78,15 @@ public abstract class Errors implements Consumer<Throwable> {
 		return rethrow;
 	}
 
-	private static final Rethrowing rethrow = createRethrowing(Errors::asRuntime);
+	private static final Rethrowing rethrow = createRethrowing(Errors::rethrowErrorAndWrapOthersAsRuntime);
+
+	private static RuntimeException rethrowErrorAndWrapOthersAsRuntime(Throwable e) {
+		if (e instanceof Error) {
+			throw (Error) e;
+		} else {
+			return Errors.asRuntime(e);
+		}
+	}
 
 	/**
 	 * Logs any exceptions.
