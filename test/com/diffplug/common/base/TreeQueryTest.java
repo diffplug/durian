@@ -15,6 +15,9 @@
  */
 package com.diffplug.common.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -64,6 +67,62 @@ public class TreeQueryTest {
 		Assert.assertEquals(root.toStringDeep(), copiedFromString.toStringDeep());
 		// and the same for the underlying tree
 		TreeComparison.of(root, copiedFromString).assertEqual();
+	}
+
+	@Test
+	public void testCopyImmutable() {
+		testCaseCopyImmutable(root);
+	}
+
+	@Test
+	public void testCopyImmutableEmpty() {
+		testCaseCopyImmutable(new TreeNode<>(null, ""));
+	}
+
+	private void testCaseCopyImmutable(TreeNode<String> copyRoot) {
+		final class ImmutableNode {
+			final String value;
+			final List<ImmutableNode> children;
+
+			public ImmutableNode(String value, List<ImmutableNode> children) {
+				this.value = value;
+				this.children = children;
+			}
+		}
+		TreeDef<ImmutableNode> def = TreeDef.of(node -> node.children);
+		ImmutableNode copy = TreeQuery.copyImmutable(TreeNode.treeDef(), copyRoot, (oldNode, children) -> {
+			return new ImmutableNode(oldNode.getContent(), children);
+		});
+		TreeComparison.of(copyRoot, def, copy, node -> node.value).assertEqual();
+	}
+
+	@Test
+	public void testCopyMutable() {
+		testCaseCopyMutable(root);
+	}
+
+	@Test
+	public void testCopyMutableEmpty() {
+		testCaseCopyMutable(new TreeNode<>(null, ""));
+	}
+
+	private void testCaseCopyMutable(TreeNode<String> copyRoot) {
+		final class MutableNode {
+			final String value;
+			final List<MutableNode> children = new ArrayList<>();
+
+			public MutableNode(String value, MutableNode parent) {
+				this.value = value;
+				if (parent != null) {
+					parent.children.add(this);
+				}
+			}
+		}
+		TreeDef<MutableNode> def = TreeDef.of(node -> node.children);
+		MutableNode copy = TreeQuery.copyMutable(TreeNode.treeDef(), copyRoot, (oldNode, parent) -> {
+			return new MutableNode(oldNode.getContent(), parent);
+		});
+		TreeComparison.of(copyRoot, def, copy, node -> node.value).assertEqual();
 	}
 
 	// @formatter:off
