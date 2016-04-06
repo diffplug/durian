@@ -70,57 +70,57 @@ public class TreeQueryTest {
 	}
 
 	@Test
-	public void testCopyImmutable() {
-		testCaseCopyImmutable(root);
+	public void testCopyLeavesIn() {
+		testCaseCopyLeavesIn(root);
 	}
 
 	@Test
-	public void testCopyImmutableEmpty() {
-		testCaseCopyImmutable(new TreeNode<>(null, ""));
+	public void testCopyLeavesInEmpty() {
+		testCaseCopyLeavesIn(new TreeNode<>(null, ""));
 	}
 
-	private void testCaseCopyImmutable(TreeNode<String> copyRoot) {
-		final class ImmutableNode {
+	private void testCaseCopyLeavesIn(TreeNode<String> copyRoot) {
+		final class Node {
 			final String value;
-			final List<ImmutableNode> children;
+			final List<Node> children;
 
-			public ImmutableNode(String value, List<ImmutableNode> children) {
+			public Node(String value, List<Node> children) {
 				this.value = value;
 				this.children = children;
 			}
 		}
-		TreeDef<ImmutableNode> def = TreeDef.of(node -> node.children);
-		ImmutableNode copy = TreeQuery.copyImmutable(TreeNode.treeDef(), copyRoot, (oldNode, children) -> {
-			return new ImmutableNode(oldNode.getContent(), children);
+		TreeDef<Node> def = TreeDef.of(node -> node.children);
+		Node copy = TreeQuery.copyLeavesIn(TreeNode.treeDef(), copyRoot, (oldNode, children) -> {
+			return new Node(oldNode.getContent(), children);
 		});
 		TreeComparison.of(copyRoot, def, copy, node -> node.value).assertEqual();
 	}
 
 	@Test
-	public void testCopyMutable() {
-		testCaseCopyMutable(root);
+	public void testCopyRootOut() {
+		testCaseRootOut(root);
 	}
 
 	@Test
-	public void testCopyMutableEmpty() {
-		testCaseCopyMutable(new TreeNode<>(null, ""));
+	public void testCopyRootOutEmpty() {
+		testCaseRootOut(new TreeNode<>(null, ""));
 	}
 
-	private void testCaseCopyMutable(TreeNode<String> copyRoot) {
-		final class MutableNode {
+	private void testCaseRootOut(TreeNode<String> copyRoot) {
+		final class Node {
 			final String value;
-			final List<MutableNode> children = new ArrayList<>();
+			final List<Node> children = new ArrayList<>();
 
-			public MutableNode(String value, MutableNode parent) {
+			public Node(String value, Node parent) {
 				this.value = value;
 				if (parent != null) {
 					parent.children.add(this);
 				}
 			}
 		}
-		TreeDef<MutableNode> def = TreeDef.of(node -> node.children);
-		MutableNode copy = TreeQuery.copyMutable(TreeNode.treeDef(), copyRoot, (oldNode, parent) -> {
-			return new MutableNode(oldNode.getContent(), parent);
+		TreeDef<Node> def = TreeDef.of(node -> node.children);
+		Node copy = TreeQuery.copyRootOut(TreeNode.treeDef(), copyRoot, (oldNode, parent) -> {
+			return new Node(oldNode.getContent(), parent);
 		});
 		TreeComparison.of(copyRoot, def, copy, node -> node.value).assertEqual();
 	}

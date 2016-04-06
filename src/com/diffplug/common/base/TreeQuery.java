@@ -76,7 +76,7 @@ public class TreeQuery {
 
 	/**
 	 * Copies the given tree of T to CopyType, starting at the leaf nodes
-	 * of the tree and moving up to the root node, which allows CopyType to
+	 * of the tree and moving in to the root node, which allows CopyType to
 	 * be immutable (but does not require it).
 	 *
 	 * @param def		defines the structure of the tree
@@ -84,17 +84,18 @@ public class TreeQuery {
 	 * @param nodeMapper	given an unmapped node, and a list of CopyType nodes which have already been mapped, return a mapped node.
 	 * @return a CopyType with the same contents as the source tree
 	 */
-	public static <T, CopyType> CopyType copyImmutable(TreeDef<T> def, T root, BiFunction<T, List<CopyType>, CopyType> nodeMapper) {
+	public static <T, CopyType> CopyType copyLeavesIn(TreeDef<T> def, T root, BiFunction<T, List<CopyType>, CopyType> nodeMapper) {
 		List<CopyType> childrenMapped = def.childrenOf(root).stream().map(child -> {
-			return copyImmutable(def, child, nodeMapper);
+			return copyLeavesIn(def, child, nodeMapper);
 		}).collect(Collectors.toList());
 		return nodeMapper.apply(root, childrenMapped);
 	}
 
 	/**
 	 * Copies the given tree of T to CopyType, starting at the root node
-	 * of the tree and moving down to the leaf nodes, which requires CopyType
-	 * to be mutable.
+	 * of the tree and moving out to the leaf nodes, which generally requires
+	 * CopyType to be mutable (if you want CopyType nodes to know who their
+	 * children are).
 	 *
 	 * @param def		defines the structure of the tree
 	 * @param root		root of the tree
@@ -103,14 +104,14 @@ public class TreeQuery {
 	 *                      parent node.
 	 * @return a CopyType with the same contents as the source tree
 	 */
-	public static <T, R> R copyMutable(TreeDef<T> def, T root, BiFunction<T, R, R> mapper) {
+	public static <T, CopyType> CopyType copyRootOut(TreeDef<T> def, T root, BiFunction<T, CopyType, CopyType> mapper) {
 		List<T> children = def.childrenOf(root);
-		R copyRoot = mapper.apply(root, null);
+		CopyType copyRoot = mapper.apply(root, null);
 		copyMutableRecurse(def, root, children, copyRoot, mapper);
 		return copyRoot;
 	}
 
-	private static <T, R> void copyMutableRecurse(TreeDef<T> def, T root, List<T> children, R copiedRoot, BiFunction<T, R, R> mapper) {
+	private static <T, CopyType> void copyMutableRecurse(TreeDef<T> def, T root, List<T> children, CopyType copiedRoot, BiFunction<T, CopyType, CopyType> mapper) {
 		for (T child : children) {
 			List<T> grandChildren = def.childrenOf(child);
 			copyMutableRecurse(def, root, grandChildren, mapper.apply(child, copiedRoot), mapper);
