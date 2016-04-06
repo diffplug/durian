@@ -1,9 +1,17 @@
 # Durian releases
 
-### Version 3.4.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/)) [snapshot](https://oss.sonatype.org/content/repositories/snapshots/com/diffplug/durian/durian/))
+### Version 3.5.0 - TBD ([javadoc](http://diffplug.github.io/durian/javadoc/snapshot/)) [snapshot](https://oss.sonatype.org/content/repositories/snapshots/com/diffplug/durian/durian/))
 
-* Added `Errors.Handling.wrap[Predicate/Function]WithDefault` and `Errors.Rethrowing.wrap[Predicate/Function]`, to handle cases
-where you'd like to pass a lambda without a `method wrap is ambiguous` error.
+### Version 3.4.0 - April 6th ([javadoc](http://diffplug.github.io/durian/javadoc/3.4.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.4.0/view))
+
+* Added `Errors.wrap[Function/Predicate]` methods to handle cases where `Errors.wrap` was ambiguous.
+* Added `Either.create(L, R)` for cases where the user knows that exactly one argument will be non-null.
+* Added `Either.mapLeft()` and `mapRight()` for transforming `Either`s.
+* Improved the performance of the `java.io.Writer` returned by `StringPrinter.toWriter()`.
+* Added a `map()` function to `Box.Nullable`. `Box` already had one, its omission from `Box.Nullable` was an oversight.
+* Until now, `Errors.rethrow()` wrapped `Error`s inside `RuntimeException`s.  This complicated the stack traces and served no useful purpose.
+* Added `TreeQuery.isDescendantOf()` and `isDescendantOfOrEqualTo()`.
+* Added `TreeQuery.copyLeavesIn()` and `copyRootOut()`.
 
 ### Version 3.3.0 - October 19th ([javadoc](http://diffplug.github.io/durian/javadoc/3.3.0/), [jcenter](https://bintray.com/diffplug/opensource/durian/3.3.0/view))
 
