@@ -125,6 +125,36 @@ public class TreeQueryTest {
 		TreeComparison.of(copyRoot, def, copy, node -> node.value).assertEqual();
 	}
 
+	@Test
+	public void testIsDescendantOf() {
+		testCaseIsDescendantOf("root", "root", false);
+		testCaseIsDescendantOf("Vector.java", "Vector.java", false);
+		testCaseIsDescendantOf("src", "root", true);
+		testCaseIsDescendantOf("root", "src", false);
+		testCaseIsDescendantOf("org", "Vector.java", false);
+		testCaseIsDescendantOf("Vector.java", "org", true);
+	}
+
+	private void testCaseIsDescendantOf(String child, String parent, boolean expected) {
+		boolean actual = TreeQuery.isDescendantOf(TreeNode.treeDef(), root.findByContent(child), root.findByContent(parent));
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testIsDescendantOfOrEqualTo() {
+		testCaseIsDescendantOfOrEqualTo("root", "root", true);
+		testCaseIsDescendantOfOrEqualTo("Vector.java", "Vector.java", true);
+		testCaseIsDescendantOfOrEqualTo("src", "root", true);
+		testCaseIsDescendantOfOrEqualTo("root", "src", false);
+		testCaseIsDescendantOfOrEqualTo("org", "Vector.java", false);
+		testCaseIsDescendantOfOrEqualTo("Vector.java", "org", true);
+	}
+
+	private void testCaseIsDescendantOfOrEqualTo(String child, String parent, boolean expected) {
+		boolean actual = TreeQuery.isDescendantOfOrEqualTo(TreeNode.treeDef(), root.findByContent(child), root.findByContent(parent));
+		Assert.assertEquals(expected, actual);
+	}
+
 	// @formatter:off
 	private TreeNode<String> root = TreeNode.createTestData(
 			"root",

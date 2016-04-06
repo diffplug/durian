@@ -30,6 +30,28 @@ import java.util.stream.Collectors;
 
 /** Queries against {@link TreeDef} trees, e.g. lowest common ancestor, list of parents, etc. */
 public class TreeQuery {
+	/** Returns true iff child is a descendant of parent. */
+	public static <T> boolean isDescendantOf(TreeDef.Parented<T> treeDef, T child, T parent) {
+		T candidateParent = treeDef.parentOf(child);
+		while (candidateParent != null) {
+			if (candidateParent.equals(parent)) {
+				return true;
+			} else {
+				candidateParent = treeDef.parentOf(candidateParent);
+			}
+		}
+		return false;
+	}
+
+	/** Returns true iff child is a descendant of parent, or if child is equal to parent. */
+	public static <T> boolean isDescendantOfOrEqualTo(TreeDef.Parented<T> treeDef, T child, T parent) {
+		if (child.equals(parent)) {
+			return true;
+		} else {
+			return isDescendantOf(treeDef, child, parent);
+		}
+	}
+
 	/** Returns the root of the given tree. */
 	public static <T> T root(TreeDef.Parented<T> treeDef, T node) {
 		T lastParent;
