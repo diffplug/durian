@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-Description: Durian - Guava's spikier (unofficial) cousin
 Bundle-DocURL: https://github.com/diffplug/durian
-Bundle-License: https://github.com/diffplug/durian/blob/v3.5.0-SNAPSHOT/
- LICENSE
+Bundle-License: https://github.com/diffplug/durian/blob/v3.5.0-SNAPSHO
+ T/LICENSE
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian
 Bundle-Vendor: DiffPlug
 Bundle-Version: 3.5.0.SNAPSHOT
-Export-Package: com.diffplug.common.base;uses:="javax.annotation";versio
- n="3.5.0"
+Export-Package: com.diffplug.common.base;uses:="javax.annotation";vers
+ ion="3.5.0"
 Import-Package: javax.annotation,javax.swing
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
