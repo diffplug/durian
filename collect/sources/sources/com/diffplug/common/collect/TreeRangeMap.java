@@ -430,7 +430,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
 				@Override
 				Iterator<Entry<Range<K>, V>> entryIterator() {
 					if (subRange.isEmpty()) {
-						return Iterators.emptyIterator();
+						return Collections.emptyIterator();
 					}
 					final Iterator<RangeMapEntry<K, V>> backingItr = entriesByLowerBound
 							.headMap(subRange.upperBound, false)
@@ -590,7 +590,7 @@ public final class TreeRangeMap<K extends Comparable, V> implements RangeMap<K, 
 
 			Iterator<Entry<Range<K>, V>> entryIterator() {
 				if (subRange.isEmpty()) {
-					return Iterators.emptyIterator();
+					return Collections.emptyIterator();
 				}
 				Cut<K> cutToStart = MoreObjects.firstNonNull(
 						entriesByLowerBound.floorKey(subRange.lowerBound), subRange.lowerBound);

@@ -304,7 +304,7 @@ public class ImmutableListTest extends TestCase {
 		}
 
 		public void testCopyOf_iterator_empty() {
-			Iterator<String> iterator = Iterators.emptyIterator();
+			Iterator<String> iterator = Collections.emptyIterator();
 			List<String> list = ImmutableList.copyOf(iterator);
 			assertEquals(Collections.emptyList(), list);
 		}

@@ -25,6 +25,7 @@ import static org.easymock.EasyMock.verify;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -277,7 +278,7 @@ public class ForwardingMapTest extends ForwardingTestCase {
 		expect(map.remove(anyObject())).andReturn(null).anyTimes();
 		expect(map.size()).andReturn(0).anyTimes();
 		expect(entrySet.iterator())
-				.andReturn(Iterators.<Entry<String, Boolean>> emptyIterator())
+				.andReturn(Collections.<Entry<String, Boolean>> emptyIterator())
 				.anyTimes();
 		map.clear();
 		expectLastCall().anyTimes();
@@ -309,7 +310,7 @@ public class ForwardingMapTest extends ForwardingTestCase {
 		@SuppressWarnings("unchecked")
 		Set<Entry<String, Boolean>> entrySet = createMock(Set.class);
 		expect(entrySet.iterator()).andReturn(
-				Iterators.<Entry<String, Boolean>> emptyIterator()).anyTimes();
+				Collections.<Entry<String, Boolean>> emptyIterator()).anyTimes();
 
 		@SuppressWarnings("unchecked")
 		final Map<String, Boolean> map = createMock(Map.class);
@@ -343,7 +344,7 @@ public class ForwardingMapTest extends ForwardingTestCase {
 		@SuppressWarnings("unchecked")
 		Set<Entry<String, Boolean>> entrySet = createMock(Set.class);
 		expect(entrySet.iterator()).andReturn(
-				Iterators.<Entry<String, Boolean>> emptyIterator()).anyTimes();
+				Collections.<Entry<String, Boolean>> emptyIterator()).anyTimes();
 
 		@SuppressWarnings("unchecked")
 		final Map<String, Boolean> map = createMock(Map.class);

@@ -546,7 +546,7 @@ public abstract class ImmutableMultimap<K, V> extends AbstractMultimap<K, V>
 	private abstract class Itr<T> extends UnmodifiableIterator<T> {
 		final Iterator<Entry<K, Collection<V>>> mapIterator = asMap().entrySet().iterator();
 		K key = null;
-		Iterator<V> valueIterator = Iterators.emptyIterator();
+		Iterator<V> valueIterator = Collections.emptyIterator();
 
 		abstract T output(K key, V value);
 

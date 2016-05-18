@@ -22,6 +22,7 @@ import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -262,7 +263,7 @@ public class ImmutableMultisetTest extends TestCase {
 	}
 
 	public void testCopyOf_iterator_empty() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		Multiset<String> multiset = ImmutableMultiset.copyOf(iterator);
 		assertTrue(multiset.isEmpty());
 	}

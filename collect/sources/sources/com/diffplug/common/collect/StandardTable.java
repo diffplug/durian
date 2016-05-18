@@ -26,6 +26,7 @@ import static com.diffplug.common.collect.Maps.safeGet;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -700,7 +701,7 @@ class StandardTable<R, C, V> extends AbstractTable<R, C, V>implements Serializab
 		// consistent with equals().
 		final Map<C, V> seen = factory.get();
 		final Iterator<Map<C, V>> mapIterator = backingMap.values().iterator();
-		Iterator<Entry<C, V>> entryIterator = Iterators.emptyIterator();
+		Iterator<Entry<C, V>> entryIterator = Collections.emptyIterator();
 
 		@Override
 		protected C computeNext() {

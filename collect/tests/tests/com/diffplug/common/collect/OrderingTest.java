@@ -497,7 +497,7 @@ public class OrderingTest extends TestCase {
 
 	public void testLeastOfIterator_empty_0() {
 		List<Integer> result = numberOrdering.leastOf(
-				Iterators.<Integer> emptyIterator(), 0);
+				Collections.<Integer> emptyIterator(), 0);
 		assertTrue(result instanceof RandomAccess);
 		assertListImmutable(result);
 		assertEquals(ImmutableList.<Integer> of(), result);
@@ -512,7 +512,7 @@ public class OrderingTest extends TestCase {
 
 	public void testLeastOfIterator_empty_1() {
 		List<Integer> result = numberOrdering.leastOf(
-				Iterators.<Integer> emptyIterator(), 1);
+				Collections.<Integer> emptyIterator(), 1);
 		assertTrue(result instanceof RandomAccess);
 		assertListImmutable(result);
 		assertEquals(ImmutableList.<Integer> of(), result);

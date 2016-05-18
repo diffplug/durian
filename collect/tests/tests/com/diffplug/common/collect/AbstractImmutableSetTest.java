@@ -179,7 +179,7 @@ public abstract class AbstractImmutableSetTest extends TestCase {
 	}
 
 	public void testCopyOf_iterator_empty() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		Set<String> set = copyOf(iterator);
 		assertEquals(Collections.<String> emptySet(), set);
 		assertSame(of(), set);

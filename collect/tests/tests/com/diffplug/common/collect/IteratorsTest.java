@@ -78,7 +78,7 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testEmptyIterator() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertFalse(iterator.hasNext());
 		try {
 			iterator.next();
@@ -87,7 +87,7 @@ public class IteratorsTest extends TestCase {
 		try {
 			iterator.remove();
 			fail("no exception thrown");
-		} catch (UnsupportedOperationException expected) {}
+		} catch (IllegalStateException expected) {}
 	}
 
 	public void testEmptyListIterator() {
@@ -132,7 +132,7 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testSize0() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertEquals(0, Iterators.size(iterator));
 	}
 
@@ -174,7 +174,7 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testGetOnlyElement_noDefault_empty() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		try {
 			Iterators.getOnlyElement(iterator);
 			fail();
@@ -219,12 +219,12 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testGetOnlyElement_withDefault_empty() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertEquals("bar", Iterators.getOnlyElement(iterator, "bar"));
 	}
 
 	public void testGetOnlyElement_withDefault_empty_null() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertNull(Iterators.getOnlyElement(iterator, null));
 	}
 
@@ -812,7 +812,7 @@ public class IteratorsTest extends TestCase {
 		List<String> alreadyThere = Lists.newArrayList("already", "there");
 
 		boolean changed = Iterators.addAll(alreadyThere,
-				Iterators.<String> emptyIterator());
+				Collections.<String> emptyIterator());
 		assertThat(alreadyThere).containsExactly("already", "there").inOrder();
 		assertFalse(changed);
 	}
@@ -929,7 +929,7 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testPartition_empty() {
-		Iterator<Integer> source = Iterators.emptyIterator();
+		Iterator<Integer> source = Collections.emptyIterator();
 		Iterator<List<Integer>> partitions = Iterators.partition(source, 1);
 		assertFalse(partitions.hasNext());
 	}
@@ -1001,7 +1001,7 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testPaddedPartition_empty() {
-		Iterator<Integer> source = Iterators.emptyIterator();
+		Iterator<Integer> source = Collections.emptyIterator();
 		Iterator<List<Integer>> partitions = Iterators.paddedPartition(source, 1);
 		assertFalse(partitions.hasNext());
 	}
@@ -1184,7 +1184,7 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testAsEnumerationEmpty() {
-		Iterator<Integer> iter = Iterators.emptyIterator();
+		Iterator<Integer> iter = Collections.emptyIterator();
 		Enumeration<Integer> enumer = Iterators.asEnumeration(iter);
 
 		assertFalse(enumer.hasMoreElements());
@@ -1297,12 +1297,12 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testGetNext_withDefault_empty() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertEquals("bar", Iterators.getNext(iterator, "bar"));
 	}
 
 	public void testGetNext_withDefault_empty_null() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertNull(Iterators.getNext(iterator, null));
 	}
 
@@ -1332,12 +1332,12 @@ public class IteratorsTest extends TestCase {
 	}
 
 	public void testGetLast_withDefault_empty() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertEquals("bar", Iterators.getLast(iterator, "bar"));
 	}
 
 	public void testGetLast_withDefault_empty_null() {
-		Iterator<String> iterator = Iterators.emptyIterator();
+		Iterator<String> iterator = Collections.emptyIterator();
 		assertNull(Iterators.getLast(iterator, null));
 	}
 

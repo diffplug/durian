@@ -415,7 +415,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 		public UnmodifiableIterator<C> iterator() {
 			return new AbstractIterator<C>() {
 				final Iterator<Range<C>> rangeItr = ranges.iterator();
-				Iterator<C> elemItr = Iterators.emptyIterator();
+				Iterator<C> elemItr = Collections.emptyIterator();
 
 				@Override
 				protected C computeNext() {
@@ -436,7 +436,7 @@ public final class ImmutableRangeSet<C extends Comparable> extends AbstractRange
 		public UnmodifiableIterator<C> descendingIterator() {
 			return new AbstractIterator<C>() {
 				final Iterator<Range<C>> rangeItr = ranges.reverse().iterator();
-				Iterator<C> elemItr = Iterators.emptyIterator();
+				Iterator<C> elemItr = Collections.emptyIterator();
 
 				@Override
 				protected C computeNext() {

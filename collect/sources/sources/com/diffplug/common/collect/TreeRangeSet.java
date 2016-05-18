@@ -20,6 +20,7 @@ import static com.diffplug.common.base.Preconditions.checkArgument;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -502,7 +503,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C> {
 			} else if (positiveItr.hasNext()) {
 				firstComplementRangeLowerBound = positiveItr.next().upperBound;
 			} else {
-				return Iterators.emptyIterator();
+				return Collections.emptyIterator();
 			}
 			return new AbstractIterator<Entry<Cut<C>, Range<C>>>() {
 				Cut<C> nextComplementRangeLowerBound = firstComplementRangeLowerBound;
@@ -555,7 +556,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C> {
 						: positiveRangesByLowerBound.higherKey(positiveItr.peek().upperBound);
 			} else if (!complementLowerBoundWindow.contains(Cut.<C> belowAll())
 					|| positiveRangesByLowerBound.containsKey(Cut.belowAll())) {
-				return Iterators.emptyIterator();
+				return Collections.emptyIterator();
 			} else {
 				cut = positiveRangesByLowerBound.higherKey(Cut.<C> belowAll());
 			}
@@ -740,11 +741,11 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C> {
 		@Override
 		Iterator<Entry<Cut<C>, Range<C>>> entryIterator() {
 			if (restriction.isEmpty()) {
-				return Iterators.emptyIterator();
+				return Collections.emptyIterator();
 			}
 			final Iterator<Range<C>> completeRangeItr;
 			if (lowerBoundWindow.upperBound.isLessThan(restriction.lowerBound)) {
-				return Iterators.emptyIterator();
+				return Collections.emptyIterator();
 			} else if (lowerBoundWindow.lowerBound.isLessThan(restriction.lowerBound)) {
 				// starts at the first range with upper bound strictly greater than restriction.lowerBound
 				completeRangeItr = rangesByUpperBound.tailMap(restriction.lowerBound, false).values().iterator();
@@ -779,7 +780,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C> {
 		@Override
 		Iterator<Entry<Cut<C>, Range<C>>> descendingEntryIterator() {
 			if (restriction.isEmpty()) {
-				return Iterators.emptyIterator();
+				return Collections.emptyIterator();
 			}
 			Cut<Cut<C>> upperBoundOnLowerBounds = Ordering.natural()
 					.min(lowerBoundWindow.upperBound, Cut.belowValue(restriction.upperBound));
