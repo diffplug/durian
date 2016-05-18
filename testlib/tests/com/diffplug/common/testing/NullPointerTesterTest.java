@@ -1117,7 +1117,12 @@ public class NullPointerTesterTest extends TestCase {
 		new NonGenericTypeTokenDefaultValueChecker().check();
 	}
 
-	private interface FromTo<F, T> extends Function<F, T> {}
+	private interface NullableFunction<F, T> {
+		@Nullable
+		T apply(@Nullable F input);
+	}
+
+	private interface FromTo<F, T> extends NullableFunction<F, T> {}
 
 	private static class GenericInterfaceDefaultValueChecker
 			extends DefaultValueChecker {
