@@ -610,14 +610,14 @@ public class SetsTest extends TestCase {
 	}
 
 	public void testNewSetFromMap() {
-		Set<Integer> set = Sets.newSetFromMap(new HashMap<Integer, Boolean>());
+		Set<Integer> set = Collections.newSetFromMap(new HashMap<Integer, Boolean>());
 		set.addAll(SOME_COLLECTION);
 		verifySetContents(set, SOME_COLLECTION);
 	}
 
 	@GwtIncompatible("SerializableTester")
 	public void testNewSetFromMapSerialization() {
-		Set<Integer> set = Sets.newSetFromMap(new LinkedHashMap<Integer, Boolean>());
+		Set<Integer> set = Collections.newSetFromMap(new LinkedHashMap<Integer, Boolean>());
 		set.addAll(SOME_COLLECTION);
 		Set<Integer> copy = SerializableTester.reserializeAndAssert(set);
 		assertThat(copy).containsExactly(0, 1).inOrder();
@@ -627,7 +627,7 @@ public class SetsTest extends TestCase {
 		Map<Integer, Boolean> map = new LinkedHashMap<Integer, Boolean>();
 		map.put(2, true);
 		try {
-			Sets.newSetFromMap(map);
+			Collections.newSetFromMap(map);
 			fail();
 		} catch (IllegalArgumentException expected) {}
 	}

@@ -253,7 +253,7 @@ public final class Sets {
 	 * @since 15.0
 	 */
 	public static <E> Set<E> newConcurrentHashSet() {
-		return newSetFromMap(new ConcurrentHashMap<E, Boolean>());
+		return Collections.newSetFromMap(new ConcurrentHashMap<E, Boolean>());
 	}
 
 	/**
@@ -390,7 +390,7 @@ public final class Sets {
 	 * @since 8.0
 	 */
 	public static <E> Set<E> newIdentityHashSet() {
-		return Sets.newSetFromMap(Maps.<E, Boolean> newIdentityHashMap());
+		return Collections.newSetFromMap(Maps.<E, Boolean> newIdentityHashMap());
 	}
 
 	/**
@@ -474,42 +474,6 @@ public final class Sets {
 		EnumSet<E> result = EnumSet.allOf(type);
 		result.removeAll(collection);
 		return result;
-	}
-
-	/**
-	 * Returns a set backed by the specified map. The resulting set displays
-	 * the same ordering, concurrency, and performance characteristics as the
-	 * backing map. In essence, this factory method provides a {@link Set}
-	 * implementation corresponding to any {@link Map} implementation. There is no
-	 * need to use this method on a {@link Map} implementation that already has a
-	 * corresponding {@link Set} implementation (such as {@link java.util.HashMap}
-	 * or {@link java.util.TreeMap}).
-	 *
-	 * <p>Each method invocation on the set returned by this method results in
-	 * exactly one method invocation on the backing map or its {@code keySet}
-	 * view, with one exception. The {@code addAll} method is implemented as a
-	 * sequence of {@code put} invocations on the backing map.
-	 *
-	 * <p>The specified map must be empty at the time this method is invoked,
-	 * and should not be accessed directly after this method returns. These
-	 * conditions are ensured if the map is created empty, passed directly
-	 * to this method, and no reference to the map is retained, as illustrated
-	 * in the following code fragment: <pre>  {@code
-	 *
-	 *   Set<Object> identityHashSet = Sets.newSetFromMap(
-	 *       new IdentityHashMap<Object, Boolean>());}</pre>
-	 *
-	 * <p>The returned set is serializable if the backing map is.
-	 *
-	 * @param map the backing map
-	 * @return the set backed by the map
-	 * @throws IllegalArgumentException if {@code map} is not empty
-	 * @deprecated Use {@link Collections#newSetFromMap} instead. This method
-	 *     will be removed in August 2017.
-	 */
-	@Deprecated
-	public static <E> Set<E> newSetFromMap(Map<E, Boolean> map) {
-		return Platform.newSetFromMap(map);
 	}
 
 	/**
