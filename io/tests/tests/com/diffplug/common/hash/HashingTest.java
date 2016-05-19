@@ -242,7 +242,6 @@ public class HashingTest extends TestCase {
 		assertEquals(15018, Hashing.consistentHash(2202, 100001));
 	}
 
-	private static final double MAX_PERCENT_SPREAD = 0.5;
 	private static final long RANDOM_SEED = 177L;
 
 	@SuppressWarnings("CheckReturnValue")

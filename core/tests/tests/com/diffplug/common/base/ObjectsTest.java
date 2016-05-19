@@ -21,8 +21,6 @@ import java.util.Objects;
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.testing.NullPointerTester;
 
 /**
  * Tests for {@link Objects}.

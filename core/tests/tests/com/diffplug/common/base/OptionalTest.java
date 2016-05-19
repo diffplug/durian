@@ -30,7 +30,6 @@ import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.collect.FluentIterable;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.testing.NullPointerTester;
-import com.diffplug.common.testing.SerializableTester;
 
 /**
  * Unit test for {@link Optional}.

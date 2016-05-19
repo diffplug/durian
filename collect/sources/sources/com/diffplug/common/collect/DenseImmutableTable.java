@@ -19,7 +19,6 @@ package com.diffplug.common.collect;
 import static com.diffplug.common.base.Preconditions.checkArgument;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;

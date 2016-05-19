@@ -16,8 +16,6 @@
  */
 package com.diffplug.common.util.concurrent;
 
-import junit.framework.*;
-
 /**
  * Unit test for {@link AtomicDouble}.
  */

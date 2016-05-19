@@ -18,8 +18,6 @@ package com.diffplug.common.util.concurrent;
 
 import java.util.Arrays;
 
-import junit.framework.*;
-
 /**
  * Unit test for {@link AtomicDoubleArray}.
  */

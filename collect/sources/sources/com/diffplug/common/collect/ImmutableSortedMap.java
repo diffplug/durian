@@ -34,7 +34,6 @@ import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.collect.ImmutableMap.Builder;
 
 /**
  * A {@link NavigableMap} whose contents will never change, with many other important properties

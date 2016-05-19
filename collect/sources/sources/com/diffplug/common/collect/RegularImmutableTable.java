@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.collect.Table.Cell;
 
 /**
  * An implementation of {@link ImmutableTable} holding an arbitrary number of

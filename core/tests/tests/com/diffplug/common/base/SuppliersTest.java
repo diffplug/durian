@@ -28,8 +28,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;

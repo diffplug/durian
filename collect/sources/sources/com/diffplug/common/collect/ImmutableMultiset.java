@@ -30,7 +30,6 @@ import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.collect.Multiset.Entry;
 
 /**
  * A {@link Multiset} whose contents will never change, with many other important properties

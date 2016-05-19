@@ -35,7 +35,6 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.PropertyPermission;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import junit.framework.*;

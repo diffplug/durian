@@ -19,7 +19,6 @@ package com.diffplug.common.collect;
 import static com.diffplug.common.base.Preconditions.checkArgument;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 import static com.diffplug.common.base.Predicates.and;
-import static com.diffplug.common.base.Predicates.in;
 import static com.diffplug.common.base.Predicates.not;
 import static com.diffplug.common.collect.CollectPreconditions.checkNonnegative;
 import static com.diffplug.common.math.LongMath.binomial;
