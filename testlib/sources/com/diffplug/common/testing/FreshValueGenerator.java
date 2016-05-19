@@ -43,6 +43,7 @@ import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -71,7 +72,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.base.CharMatcher;
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Splitter;
@@ -492,7 +492,7 @@ class FreshValueGenerator {
 
 	@Generates
 	private Charset generateCharset() {
-		return pickInstance(Charset.availableCharsets().values(), Charsets.UTF_8);
+		return pickInstance(Charset.availableCharsets().values(), StandardCharsets.UTF_8);
 	}
 
 	@Generates

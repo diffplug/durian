@@ -16,8 +16,6 @@
  */
 package com.diffplug.common.net;
 
-import static com.diffplug.common.base.Charsets.UTF_16;
-import static com.diffplug.common.base.Charsets.UTF_8;
 import static com.diffplug.common.net.MediaType.ANY_APPLICATION_TYPE;
 import static com.diffplug.common.net.MediaType.ANY_AUDIO_TYPE;
 import static com.diffplug.common.net.MediaType.ANY_IMAGE_TYPE;
@@ -31,6 +29,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.lang.reflect.Modifier.isFinal;
 import static java.lang.reflect.Modifier.isPublic;
 import static java.lang.reflect.Modifier.isStatic;
+import static java.nio.charset.StandardCharsets.UTF_16;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
 
 import java.lang.reflect.Field;

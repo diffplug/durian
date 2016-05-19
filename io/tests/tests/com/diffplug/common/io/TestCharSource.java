@@ -16,7 +16,7 @@
  */
 package com.diffplug.common.io;
 
-import static com.diffplug.common.base.Charsets.UTF_8;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

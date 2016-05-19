@@ -16,13 +16,13 @@
  */
 package com.diffplug.common.hash;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.collect.ImmutableSet;
 
@@ -62,7 +62,7 @@ public class MessageDigestHashFunctionTest extends TestCase {
 		Hasher sha1 = Hashing.sha1().newHasher();
 
 		assertEquals("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12",
-				sha1.putString("The quick brown fox jumps over the lazy dog", Charsets.UTF_8)
+				sha1.putString("The quick brown fox jumps over the lazy dog", StandardCharsets.UTF_8)
 						.hash()
 						.toString());
 		try {
@@ -76,7 +76,7 @@ public class MessageDigestHashFunctionTest extends TestCase {
 		Hasher sha1 = Hashing.sha1().newHasher();
 
 		assertEquals("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12",
-				sha1.putString("The quick brown fox jumps over the lazy dog", Charsets.UTF_8)
+				sha1.putString("The quick brown fox jumps over the lazy dog", StandardCharsets.UTF_8)
 						.hash()
 						.toString());
 		try {

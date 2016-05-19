@@ -27,12 +27,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestSuite;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.testing.NullPointerTester;
 import com.diffplug.common.testing.OsCompat;
@@ -57,8 +57,8 @@ public class ResourcesTest extends IoTestCase {
 
 	public void testToString() throws IOException {
 		URL resource = getClass().getResource("testdata/i18n.txt");
-		assertEquals(I18N, Resources.toString(resource, Charsets.UTF_8));
-		assertThat(Resources.toString(resource, Charsets.US_ASCII))
+		assertEquals(I18N, Resources.toString(resource, StandardCharsets.UTF_8));
+		assertThat(Resources.toString(resource, StandardCharsets.US_ASCII))
 				.isNotEqualTo(I18N);
 	}
 
@@ -72,7 +72,7 @@ public class ResourcesTest extends IoTestCase {
 		// TODO(chrisn): Check in a better resource
 		URL resource = getClass().getResource("testdata/i18n.txt");
 		assertEquals(ImmutableList.of(I18N),
-				Resources.readLines(resource, Charsets.UTF_8));
+				Resources.readLines(resource, StandardCharsets.UTF_8));
 	}
 
 	public void testReadLines_withLineProcessor() throws IOException {
@@ -91,7 +91,7 @@ public class ResourcesTest extends IoTestCase {
 				return collector;
 			}
 		};
-		List<String> result = Resources.readLines(resource, Charsets.US_ASCII,
+		List<String> result = Resources.readLines(resource, StandardCharsets.US_ASCII,
 				collectAndLowercaseAndTrim);
 		assertEquals(3600, result.size());
 		assertEquals("ALICE'S ADVENTURES IN WONDERLAND", result.get(0));
@@ -160,7 +160,7 @@ public class ResourcesTest extends IoTestCase {
 		try {
 			Thread.currentThread().setContextClassLoader(loader);
 			URL url = Resources.getResource(tempFile.getName());
-			String text = OsCompat.winToUnix(Resources.toString(url, Charsets.UTF_8));
+			String text = OsCompat.winToUnix(Resources.toString(url, StandardCharsets.UTF_8));
 			assertEquals("rud a chur ar an méar fhada\n", text);
 		} finally {
 			Thread.currentThread().setContextClassLoader(oldContextLoader);

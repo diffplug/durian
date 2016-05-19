@@ -29,12 +29,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.EnumSet;
 
 import junit.framework.TestSuite;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Iterables;
@@ -166,7 +166,7 @@ public class ByteSourceTest extends IoTestCase {
 	}
 
 	public void testHash() throws IOException {
-		ByteSource byteSource = new TestByteSource("hamburger\n".getBytes(Charsets.US_ASCII));
+		ByteSource byteSource = new TestByteSource("hamburger\n".getBytes(StandardCharsets.US_ASCII));
 
 		// Pasted this expected string from `echo hamburger | md5sum`
 		assertEquals("cfa0c5002275c90508338a5cdb2a9781", byteSource.hash(Hashing.md5()).toString());

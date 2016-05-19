@@ -28,6 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,6 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.io.Closer;
 import com.diffplug.common.io.Files;
@@ -401,7 +401,7 @@ public class ClassPathTest extends TestCase {
 	}
 
 	private static Manifest manifest(String content) throws IOException {
-		InputStream in = new ByteArrayInputStream(content.getBytes(Charsets.US_ASCII));
+		InputStream in = new ByteArrayInputStream(content.getBytes(StandardCharsets.US_ASCII));
 		Manifest manifest = new Manifest();
 		manifest.read(in);
 		return manifest;

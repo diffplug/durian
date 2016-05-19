@@ -49,6 +49,7 @@ import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
@@ -92,7 +93,6 @@ import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.CharMatcher;
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Defaults;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
@@ -203,7 +203,7 @@ public final class ArbitraryInstances {
 			.put(Pattern.class, Pattern.compile(""))
 			.put(MatchResult.class, newMatchResult())
 			.put(TimeUnit.class, TimeUnit.SECONDS)
-			.put(Charset.class, Charsets.UTF_8)
+			.put(Charset.class, StandardCharsets.UTF_8)
 			.put(Currency.class, Currency.getInstance(Locale.US))
 			.put(Locale.class, Locale.US)
 			// common.base
@@ -233,7 +233,7 @@ public final class ArbitraryInstances {
 			.put(ByteSource.class, ByteSource.empty())
 			.put(CharSource.class, CharSource.empty())
 			.put(ByteSink.class, NullByteSink.INSTANCE)
-			.put(CharSink.class, NullByteSink.INSTANCE.asCharSink(Charsets.UTF_8))
+			.put(CharSink.class, NullByteSink.INSTANCE.asCharSink(StandardCharsets.UTF_8))
 			// All collections are immutable empty. So safe for any type parameter.
 			.put(Iterator.class, ImmutableSet.of().iterator())
 			.put(PeekingIterator.class, Iterators.peekingIterator(ImmutableSet.of().iterator()))

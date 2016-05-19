@@ -31,9 +31,8 @@ import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-
-import com.diffplug.common.base.Charsets;
 
 /**
  * Unit test for {@link ByteStreams}.
@@ -201,7 +200,7 @@ public class ByteStreamsTest extends IoTestCase {
 
 	public void testNewDataInput_readLine() {
 		ByteArrayDataInput in = ByteStreams.newDataInput(
-				"This is a line\r\nThis too\rand this\nand also this".getBytes(Charsets.UTF_8));
+				"This is a line\r\nThis too\rand this\nand also this".getBytes(StandardCharsets.UTF_8));
 		assertEquals("This is a line", in.readLine());
 		assertEquals("This too", in.readLine());
 		assertEquals("and this", in.readLine());
@@ -224,13 +223,13 @@ public class ByteStreamsTest extends IoTestCase {
 	public void testNewDataInput_readUTF() {
 		byte[] data = new byte[17];
 		data[1] = 15;
-		System.arraycopy("Kilroy was here".getBytes(Charsets.UTF_8), 0, data, 2, 15);
+		System.arraycopy("Kilroy was here".getBytes(StandardCharsets.UTF_8), 0, data, 2, 15);
 		ByteArrayDataInput in = ByteStreams.newDataInput(data);
 		assertEquals("Kilroy was here", in.readUTF());
 	}
 
 	public void testNewDataInput_readChar() {
-		byte[] data = "qed".getBytes(Charsets.UTF_16BE);
+		byte[] data = "qed".getBytes(StandardCharsets.UTF_16BE);
 		ByteArrayDataInput in = ByteStreams.newDataInput(data);
 		assertEquals('q', in.readChar());
 		assertEquals('e', in.readChar());
@@ -368,14 +367,14 @@ public class ByteStreamsTest extends IoTestCase {
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		out.writeChars("r\u00C9sum\u00C9");
 		// need to remove byte order mark before comparing
-		byte[] expected = Arrays.copyOfRange("r\u00C9sum\u00C9".getBytes(Charsets.UTF_16), 2, 14);
+		byte[] expected = Arrays.copyOfRange("r\u00C9sum\u00C9".getBytes(StandardCharsets.UTF_16), 2, 14);
 		assertEquals(expected, out.toByteArray());
 	}
 
 	public void testNewDataOutput_writeUTF() {
 		ByteArrayDataOutput out = ByteStreams.newDataOutput();
 		out.writeUTF("r\u00C9sum\u00C9");
-		byte[] expected = "r\u00C9sum\u00C9".getBytes(Charsets.UTF_8);
+		byte[] expected = "r\u00C9sum\u00C9".getBytes(StandardCharsets.UTF_8);
 		byte[] actual = out.toByteArray();
 		// writeUTF writes the length of the string in 2 bytes
 		assertEquals(0, actual[0]);

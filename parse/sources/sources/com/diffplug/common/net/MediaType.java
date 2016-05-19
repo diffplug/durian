@@ -18,10 +18,10 @@ package com.diffplug.common.net;
 
 import static com.diffplug.common.base.CharMatcher.ASCII;
 import static com.diffplug.common.base.CharMatcher.JAVA_ISO_CONTROL;
-import static com.diffplug.common.base.Charsets.UTF_8;
 import static com.diffplug.common.base.Preconditions.checkArgument;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 import static com.diffplug.common.base.Preconditions.checkState;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;

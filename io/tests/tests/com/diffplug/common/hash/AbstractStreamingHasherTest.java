@@ -16,7 +16,7 @@
  */
 package com.diffplug.common.hash;
 
-import static com.diffplug.common.base.Charsets.UTF_16LE;
+import static java.nio.charset.StandardCharsets.UTF_16LE;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;

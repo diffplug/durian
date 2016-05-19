@@ -16,7 +16,7 @@
  */
 package com.diffplug.common.hash;
 
-import static com.diffplug.common.base.Charsets.UTF_8;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
 
 import java.lang.reflect.Method;

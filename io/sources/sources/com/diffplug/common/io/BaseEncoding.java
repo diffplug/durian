@@ -48,7 +48,7 @@ import com.diffplug.common.base.CharMatcher;
  * href="http://tools.ietf.org/html/rfc4648">RFC 4648</a>. For example, the expression:
  *
  * <pre>   {@code
- *   BaseEncoding.base32().encode("foo".getBytes(Charsets.US_ASCII))}</pre>
+ *   BaseEncoding.base32().encode("foo".getBytes(StandardCharsets.US_ASCII))}</pre>
  *
  * <p>returns the string {@code "MZXW6==="}, and <pre>   {@code
  *  byte[] decoded = BaseEncoding.base32().decode("MZXW6===");}</pre>

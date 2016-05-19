@@ -20,6 +20,7 @@ import static com.diffplug.common.base.Preconditions.checkArgument;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 import static com.diffplug.common.collect.testing.Helpers.mapEntry;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +40,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 import com.diffplug.common.collect.testing.Helpers;
 import com.diffplug.common.collect.testing.MapTestSuiteBuilder;
@@ -598,13 +598,13 @@ public class MapsCollectionTest extends TestCase {
 	}
 
 	private static String encode(String str) {
-		return BaseEncoding.base64().encode(str.getBytes(Charsets.UTF_8));
+		return BaseEncoding.base64().encode(str.getBytes(StandardCharsets.UTF_8));
 	}
 
 	private static final Function<String, String> DECODE_FUNCTION = new Function<String, String>() {
 		@Override
 		public String apply(String input) {
-			return new String(BaseEncoding.base64().decode(input), Charsets.UTF_8);
+			return new String(BaseEncoding.base64().decode(input), StandardCharsets.UTF_8);
 		}
 	};
 

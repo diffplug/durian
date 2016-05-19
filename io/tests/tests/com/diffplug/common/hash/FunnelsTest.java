@@ -23,13 +23,13 @@ import static org.mockito.Mockito.verify;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
 
 import org.mockito.InOrder;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.hash.AbstractStreamingHashFunction.AbstractStreamingHasher;
 import com.diffplug.common.testing.EqualsTester;
 import com.diffplug.common.testing.SerializableTester;
@@ -158,8 +158,8 @@ public class FunnelsTest extends TestCase {
 				Funnels.sequentialFunnel(Funnels.integerFunnel()),
 				SerializableTester.reserialize(Funnels.sequentialFunnel(Funnels.integerFunnel())));
 		assertEquals(
-				Funnels.stringFunnel(Charsets.US_ASCII),
-				SerializableTester.reserialize(Funnels.stringFunnel(Charsets.US_ASCII)));
+				Funnels.stringFunnel(StandardCharsets.US_ASCII),
+				SerializableTester.reserialize(Funnels.stringFunnel(StandardCharsets.US_ASCII)));
 	}
 
 	public void testEquals() {
@@ -168,8 +168,8 @@ public class FunnelsTest extends TestCase {
 				.addEqualityGroup(Funnels.integerFunnel())
 				.addEqualityGroup(Funnels.longFunnel())
 				.addEqualityGroup(Funnels.unencodedCharsFunnel())
-				.addEqualityGroup(Funnels.stringFunnel(Charsets.UTF_8))
-				.addEqualityGroup(Funnels.stringFunnel(Charsets.US_ASCII))
+				.addEqualityGroup(Funnels.stringFunnel(StandardCharsets.UTF_8))
+				.addEqualityGroup(Funnels.stringFunnel(StandardCharsets.US_ASCII))
 				.addEqualityGroup(Funnels.sequentialFunnel(Funnels.integerFunnel()),
 						SerializableTester.reserialize(Funnels.sequentialFunnel(
 								Funnels.integerFunnel())))

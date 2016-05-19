@@ -16,9 +16,9 @@
  */
 package com.diffplug.common.hash;
 
-import static com.diffplug.common.base.Charsets.UTF_8;
 import static com.diffplug.common.hash.BloomFilterStrategies.BitArray;
 import static com.google.common.truth.Truth.assertThat;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

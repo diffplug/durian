@@ -21,10 +21,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.primitives.Bytes;
 
 /**
@@ -94,7 +94,7 @@ public class LittleEndianDataOutputStreamTest extends TestCase {
 		/* Read in various values NORMALLY */
 		byte[] b = new byte[6];
 		in.readFully(b);
-		assertEquals("r\u00C9sum\u00C9".getBytes(Charsets.ISO_8859_1), b);
+		assertEquals("r\u00C9sum\u00C9".getBytes(StandardCharsets.ISO_8859_1), b);
 	}
 
 	@SuppressWarnings("deprecation") // testing a deprecated method

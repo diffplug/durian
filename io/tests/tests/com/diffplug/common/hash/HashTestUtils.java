@@ -19,13 +19,13 @@ package com.diffplug.common.hash;
 import static org.junit.Assert.assertEquals;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
 
 import org.junit.Assert;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Sets;
 import com.diffplug.common.primitives.Ints;
@@ -529,12 +529,12 @@ final class HashTestUtils {
 	}
 
 	private static final ImmutableSet<Charset> CHARSETS = ImmutableSet.of(
-			Charsets.ISO_8859_1,
-			Charsets.US_ASCII,
-			Charsets.UTF_16,
-			Charsets.UTF_16BE,
-			Charsets.UTF_16LE,
-			Charsets.UTF_8);
+			StandardCharsets.ISO_8859_1,
+			StandardCharsets.US_ASCII,
+			StandardCharsets.UTF_16,
+			StandardCharsets.UTF_16BE,
+			StandardCharsets.UTF_16LE,
+			StandardCharsets.UTF_8);
 
 	private static void assertHashStringEquivalence(HashFunction hashFunction, Random random) {
 		// Test that only data and data-order is important, not the individual operations.

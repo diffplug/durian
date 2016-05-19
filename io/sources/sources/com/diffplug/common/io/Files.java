@@ -36,6 +36,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,7 +45,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.collect.ImmutableSet;

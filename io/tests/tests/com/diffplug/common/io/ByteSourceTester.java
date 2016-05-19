@@ -26,13 +26,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
 import junit.framework.TestSuite;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.hash.HashCode;
 import com.diffplug.common.hash.Hashing;
@@ -57,7 +57,7 @@ public class ByteSourceTester extends SourceSinkTester<ByteSource, byte[], ByteS
 				suite.addTest(suiteForString(factory, entry.getValue(), name, entry.getKey()));
 			} else {
 				suite.addTest(suiteForBytes(
-						factory, entry.getValue().getBytes(Charsets.UTF_8), name, entry.getKey(), true));
+						factory, entry.getValue().getBytes(StandardCharsets.UTF_8), name, entry.getKey(), true));
 			}
 		}
 		return suite;
@@ -65,7 +65,7 @@ public class ByteSourceTester extends SourceSinkTester<ByteSource, byte[], ByteS
 
 	private static TestSuite suiteForString(ByteSourceFactory factory, String string,
 			String name, String desc) {
-		TestSuite suite = suiteForBytes(factory, string.getBytes(Charsets.UTF_8), name, desc, true);
+		TestSuite suite = suiteForBytes(factory, string.getBytes(StandardCharsets.UTF_8), name, desc, true);
 		CharSourceFactory charSourceFactory = SourceSinkFactories.asCharSourceFactory(factory);
 		suite.addTest(CharSourceTester.suiteForString(charSourceFactory, string,
 				name + ".asCharSource[Charset]", desc));

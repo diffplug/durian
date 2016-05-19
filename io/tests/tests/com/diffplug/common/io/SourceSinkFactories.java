@@ -34,12 +34,11 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
-
-import com.diffplug.common.base.Charsets;
 
 /**
  * {@link SourceSinkFactory} implementations.
@@ -76,7 +75,7 @@ public class SourceSinkFactories {
 
 	public static ByteSinkFactory appendingFileByteSinkFactory() {
 		String initialString = IoTestCase.ASCII + IoTestCase.I18N;
-		return new FileByteSinkFactory(initialString.getBytes(Charsets.UTF_8));
+		return new FileByteSinkFactory(initialString.getBytes(StandardCharsets.UTF_8));
 	}
 
 	public static CharSourceFactory fileCharSourceFactory() {
@@ -105,13 +104,13 @@ public class SourceSinkFactories {
 		return new CharSourceFactory() {
 			@Override
 			public CharSource createSource(String string) throws IOException {
-				return factory.createSource(string.getBytes(Charsets.UTF_8))
-						.asCharSource(Charsets.UTF_8);
+				return factory.createSource(string.getBytes(StandardCharsets.UTF_8))
+						.asCharSource(StandardCharsets.UTF_8);
 			}
 
 			@Override
 			public String getExpected(String data) {
-				return new String(factory.getExpected(data.getBytes(Charsets.UTF_8)), Charsets.UTF_8);
+				return new String(factory.getExpected(data.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
 			}
 
 			@Override
@@ -126,12 +125,12 @@ public class SourceSinkFactories {
 		return new CharSinkFactory() {
 			@Override
 			public CharSink createSink() throws IOException {
-				return factory.createSink().asCharSink(Charsets.UTF_8);
+				return factory.createSink().asCharSink(StandardCharsets.UTF_8);
 			}
 
 			@Override
 			public String getSinkContents() throws IOException {
-				return new String(factory.getSinkContents(), Charsets.UTF_8);
+				return new String(factory.getSinkContents(), StandardCharsets.UTF_8);
 			}
 
 			@Override
@@ -141,7 +140,7 @@ public class SourceSinkFactories {
 				 * string to that.
 				 */
 				byte[] factoryExpectedForNothing = factory.getExpected(new byte[0]);
-				return new String(factoryExpectedForNothing, Charsets.UTF_8) + checkNotNull(data);
+				return new String(factoryExpectedForNothing, StandardCharsets.UTF_8) + checkNotNull(data);
 			}
 
 			@Override
@@ -339,13 +338,13 @@ public class SourceSinkFactories {
 		public CharSource createSource(String string) throws IOException {
 			checkNotNull(string);
 			File file = createFile();
-			Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 			try {
 				writer.write(string);
 			} finally {
 				writer.close();
 			}
-			return Files.asCharSource(file, Charsets.UTF_8);
+			return Files.asCharSource(file, StandardCharsets.UTF_8);
 		}
 
 		@Override
@@ -366,15 +365,15 @@ public class SourceSinkFactories {
 		public CharSink createSink() throws IOException {
 			File file = createFile();
 			if (initialString != null) {
-				Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8);
+				Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 				try {
 					writer.write(initialString);
 				} finally {
 					writer.close();
 				}
-				return Files.asCharSink(file, Charsets.UTF_8, FileWriteMode.APPEND);
+				return Files.asCharSink(file, StandardCharsets.UTF_8, FileWriteMode.APPEND);
 			}
-			return Files.asCharSink(file, Charsets.UTF_8);
+			return Files.asCharSink(file, StandardCharsets.UTF_8);
 		}
 
 		@Override
@@ -388,7 +387,7 @@ public class SourceSinkFactories {
 		@Override
 		public String getSinkContents() throws IOException {
 			File file = getFile();
-			Reader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8);
+			Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
 			StringBuilder builder = new StringBuilder();
 			CharBuffer buffer = CharBuffer.allocate(100);
 			while (reader.read(buffer) != -1) {
@@ -414,7 +413,7 @@ public class SourceSinkFactories {
 		@Override
 		public CharSource createSource(String string) throws IOException {
 			super.createSource(string); // just ignore returned CharSource
-			return Resources.asCharSource(getFile().toURI().toURL(), Charsets.UTF_8);
+			return Resources.asCharSource(getFile().toURI().toURL(), StandardCharsets.UTF_8);
 		}
 	}
 }

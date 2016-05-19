@@ -24,10 +24,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.MoreObjects;
 import com.diffplug.common.collect.Lists;
 

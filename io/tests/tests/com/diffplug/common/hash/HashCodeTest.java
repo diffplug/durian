@@ -18,11 +18,11 @@ package com.diffplug.common.hash;
 
 import static com.diffplug.common.io.BaseEncoding.base16;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.io.BaseEncoding;
 import com.diffplug.common.testing.ClassSanityTester;
@@ -169,7 +169,7 @@ public class HashCodeTest extends TestCase {
 	}
 
 	public void testRoundTripHashCodeUsingBaseEncoding() {
-		HashCode hash1 = Hashing.sha1().hashString("foo", Charsets.US_ASCII);
+		HashCode hash1 = Hashing.sha1().hashString("foo", StandardCharsets.US_ASCII);
 		HashCode hash2 = HashCode.fromBytes(BaseEncoding.base16().lowerCase().decode(hash1.toString()));
 		assertEquals(hash1, hash2);
 	}
@@ -201,7 +201,7 @@ public class HashCodeTest extends TestCase {
 	}
 
 	public void testRoundTripHashCodeUsingFromString() {
-		HashCode hash1 = Hashing.sha1().hashString("foo", Charsets.US_ASCII);
+		HashCode hash1 = Hashing.sha1().hashString("foo", StandardCharsets.US_ASCII);
 		HashCode hash2 = HashCode.fromString(hash1.toString());
 		assertEquals(hash1, hash2);
 	}
@@ -227,7 +227,7 @@ public class HashCodeTest extends TestCase {
 
 	@SuppressWarnings("CheckReturnValue")
 	public void testFromStringFailsWithUpperCaseString() {
-		String string = Hashing.sha1().hashString("foo", Charsets.US_ASCII).toString().toUpperCase();
+		String string = Hashing.sha1().hashString("foo", StandardCharsets.US_ASCII).toString().toUpperCase();
 		try {
 			HashCode.fromString(string);
 			fail();

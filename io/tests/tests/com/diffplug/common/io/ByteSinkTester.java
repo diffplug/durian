@@ -24,11 +24,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import junit.framework.TestSuite;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.collect.ImmutableList;
 
 /**
@@ -55,7 +55,7 @@ public class ByteSinkTester extends SourceSinkTester<ByteSink, byte[], ByteSinkF
 
 	private static TestSuite suiteForString(String name, ByteSinkFactory factory,
 			String string, String desc) {
-		byte[] bytes = string.getBytes(Charsets.UTF_8);
+		byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
 		TestSuite suite = suiteForBytes(name, factory, desc, bytes);
 		CharSinkFactory charSinkFactory = SourceSinkFactories.asCharSinkFactory(factory);
 		suite.addTest(CharSinkTester.suiteForString(name + ".asCharSink[Charset]", charSinkFactory,

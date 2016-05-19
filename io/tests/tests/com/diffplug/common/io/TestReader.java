@@ -16,8 +16,8 @@
  */
 package com.diffplug.common.io;
 
-import static com.diffplug.common.base.Charsets.UTF_8;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.ByteArrayInputStream;
 import java.io.FilterReader;

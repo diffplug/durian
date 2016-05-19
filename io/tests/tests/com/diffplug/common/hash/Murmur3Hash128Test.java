@@ -20,10 +20,10 @@ import static com.diffplug.common.hash.Hashing.murmur3_128;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.hash.HashTestUtils.HashFn;
 
 /**
@@ -43,7 +43,7 @@ public class Murmur3Hash128Test extends TestCase {
 				"The quick brown fox jumps over the lazy cog");
 
 		// Known output from Python smhasher
-		HashCode foxHash = murmur3_128(0).hashString("The quick brown fox jumps over the lazy dog", Charsets.UTF_8);
+		HashCode foxHash = murmur3_128(0).hashString("The quick brown fox jumps over the lazy dog", StandardCharsets.UTF_8);
 		assertEquals("6c1b07bc7bbc4be347939ac4a93c437a", foxHash.toString());
 	}
 

@@ -28,7 +28,7 @@
  * <li>{@link com.diffplug.common.base.Ascii}
  * <li>{@link com.diffplug.common.base.CaseFormat}
  * <li>{@link com.diffplug.common.base.CharMatcher}
- * <li>{@link com.diffplug.common.base.Charsets}
+ * <li>{@link java.nio.charset.StandardCharsets}
  * <li>{@link com.diffplug.common.base.Joiner}
  * <li>{@link com.diffplug.common.base.Splitter}
  * <li>{@link com.diffplug.common.base.Strings}

@@ -68,7 +68,7 @@ public interface ByteArrayDataOutput extends DataOutput {
 
 	/**
 	 * @deprecated This method is dangerous as it discards the high byte of
-	 * every character. For UTF-8, use {@code write(s.getBytes(Charsets.UTF_8))}.
+	 * every character. For UTF-8, use {@code write(s.getBytes(StandardCharsets.UTF_8))}.
 	 */
 	@Deprecated
 	@Override

@@ -44,6 +44,7 @@ import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
@@ -89,7 +90,6 @@ import java.util.regex.Pattern;
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.CharMatcher;
-import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Splitter;
@@ -166,7 +166,7 @@ public class ArbitraryInstancesTest extends TestCase {
 		assertEquals(TimeUnit.SECONDS, ArbitraryInstances.get(TimeUnit.class));
 		assertNotNull(ArbitraryInstances.get(Object.class));
 		assertEquals(0, ArbitraryInstances.get(Number.class));
-		assertEquals(Charsets.UTF_8, ArbitraryInstances.get(Charset.class));
+		assertEquals(StandardCharsets.UTF_8, ArbitraryInstances.get(Charset.class));
 	}
 
 	public void testGet_collections() {
