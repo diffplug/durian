@@ -494,6 +494,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
 			return "Converter.identity()";
 		}
 
+		// needed for Serialization work
 		private Object readResolve() {
 			return INSTANCE;
 		}
