@@ -115,22 +115,11 @@ import com.diffplug.common.annotations.GwtCompatible;
 @Beta
 @GwtCompatible
 public abstract class Converter<A, B> implements Function<A, B> {
-	private final boolean handleNullAutomatically;
-
 	// We lazily cache the reverse view to avoid allocating on every call to reverse().
 	private transient Converter<B, A> reverse;
 
 	/** Constructor for use by subclasses. */
-	protected Converter() {
-		this(true);
-	}
-
-	/**
-	 * Constructor used only by {@code LegacyConverter} to suspend automatic null-handling.
-	 */
-	Converter(boolean handleNullAutomatically) {
-		this.handleNullAutomatically = handleNullAutomatically;
-	}
+	protected Converter() {}
 
 	// SPI methods (what subclasses must implement)
 
@@ -171,22 +160,12 @@ public abstract class Converter<A, B> implements Function<A, B> {
 
 	@Nullable
 	B correctedDoForward(@Nullable A a) {
-		if (handleNullAutomatically) {
-			// TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
-			return a == null ? null : checkNotNull(doForward(a));
-		} else {
-			return doForward(a);
-		}
+		return a == null ? null : checkNotNull(doForward(a));
 	}
 
 	@Nullable
 	A correctedDoBackward(@Nullable B b) {
-		if (handleNullAutomatically) {
-			// TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
-			return b == null ? null : checkNotNull(doBackward(b));
-		} else {
-			return doBackward(b);
-		}
+		return b == null ? null : checkNotNull(doBackward(b));
 	}
 
 	/**

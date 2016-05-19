@@ -175,24 +175,16 @@ public class ConverterTest extends TestCase {
 		assertEquals("5", converter.reverse().convert(5));
 	}
 
-	public void testNullIsPassedThrough() {
-		Converter<String, String> nullsArePassed = sillyConverter(false);
-		assertEquals("forward", nullsArePassed.convert("foo"));
-		assertEquals("forward", nullsArePassed.convert(null));
-		assertEquals("backward", nullsArePassed.reverse().convert("foo"));
-		assertEquals("backward", nullsArePassed.reverse().convert(null));
-	}
-
 	public void testNullIsNotPassedThrough() {
-		Converter<String, String> nullsAreHandled = sillyConverter(true);
+		Converter<String, String> nullsAreHandled = sillyConverter();
 		assertEquals("forward", nullsAreHandled.convert("foo"));
 		assertEquals(null, nullsAreHandled.convert(null));
 		assertEquals("backward", nullsAreHandled.reverse().convert("foo"));
 		assertEquals(null, nullsAreHandled.reverse().convert(null));
 	}
 
-	private static Converter<String, String> sillyConverter(final boolean handleNullAutomatically) {
-		return new Converter<String, String>(handleNullAutomatically) {
+	private static Converter<String, String> sillyConverter() {
+		return new Converter<String, String>() {
 			@Override
 			public String doForward(String string) {
 				return "forward";
