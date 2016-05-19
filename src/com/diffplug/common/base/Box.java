@@ -25,12 +25,19 @@ import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
-/** Provides get/set access to a mutable non-null value. */
+/**
+ * Provides get/set access to a mutable non-null value.
+ */
 public interface Box<T> extends Supplier<T>, Consumer<T> {
 	/** Sets the value which will later be returned by get(). */
 	void set(T value);
 
-	/** Delegates to set(). */
+	/**
+	 * Delegates to set().
+	 *
+	 * @deprecated Provided to satisfy the {@code Function} interface; use {@link #set} instead.
+	 */
+	@Deprecated
 	default void accept(T value) {
 		set(value);
 	}
@@ -47,14 +54,26 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		return Box.from(() -> getMapper.apply(get()), toSet -> set(setMapper.apply(toSet)));
 	}
 
-	/** Creates a Box holding the given value. */
+	/**
+	 * Creates a Box holding the given value.
+	 *
+	 * Every call to `set()` confirms that the argument
+	 * is actually non-null, and the value is stored
+	 * in a volatile variable.
+	 */
 	public static <T> Box<T> of(T value) {
 		return new Default<>(value);
 	}
 
-	/** A simple implementation of Box. */
-	public static class Default<T> implements Box<T> {
-		/** The (possibly-null) object being held. */
+	/**
+	 * A simple implementation of Box.
+	 *
+	 * The value is stored in a `volatile` field,
+	 * and non-null-ness is checked on every call
+	 * to set.
+	 */
+	static final class Default<T> implements Box<T> {
+		/** The object being held. */
 		protected volatile T obj;
 
 		protected Default(T init) {
@@ -73,7 +92,43 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		@Override
 		public String toString() {
-			return "Box[" + get().toString() + "]";
+			return "Box.of[" + get().toString() + "]";
+		}
+	}
+
+	/**
+	 * Creates a Box holding the given value.
+	 *
+	 * The value is not stored in a volatile
+	 * field, and non-null-ness is not checked
+	 * on every call to set.
+	 */
+	public static <T> Box<T> ofFast(T value) {
+		return new DefaultFast<>(value);
+	}
+
+	/** A simple implementation of Box. */
+	static final class DefaultFast<T> implements Box<T> {
+		/** The object being held. */
+		protected T obj;
+
+		protected DefaultFast(T init) {
+			this.obj = Objects.requireNonNull(init);
+		}
+
+		@Override
+		public T get() {
+			return obj;
+		}
+
+		@Override
+		public void set(T obj) {
+			this.obj = obj;
+		}
+
+		@Override
+		public String toString() {
+			return "Box.ofFast[" + get().toString() + "]";
 		}
 	}
 
@@ -110,10 +165,15 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	/** Provides get/set access to a mutable nullable value. */
 	public interface Nullable<T> extends Supplier<T>, Consumer<T> {
 		/** Sets the value which will later be returned by get(). */
-		void set(T value);
+		void set(@javax.annotation.Nullable T value);
 
-		/** Delegates to set(). */
-		default void accept(T value) {
+		/**
+		 * Delegates to set().
+		 *
+		 * @deprecated Provided to satisfy the {@code Function} interface; use {@link #set} instead.
+		 */
+		@Deprecated
+		default void accept(@javax.annotation.Nullable T value) {
 			set(value);
 		}
 
@@ -160,7 +220,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Nullable[" + (get() == null ? "null" : get().toString()) + "]";
+				return "Box.Nullable[" + Objects.toString(get()) + "]";
 			}
 		}
 
