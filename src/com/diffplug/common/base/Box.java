@@ -200,7 +200,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** A simple implementation of Box.Nullable. */
-		public static class Default<T> implements Box.Nullable<T> {
+		static class Default<T> implements Box.Nullable<T> {
 			/** The (possibly-null) object being held. */
 			protected volatile T obj;
 
@@ -220,7 +220,42 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Nullable[" + Objects.toString(get()) + "]";
+				return "Box.Nullable.of[" + Objects.toString(get()) + "]";
+			}
+		}
+
+		/** Creates a Nullable of the given object. */
+		public static <T> Nullable<T> ofFast(T init) {
+			return new Default<>(init);
+		}
+
+		/** Creates an Nullable holding null. */
+		public static <T> Nullable<T> ofFastNull() {
+			return new Default<>(null);
+		}
+
+		/** A simple implementation of Box.Nullable. */
+		static class DefaultFast<T> implements Box.Nullable<T> {
+			/** The (possibly-null) object being held. */
+			protected T obj;
+
+			protected DefaultFast(T init) {
+				this.obj = init;
+			}
+
+			@Override
+			public T get() {
+				return obj;
+			}
+
+			@Override
+			public void set(T obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Nullable.ofFast[" + Objects.toString(get()) + "]";
 			}
 		}
 
