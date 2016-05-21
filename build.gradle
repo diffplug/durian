@@ -1,3 +1,12 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		// markdown javadoc
+		classpath "ch.raffael.pegdown-doclet:pegdown-doclet:1.2.1"
+	}
+}
 plugins {
 	// osgi
 	id "com.diffplug.gradle.osgi.bndmanifest" version "2.1.1"
@@ -30,6 +39,7 @@ dependencies {
 	testCompile "com.google.guava:guava:${VER_GUAVA}"
 	testCompile "com.google.guava:guava-testlib:${VER_GUAVA}"
 	testCompile "junit:junit:${VER_JUNIT}"
+	testCompile "com.google.truth:truth:${VER_TRUTH}"
 }
 
 //////////
@@ -128,6 +138,9 @@ task sourcesJar(type: Jar) {
 	classifier = 'sources'
 	from sourceSets.main.allJava
 }
+
+// markdown in javadoc
+apply plugin: 'ch.raffael.pegdown-doclet'
 
 // Where it's possible to name parameters and methods clearly enough
 // that javadoc is not necessary, why make the code bigger?
