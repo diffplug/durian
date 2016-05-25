@@ -43,16 +43,63 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		set(value);
 	}
 
-	/** Shortcut for doing a set() on the result of a get(). */
+	/**
+	 * Performs a set() on the result of a get().  Some implementations
+	 * can provide atomic semantics, but it's not required.
+	 */
 	default T modify(Function<? super T, ? extends T> mutator) {
 		T modified = mutator.apply(get());
 		set(modified);
 		return modified;
 	}
 
-	/** Maps one {@code Box} to another {@code Box}. */
+	/**
+	 * Maps one {@code Box} to another {@code Box}, preserving any
+	 * {@link #modify(Function)} guarantees of the underlying Box.
+	 */
 	default <R> Box<R> map(Function<? super T, ? extends R> getMapper, Function<? super R, ? extends T> setMapper) {
-		return Box.from(() -> getMapper.apply(get()), toSet -> set(setMapper.apply(toSet)));
+		return new Mapped<>(this, getMapper, setMapper);
+	}
+
+	static final class Mapped<T, R> implements Box<R> {
+		private final Box<T> delegate;
+		private final Function<? super T, ? extends R> getMapper;
+		private final Function<? super R, ? extends T> setMapper;
+
+		public Mapped(Box<T> delegate,
+				Function<? super T, ? extends R> getMapper,
+				Function<? super R, ? extends T> setMapper) {
+			this.delegate = delegate;
+			this.getMapper = getMapper;
+			this.setMapper = setMapper;
+		}
+
+		@Override
+		public R get() {
+			return getMapper.apply(delegate.get());
+		}
+
+		@Override
+		public void set(R value) {
+			delegate.set(setMapper.apply(value));
+		}
+
+		/** Shortcut for doing a set() on the result of a get(). */
+		@Override
+		public R modify(Function<? super R, ? extends R> mutator) {
+			Box.Nullable<R> result = Box.Nullable.ofNull();
+			delegate.modify(input -> {
+				R unmappedResult = mutator.apply(getMapper.apply(input));
+				result.set(unmappedResult);
+				return setMapper.apply(unmappedResult);
+			});
+			return result.get();
+		}
+
+		@Override
+		public String toString() {
+			return "[" + delegate + " mapped to " + get() + " by " + getMapper + "]";
+		}
 	}
 
 	/**
