@@ -57,7 +57,11 @@ import com.diffplug.common.annotations.GwtCompatible;
  * behavior for all converters; implementations of {@link #doForward} and {@link #doBackward} are
  * guaranteed to never be passed {@code null}, and must never return {@code null}.
  *
-
+ * For users who wish for any behavior around nulls, see {@link ConverterNullable}.  For users
+ * who wish for an entirely non-null world, see {@link ConverterNonNull}.  Because {@link Converter}
+ * guarantees non-null outputs for non-null inputs, it can safely implement both {@link ConverterNonNull}
+ * and {@link ConverterNullable} at the same time.
+ *
  * <h3>Common ways to use</h3>
  *
  * <p>Getting a converter:
@@ -114,7 +118,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  */
 @Beta
 @GwtCompatible
-public abstract class Converter<A, B> implements Function<A, B> {
+public abstract class Converter<A, B> implements Function<A, B>, ConverterNullable<A, B>, ConverterNonNull<A, B> {
 	// We lazily cache the reverse view to avoid allocating on every call to reverse().
 	private transient Converter<B, A> reverse;
 
@@ -156,6 +160,16 @@ public abstract class Converter<A, B> implements Function<A, B> {
 	@Nullable
 	public final B convert(@Nullable A a) {
 		return correctedDoForward(a);
+	}
+
+	/**
+	 * Returns a representation of {@code b} as an instance of type {@code A}.
+	 *
+	 * @return the converted value; is null <i>if and only if</i> {@code b} is null
+	 */
+	@Nullable
+	public final A revert(@Nullable B b) {
+		return correctedDoBackward(b);
 	}
 
 	@Nullable
@@ -481,6 +495,16 @@ public abstract class Converter<A, B> implements Function<A, B> {
 
 		@Override
 		<S> Converter<T, S> doAndThen(Converter<T, S> otherConverter) {
+			return checkNotNull(otherConverter, "otherConverter");
+		}
+
+		@Override
+		public final <S> ConverterNullable<T, S> andThen(ConverterNullable<T, S> otherConverter) {
+			return checkNotNull(otherConverter, "otherConverter");
+		}
+
+		@Override
+		public final <S> ConverterNonNull<T, S> andThen(ConverterNonNull<T, S> otherConverter) {
 			return checkNotNull(otherConverter, "otherConverter");
 		}
 
