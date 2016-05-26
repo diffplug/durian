@@ -59,28 +59,28 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	 * Maps one {@code Box} to another {@code Box}, preserving any
 	 * {@link #modify(Function)} guarantees of the underlying Box.
 	 */
-	default <R> Box<R> map(ConverterNonNull<T, R> converter) {
+	default <R> Box<R> map(Converter<T, R> converter) {
 		return new Mapped<>(this, converter);
 	}
 
 	public static final class Mapped<T, R> implements Box<R> {
 		private final Box<T> delegate;
-		private final ConverterNonNull<T, R> converter;
+		private final Converter<T, R> converter;
 
 		public Mapped(Box<T> delegate,
-				ConverterNonNull<T, R> converter) {
+				Converter<T, R> converter) {
 			this.delegate = delegate;
 			this.converter = converter;
 		}
 
 		@Override
 		public R get() {
-			return converter.convert(delegate.get());
+			return converter.convertNonNull(delegate.get());
 		}
 
 		@Override
 		public void set(R value) {
-			delegate.set(converter.revert(value));
+			delegate.set(converter.revertNonNull(value));
 		}
 
 		/** Shortcut for doing a set() on the result of a get(). */
@@ -88,9 +88,9 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		public R modify(Function<? super R, ? extends R> mutator) {
 			Box.Nullable<R> result = Box.Nullable.ofNull();
 			delegate.modify(input -> {
-				R unmappedResult = mutator.apply(converter.convert(input));
+				R unmappedResult = mutator.apply(converter.convertNonNull(input));
 				result.set(unmappedResult);
-				return converter.revert(unmappedResult);
+				return converter.revertNonNull(unmappedResult);
 			});
 			return result.get();
 		}

@@ -49,6 +49,12 @@ public interface ConverterNullable<A, B> {
 		};
 	}
 
+	public static <A, B> ConverterNullable<A, B> from(
+			Function<? super A, ? extends B> forwardFunction,
+			Function<? super B, ? extends A> backwardFunction) {
+		return from(forwardFunction, backwardFunction, forwardFunction.toString());
+	}
+
 	/**
 	 * Returns a representation of {@code a} as an instance of type {@code B}. If {@code a} cannot be
 	 * converted, an unchecked exception (such as {@link IllegalArgumentException}) should be thrown.
