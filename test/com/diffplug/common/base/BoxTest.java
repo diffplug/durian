@@ -58,7 +58,7 @@ public class BoxTest {
 		// standard Box.Dbl
 		Box.Dbl dblValue = Box.Dbl.of(0);
 		Box.Dbl dblValueFast = Box.Dbl.ofFast(0);
-		Box.Dbl dblFromMethods = Box.Dbl.from(dblValue::get, dblValue::set);
+		Box.Dbl dblFromMethods = Box.Dbl.from(dblValue::getAsDouble, dblValue::set);
 
 		expectToString.accept(dblValue, "Box.Dbl.of[0.0]");
 		expectToString.accept(dblValueFast, "Box.Dbl.ofFast[0.0]");
@@ -67,16 +67,16 @@ public class BoxTest {
 		// standard Box.Int
 		Box.Int intValue = Box.Int.of(0);
 		Box.Int intValueFast = Box.Int.ofFast(0);
-		Box.Int intFromMethods = Box.Int.from(intValue::get, intValue::set);
+		Box.Int intFromMethods = Box.Int.from(intValue::getAsInt, intValue::set);
 
 		expectToString.accept(intValue, "Box.Int.of[0]");
 		expectToString.accept(intValueFast, "Box.Int.ofFast[0]");
 		expectToString.accept(intFromMethods, "Box.Int.from[0]");
 
 		// standard Box.Long
-		Box.Long longValue = Box.Long.of(0);
-		Box.Long longValueFast = Box.Long.ofFast(0);
-		Box.Long longFromMethod = Box.Long.from(longValue::get, longValue::set);
+		Box.Lng longValue = Box.Lng.of(0);
+		Box.Lng longValueFast = Box.Lng.ofFast(0);
+		Box.Lng longFromMethod = Box.Lng.from(longValue::getAsLong, longValue::set);
 
 		expectToString.accept(longValue, "Box.Long.of[0]");
 		expectToString.accept(longValueFast, "Box.Long.ofFast[0]");

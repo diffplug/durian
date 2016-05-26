@@ -348,33 +348,44 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	}
 
 	/** A `Box` for primitive doubles. */
-	public interface Dbl extends DoubleSupplier, DoubleConsumer {
+	public interface Dbl extends DoubleSupplier, DoubleConsumer, Box<Double> {
 		/** Sets the value which will later be returned by get(). */
 		void set(double value);
 
-		/** Returns the boxed value. */
-		double get();
+		@Override
+		double getAsDouble();
 
 		/**
-		 * Delegates to {@link #set}.
+		 * Delegates to {@link #getAsDouble()}.
 		 *
-		 * @deprecated Provided to satisfy the {@link DoubleConsumer} interface; use {@link #set} instead.
+		 * @deprecated Provided to satisfy {@code Box<Double>}; use {@link #getAsDouble()} instead.
+		 * */
+		@Override
+		@Deprecated
+		default Double get() {
+			return getAsDouble();
+		}
+
+		/**
+		 * Delegates to {@link #set(double)}.
+		 *
+		 * @deprecated Provided to satisfy {@code Box<Double>}; use {@link #set(double)} instead.
+		 */
+		@Override
+		@Deprecated
+		default void set(Double value) {
+			set(value.doubleValue());
+		}
+
+		/**
+		 * Delegates to {@link #set(double)}.
+		 *
+		 * @deprecated Provided to satisfy the {@link DoubleConsumer}; use {@link #set(double)} instead.
 		 */
 		@Deprecated
 		@Override
 		default void accept(double value) {
 			set(value);
-		}
-
-		/**
-		 * Delegates to {@link #get}.
-		 *
-		 * @deprecated Provided to satisfy the {@link DoubleSupplier} interface; use {@link #get} instead.
-		 */
-		@Deprecated
-		@Override
-		default double getAsDouble() {
-			return get();
 		}
 
 		/** Creates a `Box.Dbl` holding the given value in a `volatile` field. */
@@ -390,7 +401,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public double get() {
+			public double getAsDouble() {
 				return obj;
 			}
 
@@ -401,7 +412,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Dbl.of[" + get() + "]";
+				return "Box.Dbl.of[" + getAsDouble() + "]";
 			}
 		}
 
@@ -418,7 +429,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public double get() {
+			public double getAsDouble() {
 				return obj;
 			}
 
@@ -429,7 +440,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Dbl.ofFast[" + get() + "]";
+				return "Box.Dbl.ofFast[" + getAsDouble() + "]";
 			}
 		}
 
@@ -437,7 +448,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		public static Dbl from(DoubleSupplier getter, DoubleConsumer setter) {
 			return new Dbl() {
 				@Override
-				public double get() {
+				public double getAsDouble() {
 					return getter.getAsDouble();
 				}
 
@@ -455,33 +466,44 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	}
 
 	/** A `Box` for primitive ints. */
-	public interface Int extends IntSupplier, IntConsumer {
-		/** Sets the value which will later be returned by get(). */
+	public interface Int extends IntSupplier, IntConsumer, Box<Integer> {
+		/** Sets the value which will later be returned by {@link #getAsInt()}. */
 		void set(int value);
 
-		/** Returns the boxed value. */
-		int get();
+		@Override
+		int getAsInt();
+
+		/**
+		 * Delegates to {@link #getAsInt()}.
+		 *
+		 * @deprecated Provided to satisfy {@code Box<Integer>}; use {@link #getAsInt()} instead.
+		 * */
+		@Override
+		@Deprecated
+		default Integer get() {
+			return getAsInt();
+		}
+
+		/**
+		 * Delegates to {@link #set(int)}.
+		 *
+		 * @deprecated Provided to satisfy {@code Box<Integer>}; use {@link #set(int)} instead.
+		 */
+		@Override
+		@Deprecated
+		default void set(Integer value) {
+			set(value.intValue());
+		}
 
 		/**
 		 * Delegates to {@link #set}.
 		 *
-		 * @deprecated Provided to satisfy the {@link IntConsumer} interface; use {@link #set} instead.
+		 * @deprecated Provided to satisfy the {@link IntConsumer} interface; use {@link #set(int)} instead.
 		 */
 		@Deprecated
 		@Override
 		default void accept(int value) {
 			set(value);
-		}
-
-		/**
-		 * Delegates to {@link #get}.
-		 *
-		 * @deprecated Provided to satisfy the {@link IntSupplier} interface; use {@link #get} instead.
-		 */
-		@Deprecated
-		@Override
-		default int getAsInt() {
-			return get();
 		}
 
 		/** Creates a `Box.Int` holding the given value in a `volatile` field. */
@@ -497,7 +519,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public int get() {
+			public int getAsInt() {
 				return obj;
 			}
 
@@ -525,7 +547,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public int get() {
+			public int getAsInt() {
 				return obj;
 			}
 
@@ -544,7 +566,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		public static Int from(IntSupplier getter, IntConsumer setter) {
 			return new Int() {
 				@Override
-				public int get() {
+				public int getAsInt() {
 					return getter.getAsInt();
 				}
 
@@ -562,17 +584,39 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	}
 
 	/** A `Box` for primitive longs. */
-	public interface Long extends LongSupplier, LongConsumer {
-		/** Sets the value which will later be returned by get(). */
+	public interface Lng extends LongSupplier, LongConsumer, Box<Long> {
+		/** Sets the value which will later be returned by {@link #getAsLong()}. */
 		void set(long value);
 
-		/** Returns the boxed value. */
-		long get();
+		@Override
+		long getAsLong();
 
 		/**
-		 * Delegates to {@link #set}.
+		 * Auto-boxed getter.
 		 *
-		 * @deprecated Provided to satisfy the {@link LongConsumer} interface; use {@link #set} instead.
+		 * @deprecated Provided to satisfy {@code Box<Long>} interface; use {@link #getAsLong()} instead.
+		 * */
+		@Override
+		@Deprecated
+		default Long get() {
+			return getAsLong();
+		}
+
+		/**
+		 * Delegates to {@link #set(long)}.
+		 *
+		 * @deprecated Provided to satisfy {@code Box<Long>} interface; use {@link #set(long)} instead.
+		 */
+		@Override
+		@Deprecated
+		default void set(Long value) {
+			set(value.longValue());
+		}
+
+		/**
+		 * Delegates to {@link #set(long)}.
+		 *
+		 * @deprecated Provided to satisfy {@link LongConsumer} interface; use {@link #set(long)} instead.
 		 */
 		@Deprecated
 		@Override
@@ -580,23 +624,12 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
-		/**
-		 * Delegates to {@link #get}.
-		 *
-		 * @deprecated Provided to satisfy the {@link LongSupplier} interface; use {@link #get} instead.
-		 */
-		@Deprecated
-		@Override
-		default long getAsLong() {
-			return get();
-		}
-
 		/** Creates a `Box.Long` holding the given value in a `volatile` field. */
-		public static Long of(long value) {
+		public static Lng of(long value) {
 			return new Default(value);
 		}
 
-		static class Default implements Box.Long {
+		static class Default implements Box.Lng {
 			private volatile long obj;
 
 			private Default(long init) {
@@ -604,7 +637,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public long get() {
+			public long getAsLong() {
 				return obj;
 			}
 
@@ -620,11 +653,11 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** Creates a `Box.Long` holding the given value in a non-`volatile` field. */
-		public static Long ofFast(long value) {
+		public static Lng ofFast(long value) {
 			return new DefaultFast(value);
 		}
 
-		static class DefaultFast implements Box.Long {
+		static class DefaultFast implements Box.Lng {
 			private long obj;
 
 			private DefaultFast(long init) {
@@ -632,7 +665,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			}
 
 			@Override
-			public long get() {
+			public long getAsLong() {
 				return obj;
 			}
 
@@ -648,10 +681,10 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** Creates a `Box.Long` from a `LongSupplier` and a `LongConsumer`. */
-		public static Long from(LongSupplier getter, LongConsumer setter) {
-			return new Long() {
+		public static Lng from(LongSupplier getter, LongConsumer setter) {
+			return new Lng() {
 				@Override
-				public long get() {
+				public long getAsLong() {
 					return getter.getAsLong();
 				}
 
