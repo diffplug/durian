@@ -36,7 +36,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	/**
 	 * Delegates to set().
 	 *
-	 * @deprecated Provided to satisfy the {@code Function} interface; use {@link #set} instead.
+	 * @deprecated Provided to satisfy the {@link Consumer} interface; use {@link #set} instead.
 	 */
 	@Deprecated
 	default void accept(T value) {
@@ -44,8 +44,10 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	}
 
 	/**
-	 * Performs a set() on the result of a get().  Some implementations
-	 * can provide atomic semantics, but it's not required.
+	 * Performs a set() on the result of a get().
+	 * 
+	 * Some implementations may provide atomic semantics,
+	 * but it's not required.
 	 */
 	default T modify(Function<? super T, ? extends T> mutator) {
 		T modified = mutator.apply(get());
@@ -57,31 +59,28 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	 * Maps one {@code Box} to another {@code Box}, preserving any
 	 * {@link #modify(Function)} guarantees of the underlying Box.
 	 */
-	default <R> Box<R> map(Function<? super T, ? extends R> getMapper, Function<? super R, ? extends T> setMapper) {
-		return new Mapped<>(this, getMapper, setMapper);
+	default <R> Box<R> map(ConverterNonNull<T, R> converter) {
+		return new Mapped<>(this, converter);
 	}
 
-	static final class Mapped<T, R> implements Box<R> {
+	public static final class Mapped<T, R> implements Box<R> {
 		private final Box<T> delegate;
-		private final Function<? super T, ? extends R> getMapper;
-		private final Function<? super R, ? extends T> setMapper;
+		private final ConverterNonNull<T, R> converter;
 
 		public Mapped(Box<T> delegate,
-				Function<? super T, ? extends R> getMapper,
-				Function<? super R, ? extends T> setMapper) {
+				ConverterNonNull<T, R> converter) {
 			this.delegate = delegate;
-			this.getMapper = getMapper;
-			this.setMapper = setMapper;
+			this.converter = converter;
 		}
 
 		@Override
 		public R get() {
-			return getMapper.apply(delegate.get());
+			return converter.convert(delegate.get());
 		}
 
 		@Override
 		public void set(R value) {
-			delegate.set(setMapper.apply(value));
+			delegate.set(converter.revert(value));
 		}
 
 		/** Shortcut for doing a set() on the result of a get(). */
@@ -89,16 +88,16 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		public R modify(Function<? super R, ? extends R> mutator) {
 			Box.Nullable<R> result = Box.Nullable.ofNull();
 			delegate.modify(input -> {
-				R unmappedResult = mutator.apply(getMapper.apply(input));
+				R unmappedResult = mutator.apply(converter.convert(input));
 				result.set(unmappedResult);
-				return setMapper.apply(unmappedResult);
+				return converter.revert(unmappedResult);
 			});
 			return result.get();
 		}
 
 		@Override
 		public String toString() {
-			return "[" + delegate + " mapped to " + get() + " by " + getMapper + "]";
+			return "[" + delegate + " mapped to " + get() + " by " + converter + "]";
 		}
 	}
 
@@ -116,7 +115,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		private volatile T obj;
 
 		private Default(T init) {
-			this.obj = Objects.requireNonNull(init);
+			set(init);
 		}
 
 		@Override
@@ -150,7 +149,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		private T obj;
 
 		private DefaultFast(T init) {
-			this.obj = Objects.requireNonNull(init);
+			set(init);
 		}
 
 		@Override
@@ -160,7 +159,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		@Override
 		public void set(T obj) {
-			this.obj = obj;
+			this.obj = Objects.requireNonNull(obj);
 		}
 
 		@Override
@@ -213,9 +212,50 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			return modified;
 		}
 
-		/** Maps one {@code Box.Nullable} to another {@code Box.Nullable}. */
-		default <R> Box.Nullable<R> map(Function<? super T, ? extends R> getMapper, Function<? super R, ? extends T> setMapper) {
-			return Box.Nullable.from(() -> getMapper.apply(get()), toSet -> set(setMapper.apply(toSet)));
+		/**
+		 * Maps one {@code Box} to another {@code Box}, preserving any
+		 * {@link #modify(Function)} guarantees of the underlying Box.
+		 */
+		default <R> Nullable<R> map(ConverterNullable<T, R> converter) {
+			return new Nullable.Mapped<>(this, converter);
+		}
+
+		static final class Mapped<T, R> implements Nullable<R> {
+			private final Nullable<T> delegate;
+			private final ConverterNullable<T, R> converter;
+
+			public Mapped(Nullable<T> delegate,
+					ConverterNullable<T, R> converter) {
+				this.delegate = delegate;
+				this.converter = converter;
+			}
+
+			@Override
+			public R get() {
+				return converter.convert(delegate.get());
+			}
+
+			@Override
+			public void set(R value) {
+				delegate.set(converter.revert(value));
+			}
+
+			/** Shortcut for doing a set() on the result of a get(). */
+			@Override
+			public R modify(Function<? super R, ? extends R> mutator) {
+				Box.Nullable<R> result = Box.Nullable.ofNull();
+				delegate.modify(input -> {
+					R unmappedResult = mutator.apply(converter.convert(input));
+					result.set(unmappedResult);
+					return converter.revert(unmappedResult);
+				});
+				return result.get();
+			}
+
+			@Override
+			public String toString() {
+				return "[" + delegate + " mapped to " + get() + " by " + converter + "]";
+			}
 		}
 
 		/** Creates a `Box.Nullable` holding the given possibly-null value in a `volatile` field. */
