@@ -117,9 +117,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 @Beta
 @GwtCompatible
 public abstract class Converter<A, B> implements Function<A, B>, ConverterNullable<A, B> {
-	// We lazily cache the reverse view to avoid allocating on every call to reverse().
-	private transient Converter<B, A> reverse;
-
 	/** Constructor for use by subclasses. */
 	protected Converter() {}
 
@@ -237,10 +234,8 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	 *
 	 * <p>The returned converter is serializable if {@code this} converter is.
 	 */
-	// TODO(kak): Make this method final
 	public Converter<B, A> reverse() {
-		Converter<B, A> result = reverse;
-		return (result == null) ? reverse = new ReverseConverter<A, B>(this) : result;
+		return new ReverseConverter<A, B>(this);
 	}
 
 	private static final class ReverseConverter<A, B> extends Converter<B, A>
