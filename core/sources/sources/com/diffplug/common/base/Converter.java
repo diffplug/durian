@@ -57,10 +57,8 @@ import com.diffplug.common.annotations.GwtCompatible;
  * behavior for all converters; implementations of {@link #doForward} and {@link #doBackward} are
  * guaranteed to never be passed {@code null}, and must never return {@code null}.
  *
- * For users who wish for any behavior around nulls, see {@link ConverterNullable}.  For users
- * who wish for an entirely non-null world, see {@link ConverterNonNull}.  Because {@link Converter}
- * guarantees non-null outputs for non-null inputs, it can safely implement both {@link ConverterNonNull}
- * and {@link ConverterNullable} at the same time.
+ * For users who wish for any behavior around nulls, see {@link ConverterNullable}.  Because {@link Converter}
+ * guarantees graceful mapping of null to null, it can safely implement {@link ConverterNullable}.
  *
  * <h3>Common ways to use</h3>
  *
@@ -118,7 +116,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  */
 @Beta
 @GwtCompatible
-public abstract class Converter<A, B> implements Function<A, B>, ConverterNullable<A, B>, ConverterNonNull<A, B> {
+public abstract class Converter<A, B> implements Function<A, B>, ConverterNullable<A, B> {
 	// We lazily cache the reverse view to avoid allocating on every call to reverse().
 	private transient Converter<B, A> reverse;
 
@@ -516,11 +514,6 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 
 		@Override
 		public final <S> ConverterNullable<T, S> andThen(ConverterNullable<T, S> otherConverter) {
-			return checkNotNull(otherConverter, "otherConverter");
-		}
-
-		@Override
-		public final <S> ConverterNonNull<T, S> andThen(ConverterNonNull<T, S> otherConverter) {
 			return checkNotNull(otherConverter, "otherConverter");
 		}
 
