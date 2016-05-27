@@ -172,6 +172,22 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 		return correctedDoBackward(b);
 	}
 
+	/**
+	 * Returns a representation of {@code a} as an instance of type {@code B}, using
+	 * the type system (and not null checks) to ensure that input and output are non-null.
+	 */
+	public final B convertNonNull(A a) {
+		return checkNotNull(doForward(checkNotNull(a)));
+	}
+
+	/**
+	 * Returns a representation of {@code b} as an instance of type {@code A}, using
+	 * the type system (and not null checks) to ensure that input and output are non-null.
+	 */
+	public final A revertNonNull(B b) {
+		return checkNotNull(doBackward(checkNotNull(b)));
+	}
+
 	@Nullable
 	B correctedDoForward(@Nullable A a) {
 		return a == null ? null : checkNotNull(doForward(a));

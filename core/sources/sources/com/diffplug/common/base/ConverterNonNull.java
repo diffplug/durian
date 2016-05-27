@@ -55,12 +55,12 @@ public interface ConverterNonNull<A, B> {
 
 		@Override
 		public B convert(A a) {
-			return requireNonNull(forwardFunction.apply(a));
+			return forwardFunction.apply(a);
 		}
 
 		@Override
 		public A revert(B b) {
-			return requireNonNull(backwardFunction.apply(b));
+			return backwardFunction.apply(b);
 		}
 
 		@Override
