@@ -219,4 +219,15 @@ public class ConverterTest extends TestCase {
 		Converter<String, String> dumb = Converter.from(toStringFunction(), toStringFunction());
 		SerializableTester.reserializeAndAssert(dumb);
 	}
+
+	public void testEquals() throws Exception {
+		new EqualsTester()
+				.addEqualityGroup(
+						Converter.identity(),
+						Converter.identity().reverse())
+				.addEqualityGroup(
+						Converter.from(Function.identity(), Function.identity()),
+						Converter.from(Function.identity(), Function.identity(), "nameDoesntAffectEquality"))
+				.testEquals();
+	}
 }

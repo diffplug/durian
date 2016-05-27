@@ -426,19 +426,43 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	public static <A, B> Converter<A, B> from(
 			Function<? super A, ? extends B> forwardFunction,
 			Function<? super B, ? extends A> backwardFunction) {
-		return new FunctionBasedConverter<A, B>(forwardFunction, backwardFunction);
+		return from(forwardFunction, backwardFunction, "Converter.from(" + forwardFunction + ", " + backwardFunction + ")");
+	}
+
+	/**
+	 * Returns a converter based on <i>existing</i> forward and backward functions. Note that it is
+	 * unnecessary to create <i>new</i> classes implementing {@code Function} just to pass them in
+	 * here. Instead, simply subclass {@code Converter} and implement its {@link #doForward} and
+	 * {@link #doBackward} methods directly.
+	 *
+	 * <p>These functions will never be passed {@code null} and must not under any circumstances
+	 * return {@code null}. If a value cannot be converted, the function should throw an unchecked
+	 * exception (typically, but not necessarily, {@link IllegalArgumentException}).
+	 *
+	 * The name parameter will be returned as the result of {@link #toString()}.
+	 *
+	 * <p>The returned converter is serializable if both provided functions are.
+	 */
+	public static <A, B> Converter<A, B> from(
+			Function<? super A, ? extends B> forwardFunction,
+			Function<? super B, ? extends A> backwardFunction,
+			String name) {
+		return new FunctionBasedConverter<A, B>(forwardFunction, backwardFunction, name);
 	}
 
 	private static final class FunctionBasedConverter<A, B> extends Converter<A, B>
 			implements Serializable {
 		private final Function<? super A, ? extends B> forwardFunction;
 		private final Function<? super B, ? extends A> backwardFunction;
+		private final String name;
 
 		private FunctionBasedConverter(
 				Function<? super A, ? extends B> forwardFunction,
-				Function<? super B, ? extends A> backwardFunction) {
+				Function<? super B, ? extends A> backwardFunction,
+				String name) {
 			this.forwardFunction = checkNotNull(forwardFunction);
 			this.backwardFunction = checkNotNull(backwardFunction);
+			this.name = checkNotNull(name);
 		}
 
 		@Override
@@ -468,7 +492,7 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 
 		@Override
 		public String toString() {
-			return "Converter.from(" + forwardFunction + ", " + backwardFunction + ")";
+			return name;
 		}
 	}
 

@@ -193,4 +193,12 @@ public class ConverterNullableTest extends TestCase {
 		ConverterNullable<String, String> dumb = ConverterNullable.from(toStringFunction(), toStringFunction(), "toString");
 		SerializableTester.reserializeAndAssert(dumb);
 	}
+
+	public void testEquals() throws Exception {
+		new EqualsTester()
+				.addEqualityGroup(
+						ConverterNullable.from(Function.identity(), Function.identity()),
+						ConverterNullable.from(Function.identity(), Function.identity(), "nameDoesntAffectEquality"))
+				.testEquals();
+	}
 }

@@ -29,8 +29,24 @@ import javax.annotation.Nullable;
  */
 public interface ConverterNullable<A, B> {
 	/**
-	 * Creates a converter using the given functions,
-	 * with the given name shown in "toString()".
+	 * Delegates to {@link #from(Function, Function, String)}, passing
+	 * {@code forwardFunction.toString()} as the {@code name} parameter.
+	 */
+	public static <A, B> ConverterNullable<A, B> from(
+			Function<? super A, ? extends B> forwardFunction,
+			Function<? super B, ? extends A> backwardFunction) {
+		return from(forwardFunction, backwardFunction, forwardFunction.toString());
+	}
+
+	/**
+	 * Returns a converter based on <i>existing</i> forward and backward functions. Note that it is
+	 * unnecessary to create <i>new</i> classes implementing {@code Function} just to pass them in
+	 * here. Instead, simply subclass {@code ConverterNullable} and implement its {@link #convert}
+	 * and {@link #revert} methods directly.
+	 *
+	 * <p>The {@code name} parameter will be returned as the {@code toString} of the created object.
+	 *
+	 * <p>The returned converter is serializable if both provided functions are.
 	 */
 	public static <A, B> ConverterNullable<A, B> from(
 			Function<? super A, ? extends B> forwardFunction,
