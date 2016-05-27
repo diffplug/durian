@@ -16,7 +16,7 @@
  */
 package com.diffplug.common.base;
 
-import static com.diffplug.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -172,7 +172,7 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	 * the type system (and not null checks) to ensure that input and output are non-null.
 	 */
 	public final B convertNonNull(A a) {
-		return checkNotNull(doForward(checkNotNull(a)));
+		return requireNonNull(doForward(requireNonNull(a)));
 	}
 
 	/**
@@ -180,17 +180,17 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	 * the type system (and not null checks) to ensure that input and output are non-null.
 	 */
 	public final A revertNonNull(B b) {
-		return checkNotNull(doBackward(checkNotNull(b)));
+		return requireNonNull(doBackward(requireNonNull(b)));
 	}
 
 	@Nullable
 	B correctedDoForward(@Nullable A a) {
-		return a == null ? null : checkNotNull(doForward(a));
+		return a == null ? null : requireNonNull(doForward(a));
 	}
 
 	@Nullable
 	A correctedDoBackward(@Nullable B b) {
-		return b == null ? null : checkNotNull(doBackward(b));
+		return b == null ? null : requireNonNull(doBackward(b));
 	}
 
 	/**
@@ -202,7 +202,7 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	 * element.
 	 */
 	public Iterable<B> convertAll(final Iterable<? extends A> fromIterable) {
-		checkNotNull(fromIterable, "fromIterable");
+		requireNonNull(fromIterable, "fromIterable");
 		return new Iterable<B>() {
 			@Override
 			public Iterator<B> iterator() {
@@ -317,7 +317,7 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	 * Package-private non-final implementation of andThen() so only we can override it.
 	 */
 	<C> Converter<A, C> doAndThen(Converter<B, C> secondConverter) {
-		return new ConverterComposition<A, B, C>(this, checkNotNull(secondConverter));
+		return new ConverterComposition<A, B, C>(this, requireNonNull(secondConverter));
 	}
 
 	private static final class ConverterComposition<A, B, C> extends Converter<A, C>
@@ -460,9 +460,9 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 				Function<? super A, ? extends B> forwardFunction,
 				Function<? super B, ? extends A> backwardFunction,
 				String name) {
-			this.forwardFunction = checkNotNull(forwardFunction);
-			this.backwardFunction = checkNotNull(backwardFunction);
-			this.name = checkNotNull(name);
+			this.forwardFunction = requireNonNull(forwardFunction);
+			this.backwardFunction = requireNonNull(backwardFunction);
+			this.name = requireNonNull(name);
 		}
 
 		@Override
@@ -528,12 +528,12 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 
 		@Override
 		<S> Converter<T, S> doAndThen(Converter<T, S> otherConverter) {
-			return checkNotNull(otherConverter, "otherConverter");
+			return requireNonNull(otherConverter);
 		}
 
 		@Override
 		public final <S> ConverterNullable<T, S> andThen(ConverterNullable<T, S> otherConverter) {
-			return checkNotNull(otherConverter, "otherConverter");
+			return requireNonNull(otherConverter);
 		}
 
 		/*
