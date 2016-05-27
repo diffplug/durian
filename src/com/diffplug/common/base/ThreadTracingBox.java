@@ -17,8 +17,6 @@ package com.diffplug.common.base;
 
 import java.util.function.Predicate;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class ThreadTracingBox<T> implements Box<T> {
