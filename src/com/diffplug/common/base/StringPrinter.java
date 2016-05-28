@@ -246,19 +246,17 @@ public class StringPrinter {
 	 * @return a Consumer<String> which accepts any strings, and will feed them to perLine. 
 	 */
 	public static Consumer<String> stringsToLines(Consumer<String> perLine) {
-		Box<String> leftover = Box.ofFast("");
+		Box<String> leftover = Box.of("");
 		return rawString -> {
-			synchronized (leftover) {
-				rawString = leftover.get() + rawString.replace("\r", "");
+			rawString = leftover.get() + rawString.replace("\r", "");
 
-				int lastIdx = 0;
-				int idx = 0;
-				while ((idx = rawString.indexOf('\n', lastIdx)) > -1) {
-					perLine.accept(rawString.substring(lastIdx, idx));
-					lastIdx = idx + 1;
-				}
-				leftover.set(rawString.substring(lastIdx));
+			int lastIdx = 0;
+			int idx = 0;
+			while ((idx = rawString.indexOf('\n', lastIdx)) > -1) {
+				perLine.accept(rawString.substring(lastIdx, idx));
+				lastIdx = idx + 1;
 			}
+			leftover.set(rawString.substring(lastIdx));
 		};
 	}
 
