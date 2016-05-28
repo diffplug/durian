@@ -86,7 +86,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		/** Shortcut for doing a set() on the result of a get(). */
 		@Override
 		public R modify(Function<? super R, ? extends R> mutator) {
-			Box.Nullable<R> result = Box.Nullable.ofNull();
+			Box.Nullable<R> result = Box.Nullable.of(null);
 			delegate.modify(input -> {
 				R unmappedResult = mutator.apply(converter.convertNonNull(input));
 				result.set(unmappedResult);
@@ -107,12 +107,46 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 	 * Every call to {@link #set(Object)} confirms that the argument
 	 * is actually non-null, and the value is stored in a volatile variable.
 	 */
+	public static <T> Box<T> ofVolatile(T value) {
+		return new Volatile<>(value);
+	}
+
+	static final class Volatile<T> implements Box<T> {
+		private volatile T obj;
+
+		private Volatile(T init) {
+			set(init);
+		}
+
+		@Override
+		public T get() {
+			return obj;
+		}
+
+		@Override
+		public void set(T obj) {
+			this.obj = Objects.requireNonNull(obj);
+		}
+
+		@Override
+		public String toString() {
+			return "Box.ofVolatile[" + get() + "]";
+		}
+	}
+
+	/**
+	 * Creates a `Box` holding the given value in a non-`volatile` field.
+	 *
+	 * The value is stored in standard non-volatile
+	 * field, and non-null-ness is not checked on
+	 * every call to set.
+	 */
 	public static <T> Box<T> of(T value) {
 		return new Default<>(value);
 	}
 
 	static final class Default<T> implements Box<T> {
-		private volatile T obj;
+		private T obj;
 
 		private Default(T init) {
 			set(init);
@@ -131,40 +165,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		@Override
 		public String toString() {
 			return "Box.of[" + get() + "]";
-		}
-	}
-
-	/**
-	 * Creates a `Box` holding the given value in a non-`volatile` field.
-	 *
-	 * The value is stored in standard non-volatile
-	 * field, and non-null-ness is not checked on
-	 * every call to set.
-	 */
-	public static <T> Box<T> ofFast(T value) {
-		return new DefaultFast<>(value);
-	}
-
-	static final class DefaultFast<T> implements Box<T> {
-		private T obj;
-
-		private DefaultFast(T init) {
-			set(init);
-		}
-
-		@Override
-		public T get() {
-			return obj;
-		}
-
-		@Override
-		public void set(T obj) {
-			this.obj = Objects.requireNonNull(obj);
-		}
-
-		@Override
-		public String toString() {
-			return "Box.ofFast[" + get() + "]";
 		}
 	}
 
@@ -224,8 +224,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			private final Nullable<T> delegate;
 			private final ConverterNullable<T, R> converter;
 
-			public Mapped(Nullable<T> delegate,
-					ConverterNullable<T, R> converter) {
+			public Mapped(Nullable<T> delegate, ConverterNullable<T, R> converter) {
 				this.delegate = delegate;
 				this.converter = converter;
 			}
@@ -243,7 +242,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			/** Shortcut for doing a set() on the result of a get(). */
 			@Override
 			public R modify(Function<? super R, ? extends R> mutator) {
-				Box.Nullable<R> result = Box.Nullable.ofNull();
+				Box.Nullable<R> result = Box.Nullable.of(null);
 				delegate.modify(input -> {
 					R unmappedResult = mutator.apply(converter.convert(input));
 					result.set(unmappedResult);
@@ -259,20 +258,20 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** Creates a `Box.Nullable` holding the given possibly-null value in a `volatile` field. */
-		public static <T> Nullable<T> of(@javax.annotation.Nullable T init) {
-			return new Default<>(init);
+		public static <T> Nullable<T> ofVolatile(@javax.annotation.Nullable T init) {
+			return new Volatile<>(init);
 		}
 
-		/** Creates a `Box.Nullable` holding null in a `volatile` field. */
-		public static <T> Nullable<T> ofNull() {
-			return new Default<>(null);
+		/** Creates a `Box.Nullable` holding a null value in a `volatile` field. */
+		public static <T> Nullable<T> ofVolatileNull() {
+			return ofVolatile(null);
 		}
 
-		static class Default<T> implements Box.Nullable<T> {
+		static class Volatile<T> implements Box.Nullable<T> {
 			private volatile T obj;
 
-			private Default(T init) {
-				this.obj = init;
+			private Volatile(T init) {
+				set(init);
 			}
 
 			@Override
@@ -287,24 +286,24 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Nullable.of[" + get() + "]";
+				return "Box.Nullable.ofVolatile[" + get() + "]";
 			}
 		}
 
 		/** Creates a `Box.Nullable` holding the given possibly-null value in a non-`volatile` field. */
-		public static <T> Nullable<T> ofFast(@javax.annotation.Nullable T init) {
-			return new DefaultFast<>(init);
+		public static <T> Nullable<T> of(@javax.annotation.Nullable T init) {
+			return new Default<>(init);
 		}
 
-		/** Creates a `Box.Nullable` holding null in a non-`volatile` field. */
-		public static <T> Nullable<T> ofFastNull() {
-			return new DefaultFast<>(null);
+		/** Creates a `Box.Nullable` holding null value in a non-`volatile` field. */
+		public static <T> Nullable<T> ofNull() {
+			return of(null);
 		}
 
-		static class DefaultFast<T> implements Box.Nullable<T> {
+		static class Default<T> implements Box.Nullable<T> {
 			private T obj;
 
-			private DefaultFast(T init) {
+			private Default(T init) {
 				this.obj = init;
 			}
 
@@ -320,7 +319,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Nullable.ofFast[" + get() + "]";
+				return "Box.Nullable.of[" + get() + "]";
 			}
 		}
 
@@ -389,15 +388,43 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** Creates a `Box.Dbl` holding the given value in a `volatile` field. */
+		public static Dbl ofVolatile(double value) {
+			return new Volatile(value);
+		}
+
+		static class Volatile implements Box.Dbl {
+			private volatile double obj;
+
+			private Volatile(double init) {
+				set(init);
+			}
+
+			@Override
+			public double getAsDouble() {
+				return obj;
+			}
+
+			@Override
+			public void set(double obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Dbl.ofVolatile[" + getAsDouble() + "]";
+			}
+		}
+
+		/** Creates a `Box.Dbl` holding the given value in a non-`volatile` field. */
 		public static Dbl of(double value) {
 			return new Default(value);
 		}
 
 		static class Default implements Box.Dbl {
-			private volatile double obj;
+			private double obj;
 
 			private Default(double init) {
-				this.obj = init;
+				set(init);
 			}
 
 			@Override
@@ -413,34 +440,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			@Override
 			public String toString() {
 				return "Box.Dbl.of[" + getAsDouble() + "]";
-			}
-		}
-
-		/** Creates a `Box.Dbl` holding the given value in a non-`volatile` field. */
-		public static Dbl ofFast(double value) {
-			return new DefaultFast(value);
-		}
-
-		static class DefaultFast implements Box.Dbl {
-			private double obj;
-
-			private DefaultFast(double init) {
-				this.obj = init;
-			}
-
-			@Override
-			public double getAsDouble() {
-				return obj;
-			}
-
-			@Override
-			public void set(double obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Dbl.ofFast[" + getAsDouble() + "]";
 			}
 		}
 
@@ -507,15 +506,43 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** Creates a `Box.Int` holding the given value in a `volatile` field. */
+		public static Int ofVolatile(int value) {
+			return new Volatile(value);
+		}
+
+		static class Volatile implements Box.Int {
+			private volatile int obj;
+
+			private Volatile(int init) {
+				set(init);
+			}
+
+			@Override
+			public int getAsInt() {
+				return obj;
+			}
+
+			@Override
+			public void set(int obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Int.ofVolatile[" + get() + "]";
+			}
+		}
+
+		/** Creates a `Box.Int` holding the given value in a non-`volatile` field. */
 		public static Int of(int value) {
 			return new Default(value);
 		}
 
 		static class Default implements Box.Int {
-			private volatile int obj;
+			private int obj;
 
 			private Default(int init) {
-				this.obj = init;
+				set(init);
 			}
 
 			@Override
@@ -531,34 +558,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			@Override
 			public String toString() {
 				return "Box.Int.of[" + get() + "]";
-			}
-		}
-
-		/** Creates a `Box.Int` holding the given value in a non-`volatile` field. */
-		public static Int ofFast(int value) {
-			return new DefaultFast(value);
-		}
-
-		static class DefaultFast implements Box.Int {
-			private int obj;
-
-			private DefaultFast(int init) {
-				this.obj = init;
-			}
-
-			@Override
-			public int getAsInt() {
-				return obj;
-			}
-
-			@Override
-			public void set(int obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Int.ofFast[" + get() + "]";
 			}
 		}
 
@@ -625,15 +624,43 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		}
 
 		/** Creates a `Box.Long` holding the given value in a `volatile` field. */
+		public static Lng ofVolatile(long value) {
+			return new Volatile(value);
+		}
+
+		static class Volatile implements Box.Lng {
+			private volatile long obj;
+
+			private Volatile(long init) {
+				set(init);
+			}
+
+			@Override
+			public long getAsLong() {
+				return obj;
+			}
+
+			@Override
+			public void set(long obj) {
+				this.obj = obj;
+			}
+
+			@Override
+			public String toString() {
+				return "Box.Long.ofVolatile[" + get() + "]";
+			}
+		}
+
+		/** Creates a `Box.Long` holding the given value in a non-`volatile` field. */
 		public static Lng of(long value) {
 			return new Default(value);
 		}
 
 		static class Default implements Box.Lng {
-			private volatile long obj;
+			private long obj;
 
 			private Default(long init) {
-				this.obj = init;
+				set(init);
 			}
 
 			@Override
@@ -649,34 +676,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			@Override
 			public String toString() {
 				return "Box.Long.of[" + get() + "]";
-			}
-		}
-
-		/** Creates a `Box.Long` holding the given value in a non-`volatile` field. */
-		public static Lng ofFast(long value) {
-			return new DefaultFast(value);
-		}
-
-		static class DefaultFast implements Box.Lng {
-			private long obj;
-
-			private DefaultFast(long init) {
-				this.obj = init;
-			}
-
-			@Override
-			public long getAsLong() {
-				return obj;
-			}
-
-			@Override
-			public void set(long obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Long.ofFast[" + get() + "]";
 			}
 		}
 

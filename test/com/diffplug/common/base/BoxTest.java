@@ -32,60 +32,60 @@ public class BoxTest {
 		};
 
 		// standard Box
-		Box<String> boxValue = Box.of("contain");
-		Box<String> boxValueFast = Box.ofFast("contain");
+		Box<String> boxValue = Box.ofVolatile("contain");
+		Box<String> boxValueFast = Box.of("contain");
 		Box<String> boxFromMethods = Box.from(boxValue::get, boxValue::set);
 
-		expectToString.accept(boxValue, "Box.of[contain]");
-		expectToString.accept(boxValueFast, "Box.ofFast[contain]");
+		expectToString.accept(boxValue, "Box.ofVolatile[contain]");
+		expectToString.accept(boxValueFast, "Box.of[contain]");
 		expectToString.accept(boxFromMethods, "Box.from[contain]");
 
 		// standard Box.Nullable
-		Box.Nullable<String> boxValueNullable = Box.Nullable.ofNull();
-		Box.Nullable<String> boxValueNullableFast = Box.Nullable.ofFastNull();
+		Box.Nullable<String> boxValueNullable = Box.Nullable.ofVolatileNull();
+		Box.Nullable<String> boxValueNullableFast = Box.Nullable.ofNull();
 		Box.Nullable<String> boxFromMethodsNullable = Box.Nullable.from(boxValueNullable::get, boxValueNullable::set);
 
-		expectToString.accept(boxValueNullable, "Box.Nullable.of[null]");
-		expectToString.accept(boxValueNullableFast, "Box.Nullable.ofFast[null]");
+		expectToString.accept(boxValueNullable, "Box.Nullable.ofVolatile[null]");
+		expectToString.accept(boxValueNullableFast, "Box.Nullable.of[null]");
 		expectToString.accept(boxFromMethodsNullable, "Box.Nullable.from[null]");
 
 		boxValueNullable.set("contain");
 		boxValueNullableFast.set("contain");
-		expectToString.accept(boxValueNullable, "Box.Nullable.of[contain]");
-		expectToString.accept(boxValueNullableFast, "Box.Nullable.ofFast[contain]");
+		expectToString.accept(boxValueNullable, "Box.Nullable.ofVolatile[contain]");
+		expectToString.accept(boxValueNullableFast, "Box.Nullable.of[contain]");
 		expectToString.accept(boxFromMethodsNullable, "Box.Nullable.from[contain]");
 
 		// standard Box.Dbl
-		Box.Dbl dblValue = Box.Dbl.of(0);
-		Box.Dbl dblValueFast = Box.Dbl.ofFast(0);
+		Box.Dbl dblValue = Box.Dbl.ofVolatile(0);
+		Box.Dbl dblValueFast = Box.Dbl.of(0);
 		Box.Dbl dblFromMethods = Box.Dbl.from(dblValue::getAsDouble, dblValue::set);
 
-		expectToString.accept(dblValue, "Box.Dbl.of[0.0]");
-		expectToString.accept(dblValueFast, "Box.Dbl.ofFast[0.0]");
+		expectToString.accept(dblValue, "Box.Dbl.ofVolatile[0.0]");
+		expectToString.accept(dblValueFast, "Box.Dbl.of[0.0]");
 		expectToString.accept(dblFromMethods, "Box.Dbl.from[0.0]");
 
 		// standard Box.Int
-		Box.Int intValue = Box.Int.of(0);
-		Box.Int intValueFast = Box.Int.ofFast(0);
+		Box.Int intValue = Box.Int.ofVolatile(0);
+		Box.Int intValueFast = Box.Int.of(0);
 		Box.Int intFromMethods = Box.Int.from(intValue::getAsInt, intValue::set);
 
-		expectToString.accept(intValue, "Box.Int.of[0]");
-		expectToString.accept(intValueFast, "Box.Int.ofFast[0]");
+		expectToString.accept(intValue, "Box.Int.ofVolatile[0]");
+		expectToString.accept(intValueFast, "Box.Int.of[0]");
 		expectToString.accept(intFromMethods, "Box.Int.from[0]");
 
 		// standard Box.Long
-		Box.Lng longValue = Box.Lng.of(0);
-		Box.Lng longValueFast = Box.Lng.ofFast(0);
+		Box.Lng longValue = Box.Lng.ofVolatile(0);
+		Box.Lng longValueFast = Box.Lng.of(0);
 		Box.Lng longFromMethod = Box.Lng.from(longValue::getAsLong, longValue::set);
 
-		expectToString.accept(longValue, "Box.Long.of[0]");
-		expectToString.accept(longValueFast, "Box.Long.ofFast[0]");
+		expectToString.accept(longValue, "Box.Long.ofVolatile[0]");
+		expectToString.accept(longValueFast, "Box.Long.of[0]");
 		expectToString.accept(longFromMethod, "Box.Long.from[0]");
 	}
 
 	@Test
 	public void testFromMethods() {
-		Box<String> testValue = Box.of("");
+		Box<String> testValue = Box.ofVolatile("");
 		Box<String> forValue = Box.from(testValue::get, testValue::set);
 		forValue.set("A");
 		Assert.assertEquals("A", forValue.get());
