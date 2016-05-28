@@ -97,7 +97,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 		@Override
 		public String toString() {
-			return "[" + delegate + " mapped to " + get() + " by " + converter + "]";
+			return "[" + delegate + " mapped to [" + get() + "] by " + converter + "]";
 		}
 	}
 
@@ -253,7 +253,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "[" + delegate + " mapped to " + get() + " by " + converter + "]";
+				return "[" + delegate + " mapped to [" + get() + "] by " + converter + "]";
 			}
 		}
 
@@ -591,7 +591,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 			@Override
 			public String toString() {
-				return "Box.Long.of[" + get() + "]";
+				return "Box.Lng.of[" + get() + "]";
 			}
 		}
 
@@ -610,7 +610,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 
 				@Override
 				public String toString() {
-					return "Box.Long.from[" + get() + "]";
+					return "Box.Lng.from[" + get() + "]";
 				}
 			};
 		}

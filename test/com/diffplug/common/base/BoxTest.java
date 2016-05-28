@@ -19,70 +19,272 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.function.BiConsumer;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.common.util.concurrent.Runnables;
 
 /** Stupid-simple test for the very simple Box class. */
 public class BoxTest {
 	@Test
 	public void testToString() {
+		Converter<String, String> converter = Converter.from(str -> "_" + str, str -> str.substring(1), "f");
 		BiConsumer<Object, String> expectToString = (obj, expected) -> {
 			assertThat(obj.toString()).isEqualTo(expected);
 		};
 
 		// standard Box
-		Box<String> boxValue = Box.ofVolatile("contain");
-		Box<String> boxValueFast = Box.of("contain");
-		Box<String> boxFromMethods = Box.from(boxValue::get, boxValue::set);
+		{
+			Box<String> boxOf = Box.of("contain");
+			Box<String> boxOfVolatile = Box.ofVolatile("contain");
+			Box<String> boxFrom = Box.from(boxOfVolatile::get, boxOfVolatile::set);
 
-		expectToString.accept(boxValue, "Box.ofVolatile[contain]");
-		expectToString.accept(boxValueFast, "Box.of[contain]");
-		expectToString.accept(boxFromMethods, "Box.from[contain]");
+			expectToString.accept(boxOf, "Box.of[contain]");
+			expectToString.accept(boxOfVolatile, "Box.ofVolatile[contain]");
+			expectToString.accept(boxFrom, "Box.from[contain]");
+
+			expectToString.accept(boxOf.map(converter), "[Box.of[contain] mapped to [_contain] by f]");
+			expectToString.accept(boxOfVolatile.map(converter), "[Box.ofVolatile[contain] mapped to [_contain] by f]");
+			expectToString.accept(boxFrom.map(converter), "[Box.from[contain] mapped to [_contain] by f]");
+		}
 
 		// standard Box.Nullable
-		Box.Nullable<String> boxValueNullable = Box.Nullable.ofVolatileNull();
-		Box.Nullable<String> boxValueNullableFast = Box.Nullable.ofNull();
-		Box.Nullable<String> boxFromMethodsNullable = Box.Nullable.from(boxValueNullable::get, boxValueNullable::set);
+		{
+			Box.Nullable<String> boxOf = Box.Nullable.of("contain");
+			Box.Nullable<String> boxOfVolatile = Box.Nullable.ofVolatile("contain");
+			Box.Nullable<String> boxFrom = Box.Nullable.from(boxOfVolatile::get, boxOfVolatile::set);
 
-		expectToString.accept(boxValueNullable, "Box.Nullable.ofVolatile[null]");
-		expectToString.accept(boxValueNullableFast, "Box.Nullable.of[null]");
-		expectToString.accept(boxFromMethodsNullable, "Box.Nullable.from[null]");
+			expectToString.accept(boxOf, "Box.Nullable.of[contain]");
+			expectToString.accept(boxOfVolatile, "Box.Nullable.ofVolatile[contain]");
+			expectToString.accept(boxFrom, "Box.Nullable.from[contain]");
 
-		boxValueNullable.set("contain");
-		boxValueNullableFast.set("contain");
-		expectToString.accept(boxValueNullable, "Box.Nullable.ofVolatile[contain]");
-		expectToString.accept(boxValueNullableFast, "Box.Nullable.of[contain]");
-		expectToString.accept(boxFromMethodsNullable, "Box.Nullable.from[contain]");
+			expectToString.accept(boxOf.map(converter), "[Box.Nullable.of[contain] mapped to [_contain] by f]");
+			expectToString.accept(boxOfVolatile.map(converter), "[Box.Nullable.ofVolatile[contain] mapped to [_contain] by f]");
+			expectToString.accept(boxFrom.map(converter), "[Box.Nullable.from[contain] mapped to [_contain] by f]");
 
-		// standard Box.Dbl
+			boxOf.set(null);
+			boxOfVolatile.set(null);
+
+			expectToString.accept(boxOf, "Box.Nullable.of[null]");
+			expectToString.accept(boxOfVolatile, "Box.Nullable.ofVolatile[null]");
+			expectToString.accept(boxFrom, "Box.Nullable.from[null]");
+
+			expectToString.accept(boxOf.map(converter), "[Box.Nullable.of[null] mapped to [null] by f]");
+			expectToString.accept(boxOfVolatile.map(converter), "[Box.Nullable.ofVolatile[null] mapped to [null] by f]");
+			expectToString.accept(boxFrom.map(converter), "[Box.Nullable.from[null] mapped to [null] by f]");
+		}
+
+		// Box.Dbl
 		Box.Dbl dblValue = Box.Dbl.of(0);
 		Box.Dbl dblFromMethods = Box.Dbl.from(dblValue::getAsDouble, dblValue::set);
 
 		expectToString.accept(dblValue, "Box.Dbl.of[0.0]");
 		expectToString.accept(dblFromMethods, "Box.Dbl.from[0.0]");
 
-		// standard Box.Int
+		// Box.Int
 		Box.Int intValue = Box.Int.of(0);
 		Box.Int intFromMethods = Box.Int.from(intValue::getAsInt, intValue::set);
 
 		expectToString.accept(intValue, "Box.Int.of[0]");
 		expectToString.accept(intFromMethods, "Box.Int.from[0]");
 
-		// standard Box.Long
+		// Box.Long
 		Box.Lng longValue = Box.Lng.of(0);
 		Box.Lng longFromMethod = Box.Lng.from(longValue::getAsLong, longValue::set);
 
-		expectToString.accept(longValue, "Box.Long.of[0]");
-		expectToString.accept(longFromMethod, "Box.Long.from[0]");
+		expectToString.accept(longValue, "Box.Lng.of[0]");
+		expectToString.accept(longFromMethod, "Box.Lng.from[0]");
 	}
 
 	@Test
-	public void testFromMethods() {
-		Box<String> testValue = Box.ofVolatile("");
-		Box<String> forValue = Box.from(testValue::get, testValue::set);
-		forValue.set("A");
-		Assert.assertEquals("A", forValue.get());
-		forValue.set("B");
-		Assert.assertEquals("B", forValue.get());
+	public void getSetModify() {
+		getSetModifyCase(Box.of("init"), "init");
+		getSetModifyCase(Box.ofVolatile("init"), "init");
+		Box<String> root = Box.of("init");
+		Box<String> from = Box.from(root::get, root::set);
+		getSetModifyCase(from, "init");
+
+		getSetModifyCase(Box.Nullable.of(null), null);
+		getSetModifyCase(Box.Nullable.ofVolatile(null), null);
+		Box.Nullable<String> rootNullable = Box.Nullable.of(null);
+		Box.Nullable<String> fromNullable = Box.Nullable.from(rootNullable::get, rootNullable::set);
+		getSetModifyCase(fromNullable, null);
+	}
+
+	@Test
+	public void getSetModifyAndMapped() {
+		Converter<String, String> converter = Converter.from(
+				str -> "123" + str,
+				str -> str.substring(3));
+		{
+			Box<String> value = Box.of("init");
+			Box<String> mapped = value.map(converter);
+			Runnable assertMapped = () -> {
+				assertThat("123" + value.get()).isEqualTo(mapped.get());
+			};
+			getSetModifyCase(value, "init", assertMapped);
+		}
+		{
+			Box<String> value = Box.ofVolatile("init");
+			Box<String> mapped = value.map(converter);
+			Runnable assertMapped = () -> {
+				assertThat("123" + value.get()).isEqualTo(mapped.get());
+			};
+			getSetModifyCase(value, "init", assertMapped);
+		}
+		{
+			Box<String> root = Box.of("init");
+			Box<String> value = Box.from(root::get, root::set);
+			Box<String> mapped = value.map(converter);
+			Runnable assertMapped = () -> {
+				assertThat("123" + value.get()).isEqualTo(mapped.get());
+			};
+			getSetModifyCase(value, "init", assertMapped);
+		}
+
+		{
+			Box.Nullable<String> value = Box.Nullable.of(null);
+			Box.Nullable<String> mapped = value.map(converter);
+			Runnable assertMapped = () -> {
+				assertThat(value.get() == null ? null : "123" + value.get()).isEqualTo(mapped.get());
+			};
+			getSetModifyCase(value, null, assertMapped);
+		}
+		{
+			Box.Nullable<String> value = Box.Nullable.ofVolatile(null);
+			Box.Nullable<String> mapped = value.map(converter);
+			Runnable assertMapped = () -> {
+				assertThat(value.get() == null ? null : "123" + value.get()).isEqualTo(mapped.get());
+			};
+			getSetModifyCase(value, null, assertMapped);
+		}
+		{
+			Box.Nullable<String> root = Box.Nullable.of("init");
+			Box.Nullable<String> value = Box.Nullable.from(root::get, root::set);
+			Box.Nullable<String> mapped = value.map(converter);
+			Runnable assertMapped = () -> {
+				assertThat(value.get() == null ? null : "123" + value.get()).isEqualTo(mapped.get());
+			};
+			getSetModifyCase(value, "init", assertMapped);
+		}
+	}
+
+	private void getSetModifyCase(Box<String> box, String initial, Runnable afterEachAssertion) {
+		assertThat(box.get()).isEqualTo(initial);
+		afterEachAssertion.run();
+
+		box.set("other");
+		assertThat(box.get()).isEqualTo("other");
+		afterEachAssertion.run();
+
+		assertThat(box.modify(other -> other + "_")).isEqualTo("other_");
+		afterEachAssertion.run();
+	}
+
+	private void getSetModifyCase(Box.Nullable<String> box, String initial, Runnable afterEachAssertion) {
+		assertThat(box.get()).isEqualTo(initial);
+		afterEachAssertion.run();
+
+		box.set("other");
+		assertThat(box.get()).isEqualTo("other");
+		afterEachAssertion.run();
+
+		assertThat(box.modify(other -> other + "_")).isEqualTo("other_");
+		afterEachAssertion.run();
+	}
+
+	private void getSetModifyCase(Box<String> box, String initial) {
+		getSetModifyCase(box, initial, Runnables.doNothing());
+	}
+
+	private void getSetModifyCase(Box.Nullable<String> box, String initial) {
+		getSetModifyCase(box, initial, Runnables.doNothing());
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void getSetModifyPrimitives() {
+		// Box.Dbl
+		{
+			Box.Dbl box = Box.Dbl.of(0);
+			Box.Dbl from = Box.Dbl.from(box::getAsDouble, box::set);
+			assertThat(box.getAsDouble()).isWithin(0.0001).of(0);
+			assertThat(box.get()).isWithin(0.0001).of(0);
+			assertThat(from.getAsDouble()).isWithin(0.0001).of(0);
+			assertThat(from.get()).isWithin(0.0001).of(0);
+
+			assertThat(box.modify(v -> v + 1)).isWithin(0.0001).of(1);
+			assertThat(box.getAsDouble()).isWithin(0.0001).of(1);
+			assertThat(box.get()).isWithin(0.0001).of(1);
+			assertThat(from.getAsDouble()).isWithin(0.0001).of(1);
+			assertThat(from.get()).isWithin(0.0001).of(1);
+
+			assertThat(from.modify(v -> v + 1)).isWithin(0.0001).of(2);
+			assertThat(box.getAsDouble()).isWithin(0.0001).of(2);
+			assertThat(box.get()).isWithin(0.0001).of(2);
+			assertThat(from.getAsDouble()).isWithin(0.0001).of(2);
+			assertThat(from.get()).isWithin(0.0001).of(2);
+
+			box.set(-1);
+			assertThat(box.getAsDouble()).isWithin(0.0001).of(-1);
+			assertThat(box.get()).isWithin(0.0001).of(-1);
+			assertThat(from.getAsDouble()).isWithin(0.0001).of(-1);
+			assertThat(from.get()).isWithin(0.0001).of(-1);
+		}
+
+		// Box.Int
+		{
+			Box.Int box = Box.Int.of(0);
+			Box.Int from = Box.Int.from(box::getAsInt, box::set);
+			assertThat(box.getAsInt()).isEqualTo(0);
+			assertThat(box.get()).isEqualTo(0);
+			assertThat(from.getAsInt()).isEqualTo(0);
+			assertThat(from.get()).isEqualTo(0);
+
+			assertThat(box.modify(v -> v + 1)).isEqualTo(1);
+			assertThat(box.getAsInt()).isEqualTo(1);
+			assertThat(box.get()).isEqualTo(1);
+			assertThat(from.getAsInt()).isEqualTo(1);
+			assertThat(from.get()).isEqualTo(1);
+
+			assertThat(from.modify(v -> v + 1)).isEqualTo(2);
+			assertThat(box.getAsInt()).isEqualTo(2);
+			assertThat(box.get()).isEqualTo(2);
+			assertThat(from.getAsInt()).isEqualTo(2);
+			assertThat(from.get()).isEqualTo(2);
+
+			box.set(-1);
+			assertThat(box.getAsInt()).isEqualTo(-1);
+			assertThat(box.get()).isEqualTo(-1);
+			assertThat(from.getAsInt()).isEqualTo(-1);
+			assertThat(from.get()).isEqualTo(-1);
+		}
+
+		// Box.Long
+		{
+			Box.Lng box = Box.Lng.of(0);
+			Box.Lng from = Box.Lng.from(box::getAsLong, box::set);
+			assertThat(box.getAsLong()).isEqualTo(0);
+			assertThat(box.get()).isEqualTo(0);
+			assertThat(from.getAsLong()).isEqualTo(0);
+			assertThat(from.get()).isEqualTo(0);
+
+			assertThat(box.modify(v -> v + 1)).isEqualTo(1);
+			assertThat(box.getAsLong()).isEqualTo(1);
+			assertThat(box.get()).isEqualTo(1);
+			assertThat(from.getAsLong()).isEqualTo(1);
+			assertThat(from.get()).isEqualTo(1);
+
+			assertThat(from.modify(v -> v + 1)).isEqualTo(2);
+			assertThat(box.getAsLong()).isEqualTo(2);
+			assertThat(box.get()).isEqualTo(2);
+			assertThat(from.getAsLong()).isEqualTo(2);
+			assertThat(from.get()).isEqualTo(2);
+
+			box.set(-1);
+			assertThat(box.getAsLong()).isEqualTo(-1);
+			assertThat(box.get()).isEqualTo(-1);
+			assertThat(from.getAsLong()).isEqualTo(-1);
+			assertThat(from.get()).isEqualTo(-1);
+		}
 	}
 }
