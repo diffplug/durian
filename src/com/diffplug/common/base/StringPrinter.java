@@ -30,11 +30,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
 /**
- * Pipes strings to a {@code Consumer<String>} through an API similar to PrintWriter and PrintStream.
- * 
+ * Pipes strings to a {@code Consumer<String>} through an API similar to `PrintWriter` and `PrintStream`.
+ *
  * Can present itself as an {@link OutputStream}, {@link PrintStream}, {@link Writer}, or {@link PrintWriter}.
+ *
+ * See {@link #buildString(Consumer)} for some common use cases.
  */
-public class StringPrinter {
+public final class StringPrinter {
 	private final Consumer<String> consumer;
 
 	/** StringPrinter will pass all the strings it receives to the given consumer. */
@@ -53,7 +55,15 @@ public class StringPrinter {
 		consumer.accept(content);
 	}
 
-	/** Easy way to create a String using a StringPrinter. */
+	/**
+	 * Easy way to create a String using a StringPrinter.
+	 * 
+	 * ```java
+	 * String currentStackTrace = StringPrinter.buildString(printer -> {
+	 *     new Throwable().printStackTrace(printer.toPrintStream());
+	 * });
+	 * ```
+	 */
 	public static String buildString(Consumer<StringPrinter> printer) {
 		StringBuilder builder = new StringBuilder();
 		printer.accept(new StringPrinter(builder::append));
@@ -145,12 +155,18 @@ public class StringPrinter {
 	/** Buffer size for decoding characters. */
 	private static final int DECODER_BUFFER = 128;
 
-	/** Creates a UTF-8 PrintStream which passes its content to this StringPrinter. */
+	/**
+	 * Calls {@link #toPrintStream()} with `charset=UTF-8`.
+	 */
 	public PrintStream toPrintStream() {
 		return toPrintStream(StandardCharsets.UTF_8);
 	}
 
-	/** Creates a PrintStream of the given charset, which passes its content to this StringPrinter. */
+	/**
+	 * Creates a `PrintStream` of the given charset, which passes its content to this `StringPrinter`.
+	 *
+	 * Note that `PrintStream.println` uses the system newline, while `StringPrinter.println` always uses `\n`.
+	 */
 	public PrintStream toPrintStream(Charset charset) {
 		return Errors.rethrow().get(() -> {
 			return new PrintStream(toOutputStream(charset), true, charset.name());
@@ -226,7 +242,11 @@ public class StringPrinter {
 		};
 	}
 
-	/** Creates a PrintWriter which passes its content to this StringPrinter. */
+	/**
+	 * Creates a PrintWriter which passes its content to this StringPrinter.
+	 *
+	 * Note that `PrintStream.println` uses the system newline, while `StringPrinter.println` always uses `\n`.
+	 */
 	public PrintWriter toPrintWriter() {
 		boolean autoflush = true;
 		return new PrintWriter(toWriter(), autoflush);
@@ -260,12 +280,12 @@ public class StringPrinter {
 		};
 	}
 
-	/** Returns a StringPrinter for {@link System#out}. */
+	/** Creates a `StringPrinter` directed at {@link System#out}. */
 	public static StringPrinter systemOut() {
 		return new StringPrinter(System.out::print);
 	}
 
-	/** Returns a StringPrinter for {@link System#err}. */
+	/** Creates a `StringPrinter` directed at {@link System#err}. */
 	public static StringPrinter systemErr() {
 		return new StringPrinter(System.err::print);
 	}

@@ -92,8 +92,8 @@ public class StringPrinterTest {
 		}));
 	}
 
-	/** "I can eat glass" in Japanese, according to http://www.columbia.edu/~kermit/utf8.html */
-	private static final String TEST_UTF = "�?�?�ガラスを食�?�られ�?��?�。�??れ�?��?を傷�?��?��?��?�ん。";
+	/** "I can eat glass" in Japanese, according to http://www.columbia.edu/~fdc/utf8/index.html#glass */
+	private static final String TEST_UTF = "私はガラスを食べられます。それは私を傷つけません。";
 
 	@Test
 	public void testEncodings() {
