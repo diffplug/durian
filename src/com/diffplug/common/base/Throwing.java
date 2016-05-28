@@ -20,7 +20,9 @@ package com.diffplug.common.base;
  * <p>
  * {@link Errors} can convert these into standard functional interfaces.
  */
-public interface Throwing {
+public final class Throwing {
+	private Throwing() {}
+
 	/** Variations on the standard functional interfaces which throw a specific subclass of Throwable. */
 	public interface Specific {
 		@FunctionalInterface
