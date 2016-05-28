@@ -151,7 +151,7 @@ public abstract class Either<L, R> {
 
 		@Override
 		public final R getRight() {
-			throw Unhandled.operationException();
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
@@ -189,7 +189,7 @@ public abstract class Either<L, R> {
 
 		@Override
 		public final L getLeft() {
-			throw Unhandled.operationException();
+			throw new UnsupportedOperationException();
 		}
 
 		@Override

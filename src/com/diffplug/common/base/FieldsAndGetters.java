@@ -209,7 +209,7 @@ public class FieldsAndGetters {
 
 			@Override
 			public V setValue(V value) {
-				throw Unhandled.operationException();
+				throw new UnsupportedOperationException();
 			}
 		};
 	}
