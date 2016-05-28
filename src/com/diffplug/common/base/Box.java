@@ -63,7 +63,7 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		return new Mapped<>(this, converter);
 	}
 
-	public static final class Mapped<T, R> implements Box<R> {
+	static final class Mapped<T, R> implements Box<R> {
 		private final Box<T> delegate;
 		private final Converter<T, R> converter;
 
@@ -387,34 +387,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
-		/** Creates a `Box.Dbl` holding the given value in a `volatile` field. */
-		public static Dbl ofVolatile(double value) {
-			return new Volatile(value);
-		}
-
-		static class Volatile implements Box.Dbl {
-			private volatile double obj;
-
-			private Volatile(double init) {
-				set(init);
-			}
-
-			@Override
-			public double getAsDouble() {
-				return obj;
-			}
-
-			@Override
-			public void set(double obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Dbl.ofVolatile[" + getAsDouble() + "]";
-			}
-		}
-
 		/** Creates a `Box.Dbl` holding the given value in a non-`volatile` field. */
 		public static Dbl of(double value) {
 			return new Default(value);
@@ -505,34 +477,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 			set(value);
 		}
 
-		/** Creates a `Box.Int` holding the given value in a `volatile` field. */
-		public static Int ofVolatile(int value) {
-			return new Volatile(value);
-		}
-
-		static class Volatile implements Box.Int {
-			private volatile int obj;
-
-			private Volatile(int init) {
-				set(init);
-			}
-
-			@Override
-			public int getAsInt() {
-				return obj;
-			}
-
-			@Override
-			public void set(int obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Int.ofVolatile[" + get() + "]";
-			}
-		}
-
 		/** Creates a `Box.Int` holding the given value in a non-`volatile` field. */
 		public static Int of(int value) {
 			return new Default(value);
@@ -621,34 +565,6 @@ public interface Box<T> extends Supplier<T>, Consumer<T> {
 		@Override
 		default void accept(long value) {
 			set(value);
-		}
-
-		/** Creates a `Box.Long` holding the given value in a `volatile` field. */
-		public static Lng ofVolatile(long value) {
-			return new Volatile(value);
-		}
-
-		static class Volatile implements Box.Lng {
-			private volatile long obj;
-
-			private Volatile(long init) {
-				set(init);
-			}
-
-			@Override
-			public long getAsLong() {
-				return obj;
-			}
-
-			@Override
-			public void set(long obj) {
-				this.obj = obj;
-			}
-
-			@Override
-			public String toString() {
-				return "Box.Long.ofVolatile[" + get() + "]";
-			}
 		}
 
 		/** Creates a `Box.Long` holding the given value in a non-`volatile` field. */

@@ -18,7 +18,6 @@ package com.diffplug.common.base;
 import static com.google.common.truth.Truth.assertThat;
 
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -56,30 +55,24 @@ public class BoxTest {
 		expectToString.accept(boxFromMethodsNullable, "Box.Nullable.from[contain]");
 
 		// standard Box.Dbl
-		Box.Dbl dblValue = Box.Dbl.ofVolatile(0);
-		Box.Dbl dblValueFast = Box.Dbl.of(0);
+		Box.Dbl dblValue = Box.Dbl.of(0);
 		Box.Dbl dblFromMethods = Box.Dbl.from(dblValue::getAsDouble, dblValue::set);
 
-		expectToString.accept(dblValue, "Box.Dbl.ofVolatile[0.0]");
-		expectToString.accept(dblValueFast, "Box.Dbl.of[0.0]");
+		expectToString.accept(dblValue, "Box.Dbl.of[0.0]");
 		expectToString.accept(dblFromMethods, "Box.Dbl.from[0.0]");
 
 		// standard Box.Int
-		Box.Int intValue = Box.Int.ofVolatile(0);
-		Box.Int intValueFast = Box.Int.of(0);
+		Box.Int intValue = Box.Int.of(0);
 		Box.Int intFromMethods = Box.Int.from(intValue::getAsInt, intValue::set);
 
-		expectToString.accept(intValue, "Box.Int.ofVolatile[0]");
-		expectToString.accept(intValueFast, "Box.Int.of[0]");
+		expectToString.accept(intValue, "Box.Int.of[0]");
 		expectToString.accept(intFromMethods, "Box.Int.from[0]");
 
 		// standard Box.Long
-		Box.Lng longValue = Box.Lng.ofVolatile(0);
-		Box.Lng longValueFast = Box.Lng.of(0);
+		Box.Lng longValue = Box.Lng.of(0);
 		Box.Lng longFromMethod = Box.Lng.from(longValue::getAsLong, longValue::set);
 
-		expectToString.accept(longValue, "Box.Long.ofVolatile[0]");
-		expectToString.accept(longValueFast, "Box.Long.of[0]");
+		expectToString.accept(longValue, "Box.Long.of[0]");
 		expectToString.accept(longFromMethod, "Box.Long.from[0]");
 	}
 
@@ -91,8 +84,5 @@ public class BoxTest {
 		Assert.assertEquals("A", forValue.get());
 		forValue.set("B");
 		Assert.assertEquals("B", forValue.get());
-
-		Function<Object, String> toString = Object::toString;
-		System.out.println("toString=" + toString);
 	}
 }
