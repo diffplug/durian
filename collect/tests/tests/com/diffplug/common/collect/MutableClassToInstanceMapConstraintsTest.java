@@ -21,26 +21,15 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.RandomAccess;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.function.Supplier;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.testing.SerializableTester;
 
 /**
  * Tests for {@code MapConstraints}.
@@ -49,7 +38,7 @@ import com.diffplug.common.testing.SerializableTester;
  * @author Jared Levy
  */
 @GwtCompatible(emulated = true)
-public class MapConstraintsTest extends TestCase {
+public class MutableClassToInstanceMapConstraintsTest extends TestCase {
 
 	private static final String TEST_KEY = "test";
 
@@ -63,10 +52,10 @@ public class MapConstraintsTest extends TestCase {
 		private static final long serialVersionUID = 0;
 	}
 
-	static final MapConstraint<String, Integer> TEST_CONSTRAINT = new TestConstraint();
+	static final MutableClassToInstanceMapConstraint<String, Integer> TEST_CONSTRAINT = new TestConstraint();
 
 	private static final class TestConstraint
-			implements MapConstraint<String, Integer>, Serializable {
+			implements MutableClassToInstanceMapConstraint<String, Integer>, Serializable {
 		@Override
 		public void checkKeyValue(String key, Integer value) {
 			if (TEST_KEY.equals(key)) {
@@ -82,7 +71,7 @@ public class MapConstraintsTest extends TestCase {
 
 	public void testConstrainedMapLegal() {
 		Map<String, Integer> map = Maps.newLinkedHashMap();
-		Map<String, Integer> constrained = MapConstraints.constrainedMap(
+		Map<String, Integer> constrained = MutableClassToInstanceMapConstraints.constrainedMap(
 				map, TEST_CONSTRAINT);
 		map.put(TEST_KEY, TEST_VALUE);
 		constrained.put("foo", 1);
@@ -106,7 +95,7 @@ public class MapConstraintsTest extends TestCase {
 
 	public void testConstrainedMapIllegal() {
 		Map<String, Integer> map = Maps.newLinkedHashMap();
-		Map<String, Integer> constrained = MapConstraints.constrainedMap(
+		Map<String, Integer> constrained = MutableClassToInstanceMapConstraints.constrainedMap(
 				map, TEST_CONSTRAINT);
 		try {
 			constrained.put(TEST_KEY, TEST_VALUE);
@@ -130,7 +119,7 @@ public class MapConstraintsTest extends TestCase {
 
 	public void testMapEntrySetToArray() {
 		Map<String, Integer> map = Maps.newLinkedHashMap();
-		Map<String, Integer> constrained = MapConstraints.constrainedMap(map, TEST_CONSTRAINT);
+		Map<String, Integer> constrained = MutableClassToInstanceMapConstraints.constrainedMap(map, TEST_CONSTRAINT);
 		map.put("foo", 1);
 		@SuppressWarnings("unchecked")
 		Map.Entry<String, Integer> entry = (Map.Entry) constrained.entrySet().toArray()[0];
@@ -143,7 +132,7 @@ public class MapConstraintsTest extends TestCase {
 
 	public void testMapEntrySetContainsNefariousEntry() {
 		Map<String, Integer> map = Maps.newTreeMap();
-		Map<String, Integer> constrained = MapConstraints.constrainedMap(map, TEST_CONSTRAINT);
+		Map<String, Integer> constrained = MutableClassToInstanceMapConstraints.constrainedMap(map, TEST_CONSTRAINT);
 		map.put("foo", 1);
 		Map.Entry<String, Integer> nefariousEntry = nefariousMapEntry(TEST_KEY, TEST_VALUE);
 		Set<Map.Entry<String, Integer>> entries = constrained.entrySet();
@@ -155,7 +144,7 @@ public class MapConstraintsTest extends TestCase {
 
 	public void testNefariousMapPutAll() {
 		Map<String, Integer> map = Maps.newLinkedHashMap();
-		Map<String, Integer> constrained = MapConstraints.constrainedMap(
+		Map<String, Integer> constrained = MutableClassToInstanceMapConstraints.constrainedMap(
 				map, TEST_CONSTRAINT);
 		Map<String, Integer> onceIterable = onceIterableMap("foo", 1);
 		constrained.putAll(onceIterable);

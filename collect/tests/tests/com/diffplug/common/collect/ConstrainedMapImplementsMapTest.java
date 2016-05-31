@@ -33,14 +33,14 @@ public class ConstrainedMapImplementsMapTest
 
 	@Override
 	protected Map<String, Integer> makeEmptyMap() {
-		return MapConstraints.constrainedMap(new HashMap<String, Integer>(),
-				MapConstraintsTest.TEST_CONSTRAINT);
+		return MutableClassToInstanceMapConstraints.constrainedMap(new HashMap<String, Integer>(),
+				MutableClassToInstanceMapConstraintsTest.TEST_CONSTRAINT);
 	}
 
 	@Override
 	protected Map<String, Integer> makePopulatedMap() {
-		final Map<String, Integer> sortedMap = MapConstraints.constrainedMap(
-				new HashMap<String, Integer>(), MapConstraintsTest.TEST_CONSTRAINT);
+		final Map<String, Integer> sortedMap = MutableClassToInstanceMapConstraints.constrainedMap(
+				new HashMap<String, Integer>(), MutableClassToInstanceMapConstraintsTest.TEST_CONSTRAINT);
 		sortedMap.put("one", 1);
 		sortedMap.put("two", 2);
 		sortedMap.put("three", 3);
