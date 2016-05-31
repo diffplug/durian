@@ -132,36 +132,6 @@ public final class ClassSanityTester {
 	}
 
 	/**
-	 * Sets sample instances for {@code type}, so that when a class {@code Foo} is tested for {@link
-	 * Object#equals} and {@link Object#hashCode}, and its construction requires a parameter of {@code
-	 * type}, the sample instances can be passed to create {@code Foo} instances that are unequal.
-	 *
-	 * <p>Used for types where {@link ClassSanityTester} doesn't already know how to instantiate
-	 * distinct values. It's usually necessary to add two unequal instances for each type, with the
-	 * exception that if the sample instance is to be passed to a {@link Nullable} parameter, one
-	 * non-null sample is sufficient. Setting an empty list will clear sample instances for {@code
-	 * type}.
-	 *
-	 * @deprecated To supply multiple values, use {@link #setDistinctValues}. It accepts only two
-	 *     values, which is enough for any {@code equals} testing. To supply a single value, use
-	 *     {@link #setDefault}. This method will be removed in Guava release 20.0.
-	 */
-	@Deprecated
-	public <T> ClassSanityTester setSampleInstances(
-			Class<T> type, Iterable<? extends T> instances) {
-		ImmutableList<? extends T> samples = ImmutableList.copyOf(instances);
-		Set<Object> uniqueValues = new HashSet<Object>();
-		for (T instance : instances) {
-			checkArgument(uniqueValues.add(instance), "Duplicate value: %s", instance);
-		}
-		distinctValues.putAll(checkNotNull(type), samples);
-		if (!samples.isEmpty()) {
-			setDefault(type, samples.get(0));
-		}
-		return this;
-	}
-
-	/**
 	 * Sets distinct values for {@code type}, so that when a class {@code Foo} is tested for {@link
 	 * Object#equals} and {@link Object#hashCode}, and its construction requires a parameter of {@code
 	 * type}, the distinct values of {@code type} can be passed as parameters to create {@code Foo}
