@@ -19,13 +19,13 @@ package com.diffplug.common.collect;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A map which forwards all its method calls to another map. Subclasses should
@@ -164,7 +164,7 @@ public abstract class ForwardingMap<K, V> extends ForwardingObject implements Ma
 		Iterator<Entry<K, V>> entryIterator = entrySet().iterator();
 		while (entryIterator.hasNext()) {
 			Entry<K, V> entry = entryIterator.next();
-			if (Objects.equal(entry.getKey(), key)) {
+			if (Objects.equals(entry.getKey(), key)) {
 				V value = entry.getValue();
 				entryIterator.remove();
 				return value;

@@ -261,7 +261,7 @@ public interface Multiset<E> extends Collection<E> {
 		 * the two entries represent the same element and count. That is, two
 		 * entries {@code a} and {@code b} are equal if: <pre>   {@code
 		 *
-		 *   Objects.equal(a.getElement(), b.getElement())
+		 *   Objects.equals(a.getElement(), b.getElement())
 		 *       && a.getCount() == b.getCount()}</pre>
 		 */
 		@Override

@@ -18,13 +18,13 @@ package com.diffplug.common.cache;
 
 import static com.diffplug.common.base.Preconditions.checkArgument;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Objects;
 
 /**
  * Statistics about the performance of a {@link Cache}. Instances of this class are immutable.
@@ -242,7 +242,7 @@ public final class CacheStats {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(hitCount, missCount, loadSuccessCount, loadExceptionCount,
+		return Objects.hash(hitCount, missCount, loadSuccessCount, loadExceptionCount,
 				totalLoadTime, evictionCount);
 	}
 

@@ -18,13 +18,13 @@ package com.diffplug.common.collect;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A multiset which forwards all its method calls to another multiset.
@@ -136,7 +136,7 @@ public abstract class ForwardingMultiset<E> extends ForwardingCollection<E>imple
 	@Beta
 	protected int standardCount(@Nullable Object object) {
 		for (Entry<?> entry : this.entrySet()) {
-			if (Objects.equal(entry.getElement(), object)) {
+			if (Objects.equals(entry.getElement(), object)) {
 				return entry.getCount();
 			}
 		}

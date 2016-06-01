@@ -18,12 +18,12 @@ package com.diffplug.common.collect;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A map entry which forwards all its method calls to another map entry.
@@ -97,8 +97,8 @@ public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implemen
 	protected boolean standardEquals(@Nullable Object object) {
 		if (object instanceof Entry) {
 			Entry<?, ?> that = (Entry<?, ?>) object;
-			return Objects.equal(this.getKey(), that.getKey())
-					&& Objects.equal(this.getValue(), that.getValue());
+			return Objects.equals(this.getKey(), that.getKey())
+					&& Objects.equals(this.getValue(), that.getValue());
 		}
 		return false;
 	}

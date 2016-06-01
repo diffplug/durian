@@ -19,13 +19,13 @@ package com.diffplug.common.collect;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.collect.Multisets.ImmutableEntry;
 import com.diffplug.common.primitives.Ints;
 
@@ -121,7 +121,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
 		int hash = Hashing.smearedHash(element);
 		int mask = hashTable.length - 1;
 		for (Multisets.ImmutableEntry<E> entry = hashTable[hash & mask]; entry != null; entry = entry.nextInBucket()) {
-			if (Objects.equal(element, entry.getElement())) {
+			if (Objects.equals(element, entry.getElement())) {
 				return entry.getCount();
 			}
 		}

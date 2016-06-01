@@ -21,6 +21,7 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -181,14 +182,14 @@ public final class Functions {
 		public boolean equals(@Nullable Object o) {
 			if (o instanceof ForMapWithDefault) {
 				ForMapWithDefault<?, ?> that = (ForMapWithDefault<?, ?>) o;
-				return map.equals(that.map) && Objects.equal(defaultValue, that.defaultValue);
+				return map.equals(that.map) && Objects.equals(defaultValue, that.defaultValue);
 			}
 			return false;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(map, defaultValue);
+			return Objects.hash(map, defaultValue);
 		}
 
 		@Override
@@ -321,7 +322,7 @@ public final class Functions {
 		public boolean equals(@Nullable Object obj) {
 			if (obj instanceof ConstantFunction) {
 				ConstantFunction<?> that = (ConstantFunction<?>) obj;
-				return Objects.equal(value, that.value);
+				return Objects.equals(value, that.value);
 			}
 			return false;
 		}

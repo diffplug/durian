@@ -19,11 +19,11 @@ package com.diffplug.common.cache;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A notification of the removal of a single entry. The key and/or value may be null if they were
@@ -98,8 +98,8 @@ public final class RemovalNotification<K, V> implements Entry<K, V> {
 	public boolean equals(@Nullable Object object) {
 		if (object instanceof Entry) {
 			Entry<?, ?> that = (Entry<?, ?>) object;
-			return Objects.equal(this.getKey(), that.getKey())
-					&& Objects.equal(this.getValue(), that.getValue());
+			return Objects.equals(this.getKey(), that.getKey())
+					&& Objects.equals(this.getValue(), that.getValue());
 		}
 		return false;
 	}

@@ -27,13 +27,13 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.collect.Maps;
 
@@ -476,7 +476,7 @@ public final class TypeResolver {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(var.getGenericDeclaration(), var.getName());
+			return Objects.hash(var.getGenericDeclaration(), var.getName());
 		}
 
 		@Override

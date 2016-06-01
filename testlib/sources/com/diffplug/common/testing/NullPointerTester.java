@@ -28,6 +28,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.Nullable;
@@ -37,7 +38,6 @@ import junit.framework.AssertionFailedError;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.base.Converter;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.collect.ClassToInstanceMap;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Lists;
@@ -318,7 +318,7 @@ public final class NullPointerTester {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(name, parameterTypes);
+			return Objects.hash(name, parameterTypes);
 		}
 	}
 

@@ -18,12 +18,12 @@ package com.diffplug.common.collect;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * A collection that associates an ordered pair of keys, called a row key and a

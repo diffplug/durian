@@ -29,6 +29,7 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -41,7 +42,6 @@ import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Joiner.MapJoiner;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.collect.ImmutableListMultimap;
 import com.diffplug.common.collect.ImmutableMultiset;
@@ -714,7 +714,7 @@ public final class MediaType {
 		// racy single-check idiom
 		int h = hashCode;
 		if (h == 0) {
-			h = Objects.hashCode(type, subtype, parametersAsMap());
+			h = Objects.hash(type, subtype, parametersAsMap());
 			hashCode = h;
 		}
 		return h;

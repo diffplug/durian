@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -44,7 +45,6 @@ import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.Predicate;
@@ -275,7 +275,7 @@ public final class Iterators {
 			}
 			Object o1 = iterator1.next();
 			Object o2 = iterator2.next();
-			if (!Objects.equal(o1, o2)) {
+			if (!Objects.equals(o1, o2)) {
 				return false;
 			}
 		}

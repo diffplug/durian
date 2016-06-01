@@ -36,6 +36,7 @@ import java.lang.reflect.WildcardType;
 import java.security.AccessControlException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.Nullable;
@@ -43,7 +44,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableMap;
@@ -267,7 +267,7 @@ final class Types {
 		public boolean equals(Object obj) {
 			if (obj instanceof GenericArrayType) {
 				GenericArrayType that = (GenericArrayType) obj;
-				return Objects.equal(
+				return Objects.equals(
 						getGenericComponentType(), that.getGenericComponentType());
 			}
 			return false;
@@ -334,7 +334,7 @@ final class Types {
 			}
 			ParameterizedType that = (ParameterizedType) other;
 			return getRawType().equals(that.getRawType())
-					&& Objects.equal(getOwnerType(), that.getOwnerType())
+					&& Objects.equals(getOwnerType(), that.getOwnerType())
 					&& Arrays.equals(
 							getActualTypeArguments(), that.getActualTypeArguments());
 		}

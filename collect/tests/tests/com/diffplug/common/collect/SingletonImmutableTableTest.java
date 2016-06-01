@@ -18,9 +18,10 @@ package com.diffplug.common.collect;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.Objects;
+
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.testing.EqualsTester;
 
 /**
@@ -33,7 +34,7 @@ public class SingletonImmutableTableTest extends AbstractImmutableTableTest {
 	private final ImmutableTable<Character, Integer, String> testTable = new SingletonImmutableTable<Character, Integer, String>('a', 1, "blah");
 
 	public void testHashCode() {
-		assertEquals(Objects.hashCode('a', 1, "blah"), testTable.hashCode());
+		assertEquals(Objects.hash('a', 1, "blah"), testTable.hashCode());
 	}
 
 	public void testCellSet() {

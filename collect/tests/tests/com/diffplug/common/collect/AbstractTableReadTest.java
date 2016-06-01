@@ -18,11 +18,12 @@ package com.diffplug.common.collect;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.Objects;
+
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.testing.EqualsTester;
 import com.diffplug.common.testing.NullPointerTester;
 
@@ -137,9 +138,9 @@ public abstract class AbstractTableReadTest extends TestCase {
 
 	public void testHashCode() {
 		table = create("foo", 1, 'a', "bar", 1, 'b', "foo", 3, 'c');
-		int expected = Objects.hashCode("foo", 1, 'a')
-				+ Objects.hashCode("bar", 1, 'b')
-				+ Objects.hashCode("foo", 3, 'c');
+		int expected = Objects.hash("foo", 1, 'a')
+				+ Objects.hash("bar", 1, 'b')
+				+ Objects.hash("foo", 3, 'c');
 		assertEquals(expected, table.hashCode());
 	}
 

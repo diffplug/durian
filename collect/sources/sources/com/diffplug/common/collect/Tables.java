@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -33,7 +34,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Supplier;
 import com.diffplug.common.collect.Table.Cell;
 
@@ -107,16 +107,16 @@ public final class Tables {
 			}
 			if (obj instanceof Cell) {
 				Cell<?, ?, ?> other = (Cell<?, ?, ?>) obj;
-				return Objects.equal(getRowKey(), other.getRowKey())
-						&& Objects.equal(getColumnKey(), other.getColumnKey())
-						&& Objects.equal(getValue(), other.getValue());
+				return Objects.equals(getRowKey(), other.getRowKey())
+						&& Objects.equals(getColumnKey(), other.getColumnKey())
+						&& Objects.equals(getValue(), other.getValue());
 			}
 			return false;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(getRowKey(), getColumnKey(), getValue());
+			return Objects.hash(getRowKey(), getColumnKey(), getValue());
 		}
 
 		@Override

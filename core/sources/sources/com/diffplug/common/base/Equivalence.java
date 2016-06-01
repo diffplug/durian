@@ -19,6 +19,7 @@ package com.diffplug.common.base;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -285,14 +286,14 @@ public abstract class Equivalence<T> {
 			}
 			if (obj instanceof EquivalentToPredicate) {
 				EquivalentToPredicate<?> that = (EquivalentToPredicate<?>) obj;
-				return equivalence.equals(that.equivalence) && Objects.equal(target, that.target);
+				return equivalence.equals(that.equivalence) && Objects.equals(target, that.target);
 			}
 			return false;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(equivalence, target);
+			return Objects.hash(equivalence, target);
 		}
 
 		@Override

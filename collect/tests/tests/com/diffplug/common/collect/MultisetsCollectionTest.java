@@ -21,13 +21,13 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.features.CollectionFeature;
@@ -183,7 +183,7 @@ public class MultisetsCollectionTest extends TestCase {
 					 * "add an extra item 0 to A and an extra item 1 to B" really means
 					 * "add an extra item 0 to A and B," which isn't what we want.
 					 */
-					if (!Objects.equal(elements[0], elements[1])) {
+					if (!Objects.equals(elements[0], elements[1])) {
 						multiset2.add(elements[1], 2);
 					}
 				}

@@ -21,6 +21,7 @@ import static com.diffplug.common.collect.Multisets.setCountImpl;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -28,7 +29,6 @@ import javax.annotation.Nullable;
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Objects;
 
 /**
  * This class provides a skeletal implementation of the {@link Multiset}
@@ -72,7 +72,7 @@ abstract class AbstractMultiset<E> extends AbstractCollection<E>implements Multi
 	@Override
 	public int count(@Nullable Object element) {
 		for (Entry<E> entry : entrySet()) {
-			if (Objects.equal(entry.getElement(), element)) {
+			if (Objects.equals(entry.getElement(), element)) {
 				return entry.getCount();
 			}
 		}

@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -39,7 +40,6 @@ import com.google.j2objc.annotations.WeakOuter;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Objects;
 
 /**
  * Implementation of {@code Multimap} that does not allow duplicate key-value
@@ -179,7 +179,7 @@ public final class LinkedHashMultimap<K, V> extends AbstractSetMultimap<K, V> {
 		}
 
 		boolean matchesValue(@Nullable Object v, int smearedVHash) {
-			return smearedValueHash == smearedVHash && Objects.equal(getValue(), v);
+			return smearedValueHash == smearedVHash && Objects.equals(getValue(), v);
 		}
 
 		@Override

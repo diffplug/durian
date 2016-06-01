@@ -29,13 +29,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Objects;
 
 /**
  * Tests that all {@code public static} methods "inherited" from superclasses
@@ -191,7 +191,7 @@ public class FauxveridesTest extends TestCase {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(name, parameterTypes, typeSignature);
+			return Objects.hash(name, parameterTypes, typeSignature);
 		}
 
 		@Override

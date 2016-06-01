@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.SortedMap;
@@ -60,7 +61,6 @@ import com.diffplug.common.base.Converter;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner.MapJoiner;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
@@ -517,7 +517,7 @@ public final class Maps {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(
+			return Objects.hash(
 					entriesOnlyOnLeft(), entriesOnlyOnRight(), entriesInCommon(), entriesDiffering());
 		}
 
@@ -568,15 +568,15 @@ public final class Maps {
 		public boolean equals(@Nullable Object object) {
 			if (object instanceof MapDifference.ValueDifference) {
 				MapDifference.ValueDifference<?> that = (MapDifference.ValueDifference<?>) object;
-				return Objects.equal(this.left, that.leftValue())
-						&& Objects.equal(this.right, that.rightValue());
+				return Objects.equals(this.left, that.leftValue())
+						&& Objects.equals(this.right, that.rightValue());
 			}
 			return false;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(left, right);
+			return Objects.hash(left, right);
 		}
 
 		@Override
@@ -1847,7 +1847,7 @@ public final class Maps {
 		 * <li>The computation is <i>consistent with equals</i>; that is,
 		 *     {@link Objects#equal Objects.equal}{@code (k1, k2) &&}
 		 *     {@link Objects#equal}{@code (v1, v2)} implies that {@code
-		 *     Objects.equal(transformer.transform(k1, v1),
+		 *     Objects.equals(transformer.transform(k1, v1),
 		 *     transformer.transform(k2, v2))}.
 		 * </ul>
 		 *
@@ -3813,7 +3813,7 @@ public final class Maps {
 				return super.remove(o);
 			} catch (UnsupportedOperationException e) {
 				for (Entry<K, V> entry : map().entrySet()) {
-					if (Objects.equal(o, entry.getValue())) {
+					if (Objects.equals(o, entry.getValue())) {
 						map().remove(entry.getKey());
 						return true;
 					}
@@ -3892,7 +3892,7 @@ public final class Maps {
 				Entry<?, ?> entry = (Entry<?, ?>) o;
 				Object key = entry.getKey();
 				V value = Maps.safeGet(map(), key);
-				return Objects.equal(value, entry.getValue()) && (value != null || map().containsKey(key));
+				return Objects.equals(value, entry.getValue()) && (value != null || map().containsKey(key));
 			}
 			return false;
 		}

@@ -17,6 +17,7 @@
 package com.diffplug.common.base;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.CheckReturnValue;
@@ -79,7 +80,7 @@ public final class Suppliers {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(function, supplier);
+			return Objects.hash(function, supplier);
 		}
 
 		@Override
@@ -242,14 +243,14 @@ public final class Suppliers {
 		public boolean equals(@Nullable Object obj) {
 			if (obj instanceof SupplierOfInstance) {
 				SupplierOfInstance<?> that = (SupplierOfInstance<?>) obj;
-				return Objects.equal(instance, that.instance);
+				return Objects.equals(instance, that.instance);
 			}
 			return false;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(instance);
+			return Objects.hash(instance);
 		}
 
 		@Override

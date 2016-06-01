@@ -21,12 +21,12 @@ import static com.diffplug.common.collect.BoundType.OPEN;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.testing.NullPointerTester;
 
 /**
@@ -82,7 +82,7 @@ public class GeneralRangeTest extends TestCase {
 		for (Integer i : IN_ORDER_VALUES) {
 			GeneralRange<Integer> range = GeneralRange.range(ORDERING, i, CLOSED, i, CLOSED);
 			for (Integer j : IN_ORDER_VALUES) {
-				assertEquals(Objects.equal(i, j), range.contains(j));
+				assertEquals(Objects.equals(i, j), range.contains(j));
 			}
 		}
 	}

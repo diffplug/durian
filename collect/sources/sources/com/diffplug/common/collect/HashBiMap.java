@@ -31,6 +31,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -39,7 +40,6 @@ import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Objects;
 import com.diffplug.common.collect.Maps.IteratorBasedAbstractMap;
 
 /**
@@ -220,7 +220,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 
 	private BiEntry<K, V> seekByKey(@Nullable Object key, int keyHash) {
 		for (BiEntry<K, V> entry = hashTableKToV[keyHash & mask]; entry != null; entry = entry.nextInKToVBucket) {
-			if (keyHash == entry.keyHash && Objects.equal(key, entry.key)) {
+			if (keyHash == entry.keyHash && Objects.equals(key, entry.key)) {
 				return entry;
 			}
 		}
@@ -229,7 +229,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 
 	private BiEntry<K, V> seekByValue(@Nullable Object value, int valueHash) {
 		for (BiEntry<K, V> entry = hashTableVToK[valueHash & mask]; entry != null; entry = entry.nextInVToKBucket) {
-			if (valueHash == entry.valueHash && Objects.equal(value, entry.value)) {
+			if (valueHash == entry.valueHash && Objects.equals(value, entry.value)) {
 				return entry;
 			}
 		}
@@ -269,7 +269,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 		BiEntry<K, V> oldEntryForKey = seekByKey(key, keyHash);
 		if (oldEntryForKey != null
 				&& valueHash == oldEntryForKey.valueHash
-				&& Objects.equal(value, oldEntryForKey.value)) {
+				&& Objects.equals(value, oldEntryForKey.value)) {
 			return value;
 		}
 
@@ -305,7 +305,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 		BiEntry<K, V> oldEntryForValue = seekByValue(value, valueHash);
 		if (oldEntryForValue != null
 				&& keyHash == oldEntryForValue.keyHash
-				&& Objects.equal(key, oldEntryForValue.key)) {
+				&& Objects.equals(key, oldEntryForValue.key)) {
 			return key;
 		}
 
@@ -489,7 +489,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 				public V setValue(V value) {
 					V oldValue = delegate.value;
 					int valueHash = smearedHash(value);
-					if (valueHash == delegate.valueHash && Objects.equal(value, oldValue)) {
+					if (valueHash == delegate.valueHash && Objects.equals(value, oldValue)) {
 						return value;
 					}
 					checkArgument(seekByValue(value, valueHash) == null, "value already present: %s", value);
@@ -645,7 +645,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 							public K setValue(K key) {
 								K oldKey = delegate.key;
 								int keyHash = smearedHash(key);
-								if (keyHash == delegate.keyHash && Objects.equal(key, oldKey)) {
+								if (keyHash == delegate.keyHash && Objects.equals(key, oldKey)) {
 									return key;
 								}
 								checkArgument(seekByKey(key, keyHash) == null, "value already present: %s", key);
