@@ -18,7 +18,6 @@ package com.diffplug.common.base;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.function.Function;
 
@@ -52,55 +51,7 @@ public interface ConverterNullable<A, B> {
 			Function<? super A, ? extends B> forwardFunction,
 			Function<? super B, ? extends A> backwardFunction,
 			String name) {
-		return new FunctionBasedConverter<>(forwardFunction, backwardFunction, name);
-	}
-
-	static final class FunctionBasedConverter<A, B> implements ConverterNullable<A, B>, Serializable {
-		private static final long serialVersionUID = 1L;
-
-		final Function<? super A, ? extends B> forwardFunction;
-		final Function<? super B, ? extends A> backwardFunction;
-		final String name;
-
-		private FunctionBasedConverter(
-				Function<? super A, ? extends B> forwardFunction,
-				Function<? super B, ? extends A> backwardFunction,
-				String name) {
-			this.forwardFunction = requireNonNull(forwardFunction);
-			this.backwardFunction = requireNonNull(backwardFunction);
-			this.name = requireNonNull(name);
-		}
-
-		@Override
-		public B convert(A a) {
-			return forwardFunction.apply(a);
-		}
-
-		@Override
-		public A revert(B b) {
-			return backwardFunction.apply(b);
-		}
-
-		@Override
-		public boolean equals(@Nullable Object object) {
-			if (object instanceof FunctionBasedConverter) {
-				FunctionBasedConverter<?, ?> that = (FunctionBasedConverter<?, ?>) object;
-				return this.forwardFunction.equals(that.forwardFunction)
-						&& this.backwardFunction.equals(that.backwardFunction);
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		public int hashCode() {
-			return forwardFunction.hashCode() * 31 + backwardFunction.hashCode();
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
+		return new ConverterNullableImp.FunctionBasedConverter<>(forwardFunction, backwardFunction, name);
 	}
 
 	/**
@@ -135,49 +86,7 @@ public interface ConverterNullable<A, B> {
 	 * <p>The returned converter is serializable if {@code this} converter and {@code secondConverter} are.
 	 */
 	default <C> ConverterNullable<A, C> andThen(ConverterNullable<B, C> andThen) {
-		return new ConverterComposition<>(this, andThen);
-	}
-
-	static final class ConverterComposition<A, B, C> implements ConverterNullable<A, C>, Serializable {
-		private static final long serialVersionUID = 1L;
-
-		final ConverterNullable<A, B> first;
-		final ConverterNullable<B, C> second;
-
-		private ConverterComposition(ConverterNullable<A, B> first, ConverterNullable<B, C> second) {
-			this.first = requireNonNull(first);
-			this.second = requireNonNull(second);
-		}
-
-		@Override
-		public C convert(A a) {
-			return second.convert(first.convert(a));
-		}
-
-		@Override
-		public A revert(C c) {
-			return first.revert(second.revert(c));
-		}
-
-		@Override
-		public boolean equals(@Nullable Object object) {
-			if (object instanceof ConverterComposition) {
-				ConverterComposition<?, ?, ?> that = (ConverterComposition<?, ?, ?>) object;
-				return this.first.equals(that.first) && this.second.equals(that.second);
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		public int hashCode() {
-			return 31 * first.hashCode() + second.hashCode();
-		}
-
-		@Override
-		public String toString() {
-			return first + ".andThen(" + second + ")";
-		}
+		return new ConverterNullableImp.ConverterComposition<>(this, andThen);
 	}
 
 	/**
@@ -185,52 +94,7 @@ public interface ConverterNullable<A, B> {
 	 * and {@link #revert(Object)} methods are swapped.
 	 */
 	default ConverterNullable<B, A> reverse() {
-		return new ReverseConverter<B, A>(this);
-	}
-
-	static class ReverseConverter<A, B> implements ConverterNullable<A, B>, Serializable {
-		private static final long serialVersionUID = 1L;
-
-		final ConverterNullable<B, A> original;
-
-		ReverseConverter(ConverterNullable<B, A> original) {
-			this.original = original;
-		}
-
-		@Override
-		public B convert(A a) {
-			return original.revert(a);
-		}
-
-		@Override
-		public A revert(B b) {
-			return original.convert(b);
-		}
-
-		@Override
-		public ConverterNullable<B, A> reverse() {
-			return original;
-		}
-
-		@Override
-		public boolean equals(@Nullable Object object) {
-			if (object instanceof ReverseConverter) {
-				ReverseConverter<?, ?> that = (ReverseConverter<?, ?>) object;
-				return this.original.equals(that.original);
-			} else {
-				return false;
-			}
-		}
-
-		@Override
-		public int hashCode() {
-			return ~original.hashCode();
-		}
-
-		@Override
-		public String toString() {
-			return original.toString() + ".reverse()";
-		}
+		return new ConverterNullableImp.ReverseConverter<B, A>(this);
 	}
 
 	/**
