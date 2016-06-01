@@ -32,19 +32,19 @@ import com.diffplug.common.testing.EqualsTester;
 import com.diffplug.common.testing.SerializableTester;
 
 /**
- * Unit tests for {@link Converter}.
+ * Unit tests for {@link ConverterNullable}.
  */
 @GwtCompatible
-public class ConverterTest extends TestCase {
+public class ConverterNullableTest extends TestCase {
 
-	private static final Converter<String, Long> STR_TO_LONG = new Converter<String, Long>() {
+	private static final ConverterNullable<String, Long> STR_TO_LONG = new ConverterNullable<String, Long>() {
 		@Override
-		public Long doForward(String object) {
+		public Long convert(String object) {
 			return Long.valueOf(object);
 		}
 
 		@Override
-		public String doBackward(Long object) {
+		public String revert(Long object) {
 			return String.valueOf(object);
 		}
 
@@ -80,7 +80,7 @@ public class ConverterTest extends TestCase {
 	}
 
 	public void testReverse() {
-		Converter<Long, String> reverseConverter = STR_TO_LONG.reverse();
+		ConverterNullable<Long, String> reverseConverter = STR_TO_LONG.reverse();
 
 		assertEquals(STR_VAL, reverseConverter.convert(LONG_VAL));
 		assertEquals(LONG_VAL, reverseConverter.reverse().convert(STR_VAL));
@@ -99,13 +99,12 @@ public class ConverterTest extends TestCase {
 	}
 
 	public void testReverseReverse() {
-		Converter<String, Long> converter = STR_TO_LONG;
+		ConverterNullable<String, Long> converter = STR_TO_LONG;
 		assertEquals(converter, converter.reverse().reverse());
 	}
 
-	@SuppressWarnings("deprecation")
-	public void testApply() {
-		assertEquals(LONG_VAL, STR_TO_LONG.apply(STR_VAL));
+	public void testConvert() {
+		assertEquals(LONG_VAL, STR_TO_LONG.convert(STR_VAL));
 	}
 
 	private static class StringWrapper {
@@ -117,14 +116,14 @@ public class ConverterTest extends TestCase {
 	}
 
 	public void testAndThen() {
-		Converter<StringWrapper, String> first = new Converter<StringWrapper, String>() {
+		ConverterNullable<StringWrapper, String> first = new ConverterNullable<StringWrapper, String>() {
 			@Override
-			public String doForward(StringWrapper object) {
+			public String convert(StringWrapper object) {
 				return object.value;
 			}
 
 			@Override
-			public StringWrapper doBackward(String object) {
+			public StringWrapper revert(String object) {
 				return new StringWrapper(object);
 			}
 
@@ -134,7 +133,7 @@ public class ConverterTest extends TestCase {
 			}
 		};
 
-		Converter<StringWrapper, Long> converter = first.andThen(STR_TO_LONG);
+		ConverterNullable<StringWrapper, Long> converter = first.andThen(STR_TO_LONG);
 
 		assertEquals(LONG_VAL, converter.convert(new StringWrapper(STR_VAL)));
 		assertEquals(STR_VAL, converter.reverse().convert(LONG_VAL).value);
@@ -145,7 +144,7 @@ public class ConverterTest extends TestCase {
 	}
 
 	public void testIdentityConverter() {
-		Converter<String, String> stringIdentityConverter = Converter.identity();
+		ConverterNullable<String, String> stringIdentityConverter = Converter.identity();
 
 		assertSame(stringIdentityConverter, stringIdentityConverter.reverse());
 		assertSame(STR_TO_LONG, stringIdentityConverter.andThen(STR_TO_LONG));
@@ -167,67 +166,39 @@ public class ConverterTest extends TestCase {
 		};
 		Function<Object, String> backward = toStringFunction();
 
-		Converter<String, Number> converter = Converter.<String, Number> from(forward, backward);
-
-		assertNull(converter.convert(null));
-		assertNull(converter.reverse().convert(null));
+		ConverterNullable<String, Number> converter = ConverterNullable.<String, Number> from(forward, backward, "parseInt");
 
 		assertEquals((Integer) 5, converter.convert("5"));
 		assertEquals("5", converter.reverse().convert(5));
 	}
 
-	public void testNullIsNotPassedThrough() {
-		Converter<String, String> nullsAreHandled = sillyConverter();
-		assertEquals("forward", nullsAreHandled.convert("foo"));
-		assertEquals(null, nullsAreHandled.convert(null));
-		assertEquals("backward", nullsAreHandled.reverse().convert("foo"));
-		assertEquals(null, nullsAreHandled.reverse().convert(null));
-	}
-
-	private static Converter<String, String> sillyConverter() {
-		return new Converter<String, String>() {
-			@Override
-			public String doForward(String string) {
-				return "forward";
-			}
-
-			@Override
-			public String doBackward(String string) {
-				return "backward";
-			}
-		};
-	}
-
 	public void testSerialization_identity() {
-		Converter<String, String> identityConverter = Converter.identity();
+		ConverterNullable<String, String> identityConverter = Converter.identity();
 		SerializableTester.reserializeAndAssert(identityConverter);
 	}
 
 	public void testSerialization_reverse() {
-		Converter<Long, String> reverseConverter = Longs.stringConverter().reverse();
+		ConverterNullable<Long, String> reverseConverter = Longs.stringConverter().reverse();
 		SerializableTester.reserializeAndAssert(reverseConverter);
 	}
 
 	public void testSerialization_andThen() {
-		Converter<String, Long> converterA = Longs.stringConverter();
-		Converter<Long, String> reverseConverter = Longs.stringConverter().reverse();
-		Converter<String, String> composedConverter = converterA.andThen(reverseConverter);
+		ConverterNullable<String, Long> converterA = Longs.stringConverter();
+		ConverterNullable<Long, String> reverseConverter = Longs.stringConverter().reverse();
+		ConverterNullable<String, String> composedConverter = converterA.andThen(reverseConverter);
 		SerializableTester.reserializeAndAssert(composedConverter);
 	}
 
 	public void testSerialization_from() {
-		Converter<String, String> dumb = Converter.from(toStringFunction(), toStringFunction());
+		ConverterNullable<String, String> dumb = ConverterNullable.from(toStringFunction(), toStringFunction(), "toString");
 		SerializableTester.reserializeAndAssert(dumb);
 	}
 
 	public void testEquals() throws Exception {
 		new EqualsTester()
 				.addEqualityGroup(
-						Converter.identity(),
-						Converter.identity().reverse())
-				.addEqualityGroup(
-						Converter.from(Function.identity(), Function.identity()),
-						Converter.from(Function.identity(), Function.identity(), "nameDoesntAffectEquality"))
+						ConverterNullable.from(Function.identity(), Function.identity()),
+						ConverterNullable.from(Function.identity(), Function.identity(), "nameDoesntAffectEquality"))
 				.testEquals();
 	}
 }

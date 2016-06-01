@@ -16,7 +16,7 @@
  */
 package com.diffplug.common.base;
 
-import static com.diffplug.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -57,7 +57,9 @@ import com.diffplug.common.annotations.GwtCompatible;
  * behavior for all converters; implementations of {@link #doForward} and {@link #doBackward} are
  * guaranteed to never be passed {@code null}, and must never return {@code null}.
  *
-
+ * For users who wish for any behavior around nulls, see {@link ConverterNullable}.  Because {@link Converter}
+ * guarantees graceful mapping of null to null, it can safely implement {@link ConverterNullable}.
+ *
  * <h3>Common ways to use</h3>
  *
  * <p>Getting a converter:
@@ -114,23 +116,9 @@ import com.diffplug.common.annotations.GwtCompatible;
  */
 @Beta
 @GwtCompatible
-public abstract class Converter<A, B> implements Function<A, B> {
-	private final boolean handleNullAutomatically;
-
-	// We lazily cache the reverse view to avoid allocating on every call to reverse().
-	private transient Converter<B, A> reverse;
-
+public abstract class Converter<A, B> implements Function<A, B>, ConverterNullable<A, B> {
 	/** Constructor for use by subclasses. */
-	protected Converter() {
-		this(true);
-	}
-
-	/**
-	 * Constructor used only by {@code LegacyConverter} to suspend automatic null-handling.
-	 */
-	Converter(boolean handleNullAutomatically) {
-		this.handleNullAutomatically = handleNullAutomatically;
-	}
+	protected Converter() {}
 
 	// SPI methods (what subclasses must implement)
 
@@ -169,24 +157,40 @@ public abstract class Converter<A, B> implements Function<A, B> {
 		return correctedDoForward(a);
 	}
 
+	/**
+	 * Returns a representation of {@code b} as an instance of type {@code A}.
+	 *
+	 * @return the converted value; is null <i>if and only if</i> {@code b} is null
+	 */
+	@Nullable
+	public final A revert(@Nullable B b) {
+		return correctedDoBackward(b);
+	}
+
+	/**
+	 * Returns a representation of {@code a} as an instance of type {@code B}, using
+	 * the type system (and not null checks) to ensure that input and output are non-null.
+	 */
+	public final B convertNonNull(A a) {
+		return requireNonNull(doForward(requireNonNull(a)));
+	}
+
+	/**
+	 * Returns a representation of {@code b} as an instance of type {@code A}, using
+	 * the type system (and not null checks) to ensure that input and output are non-null.
+	 */
+	public final A revertNonNull(B b) {
+		return requireNonNull(doBackward(requireNonNull(b)));
+	}
+
 	@Nullable
 	B correctedDoForward(@Nullable A a) {
-		if (handleNullAutomatically) {
-			// TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
-			return a == null ? null : checkNotNull(doForward(a));
-		} else {
-			return doForward(a);
-		}
+		return a == null ? null : requireNonNull(doForward(a));
 	}
 
 	@Nullable
 	A correctedDoBackward(@Nullable B b) {
-		if (handleNullAutomatically) {
-			// TODO(kevinb): we shouldn't be checking for a null result at runtime. Assert?
-			return b == null ? null : checkNotNull(doBackward(b));
-		} else {
-			return doBackward(b);
-		}
+		return b == null ? null : requireNonNull(doBackward(b));
 	}
 
 	/**
@@ -198,7 +202,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
 	 * element.
 	 */
 	public Iterable<B> convertAll(final Iterable<? extends A> fromIterable) {
-		checkNotNull(fromIterable, "fromIterable");
+		requireNonNull(fromIterable, "fromIterable");
 		return new Iterable<B>() {
 			@Override
 			public Iterator<B> iterator() {
@@ -230,10 +234,8 @@ public abstract class Converter<A, B> implements Function<A, B> {
 	 *
 	 * <p>The returned converter is serializable if {@code this} converter is.
 	 */
-	// TODO(kak): Make this method final
 	public Converter<B, A> reverse() {
-		Converter<B, A> result = reverse;
-		return (result == null) ? reverse = new ReverseConverter<A, B>(this) : result;
+		return new ReverseConverter<A, B>(this);
 	}
 
 	private static final class ReverseConverter<A, B> extends Converter<B, A>
@@ -315,7 +317,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
 	 * Package-private non-final implementation of andThen() so only we can override it.
 	 */
 	<C> Converter<A, C> doAndThen(Converter<B, C> secondConverter) {
-		return new ConverterComposition<A, B, C>(this, checkNotNull(secondConverter));
+		return new ConverterComposition<A, B, C>(this, requireNonNull(secondConverter));
 	}
 
 	private static final class ConverterComposition<A, B, C> extends Converter<A, C>
@@ -424,19 +426,43 @@ public abstract class Converter<A, B> implements Function<A, B> {
 	public static <A, B> Converter<A, B> from(
 			Function<? super A, ? extends B> forwardFunction,
 			Function<? super B, ? extends A> backwardFunction) {
-		return new FunctionBasedConverter<A, B>(forwardFunction, backwardFunction);
+		return from(forwardFunction, backwardFunction, "Converter.from(" + forwardFunction + ", " + backwardFunction + ")");
+	}
+
+	/**
+	 * Returns a converter based on <i>existing</i> forward and backward functions. Note that it is
+	 * unnecessary to create <i>new</i> classes implementing {@code Function} just to pass them in
+	 * here. Instead, simply subclass {@code Converter} and implement its {@link #doForward} and
+	 * {@link #doBackward} methods directly.
+	 *
+	 * <p>These functions will never be passed {@code null} and must not under any circumstances
+	 * return {@code null}. If a value cannot be converted, the function should throw an unchecked
+	 * exception (typically, but not necessarily, {@link IllegalArgumentException}).
+	 *
+	 * The name parameter will be returned as the result of {@link #toString()}.
+	 *
+	 * <p>The returned converter is serializable if both provided functions are.
+	 */
+	public static <A, B> Converter<A, B> from(
+			Function<? super A, ? extends B> forwardFunction,
+			Function<? super B, ? extends A> backwardFunction,
+			String name) {
+		return new FunctionBasedConverter<A, B>(forwardFunction, backwardFunction, name);
 	}
 
 	private static final class FunctionBasedConverter<A, B> extends Converter<A, B>
 			implements Serializable {
 		private final Function<? super A, ? extends B> forwardFunction;
 		private final Function<? super B, ? extends A> backwardFunction;
+		private final String name;
 
 		private FunctionBasedConverter(
 				Function<? super A, ? extends B> forwardFunction,
-				Function<? super B, ? extends A> backwardFunction) {
-			this.forwardFunction = checkNotNull(forwardFunction);
-			this.backwardFunction = checkNotNull(backwardFunction);
+				Function<? super B, ? extends A> backwardFunction,
+				String name) {
+			this.forwardFunction = requireNonNull(forwardFunction);
+			this.backwardFunction = requireNonNull(backwardFunction);
+			this.name = requireNonNull(name);
 		}
 
 		@Override
@@ -466,7 +492,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
 
 		@Override
 		public String toString() {
-			return "Converter.from(" + forwardFunction + ", " + backwardFunction + ")";
+			return name;
 		}
 	}
 
@@ -502,7 +528,12 @@ public abstract class Converter<A, B> implements Function<A, B> {
 
 		@Override
 		<S> Converter<T, S> doAndThen(Converter<T, S> otherConverter) {
-			return checkNotNull(otherConverter, "otherConverter");
+			return requireNonNull(otherConverter);
+		}
+
+		@Override
+		public final <S> ConverterNullable<T, S> andThen(ConverterNullable<T, S> otherConverter) {
+			return requireNonNull(otherConverter);
 		}
 
 		/*
@@ -515,6 +546,7 @@ public abstract class Converter<A, B> implements Function<A, B> {
 			return "Converter.identity()";
 		}
 
+		// needed for Serialization work
 		private Object readResolve() {
 			return INSTANCE;
 		}
