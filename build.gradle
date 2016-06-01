@@ -7,6 +7,8 @@ buildscript {
 		classpath "com.diffplug.gradle:goomph:${VER_GOOMPH}"
 		// code formatting
 		classpath "com.diffplug.gradle.spotless:spotless:${VER_SPOTLESS}"
+		// markdown in javadoc and syntax highlighting
+		classpath "ch.raffael.pegdown-doclet:pegdown-doclet:${VER_PEGDOWN_DOCLET}"
 		// bintray uploading
 		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:${VER_BINTRAY}"
 		// github pages javadoc upload

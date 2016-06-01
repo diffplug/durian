@@ -19,6 +19,9 @@ def javadocUrl(String name) {
 	return rootProject.ext.javadocPkgList(name).absolutePath.replace('package-list', '')
 }
 
+// markdown in javadoc and syntax highlighting
+apply plugin: 'ch.raffael.pegdown-doclet'
+
 // Where it's possible to name parameters and methods clearly enough
 // that javadoc is not necessary, why make the code bigger?
 //
