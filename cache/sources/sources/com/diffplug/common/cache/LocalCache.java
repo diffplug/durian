@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +65,6 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Stopwatch;
 import com.diffplug.common.base.Ticker;
 import com.diffplug.common.cache.AbstractCache.SimpleStatsCounter;

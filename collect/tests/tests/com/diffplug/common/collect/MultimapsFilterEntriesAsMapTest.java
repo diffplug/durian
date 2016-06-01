@@ -19,9 +19,9 @@ package com.diffplug.common.collect;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Predicate;
 
 /**
  * Tests for Multimaps.filterEntries().asMap().
@@ -33,7 +33,7 @@ public class MultimapsFilterEntriesAsMapTest
 		extends AbstractMultimapAsMapImplementsMapTest {
 	private static final Predicate<Map.Entry<String, Integer>> PREDICATE = new Predicate<Map.Entry<String, Integer>>() {
 		@Override
-		public boolean apply(Entry<String, Integer> entry) {
+		public boolean test(Entry<String, Integer> entry) {
 			return !"badkey".equals(entry.getKey()) && 55556 != entry.getValue();
 		}
 	};

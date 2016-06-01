@@ -34,12 +34,12 @@ import java.util.Queue;
 import java.util.RandomAccess;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.function.Supplier;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.testing.SerializableTester;
 
 /**

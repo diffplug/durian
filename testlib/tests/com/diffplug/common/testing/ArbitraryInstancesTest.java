@@ -81,6 +81,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
@@ -91,7 +92,6 @@ import com.diffplug.common.base.Charsets;
 import com.diffplug.common.base.Equivalence;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.base.Stopwatch;
 import com.diffplug.common.base.Ticker;
@@ -256,7 +256,7 @@ public class ArbitraryInstancesTest extends TestCase {
 	@SuppressWarnings("unchecked") // functor classes have no type parameters
 	public void testGet_functors() {
 		assertEquals(0, ArbitraryInstances.get(Comparator.class).compare("abc", 123));
-		assertTrue(ArbitraryInstances.get(Predicate.class).apply("abc"));
+		assertTrue(ArbitraryInstances.get(Predicate.class).test("abc"));
 		assertTrue(ArbitraryInstances.get(Equivalence.class).equivalent(1, 1));
 		assertFalse(ArbitraryInstances.get(Equivalence.class).equivalent(1, 2));
 	}

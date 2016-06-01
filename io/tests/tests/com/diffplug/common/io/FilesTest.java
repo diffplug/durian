@@ -744,11 +744,11 @@ public class FilesTest extends IoTestCase {
 	public void testPredicates() throws IOException {
 		File asciiFile = getTestFile("ascii.txt");
 		File dir = asciiFile.getParentFile();
-		assertTrue(Files.isDirectory().apply(dir));
-		assertFalse(Files.isFile().apply(dir));
+		assertTrue(Files.isDirectory().test(dir));
+		assertFalse(Files.isFile().test(dir));
 
-		assertFalse(Files.isDirectory().apply(asciiFile));
-		assertTrue(Files.isFile().apply(asciiFile));
+		assertFalse(Files.isDirectory().test(asciiFile));
+		assertTrue(Files.isFile().test(asciiFile));
 	}
 
 	/**

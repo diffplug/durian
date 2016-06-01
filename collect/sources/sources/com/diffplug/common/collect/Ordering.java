@@ -33,12 +33,12 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Function;
 
 /**
  * A comparator, with additional methods to support common operations. This is an "enriched"

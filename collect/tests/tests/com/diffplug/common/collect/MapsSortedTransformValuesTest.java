@@ -18,9 +18,9 @@ package com.diffplug.common.collect;
 
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 
 /**

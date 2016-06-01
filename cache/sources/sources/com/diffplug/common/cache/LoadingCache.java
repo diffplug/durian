@@ -18,9 +18,9 @@ package com.diffplug.common.cache;
 
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.util.concurrent.ExecutionError;
 import com.diffplug.common.util.concurrent.UncheckedExecutionException;

@@ -18,12 +18,12 @@ package com.diffplug.common.collect;
 
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.MoreObjects;
 import com.diffplug.common.collect.MapMaker.RemovalListener;
 import com.diffplug.common.collect.MapMaker.RemovalNotification;

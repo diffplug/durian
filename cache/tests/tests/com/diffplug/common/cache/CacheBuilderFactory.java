@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.MoreObjects;
 import com.diffplug.common.base.Optional;
 import com.diffplug.common.base.Preconditions;

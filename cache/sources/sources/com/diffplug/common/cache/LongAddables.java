@@ -17,9 +17,9 @@
 package com.diffplug.common.cache;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Source of {@link LongAddable} objects that deals with GWT, Unsafe, and all

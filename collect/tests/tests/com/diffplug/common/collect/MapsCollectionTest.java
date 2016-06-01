@@ -30,6 +30,8 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -38,8 +40,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.diffplug.common.base.Charsets;
-import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 import com.diffplug.common.collect.testing.Helpers;
 import com.diffplug.common.collect.testing.MapTestSuiteBuilder;
@@ -532,21 +532,21 @@ public class MapsCollectionTest extends TestCase {
 
 	static final Predicate<String> FILTER_KEYS = new Predicate<String>() {
 		@Override
-		public boolean apply(@Nullable String string) {
+		public boolean test(@Nullable String string) {
 			return !"banana".equals(string) && !"eggplant".equals(string);
 		}
 	};
 
 	static final Predicate<String> FILTER_VALUES = new Predicate<String>() {
 		@Override
-		public boolean apply(@Nullable String string) {
+		public boolean test(@Nullable String string) {
 			return !"toast".equals(string) && !"spam".equals(string);
 		}
 	};
 
 	static final Predicate<Entry<String, String>> FILTER_ENTRIES = new Predicate<Entry<String, String>>() {
 		@Override
-		public boolean apply(Entry<String, String> entry) {
+		public boolean test(Entry<String, String> entry) {
 			return !Helpers.mapEntry("banana", "toast").equals(entry)
 					&& !Helpers.mapEntry("eggplant", "spam").equals(entry);
 		}
@@ -554,14 +554,14 @@ public class MapsCollectionTest extends TestCase {
 
 	static final Predicate<Entry<String, String>> FILTER_ENTRIES_1 = new Predicate<Entry<String, String>>() {
 		@Override
-		public boolean apply(Entry<String, String> entry) {
+		public boolean test(Entry<String, String> entry) {
 			return !Helpers.mapEntry("banana", "toast").equals(entry);
 		}
 	};
 
 	static final Predicate<Entry<String, String>> FILTER_ENTRIES_2 = new Predicate<Entry<String, String>>() {
 		@Override
-		public boolean apply(Entry<String, String> entry) {
+		public boolean test(Entry<String, String> entry) {
 			return !Helpers.mapEntry("eggplant", "spam").equals(entry);
 		}
 	};
@@ -570,7 +570,7 @@ public class MapsCollectionTest extends TestCase {
 
 	static final Predicate<Entry<String, String>> NOT_NULL_ENTRY = new Predicate<Entry<String, String>>() {
 		@Override
-		public boolean apply(Entry<String, String> entry) {
+		public boolean test(Entry<String, String> entry) {
 			return entry.getKey() != null && entry.getValue() != null;
 		}
 	};

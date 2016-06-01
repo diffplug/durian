@@ -20,6 +20,7 @@ import static com.diffplug.common.base.Functions.toStringFunction;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 

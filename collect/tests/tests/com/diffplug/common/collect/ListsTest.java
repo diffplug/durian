@@ -33,6 +33,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -42,7 +43,6 @@ import org.easymock.EasyMock;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.collect.testing.IteratorTester;
 import com.diffplug.common.collect.testing.ListTestSuiteBuilder;

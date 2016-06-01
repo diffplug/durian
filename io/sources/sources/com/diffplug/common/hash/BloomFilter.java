@@ -26,13 +26,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.hash.BloomFilterStrategies.BitArray;
 import com.diffplug.common.primitives.SignedBytes;
 import com.diffplug.common.primitives.UnsignedBytes;
@@ -149,7 +149,7 @@ public final class BloomFilter<T> implements Predicate<T>, Serializable {
 	@Deprecated
 	@Override
 	@CheckReturnValue
-	public boolean apply(T input) {
+	public boolean test(T input) {
 		return mightContain(input);
 	}
 

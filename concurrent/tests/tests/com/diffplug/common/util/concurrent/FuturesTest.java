@@ -48,6 +48,8 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -59,10 +61,8 @@ import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Iterables;
@@ -175,7 +175,7 @@ public class FuturesTest extends TestCase {
 	private static Predicate<StackTraceElement> hasClassName(final Class<?> clazz) {
 		return new Predicate<StackTraceElement>() {
 			@Override
-			public boolean apply(StackTraceElement element) {
+			public boolean test(StackTraceElement element) {
 				return element.getClassName().equals(clazz.getName());
 			}
 		};

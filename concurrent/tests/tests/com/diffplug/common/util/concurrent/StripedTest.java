@@ -27,11 +27,11 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.Functions;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Lists;
 import com.diffplug.common.collect.Maps;

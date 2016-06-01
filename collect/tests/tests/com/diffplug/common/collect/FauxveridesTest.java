@@ -31,10 +31,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
 
 /**

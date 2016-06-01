@@ -26,12 +26,12 @@ import java.lang.ref.ReferenceQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.MapMaker.RemovalCause;
 import com.diffplug.common.collect.MapMaker.RemovalListener;
 

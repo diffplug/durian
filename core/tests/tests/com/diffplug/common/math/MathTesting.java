@@ -29,10 +29,10 @@ import static java.util.Arrays.asList;
 
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Iterables;
@@ -240,7 +240,7 @@ public class MathTesting {
 		FINITE_DOUBLE_CANDIDATES = Iterables.concat(FRACTIONAL_DOUBLE_CANDIDATES, INTEGRAL_DOUBLE_CANDIDATES);
 		POSITIVE_FINITE_DOUBLE_CANDIDATES = Iterables.filter(FINITE_DOUBLE_CANDIDATES, new Predicate<Double>() {
 			@Override
-			public boolean apply(Double input) {
+			public boolean test(Double input) {
 				return input.doubleValue() > 0.0;
 			}
 		});

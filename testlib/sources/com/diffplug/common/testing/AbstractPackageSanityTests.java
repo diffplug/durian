@@ -26,6 +26,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +40,6 @@ import com.google.j2objc.annotations.J2ObjCIncompatible;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.HashMultimap;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Iterables;
@@ -112,7 +112,7 @@ public abstract class AbstractPackageSanityTests extends TestCase {
 	 */
 	public static final Predicate<Class<?>> UNDERSCORE_IN_NAME = new Predicate<Class<?>>() {
 		@Override
-		public boolean apply(Class<?> c) {
+		public boolean test(Class<?> c) {
 			return c.getSimpleName().contains("_");
 		}
 	};
@@ -144,7 +144,7 @@ public abstract class AbstractPackageSanityTests extends TestCase {
 	private Visibility visibility = Visibility.PACKAGE;
 	private Predicate<Class<?>> classFilter = new Predicate<Class<?>>() {
 		@Override
-		public boolean apply(Class<?> cls) {
+		public boolean test(Class<?> cls) {
 			return visibility.isVisible(cls.getModifiers());
 		}
 	};

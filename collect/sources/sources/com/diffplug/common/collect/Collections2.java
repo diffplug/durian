@@ -32,15 +32,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.math.IntMath;
 import com.diffplug.common.primitives.Ints;
@@ -147,14 +147,14 @@ public final class Collections2 {
 
 		@Override
 		public boolean add(E element) {
-			checkArgument(predicate.apply(element));
+			checkArgument(predicate.test(element));
 			return unfiltered.add(element);
 		}
 
 		@Override
 		public boolean addAll(Collection<? extends E> collection) {
 			for (E element : collection) {
-				checkArgument(predicate.apply(element));
+				checkArgument(predicate.test(element));
 			}
 			return unfiltered.addAll(collection);
 		}
@@ -169,7 +169,7 @@ public final class Collections2 {
 			if (safeContains(unfiltered, element)) {
 				@SuppressWarnings("unchecked") // element is in unfiltered, so it must be an E
 				E e = (E) element;
-				return predicate.apply(e);
+				return predicate.test(e);
 			}
 			return false;
 		}

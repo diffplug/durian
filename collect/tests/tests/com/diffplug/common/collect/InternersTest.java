@@ -17,10 +17,10 @@
 package com.diffplug.common.collect;
 
 import java.lang.ref.WeakReference;
+import java.util.function.Function;
 
 import junit.framework.TestCase;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.testing.GcFinalization;
 import com.diffplug.common.testing.NullPointerTester;
 

@@ -38,11 +38,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.VisibleForTesting;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.ImmutableList;

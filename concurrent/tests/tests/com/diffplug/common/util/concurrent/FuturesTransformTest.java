@@ -17,8 +17,7 @@
 package com.diffplug.common.util.concurrent;
 
 import java.lang.reflect.UndeclaredThrowableException;
-
-import com.diffplug.common.base.Function;
+import java.util.function.Function;
 
 /**
  * Unit tests for {@link Futures#transform(ListenableFuture, Function)}.

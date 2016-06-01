@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Function;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -33,7 +34,6 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Functions;
 import com.diffplug.common.collect.Table.Cell;
 import com.diffplug.common.collect.testing.CollectionTestSuiteBuilder;

@@ -20,9 +20,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Supplier;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Test cases for {@link Tables#newCustomTable}.

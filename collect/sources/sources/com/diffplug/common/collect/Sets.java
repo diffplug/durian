@@ -38,13 +38,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.Collections2.FilteredCollection;
 
@@ -915,7 +915,7 @@ public final class Sets {
 			SortedSet<E> sortedUnfiltered = (SortedSet<E>) unfiltered;
 			while (true) {
 				E element = sortedUnfiltered.last();
-				if (predicate.apply(element)) {
+				if (predicate.test(element)) {
 					return element;
 				}
 				sortedUnfiltered = sortedUnfiltered.headSet(element);

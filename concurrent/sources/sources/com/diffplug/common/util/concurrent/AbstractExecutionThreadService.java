@@ -19,11 +19,11 @@ package com.diffplug.common.util.concurrent;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Base class for services that can implement {@link #startUp}, {@link #run} and

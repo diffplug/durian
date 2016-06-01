@@ -27,6 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -34,8 +36,6 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import com.diffplug.common.base.Converter;
-import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Supplier;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.collect.ImmutableMultimap;
@@ -1117,7 +1117,12 @@ public class NullPointerTesterTest extends TestCase {
 		new NonGenericTypeTokenDefaultValueChecker().check();
 	}
 
-	private interface FromTo<F, T> extends Function<F, T> {}
+	private interface NullableFunction<F, T> {
+		@Nullable
+		T apply(@Nullable F input);
+	}
+
+	private interface FromTo<F, T> extends NullableFunction<F, T> {}
 
 	private static class GenericInterfaceDefaultValueChecker
 			extends DefaultValueChecker {

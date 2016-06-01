@@ -38,15 +38,15 @@ import java.util.RandomAccess;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.testing.IteratorTester;
 import com.diffplug.common.testing.ClassSanityTester;
@@ -1019,7 +1019,7 @@ public class IterablesTest extends TestCase {
 		assertTrue(Iterables.removeIf(list,
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						return s.equals("b") || s.equals("d") || s.equals("f");
 					}
 				}));
@@ -1027,7 +1027,7 @@ public class IterablesTest extends TestCase {
 		assertFalse(Iterables.removeIf(list,
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						return s.equals("x") || s.equals("y") || s.equals("z");
 					}
 				}));
@@ -1046,7 +1046,7 @@ public class IterablesTest extends TestCase {
 		assertTrue(Iterables.removeIf(transformed,
 				new Predicate<Integer>() {
 					@Override
-					public boolean apply(Integer n) {
+					public boolean test(Integer n) {
 						return (n & 1) == 0; // isEven()
 					}
 				}));
@@ -1054,7 +1054,7 @@ public class IterablesTest extends TestCase {
 		assertFalse(Iterables.removeIf(transformed,
 				new Predicate<Integer>() {
 					@Override
-					public boolean apply(Integer n) {
+					public boolean test(Integer n) {
 						return (n & 1) == 0; // isEven()
 					}
 				}));
@@ -1066,7 +1066,7 @@ public class IterablesTest extends TestCase {
 		assertTrue(Iterables.removeIf(list,
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						return s.equals("b") || s.equals("d") || s.equals("f");
 					}
 				}));
@@ -1074,7 +1074,7 @@ public class IterablesTest extends TestCase {
 		assertFalse(Iterables.removeIf(list,
 				new Predicate<String>() {
 					@Override
-					public boolean apply(String s) {
+					public boolean test(String s) {
 						return s.equals("x") || s.equals("y") || s.equals("z");
 					}
 				}));
@@ -1237,7 +1237,7 @@ public class IterablesTest extends TestCase {
 
 	private static final Predicate<CharSequence> STARTSWITH_A = new Predicate<CharSequence>() {
 		@Override
-		public boolean apply(CharSequence input) {
+		public boolean test(CharSequence input) {
 			return (input.length() > 0) && (input.charAt(0) == 'a');
 		}
 	};

@@ -19,11 +19,11 @@ package com.diffplug.common.util.concurrent;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Supplier;
 
 /**
  * Base class for services that do not need a thread while "running"

@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -39,7 +40,6 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.VisibleForTesting;
 import com.diffplug.common.base.CharMatcher;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Splitter;
 import com.diffplug.common.collect.FluentIterable;
 import com.diffplug.common.collect.ImmutableMap;
@@ -61,7 +61,7 @@ public final class ClassPath {
 
 	private static final Predicate<ClassInfo> IS_TOP_LEVEL = new Predicate<ClassInfo>() {
 		@Override
-		public boolean apply(ClassInfo info) {
+		public boolean test(ClassInfo info) {
 			return info.className.indexOf('$') == -1;
 		}
 	};

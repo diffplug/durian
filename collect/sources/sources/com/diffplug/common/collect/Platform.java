@@ -26,10 +26,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Maps.EntryTransformer;
 
 /**

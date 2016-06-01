@@ -29,13 +29,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.Multiset.Entry;
 import com.diffplug.common.primitives.Ints;
@@ -315,8 +315,8 @@ public final class Multisets {
 					unfiltered.entrySet(),
 					new Predicate<Entry<E>>() {
 						@Override
-						public boolean apply(Entry<E> entry) {
-							return predicate.apply(entry.getElement());
+						public boolean test(Entry<E> entry) {
+							return predicate.test(entry.getElement());
 						}
 					});
 		}
@@ -337,7 +337,7 @@ public final class Multisets {
 			if (count > 0) {
 				@SuppressWarnings("unchecked") // element is equal to an E
 				E e = (E) element;
-				return predicate.apply(e) ? count : 0;
+				return predicate.test(e) ? count : 0;
 			}
 			return 0;
 		}
@@ -345,7 +345,7 @@ public final class Multisets {
 		@Override
 		public int add(@Nullable E element, int occurrences) {
 			checkArgument(
-					predicate.apply(element), "Element %s does not match predicate %s", element, predicate);
+					predicate.test(element), "Element %s does not match predicate %s", element, predicate);
 			return unfiltered.add(element, occurrences);
 		}
 

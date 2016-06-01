@@ -20,6 +20,8 @@ import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -275,7 +277,7 @@ public abstract class Equivalence<T> {
 		}
 
 		@Override
-		public boolean apply(@Nullable T input) {
+		public boolean test(@Nullable T input) {
 			return equivalence.equivalent(input, target);
 		}
 

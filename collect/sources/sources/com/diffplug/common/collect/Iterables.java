@@ -29,6 +29,8 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.RandomAccess;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -36,9 +38,7 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Optional;
-import com.diffplug.common.base.Predicate;
 
 /**
  * This class contains static utility methods that operate on or return objects
@@ -184,7 +184,7 @@ public final class Iterables {
 
 		for (; from < list.size(); from++) {
 			T element = list.get(from);
-			if (!predicate.apply(element)) {
+			if (!predicate.test(element)) {
 				if (from > to) {
 					try {
 						list.set(to, element);
@@ -215,7 +215,7 @@ public final class Iterables {
 		// moving elements when remove() is called). Stop before 'from' because
 		// we already know that should be kept.
 		for (int n = list.size() - 1; n > from; n--) {
-			if (predicate.apply(list.get(n))) {
+			if (predicate.test(list.get(n))) {
 				list.remove(n);
 			}
 		}
@@ -234,7 +234,7 @@ public final class Iterables {
 		Iterator<T> iterator = removeFrom.iterator();
 		while (iterator.hasNext()) {
 			T next = iterator.next();
-			if (predicate.apply(next)) {
+			if (predicate.test(next)) {
 				iterator.remove();
 				return next;
 			}

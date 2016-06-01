@@ -8,10 +8,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian.io
 Bundle-Vendor: DiffPlug
 Bundle-Version: 1.0.0.SNAPSHOT
-Export-Package: com.diffplug.common.hash;uses:="com.diffplug.common.ba
- se,javax.annotation";version="1.0.0",com.diffplug.common.io;uses:="co
- m.diffplug.common.base,com.diffplug.common.collect,com.diffplug.commo
- n.hash,javax.annotation";version="1.0.0"
+Export-Package: com.diffplug.common.hash;uses:="javax.annotation";vers
+ ion="1.0.0",com.diffplug.common.io;uses:="com.diffplug.common.base,co
+ m.diffplug.common.collect,com.diffplug.common.hash,javax.annotation";
+ version="1.0.0"
 Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
  mon.base;version="[1.0,2)",com.diffplug.common.collect;version="[1.0,
  2)",com.diffplug.common.hash,com.diffplug.common.math;version="[1.0,2

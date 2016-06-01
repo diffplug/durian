@@ -19,11 +19,11 @@ package com.diffplug.common.collect;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.MapMakerInternalMap.ReferenceEntry;
 
 /**

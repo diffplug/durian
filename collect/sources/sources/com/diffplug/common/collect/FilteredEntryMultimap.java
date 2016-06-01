@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +36,6 @@ import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.base.MoreObjects;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.Maps.ViewCachingAbstractMap;
 
 /**
@@ -70,7 +70,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V>implements Filte
 	}
 
 	private boolean satisfies(K key, V value) {
-		return predicate.apply(Maps.immutableEntry(key, value));
+		return predicate.test(Maps.immutableEntry(key, value));
 	}
 
 	final class ValuePredicate implements Predicate<V> {
@@ -81,7 +81,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V>implements Filte
 		}
 
 		@Override
-		public boolean apply(@Nullable V value) {
+		public boolean test(@Nullable V value) {
 			return satisfies(key, value);
 		}
 	}
@@ -154,7 +154,7 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V>implements Filte
 			Entry<K, Collection<V>> entry = entryIterator.next();
 			K key = entry.getKey();
 			Collection<V> collection = filterCollection(entry.getValue(), new ValuePredicate(key));
-			if (!collection.isEmpty() && predicate.apply(Maps.immutableEntry(key, collection))) {
+			if (!collection.isEmpty() && predicate.test(Maps.immutableEntry(key, collection))) {
 				if (collection.size() == entry.getValue().size()) {
 					entryIterator.remove();
 				} else {
@@ -394,8 +394,8 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V>implements Filte
 							.removeEntriesIf(
 									new Predicate<Map.Entry<K, Collection<V>>>() {
 						@Override
-						public boolean apply(Map.Entry<K, Collection<V>> entry) {
-							return predicate.apply(
+						public boolean test(Map.Entry<K, Collection<V>> entry) {
+							return predicate.test(
 									Multisets.immutableEntry(entry.getKey(), entry.getValue().size()));
 						}
 					});

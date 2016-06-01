@@ -37,12 +37,12 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import javax.annotation.CheckReturnValue;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Supplier;
 
 /**
  * A builder for a multimap implementation that allows customization of the backing map and value

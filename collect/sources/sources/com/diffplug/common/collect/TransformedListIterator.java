@@ -17,9 +17,9 @@
 package com.diffplug.common.collect;
 
 import java.util.ListIterator;
+import java.util.function.Function;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Function;
 
 /**
  * An iterator that transforms a backing list iterator; for internal use. This

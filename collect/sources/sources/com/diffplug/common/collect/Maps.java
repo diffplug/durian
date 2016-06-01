@@ -47,6 +47,8 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -59,10 +61,8 @@ import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Converter;
 import com.diffplug.common.base.Equivalence;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.Joiner.MapJoiner;
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.base.Predicates;
 import com.diffplug.common.collect.MapDifference.ValueDifference;
 import com.diffplug.common.primitives.Ints;
@@ -2660,7 +2660,7 @@ public final class Maps {
 			// key is a K.
 			@SuppressWarnings("unchecked")
 			K k = (K) key;
-			return predicate.apply(Maps.immutableEntry(k, value));
+			return predicate.test(Maps.immutableEntry(k, value));
 		}
 
 		@Override
@@ -2722,7 +2722,8 @@ public final class Maps {
 					Predicates.<Entry<K, V>> and(predicate, Maps.<V> valuePredicateOnEntries(equalTo(o)))) != null;
 		}
 
-		private boolean removeIf(Predicate<? super V> valuePredicate) {
+		@Override
+		public boolean removeIf(Predicate<? super V> valuePredicate) {
 			return Iterables.removeIf(
 					unfiltered.entrySet(),
 					Predicates.<Entry<K, V>> and(predicate, Maps.<V> valuePredicateOnEntries(valuePredicate)));
@@ -2776,7 +2777,7 @@ public final class Maps {
 		@Override
 		@SuppressWarnings("unchecked")
 		public boolean containsKey(Object key) {
-			return unfiltered.containsKey(key) && keyPredicate.apply((K) key);
+			return unfiltered.containsKey(key) && keyPredicate.test((K) key);
 		}
 	}
 
@@ -2846,7 +2847,8 @@ public final class Maps {
 				return false;
 			}
 
-			private boolean removeIf(Predicate<? super K> keyPredicate) {
+			@Override
+			public boolean removeIf(Predicate<? super K> keyPredicate) {
 				return Iterables.removeIf(
 						unfiltered.entrySet(),
 						Predicates.<Entry<K, V>> and(predicate, Maps.<K> keyPredicateOnEntries(keyPredicate)));
@@ -3147,8 +3149,8 @@ public final class Maps {
 				final Predicate<? super Entry<K, V>> forwardPredicate) {
 			return new Predicate<Entry<V, K>>() {
 				@Override
-				public boolean apply(Entry<V, K> input) {
-					return forwardPredicate.apply(Maps.immutableEntry(input.getValue(), input.getKey()));
+				public boolean test(Entry<V, K> input) {
+					return forwardPredicate.test(Maps.immutableEntry(input.getValue(), input.getKey()));
 				}
 			};
 		}

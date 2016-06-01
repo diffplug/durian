@@ -42,6 +42,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +51,6 @@ import javax.annotation.concurrent.GuardedBy;
 import com.google.j2objc.annotations.WeakOuter;
 
 import com.diffplug.common.annotations.Beta;
-import com.diffplug.common.base.Function;
 import com.diffplug.common.base.MoreObjects;
 import com.diffplug.common.base.Stopwatch;
 import com.diffplug.common.collect.Collections2;

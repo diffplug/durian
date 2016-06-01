@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -35,7 +36,6 @@ import junit.framework.TestSuite;
 
 import org.easymock.EasyMock;
 
-import com.diffplug.common.base.Function;
 import com.diffplug.common.collect.Multiset.Entry;
 import com.diffplug.common.collect.testing.ListTestSuiteBuilder;
 import com.diffplug.common.collect.testing.MinimalCollection;

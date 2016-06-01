@@ -26,11 +26,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import junit.framework.TestCase;
 
 import com.diffplug.common.annotations.GwtCompatible;
-import com.diffplug.common.base.Predicate;
 import com.diffplug.common.collect.testing.Helpers;
 import com.diffplug.common.testing.EqualsTester;
 
@@ -500,10 +500,10 @@ public class RangeTest extends TestCase {
 
 	public void testApply() {
 		Predicate<Integer> predicate = Range.closed(2, 3);
-		assertFalse(predicate.apply(1));
-		assertTrue(predicate.apply(2));
-		assertTrue(predicate.apply(3));
-		assertFalse(predicate.apply(4));
+		assertFalse(predicate.test(1));
+		assertTrue(predicate.test(2));
+		assertTrue(predicate.test(3));
+		assertFalse(predicate.test(4));
 	}
 
 	public void testEquals() {
