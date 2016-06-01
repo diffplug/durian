@@ -1,4 +1,4 @@
-com.google.common.escape
-com.google.common.html
-com.google.common.xml
-com.google.common.net
+com.diffplug.common.escape
+com.diffplug.common.html
+com.diffplug.common.xml
+com.diffplug.common.net

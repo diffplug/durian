@@ -75,7 +75,7 @@ task generatePackageLists << {
 
 apply plugin: 'org.ajoberstar.github-pages'
 githubPages {
-	repoUri = 'https://github.com/diffplug/durian-collect'
+	repoUri = 'https://github.com/diffplug/durian'
 	deleteExistingFiles = false
 	pages {
 		from 'build/docs'

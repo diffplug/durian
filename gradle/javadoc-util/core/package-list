@@ -1,4 +1,4 @@
-com.google.common.annotations
-com.google.common.base
-com.google.common.primitives
-com.google.common.math
+com.diffplug.common.annotations
+com.diffplug.common.base
+com.diffplug.common.primitives
+com.diffplug.common.math
