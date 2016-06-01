@@ -19,7 +19,7 @@ package com.diffplug.common.collect;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.diffplug.common.collect.MapConstraints.ConstrainedMap;
+import com.diffplug.common.collect.MutableClassToInstanceMapConstraints.ConstrainedMap;
 import com.diffplug.common.primitives.Primitives;
 
 /**
@@ -57,7 +57,7 @@ public final class MutableClassToInstanceMap<B> extends ConstrainedMap<Class<? e
 		super(delegate, VALUE_CAN_BE_CAST_TO_KEY);
 	}
 
-	private static final MapConstraint<Class<?>, Object> VALUE_CAN_BE_CAST_TO_KEY = new MapConstraint<Class<?>, Object>() {
+	private static final MutableClassToInstanceMapConstraint<Class<?>, Object> VALUE_CAN_BE_CAST_TO_KEY = new MutableClassToInstanceMapConstraint<Class<?>, Object>() {
 		@Override
 		public void checkKeyValue(Class<?> key, Object value) {
 			cast(key, value);

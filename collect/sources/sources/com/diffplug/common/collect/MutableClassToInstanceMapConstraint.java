@@ -22,8 +22,10 @@ import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 
 /**
- * A constraint on the keys and values that may be added to a {@code Map} or
- * {@code Multimap}. For example, {@link MapConstraints#notNull()}, which
+ * Formerly an API class, now only used by MutableClassToInstanceMap.
+ *
+ * <p>A constraint on the keys and values that may be added to a {@code Map} or
+ * {@code Multimap}. For example, {@link MutableClassToInstanceMapConstraints#notNull()}, which
  * prevents a map from including any null keys or values, could be implemented
  * like this: <pre>   {@code
  *
@@ -41,19 +43,13 @@ import com.diffplug.common.annotations.GwtCompatible;
  * enforced when elements are added.
  *
  * @author Mike Bostock
- * @see MapConstraints
+ * @see MutableClassToInstanceMapConstraints
  * @see Constraint
  * @since 3.0
- * @deprecated Use {@link Preconditions} for basic checks. In place of
- *     constrained maps, we encourage you to check your preconditions
- *     explicitly instead of leaving that work to the map implementation.
- *     For the specific case of rejecting null, consider {@link ImmutableMap}.
- *     This class is scheduled for removal in Guava 20.0.
  */
 @GwtCompatible
 @Beta
-@Deprecated
-public interface MapConstraint<K, V> {
+interface MutableClassToInstanceMapConstraint<K, V> {
 	/**
 	 * Throws a suitable {@code RuntimeException} if the specified key or value is
 	 * illegal. Typically this is either a {@link NullPointerException}, an

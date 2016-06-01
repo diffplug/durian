@@ -26,8 +26,8 @@ import junit.framework.TestSuite;
 
 import com.diffplug.common.annotations.GwtCompatible;
 import com.diffplug.common.annotations.GwtIncompatible;
-import com.diffplug.common.collect.MapConstraintsTest.TestKeyException;
-import com.diffplug.common.collect.MapConstraintsTest.TestValueException;
+import com.diffplug.common.collect.MutableClassToInstanceMapConstraintsTest.TestKeyException;
+import com.diffplug.common.collect.MutableClassToInstanceMapConstraintsTest.TestValueException;
 import com.diffplug.common.collect.testing.MapTestSuiteBuilder;
 import com.diffplug.common.collect.testing.TestStringMapGenerator;
 import com.diffplug.common.collect.testing.features.CollectionFeature;
@@ -35,7 +35,7 @@ import com.diffplug.common.collect.testing.features.CollectionSize;
 import com.diffplug.common.collect.testing.features.MapFeature;
 
 /**
- * Tests for {@link MapConstraints#constrainedMap}.
+ * Tests for {@link MutableClassToInstanceMapConstraints#constrainedMap}.
  *
  * @author Jared Levy
  * @author Louis Wasserman
@@ -45,7 +45,7 @@ public class ConstrainedMapTest extends TestCase {
 
 	private static final String TEST_KEY = "42";
 	private static final String TEST_VALUE = "test";
-	private static final MapConstraint<String, String> TEST_CONSTRAINT = new TestConstraint();
+	private static final MutableClassToInstanceMapConstraint<String, String> TEST_CONSTRAINT = new TestConstraint();
 
 	@GwtIncompatible("suite")
 	public static Test suite() {
@@ -66,7 +66,7 @@ public class ConstrainedMapTest extends TestCase {
 	}
 
 	public void testPutWithForbiddenKeyForbiddenValue() {
-		Map<String, String> map = MapConstraints.constrainedMap(
+		Map<String, String> map = MutableClassToInstanceMapConstraints.constrainedMap(
 				new HashMap<String, String>(),
 				TEST_CONSTRAINT);
 		try {
@@ -78,7 +78,7 @@ public class ConstrainedMapTest extends TestCase {
 	}
 
 	public void testPutWithForbiddenKeyAllowedValue() {
-		Map<String, String> map = MapConstraints.constrainedMap(
+		Map<String, String> map = MutableClassToInstanceMapConstraints.constrainedMap(
 				new HashMap<String, String>(),
 				TEST_CONSTRAINT);
 		try {
@@ -90,7 +90,7 @@ public class ConstrainedMapTest extends TestCase {
 	}
 
 	public void testPutWithAllowedKeyForbiddenValue() {
-		Map<String, String> map = MapConstraints.constrainedMap(
+		Map<String, String> map = MutableClassToInstanceMapConstraints.constrainedMap(
 				new HashMap<String, String>(),
 				TEST_CONSTRAINT);
 		try {
@@ -104,7 +104,7 @@ public class ConstrainedMapTest extends TestCase {
 	public static final class ConstrainedMapGenerator extends TestStringMapGenerator {
 		@Override
 		protected Map<String, String> create(Entry<String, String>[] entries) {
-			Map<String, String> map = MapConstraints.constrainedMap(
+			Map<String, String> map = MutableClassToInstanceMapConstraints.constrainedMap(
 					new HashMap<String, String>(),
 					TEST_CONSTRAINT);
 			for (Entry<String, String> entry : entries) {
@@ -114,7 +114,7 @@ public class ConstrainedMapTest extends TestCase {
 		}
 	}
 
-	private static final class TestConstraint implements MapConstraint<String, String> {
+	private static final class TestConstraint implements MutableClassToInstanceMapConstraint<String, String> {
 		@Override
 		public void checkKeyValue(String key, String value) {
 			if (TEST_KEY.equals(key)) {

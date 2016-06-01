@@ -118,8 +118,6 @@ import com.diffplug.common.collect.ImmutableSortedSet;
 import com.diffplug.common.collect.ImmutableTable;
 import com.diffplug.common.collect.Iterators;
 import com.diffplug.common.collect.ListMultimap;
-import com.diffplug.common.collect.MapConstraint;
-import com.diffplug.common.collect.MapConstraints;
 import com.diffplug.common.collect.MapDifference;
 import com.diffplug.common.collect.Maps;
 import com.diffplug.common.collect.Multimap;
@@ -275,7 +273,6 @@ public final class ArbitraryInstances {
 			.put(Comparator.class, AlwaysEqual.INSTANCE)
 			.put(Ordering.class, AlwaysEqual.INSTANCE)
 			.put(Range.class, Range.all())
-			.put(MapConstraint.class, MapConstraints.notNull())
 			.put(MapDifference.class, Maps.difference(ImmutableMap.of(), ImmutableMap.of()))
 			.put(SortedMapDifference.class,
 					Maps.difference(ImmutableSortedMap.of(), ImmutableSortedMap.of()))

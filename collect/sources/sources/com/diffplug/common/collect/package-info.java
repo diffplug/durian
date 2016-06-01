@@ -188,8 +188,8 @@
  *     {@link com.diffplug.common.collect.Interners}
  * <li>{@link com.diffplug.common.collect.Constraint},
  *     {@link com.diffplug.common.collect.Constraints}
- * <li>{@link com.diffplug.common.collect.MapConstraint},
- *     {@link com.diffplug.common.collect.MapConstraints}
+ * <li>{@link com.diffplug.common.collect.MutableClassToInstanceMapConstraint},
+ *     {@link com.diffplug.common.collect.MutableClassToInstanceMapConstraints}
  * <li>{@link com.diffplug.common.collect.MapDifference},
  *     {@link com.diffplug.common.collect.SortedMapDifference}
  * <li>{@link com.diffplug.common.collect.MinMaxPriorityQueue}

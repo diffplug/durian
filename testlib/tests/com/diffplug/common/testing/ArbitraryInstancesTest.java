@@ -111,7 +111,6 @@ import com.diffplug.common.collect.ImmutableSortedMap;
 import com.diffplug.common.collect.ImmutableSortedSet;
 import com.diffplug.common.collect.ImmutableTable;
 import com.diffplug.common.collect.ListMultimap;
-import com.diffplug.common.collect.MapConstraint;
 import com.diffplug.common.collect.MapDifference;
 import com.diffplug.common.collect.Multimap;
 import com.diffplug.common.collect.Multiset;
@@ -229,7 +228,6 @@ public class ArbitraryInstancesTest extends TestCase {
 		assertThat(ArbitraryInstances.get(Optional.class)).isEqualTo(Optional.empty());
 		ArbitraryInstances.get(Stopwatch.class).start();
 		assertNotNull(ArbitraryInstances.get(Ticker.class));
-		assertNotNull(ArbitraryInstances.get(MapConstraint.class));
 		assertFreshInstanceReturned(Random.class);
 		assertEquals(ArbitraryInstances.get(Random.class).nextInt(),
 				ArbitraryInstances.get(Random.class).nextInt());
