@@ -188,7 +188,7 @@ public final class Predicates {
 	 * in preference.
 	 *
 	 * <p><b>Warning:</b> contrary to the typical assumptions about predicates (as
-	 * documented at {@link Predicate#apply}), the returned predicate may not be
+	 * documented at {@link Predicate#test}), the returned predicate may not be
 	 * <i>consistent with equals</i>. For example, {@code
 	 * instanceOf(ArrayList.class)} will yield different results for the two equal
 	 * instances {@code Lists.newArrayList(1)} and {@code Arrays.asList(1)}.

@@ -80,7 +80,7 @@ public final class Collections2 {
 	 * and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code predicate} must be <i>consistent with equals</i>,
-	 * as documented at {@link Predicate#apply}. Do not provide a predicate such
+	 * as documented at {@link Predicate#test}. Do not provide a predicate such
 	 * as {@code Predicates.instanceOf(ArrayList.class)}, which is inconsistent
 	 * with equals. (See {@link Iterables#filter(Iterable, Class)} for related
 	 * functionality.)

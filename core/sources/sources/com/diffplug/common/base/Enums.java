@@ -67,7 +67,7 @@ public final class Enums {
 
 	/**
 	 * Returns an optional enum constant for the given type, using {@link Enum#valueOf}. If the
-	 * constant does not exist, {@link Optional#absent} is returned. A common use case is for parsing
+	 * constant does not exist, {@link Optional#empty()} is returned. A common use case is for parsing
 	 * user input or falling back to a default enum constant. For example,
 	 * {@code Enums.getIfPresent(Country.class, countryInput).or(Country.DEFAULT);}
 	 *

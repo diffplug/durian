@@ -36,6 +36,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,7 +76,7 @@ public final class Files {
 	 *
 	 * @param file the file to read from
 	 * @param charset the charset used to decode the input stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @return the buffered reader
 	 */
 	public static BufferedReader newReader(File file, Charset charset)
@@ -92,7 +93,7 @@ public final class Files {
 	 *
 	 * @param file the file to write to
 	 * @param charset the charset used to encode the output stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @return the buffered writer
 	 */
 	public static BufferedWriter newWriter(File file, Charset charset)
@@ -265,7 +266,7 @@ public final class Files {
 	 *
 	 * @param file the file to read from
 	 * @param charset the charset used to decode the input stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @return a string containing all the characters from the file
 	 * @throws IOException if an I/O error occurs
 	 */
@@ -321,7 +322,7 @@ public final class Files {
 	 * @param from the character sequence to write
 	 * @param to the destination file
 	 * @param charset the charset used to encode the output stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @throws IOException if an I/O error occurs
 	 */
 	public static void write(CharSequence from, File to, Charset charset)
@@ -336,7 +337,7 @@ public final class Files {
 	 * @param from the character sequence to append
 	 * @param to the destination file
 	 * @param charset the charset used to encode the output stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @throws IOException if an I/O error occurs
 	 */
 	public static void append(CharSequence from, File to, Charset charset)
@@ -351,7 +352,7 @@ public final class Files {
 	 * @param from the character sequence to append
 	 * @param to the destination file
 	 * @param charset the charset used to encode the output stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @param append true to append, false to overwrite
 	 * @throws IOException if an I/O error occurs
 	 */
@@ -366,7 +367,7 @@ public final class Files {
 	 *
 	 * @param from the source file
 	 * @param charset the charset used to decode the input stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @param to the appendable object
 	 * @throws IOException if an I/O error occurs
 	 */
@@ -513,7 +514,7 @@ public final class Files {
 	 *
 	 * @param file the file to read from
 	 * @param charset the charset used to decode the input stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @return the first line, or null if the file is empty
 	 * @throws IOException if an I/O error occurs
 	 */
@@ -533,7 +534,7 @@ public final class Files {
 	 *
 	 * @param file the file to read from
 	 * @param charset the charset used to decode the input stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @return a mutable {@link List} containing all the lines
 	 * @throws IOException if an I/O error occurs
 	 */
@@ -563,7 +564,7 @@ public final class Files {
 	 *
 	 * @param file the file to read from
 	 * @param charset the charset used to decode the input stream; see {@link
-	 *     Charsets} for helpful predefined constants
+	 *     StandardCharsets} for helpful predefined constants
 	 * @param callback the {@link LineProcessor} to use to handle the lines
 	 * @return the output of processing the lines
 	 * @throws IOException if an I/O error occurs

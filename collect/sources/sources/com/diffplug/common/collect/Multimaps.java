@@ -1835,7 +1835,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code keyPredicate} must be <i>consistent with equals</i>,
-	 * as documented at {@link Predicate#apply}. Do not provide a predicate such
+	 * as documented at {@link Predicate#test}. Do not provide a predicate such
 	 * as {@code Predicates.instanceOf(ArrayList.class)}, which is inconsistent
 	 * with equals.
 	 *
@@ -1884,7 +1884,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code keyPredicate} must be <i>consistent with equals</i>,
-	 * as documented at {@link Predicate#apply}. Do not provide a predicate such
+	 * as documented at {@link Predicate#test}. Do not provide a predicate such
 	 * as {@code Predicates.instanceOf(ArrayList.class)}, which is inconsistent
 	 * with equals.
 	 *
@@ -1929,7 +1929,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code keyPredicate} must be <i>consistent with equals</i>,
-	 * as documented at {@link Predicate#apply}. Do not provide a predicate such
+	 * as documented at {@link Predicate#test}. Do not provide a predicate such
 	 * as {@code Predicates.instanceOf(ArrayList.class)}, which is inconsistent
 	 * with equals.
 	 *
@@ -1971,7 +1971,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code valuePredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 *
@@ -2007,7 +2007,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code valuePredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 *
@@ -2043,7 +2043,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}.
+	 * equals</i>, as documented at {@link Predicate#test}.
 	 *
 	 * @since 11.0
 	 */
@@ -2083,7 +2083,7 @@ public final class Multimaps {
 	 * faster to copy the filtered multimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}.
+	 * equals</i>, as documented at {@link Predicate#test}.
 	 *
 	 * @since 14.0
 	 */

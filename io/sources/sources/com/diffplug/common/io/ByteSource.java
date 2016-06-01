@@ -149,7 +149,7 @@ public abstract class ByteSource {
 	 * Returns the size of this source in bytes, if the size can be easily determined without
 	 * actually opening the data stream.
 	 *
-	 * <p>The default implementation returns {@link Optional#absent}. Some sources, such as a file,
+	 * <p>The default implementation returns {@link Optional#empty}. Some sources, such as a file,
 	 * may return a non-absent value. Note that in such cases, it is <i>possible</i> that this method
 	 * will return a different number of bytes than would be returned by reading all of the bytes (for
 	 * example, some special files may return a size of 0 despite actually having content when read).

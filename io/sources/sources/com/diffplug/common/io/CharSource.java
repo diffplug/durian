@@ -99,7 +99,7 @@ public abstract class CharSource {
 	 * Returns the size of this source in chars, if the size can be easily determined without
 	 * actually opening the data stream.
 	 *
-	 * <p>The default implementation returns {@link Optional#absent}. Some sources, such as a
+	 * <p>The default implementation returns {@link Optional#empty}. Some sources, such as a
 	 * {@code CharSequence}, may return a non-absent value. Note that in such cases, it is
 	 * <i>possible</i> that this method will return a different number of chars than would be
 	 * returned by reading all of the chars.

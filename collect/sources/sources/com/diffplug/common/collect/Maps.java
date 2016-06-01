@@ -1845,8 +1845,8 @@ public final class Maps {
 		 * <ul>
 		 * <li>Its execution does not cause any observable side effects.
 		 * <li>The computation is <i>consistent with equals</i>; that is,
-		 *     {@link Objects#equal Objects.equal}{@code (k1, k2) &&}
-		 *     {@link Objects#equal}{@code (v1, v2)} implies that {@code
+		 *     {@link Objects#equals Objects.equals}{@code (k1, k2) &&}
+		 *     {@link Objects#equals}{@code (v1, v2)} implies that {@code
 		 *     Objects.equals(transformer.transform(k1, v1),
 		 *     transformer.transform(k2, v2))}.
 		 * </ul>
@@ -2193,7 +2193,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code keyPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 */
@@ -2236,7 +2236,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code keyPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 *
@@ -2274,7 +2274,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code keyPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 *
@@ -2310,7 +2310,7 @@ public final class Maps {
 	 * needed, it may be faster to copy the filtered bimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with equals </i>, as
-	 * documented at {@link Predicate#apply}.
+	 * documented at {@link Predicate#test}.
 	 *
 	 * @since 14.0
 	 */
@@ -2346,7 +2346,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code valuePredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 */
@@ -2386,7 +2386,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code valuePredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 *
@@ -2423,7 +2423,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code valuePredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}. Do not provide a
+	 * equals</i>, as documented at {@link Predicate#test}. Do not provide a
 	 * predicate such as {@code Predicates.instanceOf(ArrayList.class)}, which is
 	 * inconsistent with equals.
 	 *
@@ -2460,7 +2460,7 @@ public final class Maps {
 	 * needed, it may be faster to copy the filtered bimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with equals </i>, as
-	 * documented at {@link Predicate#apply}.
+	 * documented at {@link Predicate#test}.
 	 *
 	 * @since 14.0
 	 */
@@ -2497,7 +2497,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}.
+	 * equals</i>, as documented at {@link Predicate#test}.
 	 */
 	@CheckReturnValue
 	public static <K, V> Map<K, V> filterEntries(
@@ -2540,7 +2540,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}.
+	 * equals</i>, as documented at {@link Predicate#test}.
 	 *
 	 * @since 11.0
 	 */
@@ -2585,7 +2585,7 @@ public final class Maps {
 	 * faster to copy the filtered map and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with
-	 * equals</i>, as documented at {@link Predicate#apply}.
+	 * equals</i>, as documented at {@link Predicate#test}.
 	 *
 	 * @since 14.0
 	 */
@@ -2622,7 +2622,7 @@ public final class Maps {
 	 * view is <i>not</i> needed, it may be faster to copy the filtered bimap and use the copy.
 	 *
 	 * <p><b>Warning:</b> {@code entryPredicate} must be <i>consistent with equals </i>, as
-	 * documented at {@link Predicate#apply}.
+	 * documented at {@link Predicate#test}.
 	 *
 	 * @since 14.0
 	 */

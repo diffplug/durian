@@ -19,6 +19,8 @@ package com.diffplug.common.base;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
@@ -43,8 +45,8 @@ public final class MoreObjects {
 	 * throws a {@link NullPointerException}.
 	 *
 	 * <p><b>Note:</b> if {@code first} is represented as an {@link Optional}, this can be
-	 * accomplished with {@link Optional#or(Object) first.or(second)}. That approach also allows for
-	 * lazy evaluation of the fallback instance, using {@link Optional#or(Supplier)
+	 * accomplished with {@link Optional#orElse(Object) first.or(second)}. That approach also allows for
+	 * lazy evaluation of the fallback instance, using {@link Optional#orElseGet(Supplier)
 	 * first.or(supplier)}.
 	 *
 	 * @return {@code first} if it is non-null; otherwise {@code second} if it is non-null

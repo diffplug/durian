@@ -19,6 +19,8 @@ package com.diffplug.common.base;
 import static com.diffplug.common.base.Preconditions.checkArgument;
 import static com.diffplug.common.base.Preconditions.checkNotNull;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.annotation.CheckReturnValue;
 
 import com.diffplug.common.annotations.Beta;
@@ -32,7 +34,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * <p>ASCII utilities also exist in other classes of this package:
  * <ul>
  * <!-- TODO(kevinb): how can we make this not produce a warning when building gwt javadoc? -->
- * <li>{@link Charsets#US_ASCII} specifies the {@code Charset} of ASCII characters.
+ * <li>{@link StandardCharsets#US_ASCII} specifies the {@code Charset} of ASCII characters.
  * <li>{@link CharMatcher#ASCII} matches ASCII characters and provides text processing methods
  *     which operate only on the ASCII characters of a string.
  * </ul>

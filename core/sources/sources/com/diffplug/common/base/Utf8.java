@@ -20,13 +20,15 @@ import static com.diffplug.common.base.Preconditions.checkPositionIndexes;
 import static java.lang.Character.MAX_SURROGATE;
 import static java.lang.Character.MIN_SURROGATE;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.annotation.CheckReturnValue;
 
 import com.diffplug.common.annotations.Beta;
 import com.diffplug.common.annotations.GwtCompatible;
 
 /**
- * Low-level, high-performance utility methods related to the {@linkplain Charsets#UTF_8 UTF-8}
+ * Low-level, high-performance utility methods related to the {@linkplain StandardCharsets#UTF_8 UTF-8}
  * character encoding. UTF-8 is defined in section D92 of
  * <a href="http://www.unicode.org/versions/Unicode6.2.0/ch03.pdf">The Unicode Standard Core
  * Specification, Chapter 3</a>.

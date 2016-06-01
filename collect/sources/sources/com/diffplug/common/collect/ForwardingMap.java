@@ -41,7 +41,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * delegating to the provided {@code standardPutAll} method.
  *
  * <p>Each of the {@code standard} methods, where appropriate, use {@link
- * Objects#equal} to test equality for both keys and values. This may not be
+ * Objects#equals} to test equality for both keys and values. This may not be
  * the desired behavior for map implementations that use non-standard notions of
  * key equality, such as a {@code SortedMap} whose comparator is not consistent
  * with {@code equals}.
