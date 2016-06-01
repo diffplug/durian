@@ -24,9 +24,6 @@ import static java.util.Arrays.asList;
 import static java.util.regex.Pattern.quote;
 
 import java.io.FileNotFoundException;
-import java.security.Permission;
-import java.security.Policy;
-import java.security.ProtectionDomain;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -566,29 +563,6 @@ public class ThrowablesTest extends TestCase {
 
 		e.setStackTrace(new StackTraceElement[0]);
 		assertThat(lazyStackTrace(e)).containsExactly((Object[]) originalStackTrace).inOrder();
-	}
-
-	private void doTestLazyStackTraceFallback() {
-		assertFalse(lazyStackTraceIsLazy());
-
-		Exception e = new Exception();
-
-		assertThat(lazyStackTrace(e)).containsExactly((Object[]) e.getStackTrace()).inOrder();
-
-		try {
-			lazyStackTrace(e).set(0, null);
-			fail();
-		} catch (UnsupportedOperationException expected) {}
-
-		e.setStackTrace(new StackTraceElement[0]);
-		assertThat(lazyStackTrace(e)).isEmpty();
-	}
-
-	private static class AllowSettingSecurityManagerPolicy extends Policy {
-		@Override
-		public boolean implies(ProtectionDomain pd, Permission perm) {
-			return true;
-		}
 	}
 
 	public void testNullPointers() {

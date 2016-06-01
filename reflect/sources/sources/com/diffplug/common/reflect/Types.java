@@ -425,6 +425,8 @@ final class Types {
 			this.bounds = ImmutableList.copyOf(bounds);
 		}
 
+		// Used via reflection
+		@SuppressWarnings("unused")
 		public Type[] getBounds() {
 			return toArray(bounds);
 		}
@@ -437,6 +439,8 @@ final class Types {
 			return name;
 		}
 
+		// Used via reflection
+		@SuppressWarnings("unused")
 		public String getTypeName() {
 			return name;
 		}

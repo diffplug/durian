@@ -18,7 +18,6 @@ package com.diffplug.common.base;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,7 +29,6 @@ import com.diffplug.common.annotations.GwtIncompatible;
 import com.diffplug.common.base.Joiner.MapJoiner;
 import com.diffplug.common.collect.ImmutableMap;
 import com.diffplug.common.collect.ImmutableMultimap;
-import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.Lists;
 import com.diffplug.common.collect.Maps;
 import com.diffplug.common.testing.NullPointerTester;
@@ -318,36 +316,6 @@ public class JoinerTest extends TestCase {
 		@Override
 		public String toString() {
 			throw new AssertionFailedError("shouldn't be invoked");
-		}
-	}
-
-	// Don't do this.
-	private static class IterableIterator implements Iterable<Integer>, Iterator<Integer> {
-		private static final ImmutableSet<Integer> INTEGERS = ImmutableSet.of(1, 2, 3, 4);
-		private final Iterator<Integer> iterator;
-
-		public IterableIterator() {
-			this.iterator = iterator();
-		}
-
-		@Override
-		public Iterator<Integer> iterator() {
-			return INTEGERS.iterator();
-		}
-
-		@Override
-		public boolean hasNext() {
-			return iterator.hasNext();
-		}
-
-		@Override
-		public Integer next() {
-			return iterator.next();
-		}
-
-		@Override
-		public void remove() {
-			iterator.remove();
 		}
 	}
 

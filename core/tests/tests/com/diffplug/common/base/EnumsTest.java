@@ -48,8 +48,6 @@ public class EnumsTest extends TestCase {
 		CHEETO, HONDA, POODLE,
 	}
 
-	private enum OtherEnum {}
-
 	public void testGetIfPresent() {
 		assertThat(Enums.getIfPresent(TestEnum.class, "CHEETO")).isEqualTo(Optional.of(TestEnum.CHEETO));
 		assertThat(Enums.getIfPresent(TestEnum.class, "HONDA")).isEqualTo(Optional.of(TestEnum.HONDA));
