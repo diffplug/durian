@@ -55,7 +55,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Because the {@link Consumer} required by {@link Iterable#forEach(Consumer)} doesn't allow checked exceptions,
  * and `void eat(Food food) throws Barf` has a checked exception, we can't take advantage of method references.
  *
- * With `Errors`, we can succinctly:
+ * With `Errors`, we can do this succinctly:
  *
  * ```java
  * //                         sweep it under the rug
@@ -72,6 +72,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * If you don't like their default behaviors, you can change them using {@link Plugins} and {@link DurianPlugins}.
  *
  * You can also create your own error handling policies using {@link #createHandling(Consumer)} and {@link #createRethrowing(Function)}.
+ *
+ * For a deep-dive into how `Errors` works, see [ErrorsExample.java](https://github.com/diffplug/durian/blob/10631a3480e5491eb6eb6ee06e752d8596914232/test/com/diffplug/common/base/ErrorsExample.java).
  */
 public abstract class Errors implements Consumer<Throwable> {
 	/** Package-private for testing - resets all of the static member variables. */
