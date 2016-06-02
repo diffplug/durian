@@ -136,10 +136,10 @@ if (!isSnapshot) {
 			vcsUrl = 'https://github.com/diffplug/durian'
 			version {
 				name = project.version
-				//mavenCentralSync {
-				//	user = cred('nexus_user')
-				//	password = cred('nexus_pass')
-				//}
+				mavenCentralSync {
+					user = cred('nexus_user')
+					password = cred('nexus_pass')
+				}
 			}
 		}
 	}
