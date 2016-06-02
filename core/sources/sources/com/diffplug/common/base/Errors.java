@@ -18,6 +18,8 @@ package com.diffplug.common.base;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -25,8 +27,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -413,24 +413,42 @@ public abstract class Errors implements Consumer<Throwable> {
 
 	/** Namespace for the plugins which Errors supports. */
 	public interface Plugins {
-		/** Plugin interface for {@link Errors#log}. */
+		/** Plugin interface for {@link Errors#log()}. */
 		public interface Log extends Consumer<Throwable> {}
 
-		/** Plugin interface for {@link Errors#dialog}. */
+		/** Plugin interface for {@link Errors#dialog()}. */
 		public interface Dialog extends Consumer<Throwable> {}
 
-		/** Default behavior of {@link Errors#log} is @{code Throwable.printStackTrace()}. */
+		/** Default behavior of {@link Errors#log()} is @{link Throwable#printStackTrace()}. */
 		static void defaultLog(Throwable error) {
 			error.printStackTrace();
 		}
 
-		/** Default behavior of {@link Errors#dialog} is @{code JOptionPane.showMessageDialog} without a parent. */
+		/**
+		 * Default behavior of {@link Errors#dialog()} is @{link Throwable#printStackTrace()}
+		 * and {@link javax.swing.JOptionPane#showMessageDialog(java.awt.Component, Object, String, int) JOptionPane.showMessageDialog}.
+		 *
+		 * The `JOptionPane` part is called using reflection, and fails silently if swing isn't available.  The `Throwable.printStackTrace`
+		 * part works whether swing is available or not.
+		 */
 		static void defaultDialog(Throwable error) {
-			SwingUtilities.invokeLater(() -> {
-				error.printStackTrace();
-				String title = error.getClass().getSimpleName();
-				JOptionPane.showMessageDialog(null, error.getMessage() + "\n\n" + Throwables.getStackTraceAsString(error), title, JOptionPane.ERROR_MESSAGE);
-			});
+			error.printStackTrace();
+			try {
+				Method invokeLater = Class.forName("javax.swing.SwingUtilities").getMethod("invokeLater", Runnable.class);
+				Class<?> javaAwtComponent = Class.forName("java.awt.Component");
+				Method showMessageDialog = Class.forName("javax.swing.JOptionPane").getMethod("showMessageDialog", javaAwtComponent, Object.class, String.class, int.class);
+				Runnable runnable = () -> {
+					try {
+						String title = error.getClass().getSimpleName();
+						showMessageDialog.invoke(null, null, error.getMessage() + "\n\n" + Throwables.getStackTraceAsString(error), title, 0);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						// if the reflection fails (e.g. because we're on Android) that's no problem, we already dumped the stacktrace to console
+					}
+				};
+				invokeLater.invoke(null, runnable);
+			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				// if the reflection fails (e.g. because we're on Android) that's no problem, we already dumped the stacktrace to console
+			}
 		}
 
 		/**
