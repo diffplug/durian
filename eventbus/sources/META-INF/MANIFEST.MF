@@ -1,13 +1,12 @@
 Manifest-Version: 1.0
 Bundle-Description: Durian - Guava's spikier (unofficial) cousin
 Bundle-DocURL: https://github.com/diffplug/durian
-Bundle-License: https://github.com/diffplug/durian/blob/v1.1.0-SNAPSHO
- T/LICENSE
+Bundle-License: https://github.com/diffplug/durian/blob/v1.1.0/LICENSE
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian.eventbus
 Bundle-Vendor: DiffPlug
-Bundle-Version: 1.1.0.SNAPSHOT
+Bundle-Version: 1.1.0
 Export-Package: com.diffplug.common.eventbus;version="1.1.0"
 Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
  mon.base;version="[1.1,2)",com.diffplug.common.cache;version="[1.1,2)
