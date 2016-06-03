@@ -1,32 +1,33 @@
 Manifest-Version: 1.0
 Bundle-Description: Durian - Guava's spikier (unofficial) cousin
 Bundle-DocURL: https://github.com/diffplug/durian
-Bundle-License: https://github.com/diffplug/durian/blob/v1.1.0/LICENSE
+Bundle-License: https://github.com/diffplug/durian/blob/v1.2.0-SNAPSHO
+ T/LICENSE
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian.testlib
 Bundle-Vendor: DiffPlug
-Bundle-Version: 1.1.0
+Bundle-Version: 1.2.0.SNAPSHOT
 Export-Package: com.diffplug.common.collect.testing;uses:="com.diffplu
- g.common.collect.testing.features,junit.framework";version="1.1.0",co
- m.diffplug.common.collect.testing.features;version="1.1.0",com.diffpl
+ g.common.collect.testing.features,junit.framework";version="1.2.0",co
+ m.diffplug.common.collect.testing.features;version="1.2.0",com.diffpl
  ug.common.collect.testing.google;uses:="com.diffplug.common.collect,c
  om.diffplug.common.collect.testing,com.diffplug.common.collect.testin
- g.features,junit.framework";version="1.1.0",com.diffplug.common.colle
+ g.features,junit.framework";version="1.2.0",com.diffplug.common.colle
  ct.testing.testers;uses:="com.diffplug.common.collect.testing,com.dif
- fplug.common.collect.testing.features";version="1.1.0",com.diffplug.c
- ommon.escape.testing;uses:="com.diffplug.common.escape";version="1.1.
+ fplug.common.collect.testing.features";version="1.2.0",com.diffplug.c
+ ommon.escape.testing;uses:="com.diffplug.common.escape";version="1.2.
  0",com.diffplug.common.testing;uses:="com.diffplug.common.base,javax.
- annotation,junit.framework,org.junit";version="1.1.0",com.diffplug.co
+ annotation,junit.framework,org.junit";version="1.2.0",com.diffplug.co
  mmon.util.concurrent.testing;uses:="com.diffplug.common.util.concurre
- nt,junit.framework";version="1.1.0"
+ nt,junit.framework";version="1.2.0"
 Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
- mon.base;version="[1.1,2)",com.diffplug.common.collect;version="[1.1,
+ mon.base;version="[1.2,2)",com.diffplug.common.collect;version="[1.2,
  2)",com.diffplug.common.collect.testing,com.diffplug.common.collect.t
  esting.features,com.diffplug.common.collect.testing.testers,com.diffp
- lug.common.escape;version="[1.1,2)",com.diffplug.common.io;version="[
- 1.1,2)",com.diffplug.common.primitives;version="[1.1,2)",com.diffplug
- .common.reflect;version="[1.1,2)",com.diffplug.common.testing,com.dif
- fplug.common.util.concurrent;version="[1.1,2)",junit.framework,org.ju
+ lug.common.escape;version="[1.2,2)",com.diffplug.common.io;version="[
+ 1.2,2)",com.diffplug.common.primitives;version="[1.2,2)",com.diffplug
+ .common.reflect;version="[1.2,2)",com.diffplug.common.testing,com.dif
+ fplug.common.util.concurrent;version="[1.2,2)",junit.framework,org.ju
  nit,sun.misc;resolution:=optional
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"

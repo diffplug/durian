@@ -1,18 +1,19 @@
 Manifest-Version: 1.0
 Bundle-Description: Durian - Guava's spikier (unofficial) cousin
 Bundle-DocURL: https://github.com/diffplug/durian
-Bundle-License: https://github.com/diffplug/durian/blob/v1.1.0/LICENSE
+Bundle-License: https://github.com/diffplug/durian/blob/v1.2.0-SNAPSHO
+ T/LICENSE
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian.io
 Bundle-Vendor: DiffPlug
-Bundle-Version: 1.1.0
+Bundle-Version: 1.2.0.SNAPSHOT
 Export-Package: com.diffplug.common.hash;uses:="javax.annotation";vers
- ion="1.1.0",com.diffplug.common.io;uses:="com.diffplug.common.collect
- ,com.diffplug.common.hash,javax.annotation";version="1.1.0"
+ ion="1.2.0",com.diffplug.common.io;uses:="com.diffplug.common.collect
+ ,com.diffplug.common.hash,javax.annotation";version="1.2.0"
 Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
- mon.base;version="[1.1,2)",com.diffplug.common.collect;version="[1.1,
- 2)",com.diffplug.common.hash,com.diffplug.common.math;version="[1.1,2
- )",com.diffplug.common.primitives;version="[1.1,2)",sun.misc;resoluti
+ mon.base;version="[1.2,2)",com.diffplug.common.collect;version="[1.2,
+ 2)",com.diffplug.common.hash,com.diffplug.common.math;version="[1.2,2
+ )",com.diffplug.common.primitives;version="[1.2,2)",sun.misc;resoluti
  on:=optional
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
