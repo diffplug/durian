@@ -446,6 +446,14 @@ public abstract class ImmutableSortedSet<E> extends ImmutableSortedSetFauxveride
 		}
 
 		/**
+		 * Creates a new builder with the given initialCapacity.
+		 */
+		public Builder(int initialCapacity, Comparator<? super E> comparator) {
+			super(initialCapacity);
+			this.comparator = checkNotNull(comparator);
+		}
+
+		/**
 		 * Adds {@code element} to the {@code ImmutableSortedSet}.  If the
 		 * {@code ImmutableSortedSet} already contains {@code element}, then
 		 * {@code add} has no effect. (only the previously added element

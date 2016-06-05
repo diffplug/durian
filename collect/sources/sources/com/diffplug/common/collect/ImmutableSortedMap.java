@@ -371,7 +371,7 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
 	 *
 	 * @throws NullPointerException if {@code comparator} is null
 	 */
-	public static <K, V> Builder<K, V> orderedBy(Comparator<K> comparator) {
+	public static <K, V> Builder<K, V> orderedBy(Comparator<? super K> comparator) {
 		return new Builder<K, V>(comparator);
 	}
 
@@ -412,6 +412,14 @@ public final class ImmutableSortedMap<K, V> extends ImmutableSortedMapFauxveride
 		 */
 		@SuppressWarnings("unchecked")
 		public Builder(Comparator<? super K> comparator) {
+			this(ImmutableCollection.Builder.DEFAULT_INITIAL_CAPACITY, comparator);
+		}
+
+		/**
+		 * Creates a new builder with the given initialCapacity.
+		 */
+		public Builder(int initialCapacity, Comparator<? super K> comparator) {
+			super(initialCapacity);
 			this.comparator = checkNotNull(comparator);
 		}
 
