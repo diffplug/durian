@@ -255,23 +255,11 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 
 		@Override
 		protected A doForward(B b) {
-			throw new AssertionError();
-		}
-
-		@Override
-		protected B doBackward(A a) {
-			throw new AssertionError();
-		}
-
-		@Override
-		@Nullable
-		A correctedDoForward(@Nullable B b) {
 			return original.correctedDoBackward(b);
 		}
 
 		@Override
-		@Nullable
-		B correctedDoBackward(@Nullable A a) {
+		protected B doBackward(A a) {
 			return original.correctedDoForward(a);
 		}
 

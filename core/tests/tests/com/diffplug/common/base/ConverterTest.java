@@ -61,8 +61,18 @@ public class ConverterTest extends TestCase {
 	private static final ImmutableList<Long> LONGS = ImmutableList.of(123L, 456L);
 
 	public void testConverter() {
+		// convert
 		assertEquals(LONG_VAL, STR_TO_LONG.convert(STR_VAL));
 		assertEquals(STR_VAL, STR_TO_LONG.reverse().convert(LONG_VAL));
+		// convertNonNull
+		assertEquals(LONG_VAL, STR_TO_LONG.convertNonNull(STR_VAL));
+		assertEquals(STR_VAL, STR_TO_LONG.reverse().convertNonNull(LONG_VAL));
+		// revert
+		assertEquals(LONG_VAL, STR_TO_LONG.reverse().revert(STR_VAL));
+		assertEquals(STR_VAL, STR_TO_LONG.revert(LONG_VAL));
+		// revertNonNull
+		assertEquals(LONG_VAL, STR_TO_LONG.reverse().revertNonNull(STR_VAL));
+		assertEquals(STR_VAL, STR_TO_LONG.revertNonNull(LONG_VAL));
 
 		Iterable<Long> convertedValues = STR_TO_LONG.convertAll(STRINGS);
 		assertEquals(LONGS, ImmutableList.copyOf(convertedValues));
