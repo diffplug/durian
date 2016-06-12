@@ -48,6 +48,20 @@ abstract class ImmutableSortedSetFauxverideShim<E> extends ImmutableSet<E> {
 	}
 
 	/**
+	 * Not supported. Use {@link ImmutableSortedSet.Builder}, which offers
+	 * better type-safety, instead. This method exists only to hide
+	 * {@link ImmutableSet#builder} from consumers of {@code ImmutableSortedSet}.
+	 *
+	 * @throws UnsupportedOperationException always
+	 * @deprecated Use {@link ImmutableSortedSet.Builder#Builder(int, java.util.Comparator)},
+	 *     which offers better type-safety and comparator specification.
+	 */
+	@Deprecated
+	public static <E> ImmutableSortedSet.Builder<E> builder(int initialCapacity) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
 	 * Not supported. <b>You are attempting to create a set that may contain a
 	 * non-{@code Comparable} element.</b> Proper calls will resolve to the
 	 * version in {@code ImmutableSortedSet}, not this dummy version.

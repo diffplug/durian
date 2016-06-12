@@ -39,6 +39,20 @@ abstract class ImmutableSortedMapFauxverideShim<K, V> extends ImmutableMap<K, V>
 	}
 
 	/**
+	 * Not supported. Use {@link ImmutableSortedMap#naturalOrder}, which offers
+	 * better type-safety, instead. This method exists only to hide
+	 * {@link ImmutableMap#builder} from consumers of {@code ImmutableSortedMap}.
+	 *
+	 * @throws UnsupportedOperationException always
+	 * @deprecated Use {@link ImmutableSortedMap.Builder#Builder(int, java.util.Comparator)},
+	 *     which offers better type-safety and comparator specification.
+	 */
+	@Deprecated
+	public static <K, V> ImmutableSortedMap.Builder<K, V> builder(int idx) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
 	 * Not supported. <b>You are attempting to create a map that may contain a
 	 * non-{@code Comparable} key.</b> Proper calls will resolve to the version in
 	 * {@code ImmutableSortedMap}, not this dummy version.
