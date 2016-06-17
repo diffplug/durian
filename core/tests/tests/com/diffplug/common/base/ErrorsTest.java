@@ -16,6 +16,12 @@
  */
 package com.diffplug.common.base;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -59,6 +65,52 @@ public class ErrorsTest {
 		Assert.assertEquals(false, Errors.suppress().wrapWithDefault(input -> {
 			throw new IllegalArgumentException();
 		}, false).test(null));
+	}
+
+	@Test
+	public void testConstrainRun() throws IOException {
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).run(this::throwNothing));
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).run(this::throwIO),
+				IOException.class);
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).run(this::throwRuntime),
+				RuntimeException.class);
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).run(this::throwInterrupted),
+				Errors.WrappedAsRuntimeException.class, InterruptedException.class);
+
+		Assert.assertEquals("result", Errors.constrainTo(IOException.class).get(this::throwNothing));
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).get(this::throwIO),
+				IOException.class);
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).get(this::throwRuntime),
+				RuntimeException.class);
+		expectExceptionChain(() -> Errors.constrainTo(IOException.class).get(this::throwInterrupted),
+				Errors.WrappedAsRuntimeException.class, InterruptedException.class);
+	}
+
+	private void expectExceptionChain(Throwing.Runnable harness, Class<? extends Throwable>... expected) {
+		List<Class<?>> causalChain;
+		try {
+			harness.run();
+			causalChain = Collections.emptyList();
+		} catch (Throwable error) {
+			causalChain = Throwables.getCausalChain(error).stream().map(Object::getClass).collect(Collectors.toList());
+		}
+		Assert.assertEquals(Arrays.asList(expected), causalChain);
+	}
+
+	private Object throwNothing() throws Throwable {
+		return "result";
+	}
+
+	private Object throwIO() throws Throwable {
+		throw new IOException();
+	}
+
+	private Object throwRuntime() throws Throwable {
+		throw new RuntimeException();
+	}
+
+	private Object throwInterrupted() throws Throwable {
+		throw new InterruptedException();
 	}
 
 	@Test
