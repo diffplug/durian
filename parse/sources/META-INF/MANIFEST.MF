@@ -1,23 +1,24 @@
 Manifest-Version: 1.0
 Bundle-Description: Durian - Guava's spikier (unofficial) cousin
 Bundle-DocURL: https://github.com/diffplug/durian
-Bundle-License: https://github.com/diffplug/durian/blob/v1.2.0/LICENSE
+Bundle-License: https://github.com/diffplug/durian/blob/v1.3.0-SNAPSHO
+ T/LICENSE
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-SymbolicName: com.diffplug.durian.parse
 Bundle-Vendor: DiffPlug
-Bundle-Version: 1.2.0
+Bundle-Version: 1.3.0.SNAPSHOT
 Export-Package: com.diffplug.common.escape;uses:="javax.annotation";ve
- rsion="1.2.0",com.diffplug.common.html;uses:="com.diffplug.common.esc
- ape";version="1.2.0",com.diffplug.common.net;uses:="com.diffplug.comm
- on.collect,com.diffplug.common.escape,javax.annotation";version="1.2.
+ rsion="1.3.0",com.diffplug.common.html;uses:="com.diffplug.common.esc
+ ape";version="1.3.0",com.diffplug.common.net;uses:="com.diffplug.comm
+ on.collect,com.diffplug.common.escape,javax.annotation";version="1.3.
  0",com.diffplug.common.xml;uses:="com.diffplug.common.escape";version
- ="1.2.0",com.diffplug.thirdparty.publicsuffix;uses:="com.diffplug.com
- mon.collect";version="1.2.0"
+ ="1.3.0",com.diffplug.thirdparty.publicsuffix;uses:="com.diffplug.com
+ mon.collect";version="1.3.0"
 Import-Package: javax.annotation;resolution:=optional,com.diffplug.com
- mon.base;version="[1.2,2)",com.diffplug.common.collect;version="[1.2,
- 2)",com.diffplug.common.escape,com.diffplug.common.hash;version="[1.2
- ,2)",com.diffplug.common.io;version="[1.2,2)",com.diffplug.common.pri
- mitives;version="[1.2,2)",com.diffplug.thirdparty.publicsuffix,sun.mi
+ mon.base;version="[1.3,2)",com.diffplug.common.collect;version="[1.3,
+ 2)",com.diffplug.common.escape,com.diffplug.common.hash;version="[1.3
+ ,2)",com.diffplug.common.io;version="[1.3,2)",com.diffplug.common.pri
+ mitives;version="[1.3,2)",com.diffplug.thirdparty.publicsuffix,sun.mi
  sc;resolution:=optional
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
