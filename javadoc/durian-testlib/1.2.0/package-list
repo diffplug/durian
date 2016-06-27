@@ -1,0 +1,7 @@
+com.diffplug.common.collect.testing
+com.diffplug.common.collect.testing.features
+com.diffplug.common.collect.testing.google
+com.diffplug.common.collect.testing.testers
+com.diffplug.common.escape.testing
+com.diffplug.common.testing
+com.diffplug.common.util.concurrent.testing
