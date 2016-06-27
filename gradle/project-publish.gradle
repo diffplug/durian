@@ -68,6 +68,7 @@ def cred = {
 	}
 }
 
+def optionalGroupIds = ['com.google.code.findbugs', 'com.google.errorprone', 'com.google.j2objc', 'org.codehaus.mojo']
 def mavenPomName = artifactName(project.name)
 publishing {
 	publications {
@@ -78,7 +79,10 @@ publishing {
 			artifact javadocJar
 			pom.withXml {
 				// findbugs annotations should have scope "provided"
-				asNode().dependencies.'*'.findAll() { it.groupId.text() == 'com.google.code.findbugs' }.each() { it.scope*.value = 'provided' }
+				asNode().dependencies.'*'.findAll { optionalGroupIds.contains(it.groupId.text()) }.each {
+					it.appendNode('optional', 'true')
+					it.remove(it.get('scope').get(0))
+				}
 				// add MavenCentral requirements to the POM
 				asNode().children().last() + {
 					resolveStrategy = Closure.DELEGATE_FIRST
