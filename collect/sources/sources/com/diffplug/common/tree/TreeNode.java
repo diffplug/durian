@@ -224,8 +224,8 @@ public final class TreeNode<T> {
 		List<String> test = Arrays.asList(testData);
 
 		// make the first node (which should have 0 leading spaces)
-		assert(test.size() > 0);
-		assert(0 == TreeNode.leadingSpaces(test.get(0)));
+		assert (test.size() > 0);
+		assert (0 == TreeNode.leadingSpaces(test.get(0)));
 
 		TreeNode<String> rootNode = new TreeNode<>(null, test.get(0));
 		TreeNode<String> lastNode = rootNode;

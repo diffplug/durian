@@ -33,7 +33,7 @@ import com.diffplug.common.collect.ImmutableMap;
  * @since 11.0
  */
 public abstract class ForwardingLoadingCache<K, V>
-		extends ForwardingCache<K, V>implements LoadingCache<K, V> {
+		extends ForwardingCache<K, V> implements LoadingCache<K, V> {
 
 	/** Constructor for use by subclasses. */
 	protected ForwardingLoadingCache() {}

@@ -168,7 +168,7 @@ public final class Uninterruptibles {
 	@GwtIncompatible("TODO")
 	public static <V> V getUninterruptibly(
 			Future<V> future, long timeout, TimeUnit unit)
-					throws ExecutionException, TimeoutException {
+			throws ExecutionException, TimeoutException {
 		boolean interrupted = false;
 		try {
 			long remainingNanos = unit.toNanos(timeout);

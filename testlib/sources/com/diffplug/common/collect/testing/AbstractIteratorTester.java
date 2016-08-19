@@ -441,7 +441,7 @@ abstract class AbstractIteratorTester<E, I extends Iterator<E>> {
 	 */
 	private <T extends Iterator<E>> boolean internalExecuteAndCompare(
 			T reference, T target, IteratorOperation method)
-					throws AssertionFailedError {
+			throws AssertionFailedError {
 
 		Object referenceReturnValue = null;
 		PermittedMetaException referenceException = null;

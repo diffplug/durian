@@ -56,14 +56,14 @@ public class FloatArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new FloatsAsListGenerator())
 						.named("Floats.asList"),
 
-		ListTestSuiteBuilder.using(new FloatsAsListHeadSubListGenerator())
-				.named("Floats.asList, head subList"),
+				ListTestSuiteBuilder.using(new FloatsAsListHeadSubListGenerator())
+						.named("Floats.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new FloatsAsListTailSubListGenerator())
-				.named("Floats.asList, tail subList"),
+				ListTestSuiteBuilder.using(new FloatsAsListTailSubListGenerator())
+						.named("Floats.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new FloatsAsListMiddleSubListGenerator())
-				.named("Floats.asList, middle subList"));
+				ListTestSuiteBuilder.using(new FloatsAsListMiddleSubListGenerator())
+						.named("Floats.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Float> builder : builders) {

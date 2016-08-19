@@ -27,7 +27,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 
 /** An ordering for a pre-existing comparator. */
 @GwtCompatible(serializable = true)
-final class ComparatorOrdering<T> extends Ordering<T>implements Serializable {
+final class ComparatorOrdering<T> extends Ordering<T> implements Serializable {
 	final Comparator<T> comparator;
 
 	ComparatorOrdering(Comparator<T> comparator) {

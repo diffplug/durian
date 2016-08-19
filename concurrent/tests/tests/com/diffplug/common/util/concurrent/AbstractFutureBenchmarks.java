@@ -39,7 +39,7 @@ final class AbstractFutureBenchmarks {
 		boolean setException(Throwable t);
 	}
 
-	private static class NewAbstractFutureFacade<T> extends AbstractFuture<T>implements Facade<T> {
+	private static class NewAbstractFutureFacade<T> extends AbstractFuture<T> implements Facade<T> {
 		@Override
 		public boolean set(T t) {
 			return super.set(t);
@@ -52,7 +52,7 @@ final class AbstractFutureBenchmarks {
 	}
 
 	private static class OldAbstractFutureFacade<T>
-			extends OldAbstractFuture<T>implements Facade<T> {
+			extends OldAbstractFuture<T> implements Facade<T> {
 		@Override
 		public boolean set(T t) {
 			return super.set(t);

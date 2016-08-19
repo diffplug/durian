@@ -32,7 +32,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @author Regina O'Dell
  */
 @GwtCompatible
-public class MinimalSet<E> extends MinimalCollection<E>implements Set<E> {
+public class MinimalSet<E> extends MinimalCollection<E> implements Set<E> {
 
 	@SuppressWarnings("unchecked") // empty Object[] as E[]
 	public static <E> MinimalSet<E> of(E... contents) {

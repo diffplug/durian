@@ -37,14 +37,16 @@ public enum IteratorFeature {
 	/**
 	 * Support for {@link Iterator#remove()}.
 	 */
-	SUPPORTS_REMOVE, /**
-						 * Support for {@link ListIterator#add(Object)}; ignored for plain
-						 * {@link Iterator} implementations.
-						 */
-	SUPPORTS_ADD, /**
-					 * Support for {@link ListIterator#set(Object)}; ignored for plain
-					 * {@link Iterator} implementations.
-					 */
+	SUPPORTS_REMOVE,
+	/**
+	 * Support for {@link ListIterator#add(Object)}; ignored for plain
+	 * {@link Iterator} implementations.
+	 */
+	SUPPORTS_ADD,
+	/**
+	 * Support for {@link ListIterator#set(Object)}; ignored for plain
+	 * {@link Iterator} implementations.
+	 */
 	SUPPORTS_SET;
 
 	/**

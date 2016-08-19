@@ -86,7 +86,7 @@ public class TreeRangeSet<C extends Comparable<?>> extends AbstractRangeSet<C> {
 				: result;
 	}
 
-	final class AsRanges extends ForwardingCollection<Range<C>>implements Set<Range<C>> {
+	final class AsRanges extends ForwardingCollection<Range<C>> implements Set<Range<C>> {
 
 		final Collection<Range<C>> delegate;
 

@@ -486,7 +486,7 @@ public final class ArbitraryInstances {
 	}
 
 	// Always equal is a valid total ordering. And it works for any Object.
-	private static final class AlwaysEqual extends Ordering<Object>implements Serializable {
+	private static final class AlwaysEqual extends Ordering<Object> implements Serializable {
 		private static final AlwaysEqual INSTANCE = new AlwaysEqual();
 
 		@Override

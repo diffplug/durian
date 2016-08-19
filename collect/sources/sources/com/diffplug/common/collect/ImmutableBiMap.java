@@ -31,7 +31,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @since 2.0
  */
 @GwtCompatible(serializable = true, emulated = true)
-public abstract class ImmutableBiMap<K, V> extends ImmutableMap<K, V>implements BiMap<K, V> {
+public abstract class ImmutableBiMap<K, V> extends ImmutableMap<K, V> implements BiMap<K, V> {
 
 	/**
 	 * Returns the empty bimap.

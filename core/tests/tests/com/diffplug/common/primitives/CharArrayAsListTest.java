@@ -56,14 +56,14 @@ public class CharArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new CharsAsListGenerator())
 						.named("Chars.asList"),
 
-		ListTestSuiteBuilder.using(new CharsAsListHeadSubListGenerator())
-				.named("Chars.asList, head subList"),
+				ListTestSuiteBuilder.using(new CharsAsListHeadSubListGenerator())
+						.named("Chars.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new CharsAsListTailSubListGenerator())
-				.named("Chars.asList, tail subList"),
+				ListTestSuiteBuilder.using(new CharsAsListTailSubListGenerator())
+						.named("Chars.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new CharsAsListMiddleSubListGenerator())
-				.named("Chars.asList, middle subList"));
+				ListTestSuiteBuilder.using(new CharsAsListMiddleSubListGenerator())
+						.named("Chars.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Character> builder : builders) {

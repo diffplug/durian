@@ -66,7 +66,7 @@ public class DispatcherTest extends TestCase {
 						s1, s2, // Though each integer subscriber dispatches to all string subscribers,
 						s1, s2, // those string subscribers aren't actually dispatched to until all integer
 						s1, s2 // subscribers have finished.
-		).inOrder();
+				).inOrder();
 	}
 
 	public void testLegacyAsyncDispatcher() {

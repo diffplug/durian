@@ -48,10 +48,12 @@ import com.diffplug.common.collect.testing.Helpers;
 @SuppressWarnings("unchecked")
 @GwtCompatible
 public enum CollectionSize implements Feature<Collection>,
-	Comparable<CollectionSize> {
+		Comparable<CollectionSize> {
 	/** Test an empty collection. */
-	ZERO(0), /** Test a one-element collection. */
-	ONE(1), /** Test a three-element collection. */
+	ZERO(0),
+	/** Test a one-element collection. */
+	ONE(1),
+	/** Test a three-element collection. */
 	SEVERAL(3),
 	/*
 	 * TODO: add VERY_LARGE, noting that we currently assume that the fourth
@@ -95,8 +97,8 @@ public enum CollectionSize implements Feature<Collection>,
 	@Inherited
 	@TesterAnnotation
 	public @interface Require {
-		CollectionSize[]value() default {};
+		CollectionSize[] value() default {};
 
-		CollectionSize[]absent() default {};
+		CollectionSize[] absent() default {};
 	}
 }

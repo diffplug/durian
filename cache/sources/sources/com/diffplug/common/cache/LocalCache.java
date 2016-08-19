@@ -97,7 +97,7 @@ import com.diffplug.common.util.concurrent.Uninterruptibles;
  * @author Doug Lea ({@code ConcurrentHashMap})
  */
 @GwtCompatible(emulated = true)
-class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
+class LocalCache<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> {
 
 	/*
 	 * The basic strategy is to subdivide the table among Segments, each of which itself is a
@@ -1285,7 +1285,7 @@ class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
 	/**
 	 * Used for weakly-referenced keys.
 	 */
-	static class WeakEntry<K, V> extends WeakReference<K>implements ReferenceEntry<K, V> {
+	static class WeakEntry<K, V> extends WeakReference<K> implements ReferenceEntry<K, V> {
 		WeakEntry(ReferenceQueue<K> queue, K key, int hash, @Nullable ReferenceEntry<K, V> next) {
 			super(key, queue);
 			this.hash = hash;
@@ -1578,7 +1578,7 @@ class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
 	 * References a weak value.
 	 */
 	static class WeakValueReference<K, V>
-			extends WeakReference<V>implements ValueReference<K, V> {
+			extends WeakReference<V> implements ValueReference<K, V> {
 		final ReferenceEntry<K, V> entry;
 
 		WeakValueReference(ReferenceQueue<V> queue, V referent, ReferenceEntry<K, V> entry) {
@@ -1625,7 +1625,7 @@ class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
 	 * References a soft value.
 	 */
 	static class SoftValueReference<K, V>
-			extends SoftReference<V>implements ValueReference<K, V> {
+			extends SoftReference<V> implements ValueReference<K, V> {
 		final ReferenceEntry<K, V> entry;
 
 		SoftValueReference(ReferenceQueue<V> queue, V referent, ReferenceEntry<K, V> entry) {
@@ -4607,7 +4607,7 @@ class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
 	 * proxy must be able to behave as the cache itself.
 	 */
 	static class ManualSerializationProxy<K, V>
-			extends ForwardingCache<K, V>implements Serializable {
+			extends ForwardingCache<K, V> implements Serializable {
 		private static final long serialVersionUID = 1;
 
 		final Strength keyStrength;
@@ -4719,7 +4719,7 @@ class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
 	 * proxy must be able to behave as the cache itself.
 	 */
 	static final class LoadingSerializationProxy<K, V>
-			extends ManualSerializationProxy<K, V>implements LoadingCache<K, V>, Serializable {
+			extends ManualSerializationProxy<K, V> implements LoadingCache<K, V>, Serializable {
 		private static final long serialVersionUID = 1;
 
 		transient LoadingCache<K, V> autoDelegate;
@@ -4860,7 +4860,7 @@ class LocalCache<K, V> extends AbstractMap<K, V>implements ConcurrentMap<K, V> {
 	}
 
 	static class LocalLoadingCache<K, V>
-			extends LocalManualCache<K, V>implements LoadingCache<K, V> {
+			extends LocalManualCache<K, V> implements LoadingCache<K, V> {
 
 		LocalLoadingCache(CacheBuilder<? super K, ? super V> builder,
 				CacheLoader<? super K, V> loader) {

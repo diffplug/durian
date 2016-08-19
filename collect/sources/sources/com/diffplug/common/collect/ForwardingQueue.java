@@ -42,7 +42,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @since 2.0
  */
 @GwtCompatible
-public abstract class ForwardingQueue<E> extends ForwardingCollection<E>implements Queue<E> {
+public abstract class ForwardingQueue<E> extends ForwardingCollection<E> implements Queue<E> {
 
 	/** Constructor for use by subclasses. */
 	protected ForwardingQueue() {}

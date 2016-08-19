@@ -447,7 +447,7 @@ public abstract class AbstractScheduledService implements Service {
 		/**
 		 * A callable class that can reschedule itself using a {@link CustomScheduler}.
 		 */
-		private class ReschedulableCallable extends ForwardingFuture<Void>implements Callable<Void> {
+		private class ReschedulableCallable extends ForwardingFuture<Void> implements Callable<Void> {
 
 			/** The underlying task. */
 			private final Runnable wrappedRunnable;

@@ -27,7 +27,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 
 /** An ordering that uses the reverse of a given order. */
 @GwtCompatible(serializable = true)
-final class ReverseOrdering<T> extends Ordering<T>implements Serializable {
+final class ReverseOrdering<T> extends Ordering<T> implements Serializable {
 	final Ordering<? super T> forwardOrder;
 
 	ReverseOrdering(Ordering<? super T> forwardOrder) {

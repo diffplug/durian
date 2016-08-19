@@ -25,7 +25,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 /** An ordering that uses the natural order of the values. */
 @GwtCompatible(serializable = true)
 @SuppressWarnings("unchecked") // TODO(kevinb): the right way to explain this??
-final class NaturalOrdering extends Ordering<Comparable>implements Serializable {
+final class NaturalOrdering extends Ordering<Comparable> implements Serializable {
 	static final NaturalOrdering INSTANCE = new NaturalOrdering();
 
 	@Override

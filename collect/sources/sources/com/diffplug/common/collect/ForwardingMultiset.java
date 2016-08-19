@@ -49,7 +49,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @since 2.0
  */
 @GwtCompatible
-public abstract class ForwardingMultiset<E> extends ForwardingCollection<E>implements Multiset<E> {
+public abstract class ForwardingMultiset<E> extends ForwardingCollection<E> implements Multiset<E> {
 
 	/** Constructor for use by subclasses. */
 	protected ForwardingMultiset() {}

@@ -23,7 +23,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 
 /** An ordering that tries several comparators in order. */
 @GwtCompatible(serializable = true)
-final class CompoundOrdering<T> extends Ordering<T>implements Serializable {
+final class CompoundOrdering<T> extends Ordering<T> implements Serializable {
 	final ImmutableList<Comparator<? super T>> comparators;
 
 	CompoundOrdering(Comparator<? super T> primary, Comparator<? super T> secondary) {

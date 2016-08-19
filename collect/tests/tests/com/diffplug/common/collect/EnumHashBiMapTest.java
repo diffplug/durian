@@ -173,7 +173,7 @@ public class EnumHashBiMapTest extends TestCase {
 		EnumBiMap<Currency, Country> bimap1 = EnumBiMap.create(Currency.class, Country.class);
 		bimap1.put(Currency.DOLLAR, Country.SWITZERLAND);
 		EnumHashBiMap<Currency, Object> bimap2 = // use supertype
-		EnumHashBiMap.<Currency, Object> create(bimap1);
+				EnumHashBiMap.<Currency, Object> create(bimap1);
 		assertEquals(Country.SWITZERLAND, bimap2.get(Currency.DOLLAR));
 		assertEquals(bimap1, bimap2);
 		bimap2.inverse().put("franc", Currency.FRANC);
@@ -184,7 +184,7 @@ public class EnumHashBiMapTest extends TestCase {
 		/* Test that it can be empty. */
 		EnumBiMap<Currency, Country> emptyBimap = EnumBiMap.create(Currency.class, Country.class);
 		EnumHashBiMap<Currency, Country> bimap3 = // use exact type
-		EnumHashBiMap.create(emptyBimap);
+				EnumHashBiMap.create(emptyBimap);
 		assertEquals(bimap3, emptyBimap);
 	}
 

@@ -516,7 +516,7 @@ public final class HashBiMap<K, V> extends IteratorBasedAbstractMap<K, V>
 		return (inverse == null) ? inverse = new Inverse() : inverse;
 	}
 
-	private final class Inverse extends AbstractMap<V, K>implements BiMap<V, K>, Serializable {
+	private final class Inverse extends AbstractMap<V, K> implements BiMap<V, K>, Serializable {
 		BiMap<K, V> forward() {
 			return HashBiMap.this;
 		}

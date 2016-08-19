@@ -1176,7 +1176,7 @@ class MapMakerInternalMap<K, V> extends AbstractMap<K, V>
 	/**
 	 * Used for softly-referenced keys.
 	 */
-	static class SoftEntry<K, V> extends SoftReference<K>implements ReferenceEntry<K, V> {
+	static class SoftEntry<K, V> extends SoftReference<K> implements ReferenceEntry<K, V> {
 		SoftEntry(ReferenceQueue<K> queue, K key, int hash, @Nullable ReferenceEntry<K, V> next) {
 			super(key, queue);
 			this.hash = hash;
@@ -1433,7 +1433,7 @@ class MapMakerInternalMap<K, V> extends AbstractMap<K, V>
 	/**
 	 * Used for weakly-referenced keys.
 	 */
-	static class WeakEntry<K, V> extends WeakReference<K>implements ReferenceEntry<K, V> {
+	static class WeakEntry<K, V> extends WeakReference<K> implements ReferenceEntry<K, V> {
 		WeakEntry(ReferenceQueue<K> queue, K key, int hash, @Nullable ReferenceEntry<K, V> next) {
 			super(key, queue);
 			this.hash = hash;

@@ -265,7 +265,7 @@ public final class Queues {
 			int numElements,
 			long timeout,
 			TimeUnit unit)
-					throws InterruptedException {
+			throws InterruptedException {
 		Preconditions.checkNotNull(buffer);
 		/*
 		 * This code performs one System.nanoTime() more than necessary, and in return, the time to

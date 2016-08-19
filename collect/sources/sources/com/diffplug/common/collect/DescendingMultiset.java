@@ -32,7 +32,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @author Louis Wasserman
  */
 @GwtCompatible(emulated = true)
-abstract class DescendingMultiset<E> extends ForwardingMultiset<E>implements SortedMultiset<E> {
+abstract class DescendingMultiset<E> extends ForwardingMultiset<E> implements SortedMultiset<E> {
 	abstract SortedMultiset<E> forwardMultiset();
 
 	private transient Comparator<? super E> comparator;

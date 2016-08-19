@@ -714,7 +714,7 @@ public final class Lists {
 		}
 	}
 
-	private static class RandomAccessPartition<T> extends Partition<T>implements RandomAccess {
+	private static class RandomAccessPartition<T> extends Partition<T> implements RandomAccess {
 		RandomAccessPartition(List<T> list, int size) {
 			super(list, size);
 		}
@@ -971,7 +971,7 @@ public final class Lists {
 		}
 	}
 
-	private static class RandomAccessReverseList<T> extends ReverseList<T>implements RandomAccess {
+	private static class RandomAccessReverseList<T> extends ReverseList<T> implements RandomAccess {
 		RandomAccessReverseList(List<T> forwardList) {
 			super(forwardList);
 		}

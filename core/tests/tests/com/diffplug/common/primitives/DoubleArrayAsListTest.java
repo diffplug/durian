@@ -56,14 +56,14 @@ public class DoubleArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new DoublesAsListGenerator())
 						.named("Doubles.asList"),
 
-		ListTestSuiteBuilder.using(new DoublsAsListHeadSubListGenerator())
-				.named("Doubles.asList, head subList"),
+				ListTestSuiteBuilder.using(new DoublsAsListHeadSubListGenerator())
+						.named("Doubles.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new DoublesAsListTailSubListGenerator())
-				.named("Doubles.asList, tail subList"),
+				ListTestSuiteBuilder.using(new DoublesAsListTailSubListGenerator())
+						.named("Doubles.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new DoublesAsListMiddleSubListGenerator())
-				.named("Doubles.asList, middle subList"));
+				ListTestSuiteBuilder.using(new DoublesAsListMiddleSubListGenerator())
+						.named("Doubles.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Double> builder : builders) {

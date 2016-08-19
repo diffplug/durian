@@ -24,7 +24,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 
 /** An ordering that treats {@code null} as less than all other values. */
 @GwtCompatible(serializable = true)
-final class NullsFirstOrdering<T> extends Ordering<T>implements Serializable {
+final class NullsFirstOrdering<T> extends Ordering<T> implements Serializable {
 	final Ordering<? super T> ordering;
 
 	NullsFirstOrdering(Ordering<? super T> ordering) {

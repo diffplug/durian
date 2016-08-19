@@ -156,7 +156,7 @@ public final class LinkedHashMultimap<K, V> extends AbstractSetMultimap<K, V> {
 	 * in the LinkedHashMultimap as a whole.
 	 */
 	@VisibleForTesting
-	static final class ValueEntry<K, V> extends ImmutableEntry<K, V>implements ValueSetLink<K, V> {
+	static final class ValueEntry<K, V> extends ImmutableEntry<K, V> implements ValueSetLink<K, V> {
 		final int smearedValueHash;
 
 		@Nullable
@@ -309,7 +309,7 @@ public final class LinkedHashMultimap<K, V> extends AbstractSetMultimap<K, V> {
 
 	@VisibleForTesting
 	@WeakOuter
-	final class ValueSet extends Sets.ImprovedAbstractSet<V>implements ValueSetLink<K, V> {
+	final class ValueSet extends Sets.ImprovedAbstractSet<V> implements ValueSetLink<K, V> {
 		/*
 		 * We currently use a fixed load factor of 1.0, a bit higher than normal to reduce memory
 		 * consumption.

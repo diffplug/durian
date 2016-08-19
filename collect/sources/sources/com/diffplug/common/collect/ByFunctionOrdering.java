@@ -31,7 +31,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * function on those elements.
  */
 @GwtCompatible(serializable = true)
-final class ByFunctionOrdering<F, T> extends Ordering<F>implements Serializable {
+final class ByFunctionOrdering<F, T> extends Ordering<F> implements Serializable {
 	final Function<F, ? extends T> function;
 	final Ordering<T> ordering;
 

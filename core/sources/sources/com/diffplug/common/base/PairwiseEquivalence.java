@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import com.diffplug.common.annotations.GwtCompatible;
 
 @GwtCompatible(serializable = true)
-final class PairwiseEquivalence<T> extends Equivalence<Iterable<T>>implements Serializable {
+final class PairwiseEquivalence<T> extends Equivalence<Iterable<T>> implements Serializable {
 
 	final Equivalence<? super T> elementEquivalence;
 

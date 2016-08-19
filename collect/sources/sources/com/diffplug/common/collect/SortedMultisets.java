@@ -46,7 +46,7 @@ final class SortedMultisets {
 	/**
 	 * A skeleton implementation for {@link SortedMultiset#elementSet}.
 	 */
-	static class ElementSet<E> extends Multisets.ElementSet<E>implements SortedSet<E> {
+	static class ElementSet<E> extends Multisets.ElementSet<E> implements SortedSet<E> {
 		@Weak
 		private final SortedMultiset<E> multiset;
 
@@ -94,7 +94,7 @@ final class SortedMultisets {
 	 * A skeleton navigable implementation for {@link SortedMultiset#elementSet}.
 	 */
 	@GwtIncompatible("Navigable")
-	static class NavigableElementSet<E> extends ElementSet<E>implements NavigableSet<E> {
+	static class NavigableElementSet<E> extends ElementSet<E> implements NavigableSet<E> {
 		NavigableElementSet(SortedMultiset<E> multiset) {
 			super(multiset);
 		}

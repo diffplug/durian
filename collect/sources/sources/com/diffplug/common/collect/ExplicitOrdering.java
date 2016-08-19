@@ -25,7 +25,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 
 /** An ordering that compares objects according to a given order. */
 @GwtCompatible(serializable = true)
-final class ExplicitOrdering<T> extends Ordering<T>implements Serializable {
+final class ExplicitOrdering<T> extends Ordering<T> implements Serializable {
 	final ImmutableMap<T, Integer> rankMap;
 
 	ExplicitOrdering(List<T> valuesInOrder) {

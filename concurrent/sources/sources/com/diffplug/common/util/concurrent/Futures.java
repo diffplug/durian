@@ -201,7 +201,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
 
 	@GwtIncompatible("TODO")
 	private static class ImmediateSuccessfulCheckedFuture<V, X extends Exception>
-			extends ImmediateFuture<V>implements CheckedFuture<V, X> {
+			extends ImmediateFuture<V> implements CheckedFuture<V, X> {
 
 		@Nullable
 		private final V value;
@@ -264,7 +264,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
 
 	@GwtIncompatible("TODO")
 	private static class ImmediateFailedCheckedFuture<V, X extends Exception>
-			extends ImmediateFuture<V>implements CheckedFuture<V, X> {
+			extends ImmediateFuture<V> implements CheckedFuture<V, X> {
 
 		private final X thrown;
 
@@ -592,7 +592,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
 	}
 
 	private abstract static class AbstractCatchingFuture<V, X extends Throwable, F>
-			extends AbstractFuture.TrustedFuture<V>implements Runnable {
+			extends AbstractFuture.TrustedFuture<V> implements Runnable {
 		@Nullable
 		ListenableFuture<? extends V> inputFuture;
 		@Nullable
@@ -1127,7 +1127,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
 	 * should remove the {@code UndeclaredThrowableException} special case</a>.
 	 */
 	private abstract static class AbstractChainingFuture<I, O, F>
-			extends AbstractFuture.TrustedFuture<O>implements Runnable {
+			extends AbstractFuture.TrustedFuture<O> implements Runnable {
 		// In theory, this field might not be visible to a cancel() call in certain circumstances. For
 		// details, see the comments on the fields of TimeoutFuture.
 		@Nullable
@@ -1642,7 +1642,7 @@ public final class Futures extends GwtFuturesCatchingSpecialization {
 	@GwtIncompatible("reflection")
 	public static <V, X extends Exception> V getChecked(
 			Future<V> future, Class<X> exceptionClass, long timeout, TimeUnit unit)
-					throws X {
+			throws X {
 		return FuturesGetChecked.getChecked(future, exceptionClass, timeout, unit);
 	}
 

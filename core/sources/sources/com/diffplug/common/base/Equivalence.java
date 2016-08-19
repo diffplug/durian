@@ -332,7 +332,7 @@ public abstract class Equivalence<T> {
 		return Identity.INSTANCE;
 	}
 
-	static final class Equals extends Equivalence<Object>implements Serializable {
+	static final class Equals extends Equivalence<Object> implements Serializable {
 
 		static final Equals INSTANCE = new Equals();
 
@@ -353,7 +353,7 @@ public abstract class Equivalence<T> {
 		private static final long serialVersionUID = 1;
 	}
 
-	static final class Identity extends Equivalence<Object>implements Serializable {
+	static final class Identity extends Equivalence<Object> implements Serializable {
 
 		static final Identity INSTANCE = new Identity();
 

@@ -46,7 +46,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @since 2.0
  */
 @GwtCompatible
-public abstract class ForwardingSet<E> extends ForwardingCollection<E>implements Set<E> {
+public abstract class ForwardingSet<E> extends ForwardingCollection<E> implements Set<E> {
 	// TODO(lowasser): identify places where thread safety is actually lost
 
 	/** Constructor for use by subclasses. */

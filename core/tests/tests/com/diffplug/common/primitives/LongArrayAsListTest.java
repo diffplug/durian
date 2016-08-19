@@ -56,14 +56,14 @@ public class LongArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new LongsAsListGenerator())
 						.named("Longs.asList"),
 
-		ListTestSuiteBuilder.using(new LongsAsListHeadSubListGenerator())
-				.named("Longs.asList, head subList"),
+				ListTestSuiteBuilder.using(new LongsAsListHeadSubListGenerator())
+						.named("Longs.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new LongsAsListTailSubListGenerator())
-				.named("Longs.asList, tail subList"),
+				ListTestSuiteBuilder.using(new LongsAsListTailSubListGenerator())
+						.named("Longs.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new LongsAsListMiddleSubListGenerator())
-				.named("Longs.asList, middle subList"));
+				ListTestSuiteBuilder.using(new LongsAsListMiddleSubListGenerator())
+						.named("Longs.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Long> builder : builders) {

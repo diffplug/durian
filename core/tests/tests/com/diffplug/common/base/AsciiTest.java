@@ -129,7 +129,7 @@ public class AsciiTest extends TestCase {
 		// Create new strings here to avoid early-out logic.
 		assertTrue(Ascii.equalsIgnoreCase(new String(IGNORED), new String(IGNORED)));
 		// Compare to: "\u00c1".equalsIgnoreCase("\u00e1") == true
- assertFalse(Ascii.equalsIgnoreCase("\u00c1", "\u00e1"));
+		assertFalse(Ascii.equalsIgnoreCase("\u00c1", "\u00e1"));
 		// Test chars just outside the alphabetic range ('A'-1 vs 'a'-1, 'Z'+1 vs 'z'+1)
 		assertFalse(Ascii.equalsIgnoreCase("@", "`"));
 		assertFalse(Ascii.equalsIgnoreCase("[", "{"));

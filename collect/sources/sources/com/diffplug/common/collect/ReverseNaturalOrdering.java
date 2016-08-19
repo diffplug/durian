@@ -26,7 +26,7 @@ import com.diffplug.common.annotations.GwtCompatible;
 /** An ordering that uses the reverse of the natural order of the values. */
 @GwtCompatible(serializable = true)
 @SuppressWarnings("unchecked") // TODO(kevinb): the right way to explain this??
-final class ReverseNaturalOrdering extends Ordering<Comparable>implements Serializable {
+final class ReverseNaturalOrdering extends Ordering<Comparable> implements Serializable {
 	static final ReverseNaturalOrdering INSTANCE = new ReverseNaturalOrdering();
 
 	@Override

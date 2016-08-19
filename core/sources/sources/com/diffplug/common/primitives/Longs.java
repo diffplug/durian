@@ -427,7 +427,7 @@ public final class Longs {
 		}
 	}
 
-	private static final class LongConverter extends Converter<String, Long>implements Serializable {
+	private static final class LongConverter extends Converter<String, Long> implements Serializable {
 		static final LongConverter INSTANCE = new LongConverter();
 
 		@Override

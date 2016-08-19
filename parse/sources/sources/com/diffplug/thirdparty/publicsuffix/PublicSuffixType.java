@@ -25,7 +25,8 @@ import com.diffplug.common.annotations.GwtCompatible;
 enum PublicSuffixType {
 
 	/** private definition of a top-level domain */
-	PRIVATE(':', ','), /** ICANN definition of a top-level domain */
+	PRIVATE(':', ','),
+	/** ICANN definition of a top-level domain */
 	ICANN('!', '?');
 
 	/** The character used for an inner node in the trie encoding */

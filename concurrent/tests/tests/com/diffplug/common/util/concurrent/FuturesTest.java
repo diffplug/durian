@@ -2070,7 +2070,7 @@ public class FuturesTest extends TestCase {
 	@GwtIncompatible("threads")
 	static <V> V pseudoTimedGetUninterruptibly(
 			final Future<V> input, long timeout, TimeUnit unit)
-					throws ExecutionException, TimeoutException {
+			throws ExecutionException, TimeoutException {
 		ExecutorService executor = newSingleThreadExecutor();
 		Future<V> waiter = executor.submit(new Callable<V>() {
 			@Override
@@ -2187,7 +2187,7 @@ public class FuturesTest extends TestCase {
 			ListenableFuture<List<String>> future,
 			int timeout,
 			TimeUnit unit)
-					throws ExecutionException, TimeoutException {
+			throws ExecutionException, TimeoutException {
 		/*
 		 * For faster tests (that may hang indefinitely if the class under test has
 		 * a bug!), switch the second branch to call untimed future.get() instead of

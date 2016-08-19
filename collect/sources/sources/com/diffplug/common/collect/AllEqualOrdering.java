@@ -29,7 +29,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @author Emily Soldal
  */
 @GwtCompatible(serializable = true)
-final class AllEqualOrdering extends Ordering<Object>implements Serializable {
+final class AllEqualOrdering extends Ordering<Object> implements Serializable {
 	static final AllEqualOrdering INSTANCE = new AllEqualOrdering();
 
 	@Override

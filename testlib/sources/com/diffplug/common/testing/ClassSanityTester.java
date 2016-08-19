@@ -542,7 +542,7 @@ public final class ClassSanityTester {
 
 	private void testEqualsUsing(final Invokable<?, ?> factory)
 
-	throws ParameterNotInstantiableException, ParameterHasNoDistinctValueException,
+			throws ParameterNotInstantiableException, ParameterHasNoDistinctValueException,
 			IllegalAccessException, InvocationTargetException, FactoryMethodReturnsNullException {
 		List<Parameter> params = factory.getParameters();
 		List<FreshValueGenerator> argGenerators = Lists.newArrayListWithCapacity(params.size());
@@ -588,8 +588,8 @@ public final class ClassSanityTester {
 	 */
 	private List<Object> generateEqualFactoryArguments(
 			Invokable<?, ?> factory, List<Parameter> params, List<Object> args)
-					throws ParameterNotInstantiableException, FactoryMethodReturnsNullException,
-					InvocationTargetException, IllegalAccessException {
+			throws ParameterNotInstantiableException, FactoryMethodReturnsNullException,
+			InvocationTargetException, IllegalAccessException {
 		List<Object> equalArgs = Lists.newArrayList(args);
 		for (int i = 0; i < args.size(); i++) {
 			Parameter param = params.get(i);
@@ -613,7 +613,7 @@ public final class ClassSanityTester {
 
 	private static boolean hashCodeInsensitiveToArgReference(
 			Invokable<?, ?> factory, List<Object> args, int i, Object alternateArg)
-					throws FactoryMethodReturnsNullException, InvocationTargetException, IllegalAccessException {
+			throws FactoryMethodReturnsNullException, InvocationTargetException, IllegalAccessException {
 		List<Object> tentativeArgs = Lists.newArrayList(args);
 		tentativeArgs.set(i, alternateArg);
 		return createInstance(factory, tentativeArgs).hashCode() == createInstance(factory, args).hashCode();

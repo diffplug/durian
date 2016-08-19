@@ -1652,7 +1652,7 @@ public class MapMakerInternalMapTest extends TestCase {
 	}
 
 	static class QueuingRemovalListener<K, V>
-			extends ConcurrentLinkedQueue<RemovalNotification<K, V>>implements RemovalListener<K, V> {
+			extends ConcurrentLinkedQueue<RemovalNotification<K, V>> implements RemovalListener<K, V> {
 		@Override
 		public void onRemoval(RemovalNotification<K, V> notification) {
 			add(notification);

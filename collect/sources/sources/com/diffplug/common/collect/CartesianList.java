@@ -34,7 +34,7 @@ import com.diffplug.common.math.IntMath;
  * @author Louis Wasserman
  */
 @GwtCompatible
-final class CartesianList<E> extends AbstractList<List<E>>implements RandomAccess {
+final class CartesianList<E> extends AbstractList<List<E>> implements RandomAccess {
 
 	private transient final ImmutableList<List<E>> axes;
 	private transient final int[] axesSizeProduct;

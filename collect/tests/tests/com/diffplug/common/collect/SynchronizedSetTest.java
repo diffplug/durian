@@ -61,7 +61,7 @@ public class SynchronizedSetTest extends TestCase {
 				.createTestSuite();
 	}
 
-	static class TestSet<E> extends ForwardingSet<E>implements Serializable {
+	static class TestSet<E> extends ForwardingSet<E> implements Serializable {
 		final Set<E> delegate;
 		public final Object mutex;
 

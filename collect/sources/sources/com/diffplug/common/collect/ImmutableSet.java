@@ -41,7 +41,7 @@ import com.diffplug.common.primitives.Ints;
  */
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
-public abstract class ImmutableSet<E> extends ImmutableCollection<E>implements Set<E> {
+public abstract class ImmutableSet<E> extends ImmutableCollection<E> implements Set<E> {
 	/**
 	 * Returns the empty immutable set. Preferred over {@link Collections#emptySet} for code
 	 * consistency, and because the return type conveys the immutability guarantee.

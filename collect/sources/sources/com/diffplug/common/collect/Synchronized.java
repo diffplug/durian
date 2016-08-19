@@ -211,7 +211,7 @@ final class Synchronized {
 		return new SynchronizedSet<E>(set, mutex);
 	}
 
-	static class SynchronizedSet<E> extends SynchronizedCollection<E>implements Set<E> {
+	static class SynchronizedSet<E> extends SynchronizedCollection<E> implements Set<E> {
 
 		SynchronizedSet(Set<E> delegate, @Nullable Object mutex) {
 			super(delegate, mutex);
@@ -246,7 +246,7 @@ final class Synchronized {
 		return new SynchronizedSortedSet<E>(set, mutex);
 	}
 
-	static class SynchronizedSortedSet<E> extends SynchronizedSet<E>implements SortedSet<E> {
+	static class SynchronizedSortedSet<E> extends SynchronizedSet<E> implements SortedSet<E> {
 		SynchronizedSortedSet(SortedSet<E> delegate, @Nullable Object mutex) {
 			super(delegate, mutex);
 		}
@@ -307,7 +307,7 @@ final class Synchronized {
 				: new SynchronizedList<E>(list, mutex);
 	}
 
-	private static class SynchronizedList<E> extends SynchronizedCollection<E>implements List<E> {
+	private static class SynchronizedList<E> extends SynchronizedCollection<E> implements List<E> {
 		SynchronizedList(List<E> delegate, @Nullable Object mutex) {
 			super(delegate, mutex);
 		}
@@ -1646,7 +1646,7 @@ final class Synchronized {
 		return (queue instanceof SynchronizedQueue) ? queue : new SynchronizedQueue<E>(queue, mutex);
 	}
 
-	private static class SynchronizedQueue<E> extends SynchronizedCollection<E>implements Queue<E> {
+	private static class SynchronizedQueue<E> extends SynchronizedCollection<E> implements Queue<E> {
 
 		SynchronizedQueue(Queue<E> delegate, @Nullable Object mutex) {
 			super(delegate, mutex);
@@ -1701,7 +1701,7 @@ final class Synchronized {
 	}
 
 	@GwtIncompatible("Deque")
-	private static final class SynchronizedDeque<E> extends SynchronizedQueue<E>implements Deque<E> {
+	private static final class SynchronizedDeque<E> extends SynchronizedQueue<E> implements Deque<E> {
 
 		SynchronizedDeque(Deque<E> delegate, @Nullable Object mutex) {
 			super(delegate, mutex);

@@ -57,14 +57,14 @@ public class IntArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new IntsAsListGenerator())
 						.named("Ints.asList"),
 
-		ListTestSuiteBuilder.using(new IntsAsListHeadSubListGenerator())
-				.named("Ints.asList, head subList"),
+				ListTestSuiteBuilder.using(new IntsAsListHeadSubListGenerator())
+						.named("Ints.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new IntsAsListTailSubListGenerator())
-				.named("Ints.asList, tail subList"),
+				ListTestSuiteBuilder.using(new IntsAsListTailSubListGenerator())
+						.named("Ints.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new IntsAsListMiddleSubListGenerator())
-				.named("Ints.asList, middle subList"));
+				ListTestSuiteBuilder.using(new IntsAsListMiddleSubListGenerator())
+						.named("Ints.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Integer> builder : builders) {

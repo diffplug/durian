@@ -1420,7 +1420,7 @@ public final class Multimaps {
 	}
 
 	private static final class TransformedEntriesListMultimap<K, V1, V2>
-			extends TransformedEntriesMultimap<K, V1, V2>implements ListMultimap<K, V2> {
+			extends TransformedEntriesMultimap<K, V1, V2> implements ListMultimap<K, V2> {
 
 		TransformedEntriesListMultimap(
 				ListMultimap<K, V1> fromMultimap, EntryTransformer<? super K, ? super V1, V2> transformer) {

@@ -56,14 +56,14 @@ public class ByteArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new BytesAsListGenerator())
 						.named("Bytes.asList"),
 
-		ListTestSuiteBuilder.using(new BytesAsListHeadSubListGenerator())
-				.named("Bytes.asList, head subList"),
+				ListTestSuiteBuilder.using(new BytesAsListHeadSubListGenerator())
+						.named("Bytes.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new BytesAsListTailSubListGenerator())
-				.named("Bytes.asList, tail subList"),
+				ListTestSuiteBuilder.using(new BytesAsListTailSubListGenerator())
+						.named("Bytes.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new BytesAsListMiddleSubListGenerator())
-				.named("Bytes.asList, middle subList"));
+				ListTestSuiteBuilder.using(new BytesAsListMiddleSubListGenerator())
+						.named("Bytes.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Byte> builder : builders) {

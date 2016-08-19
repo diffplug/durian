@@ -91,7 +91,7 @@ public final class Multisets {
 		return checkNotNull(multiset);
 	}
 
-	static class UnmodifiableMultiset<E> extends ForwardingMultiset<E>implements Serializable {
+	static class UnmodifiableMultiset<E> extends ForwardingMultiset<E> implements Serializable {
 		final Multiset<? extends E> delegate;
 
 		UnmodifiableMultiset(Multiset<? extends E> delegate) {
@@ -222,7 +222,7 @@ public final class Multisets {
 		return new ImmutableEntry<E>(e, n);
 	}
 
-	static class ImmutableEntry<E> extends AbstractEntry<E>implements Serializable {
+	static class ImmutableEntry<E> extends AbstractEntry<E> implements Serializable {
 		@Nullable
 		private final E element;
 		private final int count;

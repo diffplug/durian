@@ -56,7 +56,7 @@ import com.diffplug.common.primitives.Ints;
  * @author mike nonemacher
  * @since 2.0
  */
-public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E>implements Serializable {
+public final class ConcurrentHashMultiset<E> extends AbstractMultiset<E> implements Serializable {
 
 	/*
 	 * The ConcurrentHashMultiset's atomic operations are implemented primarily in terms of

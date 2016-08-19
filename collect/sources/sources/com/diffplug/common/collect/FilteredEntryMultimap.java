@@ -45,7 +45,7 @@ import com.diffplug.common.collect.Maps.ViewCachingAbstractMap;
  * @author Louis Wasserman
  */
 @GwtCompatible
-class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V>implements FilteredMultimap<K, V> {
+class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V> implements FilteredMultimap<K, V> {
 	final Multimap<K, V> unfiltered;
 	final Predicate<? super Entry<K, V>> predicate;
 
@@ -393,12 +393,12 @@ class FilteredEntryMultimap<K, V> extends AbstractMultimap<K, V>implements Filte
 					return FilteredEntryMultimap.this
 							.removeEntriesIf(
 									new Predicate<Map.Entry<K, Collection<V>>>() {
-						@Override
-						public boolean test(Map.Entry<K, Collection<V>> entry) {
-							return predicate.test(
-									Multisets.immutableEntry(entry.getKey(), entry.getValue().size()));
-						}
-					});
+										@Override
+										public boolean test(Map.Entry<K, Collection<V>> entry) {
+											return predicate.test(
+													Multisets.immutableEntry(entry.getKey(), entry.getValue().size()));
+										}
+									});
 				}
 
 				@Override

@@ -263,7 +263,7 @@ final class Constraints {
 	}
 
 	/** @see Constraints#constrainedList */
-	static class ConstrainedRandomAccessList<E> extends ConstrainedList<E>implements RandomAccess {
+	static class ConstrainedRandomAccessList<E> extends ConstrainedList<E> implements RandomAccess {
 		ConstrainedRandomAccessList(List<E> delegate, Constraint<? super E> constraint) {
 			super(delegate, constraint);
 		}

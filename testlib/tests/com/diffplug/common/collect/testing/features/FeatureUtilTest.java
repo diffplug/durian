@@ -56,9 +56,9 @@ public class FeatureUtilTest extends TestCase {
 		@Inherited
 		@TesterAnnotation
 		@interface Require {
-			ExampleBaseFeature[]value() default {};
+			ExampleBaseFeature[] value() default {};
 
-			ExampleBaseFeature[]absent() default {};
+			ExampleBaseFeature[] absent() default {};
 		}
 	}
 
@@ -86,9 +86,9 @@ public class FeatureUtilTest extends TestCase {
 		@Inherited
 		@TesterAnnotation
 		@interface Require {
-			ExampleDerivedFeature[]value() default {};
+			ExampleDerivedFeature[] value() default {};
 
-			ExampleDerivedFeature[]absent() default {};
+			ExampleDerivedFeature[] absent() default {};
 		}
 	}
 

@@ -40,7 +40,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @author Louis Wasserman
  */
 @GwtCompatible
-class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V>implements FilteredMultimap<K, V> {
+class FilteredKeyMultimap<K, V> extends AbstractMultimap<K, V> implements FilteredMultimap<K, V> {
 	final Multimap<K, V> unfiltered;
 	final Predicate<? super K> keyPredicate;
 

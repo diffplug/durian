@@ -129,7 +129,7 @@ public class Joiner {
 	 */
 	public final <A extends Appendable> A appendTo(
 			A appendable, @Nullable Object first, @Nullable Object second, Object... rest)
-					throws IOException {
+			throws IOException {
 		return appendTo(appendable, iterable(first, second, rest));
 	}
 

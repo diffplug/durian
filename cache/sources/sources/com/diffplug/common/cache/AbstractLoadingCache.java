@@ -40,7 +40,7 @@ import com.diffplug.common.util.concurrent.UncheckedExecutionException;
  * @since 11.0
  */
 public abstract class AbstractLoadingCache<K, V>
-		extends AbstractCache<K, V>implements LoadingCache<K, V> {
+		extends AbstractCache<K, V> implements LoadingCache<K, V> {
 
 	/** Constructor for use by subclasses. */
 	protected AbstractLoadingCache() {}

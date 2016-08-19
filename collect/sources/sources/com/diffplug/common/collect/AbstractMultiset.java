@@ -46,7 +46,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @author Louis Wasserman
  */
 @GwtCompatible
-abstract class AbstractMultiset<E> extends AbstractCollection<E>implements Multiset<E> {
+abstract class AbstractMultiset<E> extends AbstractCollection<E> implements Multiset<E> {
 	// Query Operations
 
 	@Override

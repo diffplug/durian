@@ -45,7 +45,7 @@ import com.diffplug.common.primitives.Ints;
  * @author Kevin Bourrillion
  */
 @GwtCompatible(emulated = true)
-abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E>implements Serializable {
+abstract class AbstractMapBasedMultiset<E> extends AbstractMultiset<E> implements Serializable {
 
 	private transient Map<E, Count> backingMap;
 

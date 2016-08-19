@@ -39,7 +39,7 @@ import com.diffplug.common.base.Preconditions;
  */
 @Beta
 public abstract class ForwardingCheckedFuture<V, X extends Exception>
-		extends ForwardingListenableFuture<V>implements CheckedFuture<V, X> {
+		extends ForwardingListenableFuture<V> implements CheckedFuture<V, X> {
 
 	@Override
 	public V checkedGet() throws X {

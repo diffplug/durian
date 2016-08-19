@@ -450,7 +450,7 @@ public final class DerivedCollectionGenerators {
 	 * exposes as many getters, does work in the constructor, and has both a superclass and a subclass
 	 */
 	public static class SortedMapSubmapTestMapGenerator<K, V>
-			extends ForwardingTestMapGenerator<K, V>implements TestSortedMapGenerator<K, V> {
+			extends ForwardingTestMapGenerator<K, V> implements TestSortedMapGenerator<K, V> {
 		final Bound to;
 		final Bound from;
 		final K firstInclusive;

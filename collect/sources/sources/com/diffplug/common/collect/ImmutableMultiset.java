@@ -50,7 +50,7 @@ import com.diffplug.common.annotations.GwtIncompatible;
 @GwtCompatible(serializable = true, emulated = true)
 @SuppressWarnings("serial") // we're overriding default serialization
 // TODO(lowasser): write an efficient asList() implementation
-public abstract class ImmutableMultiset<E> extends ImmutableCollection<E>implements Multiset<E> {
+public abstract class ImmutableMultiset<E> extends ImmutableCollection<E> implements Multiset<E> {
 	/**
 	 * Returns the empty immutable multiset.
 	 */

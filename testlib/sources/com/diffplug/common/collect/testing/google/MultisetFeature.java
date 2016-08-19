@@ -49,8 +49,8 @@ public enum MultisetFeature implements Feature<Multiset> {
 	@Inherited
 	@TesterAnnotation
 	public @interface Require {
-		public abstract MultisetFeature[]value() default {};
+		public abstract MultisetFeature[] value() default {};
 
-		public abstract MultisetFeature[]absent() default {};
+		public abstract MultisetFeature[] absent() default {};
 	}
 }

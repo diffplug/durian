@@ -46,7 +46,7 @@ public class HttpHeadersTest extends TestCase {
 	// Visible for other tests to use
 	static void assertConstantNameMatchesString(Class<?> clazz,
 			ImmutableBiMap<String, String> specialCases, ImmutableSet<String> uppercaseAcronyms)
-					throws IllegalAccessException {
+			throws IllegalAccessException {
 		for (Field field : relevantFields(clazz)) {
 			assertEquals(upperToHttpHeaderName(field.getName(), specialCases, uppercaseAcronyms),
 					field.get(null));

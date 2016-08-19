@@ -156,7 +156,8 @@ public class EnumsTest extends TestCase {
 	private @interface ExampleAnnotation {}
 
 	private enum AnEnum {
-		@ExampleAnnotation FOO, BAR
+		@ExampleAnnotation
+		FOO, BAR
 	}
 
 	@GwtIncompatible("reflection")

@@ -1036,11 +1036,11 @@ public class OrderingTest extends TestCase {
 			<T> Scenario<?> mutate(final Scenario<T> scenario) {
 				Ordering<Integer> ordering = scenario.ordering.onResultOf(
 						new Function<Integer, T>() {
-					@Override
-					public T apply(@Nullable Integer from) {
-						return scenario.strictlyOrderedList.get(from);
-					}
-				});
+							@Override
+							public T apply(@Nullable Integer from) {
+								return scenario.strictlyOrderedList.get(from);
+							}
+						});
 				List<Integer> list = Lists.newArrayList();
 				for (int i = 0; i < scenario.strictlyOrderedList.size(); i++) {
 					list.add(i);

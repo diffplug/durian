@@ -111,7 +111,7 @@ public class FileBackedOutputStreamTest extends IoTestCase {
 
 	private static void write(
 			OutputStream out, byte[] b, int off, int len, boolean singleByte)
-					throws IOException {
+			throws IOException {
 		if (singleByte) {
 			for (int i = off; i < off + len; i++) {
 				out.write(b[i]);

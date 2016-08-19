@@ -25,7 +25,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * values.
  */
 @GwtCompatible(serializable = true)
-final class UsingToStringOrdering extends Ordering<Object>implements Serializable {
+final class UsingToStringOrdering extends Ordering<Object> implements Serializable {
 	static final UsingToStringOrdering INSTANCE = new UsingToStringOrdering();
 
 	@Override

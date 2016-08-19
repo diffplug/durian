@@ -496,7 +496,7 @@ public abstract class Converter<A, B> implements Function<A, B>, ConverterNullab
 	 * A converter that always converts or reverses an object to itself. Note that T is now a
 	 * "pass-through type".
 	 */
-	private static final class IdentityConverter<T> extends Converter<T, T>implements Serializable {
+	private static final class IdentityConverter<T> extends Converter<T, T> implements Serializable {
 		static final IdentityConverter INSTANCE = new IdentityConverter();
 
 		@Override

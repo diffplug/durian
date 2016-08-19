@@ -155,7 +155,7 @@ public class FeatureUtil {
 	 */
 	public static TesterRequirements buildDeclaredTesterRequirements(
 			AnnotatedElement classOrMethod)
-					throws ConflictingRequirementsException {
+			throws ConflictingRequirementsException {
 		TesterRequirements requirements = new TesterRequirements();
 
 		Iterable<Annotation> testerAnnotations = getTesterAnnotations(classOrMethod);
@@ -205,7 +205,7 @@ public class FeatureUtil {
 	 */
 	private static TesterRequirements buildTesterRequirements(
 			Annotation testerAnnotation)
-					throws ConflictingRequirementsException {
+			throws ConflictingRequirementsException {
 		Class<? extends Annotation> annotationClass = testerAnnotation.annotationType();
 		final Feature<?>[] presentFeatures;
 		final Feature<?>[] absentFeatures;

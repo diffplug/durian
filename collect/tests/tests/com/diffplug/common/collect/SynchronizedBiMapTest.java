@@ -100,7 +100,7 @@ public class SynchronizedBiMapTest extends SynchronizedMapTest {
 		}
 	}
 
-	static class TestBiMap<K, V> extends TestMap<K, V>implements BiMap<K, V> {
+	static class TestBiMap<K, V> extends TestMap<K, V> implements BiMap<K, V> {
 		private final BiMap<K, V> delegate;
 
 		public TestBiMap(BiMap<K, V> delegate, Object mutex) {

@@ -853,7 +853,7 @@ public final class Maps {
 		};
 	}
 
-	private static class SortedAsMapView<K, V> extends AsMapView<K, V>implements SortedMap<K, V> {
+	private static class SortedAsMapView<K, V> extends AsMapView<K, V> implements SortedMap<K, V> {
 
 		SortedAsMapView(SortedSet<K> set, Function<? super K, V> function) {
 			super(set, function);
@@ -1376,7 +1376,7 @@ public final class Maps {
 		return new BiMapConverter<A, B>(bimap);
 	}
 
-	private static final class BiMapConverter<A, B> extends Converter<A, B>implements Serializable {
+	private static final class BiMapConverter<A, B> extends Converter<A, B> implements Serializable {
 		private final BiMap<A, B> bimap;
 
 		BiMapConverter(BiMap<A, B> bimap) {
@@ -2036,7 +2036,7 @@ public final class Maps {
 
 	@GwtIncompatible("NavigableMap")
 	private static class TransformedEntriesNavigableMap<K, V1, V2>
-			extends TransformedEntriesSortedMap<K, V1, V2>implements NavigableMap<K, V2> {
+			extends TransformedEntriesSortedMap<K, V1, V2> implements NavigableMap<K, V2> {
 
 		TransformedEntriesNavigableMap(
 				NavigableMap<K, V1> fromMap, EntryTransformer<? super K, ? super V1, V2> transformer) {
@@ -3668,7 +3668,7 @@ public final class Maps {
 		return (entry == null) ? null : entry.getValue();
 	}
 
-	static class SortedKeySet<K, V> extends KeySet<K, V>implements SortedSet<K> {
+	static class SortedKeySet<K, V> extends KeySet<K, V> implements SortedSet<K> {
 		SortedKeySet(SortedMap<K, V> map) {
 			super(map);
 		}
@@ -3710,7 +3710,7 @@ public final class Maps {
 	}
 
 	@GwtIncompatible("NavigableMap")
-	static class NavigableKeySet<K, V> extends SortedKeySet<K, V>implements NavigableSet<K> {
+	static class NavigableKeySet<K, V> extends SortedKeySet<K, V> implements NavigableSet<K> {
 		NavigableKeySet(NavigableMap<K, V> map) {
 			super(map);
 		}

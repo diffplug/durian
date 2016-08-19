@@ -56,14 +56,14 @@ public class ShortArrayAsListTest extends TestCase {
 				ListTestSuiteBuilder.using(new ShortsAsListGenerator())
 						.named("Shorts.asList"),
 
-		ListTestSuiteBuilder.using(new ShortsAsListHeadSubListGenerator())
-				.named("Shorts.asList, head subList"),
+				ListTestSuiteBuilder.using(new ShortsAsListHeadSubListGenerator())
+						.named("Shorts.asList, head subList"),
 
-		ListTestSuiteBuilder.using(new ShortsAsListTailSubListGenerator())
-				.named("Shorts.asList, tail subList"),
+				ListTestSuiteBuilder.using(new ShortsAsListTailSubListGenerator())
+						.named("Shorts.asList, tail subList"),
 
-		ListTestSuiteBuilder.using(new ShortsAsListMiddleSubListGenerator())
-				.named("Shorts.asList, middle subList"));
+				ListTestSuiteBuilder.using(new ShortsAsListMiddleSubListGenerator())
+						.named("Shorts.asList, middle subList"));
 
 		TestSuite suite = new TestSuite();
 		for (ListTestSuiteBuilder<Short> builder : builders) {

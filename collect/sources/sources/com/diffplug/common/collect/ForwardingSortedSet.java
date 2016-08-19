@@ -54,7 +54,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @since 2.0
  */
 @GwtCompatible
-public abstract class ForwardingSortedSet<E> extends ForwardingSet<E>implements SortedSet<E> {
+public abstract class ForwardingSortedSet<E> extends ForwardingSet<E> implements SortedSet<E> {
 
 	/** Constructor for use by subclasses. */
 	protected ForwardingSortedSet() {}

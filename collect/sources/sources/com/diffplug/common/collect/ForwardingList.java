@@ -52,7 +52,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  * @since 2.0
  */
 @GwtCompatible
-public abstract class ForwardingList<E> extends ForwardingCollection<E>implements List<E> {
+public abstract class ForwardingList<E> extends ForwardingCollection<E> implements List<E> {
 	// TODO(lowasser): identify places where thread safety is actually lost
 
 	/** Constructor for use by subclasses. */

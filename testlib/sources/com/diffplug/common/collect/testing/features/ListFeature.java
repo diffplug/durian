@@ -62,8 +62,8 @@ public enum ListFeature implements Feature<List> {
 	@Inherited
 	@TesterAnnotation
 	public @interface Require {
-		ListFeature[]value() default {};
+		ListFeature[] value() default {};
 
-		ListFeature[]absent() default {};
+		ListFeature[] absent() default {};
 	}
 }

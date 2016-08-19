@@ -124,7 +124,7 @@ final class Serialization {
 	 */
 	static <E> void populateMultiset(
 			Multiset<E> multiset, ObjectInputStream stream, int distinctElements)
-					throws IOException, ClassNotFoundException {
+			throws IOException, ClassNotFoundException {
 		for (int i = 0; i < distinctElements; i++) {
 			@SuppressWarnings("unchecked") // reading data stored by writeMultiset
 			E element = (E) stream.readObject();
@@ -172,7 +172,7 @@ final class Serialization {
 	 */
 	static <K, V> void populateMultimap(
 			Multimap<K, V> multimap, ObjectInputStream stream, int distinctKeys)
-					throws IOException, ClassNotFoundException {
+			throws IOException, ClassNotFoundException {
 		for (int i = 0; i < distinctKeys; i++) {
 			@SuppressWarnings("unchecked") // reading data stored by writeMultimap
 			K key = (K) stream.readObject();

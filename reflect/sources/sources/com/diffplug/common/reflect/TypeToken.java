@@ -92,7 +92,7 @@ import com.diffplug.common.primitives.Primitives;
  */
 @Beta
 @SuppressWarnings("serial") // SimpleTypeToken is the serialized form.
-public abstract class TypeToken<T> extends TypeCapture<T>implements Serializable {
+public abstract class TypeToken<T> extends TypeCapture<T> implements Serializable {
 
 	private final Type runtimeType;
 
@@ -665,7 +665,7 @@ public abstract class TypeToken<T> extends TypeCapture<T>implements Serializable
 	 * The set of interfaces and classes that {@code T} is or is a subtype of. {@link Object} is not
 	 * included in the set if this type is an interface.
 	 */
-	public class TypeSet extends ForwardingSet<TypeToken<? super T>>implements Serializable {
+	public class TypeSet extends ForwardingSet<TypeToken<? super T>> implements Serializable {
 
 		private transient ImmutableSet<TypeToken<? super T>> types;
 

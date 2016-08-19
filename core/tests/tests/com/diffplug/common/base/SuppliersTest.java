@@ -196,7 +196,7 @@ public class SuppliersTest extends TestCase {
 	@GwtIncompatible("Thread.sleep")
 	private void checkExpiration(
 			CountingSupplier countingSupplier, Supplier<Integer> memoizedSupplier)
-					throws InterruptedException {
+			throws InterruptedException {
 		// the underlying supplier hasn't executed yet
 		assertEquals(0, countingSupplier.calls);
 
@@ -259,7 +259,7 @@ public class SuppliersTest extends TestCase {
 	@GwtIncompatible("Thread")
 	public void testSupplierThreadSafe(
 			Function<Supplier<Boolean>, Supplier<Boolean>> memoizer)
-					throws Throwable {
+			throws Throwable {
 		final AtomicInteger count = new AtomicInteger(0);
 		final AtomicReference<Throwable> thrown = new AtomicReference<Throwable>(null);
 		final int numThreads = 3;

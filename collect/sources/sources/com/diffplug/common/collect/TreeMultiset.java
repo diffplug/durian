@@ -56,7 +56,7 @@ import com.diffplug.common.primitives.Ints;
  * @since 2.0
  */
 @GwtCompatible(emulated = true)
-public final class TreeMultiset<E> extends AbstractSortedMultiset<E>implements Serializable {
+public final class TreeMultiset<E> extends AbstractSortedMultiset<E> implements Serializable {
 
 	/**
 	 * Creates a new, empty multiset, sorted according to the elements' natural order. All elements

@@ -779,7 +779,7 @@ public final class Sets {
 		return new FilteredSet<E>(checkNotNull(unfiltered), checkNotNull(predicate));
 	}
 
-	private static class FilteredSet<E> extends FilteredCollection<E>implements Set<E> {
+	private static class FilteredSet<E> extends FilteredCollection<E> implements Set<E> {
 		FilteredSet(Set<E> unfiltered, Predicate<? super E> predicate) {
 			super(unfiltered, predicate);
 		}
@@ -842,7 +842,7 @@ public final class Sets {
 		return new FilteredSortedSet<E>(checkNotNull(unfiltered), checkNotNull(predicate));
 	}
 
-	private static class FilteredSortedSet<E> extends FilteredSet<E>implements SortedSet<E> {
+	private static class FilteredSortedSet<E> extends FilteredSet<E> implements SortedSet<E> {
 
 		FilteredSortedSet(SortedSet<E> unfiltered, Predicate<? super E> predicate) {
 			super(unfiltered, predicate);

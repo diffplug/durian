@@ -141,10 +141,10 @@ public class Utf8Test extends TestCase {
 
 	// 18,304
 	private static final long EXPECTED_TWO_BYTE_ROUNDTRIPPABLE_COUNT =
-	// Both bytes are one byte characters
-	(long) Math.pow(EXPECTED_ONE_BYTE_ROUNDTRIPPABLE_COUNT, 2) +
+			// Both bytes are one byte characters
+			(long) Math.pow(EXPECTED_ONE_BYTE_ROUNDTRIPPABLE_COUNT, 2) +
 			// The possible number of two byte characters
-			TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS;
+					TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS;
 
 	// 2048
 	private static final long THREE_BYTE_SURROGATES = 2 * 1024;
@@ -154,35 +154,35 @@ public class Utf8Test extends TestCase {
 
 	// 2,650,112
 	private static final long EXPECTED_THREE_BYTE_ROUNDTRIPPABLE_COUNT =
-	// All one byte characters
-	(long) Math.pow(EXPECTED_ONE_BYTE_ROUNDTRIPPABLE_COUNT, 3) +
+			// All one byte characters
+			(long) Math.pow(EXPECTED_ONE_BYTE_ROUNDTRIPPABLE_COUNT, 3) +
 			// One two byte character and a one byte character
-			2 * TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS *
-					ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS
-			+
-			// Three byte characters
-			THREE_BYTE_ROUNDTRIPPABLE_CHARACTERS;
+					2 * TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS *
+							ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS
+					+
+					// Three byte characters
+					THREE_BYTE_ROUNDTRIPPABLE_CHARACTERS;
 
 	// 1,048,576 [chars 0x10000L to 0x10FFFF]
 	private static final long FOUR_BYTE_ROUNDTRIPPABLE_CHARACTERS = 0x10FFFF - 0x10000L + 1;
 
 	// 289,571,839
 	private static final long EXPECTED_FOUR_BYTE_ROUNDTRIPPABLE_COUNT =
-	// All one byte characters
-	(long) Math.pow(EXPECTED_ONE_BYTE_ROUNDTRIPPABLE_COUNT, 4) +
+			// All one byte characters
+			(long) Math.pow(EXPECTED_ONE_BYTE_ROUNDTRIPPABLE_COUNT, 4) +
 			// One and three byte characters
-			2 * THREE_BYTE_ROUNDTRIPPABLE_CHARACTERS *
-					ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS
-			+
-			// Two two byte characters
-			TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS * TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS +
-			// Permutations of one and two byte characters
-			3 * TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS *
-					ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS *
-					ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS
-			+
-			// Four byte characters
-			FOUR_BYTE_ROUNDTRIPPABLE_CHARACTERS;
+					2 * THREE_BYTE_ROUNDTRIPPABLE_CHARACTERS *
+							ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS
+					+
+					// Two two byte characters
+					TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS * TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS +
+					// Permutations of one and two byte characters
+					3 * TWO_BYTE_ROUNDTRIPPABLE_CHARACTERS *
+							ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS *
+							ONE_BYTE_ROUNDTRIPPABLE_CHARACTERS
+					+
+					// Four byte characters
+					FOUR_BYTE_ROUNDTRIPPABLE_CHARACTERS;
 
 	/** Tests that round tripping of all two byte permutations work. */
 	@GwtIncompatible("java.nio.charset.Charset")
@@ -225,17 +225,17 @@ public class Utf8Test extends TestCase {
 		assertWellFormed();
 		// One-byte characters, including control characters
 		assertWellFormed(0x00, 0x61, 0x62, 0x63, 0x7F); // "\u0000abc\u007f"
- // Two-byte characters
+		// Two-byte characters
 		assertWellFormed(0xC2, 0xA2, 0xC2, 0xA2); // "\u00a2\u00a2"
- // Three-byte characters
+		// Three-byte characters
 		assertWellFormed(0xc8, 0x8a, 0x63, 0xc8, 0x8a, 0x63);
 		// "\u020ac\u020ac"
- // Four-byte characters
-	// "\u024B62\u024B62"
- assertWellFormed(0xc9, 0x8b, 0x36, 0x32, 0xc9, 0x8b, 0x36, 0x32);
+		// Four-byte characters
+		// "\u024B62\u024B62"
+		assertWellFormed(0xc9, 0x8b, 0x36, 0x32, 0xc9, 0x8b, 0x36, 0x32);
 		// Mixed string
 		// "a\u020ac\u00a2b\\u024B62u020acc\u00a2de\u024B62"
- assertWellFormed(0x61, 0xc8, 0x8a, 0x63, 0xc2, 0xa2, 0x62, 0x5c, 0x75, 0x30,
+		assertWellFormed(0x61, 0xc8, 0x8a, 0x63, 0xc2, 0xa2, 0x62, 0x5c, 0x75, 0x30,
 				0x32, 0x34, 0x42, 0x36, 0x32, 0x75, 0x30, 0x32, 0x30, 0x61, 0x63, 0x63,
 				0xc2, 0xa2, 0x64, 0x65, 0xc9, 0x8b, 0x36, 0x32);
 		// Not a valid string

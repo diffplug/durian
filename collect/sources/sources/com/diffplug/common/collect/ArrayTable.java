@@ -85,7 +85,7 @@ import com.diffplug.common.collect.Maps.IteratorBasedAbstractMap;
  */
 @Beta
 @GwtCompatible(emulated = true)
-public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V>implements Serializable {
+public final class ArrayTable<R, C, V> extends AbstractTable<R, C, V> implements Serializable {
 
 	/**
 	 * Creates an empty {@code ArrayTable}.

@@ -68,7 +68,7 @@ import com.diffplug.common.collect.Sets.ImprovedAbstractSet;
  * @author Jared Levy
  */
 @GwtCompatible
-class StandardTable<R, C, V> extends AbstractTable<R, C, V>implements Serializable {
+class StandardTable<R, C, V> extends AbstractTable<R, C, V> implements Serializable {
 	@GwtTransient
 	final Map<R, Map<C, V>> backingMap;
 	@GwtTransient

@@ -178,7 +178,7 @@ public class ClassPathTest extends TestCase {
 				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "file:/usr/test/dep.jar").toURI());
 		assertClassPathEntryEquals(new File("/home/build/a.jar").toURI(),
 
-		ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "a.jar").toURI());
+				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "a.jar").toURI());
 		assertClassPathEntryEquals(new File("/home/build/x/y/z").toURI(),
 				ClassPath.Scanner.getClassPathEntry(new File("/home/build/outer.jar"), "x/y/z").toURI());
 		assertClassPathEntryEquals(new File("/home/build/x/y/z.jar").toURI(),

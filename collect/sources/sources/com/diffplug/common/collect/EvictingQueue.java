@@ -43,7 +43,7 @@ import com.diffplug.common.annotations.VisibleForTesting;
  */
 @Beta
 @GwtCompatible
-public final class EvictingQueue<E> extends ForwardingQueue<E>implements Serializable {
+public final class EvictingQueue<E> extends ForwardingQueue<E> implements Serializable {
 
 	private final Queue<E> delegate;
 

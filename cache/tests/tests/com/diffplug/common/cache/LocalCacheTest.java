@@ -2803,7 +2803,7 @@ public class LocalCacheTest extends TestCase {
 	}
 
 	private static class SerializableCacheLoader
-			extends CacheLoader<Object, Object>implements Serializable {
+			extends CacheLoader<Object, Object> implements Serializable {
 		@Override
 		public Object load(Object key) {
 			return new Object();

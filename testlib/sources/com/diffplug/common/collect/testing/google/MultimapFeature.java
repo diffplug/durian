@@ -53,8 +53,8 @@ public enum MultimapFeature implements Feature<Multimap> {
 	@Inherited
 	@TesterAnnotation
 	public @interface Require {
-		public abstract MultimapFeature[]value() default {};
+		public abstract MultimapFeature[] value() default {};
 
-		public abstract MultimapFeature[]absent() default {};
+		public abstract MultimapFeature[] absent() default {};
 	}
 }

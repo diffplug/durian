@@ -126,7 +126,7 @@ public final class Throwables {
 	 */
 	public static <X1 extends Throwable, X2 extends Throwable> void propagateIfPossible(
 			@Nullable Throwable throwable, Class<X1> declaredType1, Class<X2> declaredType2)
-					throws X1, X2 {
+			throws X1, X2 {
 		checkNotNull(declaredType2);
 		propagateIfInstanceOf(throwable, declaredType1);
 		propagateIfPossible(throwable, declaredType2);

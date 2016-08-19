@@ -122,8 +122,8 @@ public enum CollectionFeature implements Feature<Collection> {
 	@Inherited
 	@TesterAnnotation
 	public @interface Require {
-		CollectionFeature[]value() default {};
+		CollectionFeature[] value() default {};
 
-		CollectionFeature[]absent() default {};
+		CollectionFeature[] absent() default {};
 	}
 }

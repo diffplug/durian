@@ -41,25 +41,25 @@ public class HashCodeTest extends TestCase {
 					(byte) 0x67, (byte) 0x45, (byte) 0x23, (byte) 0x01},
 					0x89abcdef, 0x0123456789abcdefL, "efcdab8967452301"),
 
-	new ExpectedHashCode(new byte[]{
-			(byte) 0xef, (byte) 0xcd, (byte) 0xab, (byte) 0x89,
-			(byte) 0x67, (byte) 0x45, (byte) 0x23, (byte) 0x01, // up to here, same bytes as above
-			(byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04,
-			(byte) 0x05, (byte) 0x06, (byte) 0x07, (byte) 0x08},
-			0x89abcdef, 0x0123456789abcdefL, // asInt/asLong as above, due to equal eight first bytes
-			"efcdab89674523010102030405060708"),
+			new ExpectedHashCode(new byte[]{
+					(byte) 0xef, (byte) 0xcd, (byte) 0xab, (byte) 0x89,
+					(byte) 0x67, (byte) 0x45, (byte) 0x23, (byte) 0x01, // up to here, same bytes as above
+					(byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04,
+					(byte) 0x05, (byte) 0x06, (byte) 0x07, (byte) 0x08},
+					0x89abcdef, 0x0123456789abcdefL, // asInt/asLong as above, due to equal eight first bytes
+					"efcdab89674523010102030405060708"),
 
-	new ExpectedHashCode(new byte[]{(byte) 0xdf, (byte) 0x9b, (byte) 0x57, (byte) 0x13},
-			0x13579bdf, null, "df9b5713"),
+			new ExpectedHashCode(new byte[]{(byte) 0xdf, (byte) 0x9b, (byte) 0x57, (byte) 0x13},
+					0x13579bdf, null, "df9b5713"),
 
-	new ExpectedHashCode(new byte[]{
-			(byte) 0xcd, (byte) 0xab, (byte) 0x00, (byte) 0x00},
-			0x0000abcd, null, "cdab0000"),
+			new ExpectedHashCode(new byte[]{
+					(byte) 0xcd, (byte) 0xab, (byte) 0x00, (byte) 0x00},
+					0x0000abcd, null, "cdab0000"),
 
-	new ExpectedHashCode(new byte[]{
-			(byte) 0xef, (byte) 0xcd, (byte) 0xab, (byte) 0x00,
-			(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00},
-			0x00abcdef, 0x0000000000abcdefL, "efcdab0000000000"));
+			new ExpectedHashCode(new byte[]{
+					(byte) 0xef, (byte) 0xcd, (byte) 0xab, (byte) 0x00,
+					(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00},
+					0x00abcdef, 0x0000000000abcdefL, "efcdab0000000000"));
 
 	// expectedHashCodes must contain at least one hash code with 4 bytes
 	public void testFromInt() {

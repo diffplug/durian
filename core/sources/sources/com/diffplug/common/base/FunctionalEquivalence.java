@@ -35,7 +35,7 @@ import com.diffplug.common.annotations.GwtCompatible;
  */
 @Beta
 @GwtCompatible
-final class FunctionalEquivalence<F, T> extends Equivalence<F>implements Serializable {
+final class FunctionalEquivalence<F, T> extends Equivalence<F> implements Serializable {
 
 	private static final long serialVersionUID = 0;
 

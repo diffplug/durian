@@ -34,7 +34,7 @@ import java.util.Iterator;
  * @author Kurt Alfred Kluever
  * @since 12.0
  */
-public abstract class ForwardingDeque<E> extends ForwardingQueue<E>implements Deque<E> {
+public abstract class ForwardingDeque<E> extends ForwardingQueue<E> implements Deque<E> {
 
 	/** Constructor for use by subclasses. */
 	protected ForwardingDeque() {}
