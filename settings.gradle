@@ -1,3 +1,6 @@
+// the ide
+include '_ide'
+
 // the testlib
 include 'testlib'
 // we split each lib into sources and tests

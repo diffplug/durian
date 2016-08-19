@@ -6,6 +6,8 @@ Every successful Travis CI build on branch `master` is automatically published t
 
 ## Build instructions
 
+The easiest way to work on Spotless is to run `gradlew ide`.  It will download and setup an Eclipse IDE for you, using [goomph](https://github.com/diffplug/goomph).
+
 It's a bog-standard gradle build.
 
 `gradlew eclipse`

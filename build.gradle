@@ -37,14 +37,23 @@ spotless {
 	freshmark {}
 }
 
-//////////////////////////////////////////////////////////
-// SUBPROJECTS (all the way to the bottom of this file) //
-//////////////////////////////////////////////////////////
+/////////////////
+// SUBPROJECTS //
+/////////////////
 apply from: 'gradle/libs-parse.gradle'
 
 subprojects {
-	if (project.subprojects.isEmpty()) {
+	if (!it.name.startsWith('_')) {
 		apply from: rootProject.file('gradle/project-config.gradle')
+	}
+}
+
+// root eclipse project from everything but the project
+apply plugin: 'com.diffplug.gradle.eclipse.resourcefilters'
+eclipseResourceFilters {
+	exclude().folders().name('testlib')
+	libDeps.each { lib, deps ->
+		exclude().folders().name(lib)
 	}
 }
 

@@ -1,0 +1,17 @@
+//////////////////////////////////////////////
+// IDE (https://github.com/diffplug/goomph) //
+//////////////////////////////////////////////
+apply plugin: 'com.diffplug.gradle.oomph.ide'
+oomphIde {
+	repoEclipseLatest()
+	jdt {}
+	eclipseIni {
+		vmargs('-Xmx2g')    // IDE can have up to 2 gigs of RAM
+	}
+	splash rootProject.file('_imgs/durian.png')
+	style {
+		classicTheme()  // oldschool cool
+		niceText()      // with nice fonts and visible whitespace
+	}
+	addAllProjects()
+}
